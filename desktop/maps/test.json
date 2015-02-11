@@ -1,0 +1,3604 @@
+{
+key: test
+size: 20
+tiles: [
+	{
+		tileData: [
+			FLOOR
+		]
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 1
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 2
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 3
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 4
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 5
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 5
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 5
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 5
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 5
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 5
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 5
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 5
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 5
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 5
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 5
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 5
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 5
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 5
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 5
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 5
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 5
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 5
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 5
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 6
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 6
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 6
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 7
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 7
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 7
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 8
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 8
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 8
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 9
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 9
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 9
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 9
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 9
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 10
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 10
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 10
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 10
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 10
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 11
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 11
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 11
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 12
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 12
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 12
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 13
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 13
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 13
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 14
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 14
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 14
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 14
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST1
+		]
+		position: {
+			x: 14
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 14
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 14
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 14
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 14
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 14
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 14
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 14
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 14
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+			POST2
+		]
+		position: {
+			x: 14
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 14
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 14
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 14
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 14
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 14
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 15
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 16
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 17
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 18
+			y: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 1
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 2
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 3
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 4
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 5
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 6
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 7
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 8
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 9
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 10
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 11
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 12
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 13
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 14
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 15
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 16
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 17
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 18
+		}
+	}
+	{
+		tileData: [
+			FLOOR
+		]
+		position: {
+			x: 19
+			y: 19
+		}
+	}
+]
+}
