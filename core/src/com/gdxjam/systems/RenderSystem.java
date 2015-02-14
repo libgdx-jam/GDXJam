@@ -55,7 +55,9 @@ public class RenderSystem extends EntitySystem {
 			position = pm.get(e);
 			visual = vm.get(e);
 
-			batch.draw(visual.region, position.x, position.y, 1, 1);
+			// batch.draw(visual.region, position.x, position.y, 1, 1);
+			batch.draw(visual.region, position.x, position.y, 1, 1, 1, 1, 1, 1,
+					visual.rotation);
 		}
 
 		batch.end();
