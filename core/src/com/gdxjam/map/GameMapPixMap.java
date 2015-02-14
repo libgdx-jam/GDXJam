@@ -1,12 +1,16 @@
 package com.gdxjam.map;
 
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import com.gdxjam.Assets;
+import com.gdxjam.components.PositionComponent;
+import com.gdxjam.components.VisualComponent;
 import com.gdxjam.tiles.Tile;
-import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Constants.BLOCK_TYPE;
 
 public class GameMapPixMap implements Map {
@@ -121,6 +125,43 @@ public class GameMapPixMap implements Map {
 
 	public float getSize() {
 		return size;
+	}
+
+	public void addToAshley(PooledEngine engine) {
+		for (Tile tile : getTiles()) {
+			for (BLOCK_TYPE data : tile.getTileData()) {
+				Entity entity = engine.createEntity();
+				switch (data) {
+
+				case FLOOR:
+					entity.add(new VisualComponent(Assets.instance.grass.reg, 0));
+					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					break;
+
+				case POST1:
+					entity.add(new VisualComponent(Assets.instance.post.post1,
+							0));
+					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					break;
+
+				case POST2:
+					entity.add(new VisualComponent(Assets.instance.post.post2,
+							0));
+					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					break;
+
+				case EMPTY:
+					break;
+
+				default:
+					entity.add(new VisualComponent(Assets.instance.grass.reg, 0));
+					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					break;
+
+				}
+				engine.addEntity(entity);
+			}
+		}
 	}
 
 }
