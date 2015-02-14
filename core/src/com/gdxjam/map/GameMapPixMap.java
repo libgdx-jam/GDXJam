@@ -134,28 +134,26 @@ public class GameMapPixMap implements Map {
 				switch (data) {
 
 				case FLOOR:
-					entity.add(new VisualComponent(Assets.instance.grass.reg, 0));
-					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					entity.add(engine.createComponent(VisualComponent.class).init(Assets.instance.grass.reg, 0));
+					entity.add(engine.createComponent(PositionComponent.class).init(tile.getX(), tile.getY()));
 					break;
 
 				case POST1:
-					entity.add(new VisualComponent(Assets.instance.post.post1,
-							0));
-					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					entity.add(engine.createComponent(VisualComponent.class).init(Assets.instance.post.post1, 0));
+					entity.add(engine.createComponent(PositionComponent.class).init(tile.getX(), tile.getY()));
 					break;
 
 				case POST2:
-					entity.add(new VisualComponent(Assets.instance.post.post2,
-							0));
-					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					entity.add(engine.createComponent(VisualComponent.class).init(Assets.instance.post.post2, 0));
+					entity.add(engine.createComponent(PositionComponent.class).init(tile.getX(), tile.getY()));
 					break;
 
 				case EMPTY:
 					break;
 
 				default:
-					entity.add(new VisualComponent(Assets.instance.grass.reg, 0));
-					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					entity.add(engine.createComponent(VisualComponent.class).init(Assets.instance.grass.reg, 0));
+					entity.add(engine.createComponent(PositionComponent.class).init(tile.getX(), tile.getY()));
 					break;
 
 				}
