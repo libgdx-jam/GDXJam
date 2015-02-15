@@ -1,4 +1,4 @@
-package com.gdxjam.ai.test;
+package com.gdxjam.components;
 
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-public class SteerableGuy implements Steerable<Vector2> {
+public class SteerableEntity implements Steerable<Vector2> {
 
 	public static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<Vector2>(
 			new Vector2());
@@ -25,7 +25,7 @@ public class SteerableGuy implements Steerable<Vector2> {
 	public float boundingRadius;
 	boolean independentFacing;
 
-	public SteerableGuy(boolean independentFacing) {
+	public SteerableEntity(boolean independentFacing) {
 		this.independentFacing = independentFacing;
 		this.position = new Vector2();
 		this.linearVelocity = new Vector2();

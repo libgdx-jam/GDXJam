@@ -1,14 +1,19 @@
 package com.gdxjam;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.gdxjam.components.PositionComponent;
 
 public class Input implements InputProcessor {
 	OrthographicCamera camera;
+	Entity target;
 
-	public Input(OrthographicCamera camera) {
+	public Input(OrthographicCamera camera, Entity target) {
 		this.camera = camera;
+		this.target = target;
 	}
 
 	@Override
@@ -28,6 +33,8 @@ public class Input implements InputProcessor {
 		Vector3 touch = camera.unproject(new Vector3(screenX, screenY, 0));
 		camera.position.set(touch.x, touch.y, 0);
 		camera.update();
+		target.getComponent(PositionComponent.class).position = new Vector2(touch.x, touch.y);
+
 		return false;
 	}
 

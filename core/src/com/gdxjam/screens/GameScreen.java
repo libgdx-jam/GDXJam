@@ -5,18 +5,21 @@ import java.util.ArrayList;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.Assets;
 import com.gdxjam.Input;
+import com.gdxjam.components.MovementComponent;
 import com.gdxjam.components.PositionComponent;
 import com.gdxjam.components.VisualComponent;
 import com.gdxjam.map.GameMapPixMap;
 import com.gdxjam.map.Map;
 import com.gdxjam.systems.RenderSystem;
+import com.gdxjam.systems.UpdateSystem;
 
 public class GameScreen implements Screen {
 
@@ -35,35 +38,49 @@ public class GameScreen implements Screen {
 		map = new GameMapPixMap();
 		map.setKey("test");
 		map.convertPixmap("test.png");
-		// map.save("test");
-		// map.load("test");
-		// Tile tile = new Tile(5, 5);
-		// tile.addTileData(BLOCK_TYPE.POST2);
-		// map.add(tile);
-
-		// System.out.println("------Showing-----");
 
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera(map.size, map.size);
 		camera.update();
 		camera.position.set(map.size / 2, map.size / 2, 0);
 		camera.update();
-		// cameraHelper = new CameraHelper(camera);
 		batch.setProjectionMatrix(camera.combined);
 
 		engine = new PooledEngine();
 		engine.addSystem(new RenderSystem(camera));
+		engine.addSystem(new UpdateSystem());
+
 		Entity e = new Entity();
-		e.add(new VisualComponent(Assets.instance.chest.reg,200));
+		e.add(new VisualComponent(Assets.instance.chest.reg));
 		e.add(new PositionComponent(11, 11));
+		e.add(new MovementComponent());
+		e.getComponent(MovementComponent.class).entity
+				.setMaxLinearAcceleration(10);
+		e.getComponent(MovementComponent.class).entity.setMaxLinearSpeed(10);
+		e.getComponent(MovementComponent.class).entity
+				.setMaxAngularAcceleration(40);
+		e.getComponent(MovementComponent.class).entity.setMaxAngularSpeed(10);
+
+		Entity f = new Entity();
+		f.add(new VisualComponent(Assets.instance.chest.open));
+		f.add(new PositionComponent(8, 8));
+		f.add(new MovementComponent());
+
+		final Arrive<Vector2> arriveSB = new Arrive<Vector2>(
+				e.getComponent(MovementComponent.class).entity,
+				f.getComponent(MovementComponent.class).entity) //
+				.setTimeToTarget(0.1f) //
+				.setArrivalTolerance(0.001f) //
+				.setDecelerationRadius(80);
+
+		e.getComponent(MovementComponent.class).entity
+				.setSteeringBehavior(arriveSB);
 
 		map.addToAshley(engine);
 		engine.addEntity(e);
+		engine.addEntity(f);
 
-		input = new Input(camera);
-
-			
-
+		input = new Input(camera, f);
 		Gdx.input.setInputProcessor(input);
 
 	}

@@ -134,19 +134,17 @@ public class GameMapPixMap implements Map {
 				switch (data) {
 
 				case FLOOR:
-					entity.add(new VisualComponent(Assets.instance.grass.reg, 0));
+					entity.add(new VisualComponent(Assets.instance.grass.reg));
 					entity.add(new PositionComponent(tile.getX(), tile.getY()));
 					break;
 
 				case POST1:
-					entity.add(new VisualComponent(Assets.instance.post.post1,
-							0));
+					entity.add(new VisualComponent(Assets.instance.post.post1));
 					entity.add(new PositionComponent(tile.getX(), tile.getY()));
 					break;
 
 				case POST2:
-					entity.add(new VisualComponent(Assets.instance.post.post2,
-							0));
+					entity.add(new VisualComponent(Assets.instance.post.post2));
 					entity.add(new PositionComponent(tile.getX(), tile.getY()));
 					break;
 
@@ -154,7 +152,7 @@ public class GameMapPixMap implements Map {
 					break;
 
 				default:
-					entity.add(new VisualComponent(Assets.instance.grass.reg, 0));
+					entity.add(new VisualComponent(Assets.instance.grass.reg));
 					entity.add(new PositionComponent(tile.getX(), tile.getY()));
 					break;
 
