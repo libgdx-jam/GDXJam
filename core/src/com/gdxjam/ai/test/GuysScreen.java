@@ -64,9 +64,9 @@ public class GuysScreen implements Screen {
 		target.update(delta);
 		batch.begin();
 		batch.draw(Assets.instance.grass.reg, dude.getPosition().x,
-				dude.getPosition().x, 1, 1);
+				dude.getPosition().y, 1, 1);
 		batch.draw(Assets.instance.post.post1, target.getPosition().x,
-				dude.getPosition().x, 1, 1);
+				target.getPosition().y, 1, 1);
 		batch.end();
 	}
 

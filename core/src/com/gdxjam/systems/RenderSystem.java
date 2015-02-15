@@ -8,6 +8,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.gdxjam.components.OrientationComponent;
 import com.gdxjam.components.PositionComponent;
 import com.gdxjam.components.VisualComponent;
 
@@ -21,6 +22,8 @@ public class RenderSystem extends EntitySystem {
 			.getFor(PositionComponent.class);
 	private ComponentMapper<VisualComponent> vm = ComponentMapper
 			.getFor(VisualComponent.class);
+    private ComponentMapper<OrientationComponent> om = ComponentMapper
+            .getFor(OrientationComponent.class);
 
 	public RenderSystem(OrthographicCamera camera) {
 		batch = new SpriteBatch();
@@ -55,8 +58,12 @@ public class RenderSystem extends EntitySystem {
 			position = pm.get(e);
 			visual = vm.get(e);
 
+            if(om.has(e)){
+                visual.rotation = om.get(e).getAngleDeg();
+            }
+
 			// batch.draw(visual.region, position.x, position.y, 1, 1);
-			batch.draw(visual.region, position.x, position.y, 1, 1, 1, 1, 1, 1,
+			batch.draw(visual.region, position.pos.x, position.pos.y, 1, 1, 1, 1, 1, 1,
 					visual.rotation);
 		}
 

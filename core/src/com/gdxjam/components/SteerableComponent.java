@@ -1,173 +1,181 @@
 package com.gdxjam.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-public class SteerableComponent implements Steerable<Vector2> {
+public class SteerableComponent extends Component implements Steerable<Vector2> {
+    //TODO refactor this craziness, not sure if a Component can hold another...Maybe one single PhysicsComponent would be easier...
+    PositionComponent positionComponent;
+    VelocityComponent velocityComponent;
+    RigidBodyComponent rigidBodyComponent;
+    OrientationComponent orientationComponent;
+    AngularVelocityComponent angularVelocityComponent;
+    ForceComponent forceComponent;
+    TorqueComponent torqueComponent;
 
-	private static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<Vector2>(
-			new Vector2());
+    //TODO values needs to go in constructor, or a class to hold them
+    private float maxLinearSpeed = 10;
+    private float maxLinearAcceleration = 5;
+    private float maxAngularSpeed = 2;
+    private float maxAngularAcceleration = 2;
+    private boolean tagged;
 
-	TextureRegion region;
+    private static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<Vector2>(new Vector2());
+    SteeringBehavior<Vector2> steeringBehavior;
 
-	Vector2 position; // like scene2d centerX and centerY, but we need a vector
-						// to implement Steerable
-	Vector2 linearVelocity;
-	float angularVelocity;
-	float boundingRadius;
-	boolean tagged;
+    public SteerableComponent(PositionComponent positionComponent, VelocityComponent velocityComponent,
+                              RigidBodyComponent rigidBodyComponent, OrientationComponent orientationComponent,
+                              AngularVelocityComponent angularVelocityComponent, ForceComponent forceComponent,
+                              TorqueComponent torqueComponent) {
+        this.positionComponent = positionComponent;
+        this.velocityComponent = velocityComponent;
+        this.rigidBodyComponent = rigidBodyComponent;
+        this.orientationComponent = orientationComponent;
+        this.angularVelocityComponent = angularVelocityComponent;
+        this.forceComponent = forceComponent;
+        this.torqueComponent = torqueComponent;
+    }
 
-	float maxLinearSpeed = 100;
-	float maxLinearAcceleration = 200;
-	float maxAngularSpeed = 5;
-	float maxAngularAcceleration = 10;
+    public SteerableComponent(Entity entity) {
+        this(entity.getComponent(PositionComponent.class),entity.getComponent(VelocityComponent.class),entity.getComponent(RigidBodyComponent.class),entity.getComponent(OrientationComponent.class),
+                entity.getComponent(AngularVelocityComponent.class),entity.getComponent(ForceComponent.class),entity.getComponent(TorqueComponent.class));
+    }
 
-	boolean independentFacing;
+    @Override
+    public Vector2 getPosition() {
+        return positionComponent.pos;
+    }
 
-	SteeringBehavior<Vector2> steeringBehavior;
+    @Override
+    public float getOrientation() {
+        return (float)Math.atan2(orientationComponent.getHeading().y,orientationComponent.getHeading().x);
+    }
 
-	public SteerableComponent(TextureRegion region, boolean independentFacing) {
-		this.independentFacing = independentFacing;
-		this.region = region;
-		this.independentFacing = independentFacing;
-		this.region = region;
-		this.position = new Vector2();
-		this.linearVelocity = new Vector2();
-		// this.setBounds(0, 0, region.getRegionWidth(),
-		// region.getRegionHeight());
-		this.boundingRadius = (region.getRegionWidth() + region
-				.getRegionHeight()) / 4f;
-		// this.setOrigin(region.getRegionWidth() * .5f,
-		// region.getRegionHeight() * .5f);
-	}
+    @Override
+    public Vector2 getLinearVelocity() {
+        return velocityComponent.velocity;
+    }
 
-	// public void setBounds(float x, float y, float width, float height){
-	// if (this.x != x || this.y != y) {
-	// this.x = x;
-	// this.y = y;
-	// positionChanged();
-	// }
-	// if (this.width != width || this.height != height) {
-	// this.width = width;
-	// this.height = height;
-	// sizeChanged();
-	// }
-	// }
+    @Override
+    public float getAngularVelocity() {
+        return angularVelocityComponent.angularVelocity;
+    }
 
-	@Override
-	public float getMaxLinearSpeed() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public float getBoundingRadius() {
+        return rigidBodyComponent.getBoundRadius();
+    }
 
-	@Override
-	public void setMaxLinearSpeed(float maxLinearSpeed) {
-		// TODO Auto-generated method stub
+    @Override
+    public boolean isTagged() {
+        return tagged;
+    }
 
-	}
+    @Override
+    public void setTagged(boolean tagged) {
+        this.tagged = tagged;
+    }
 
-	@Override
-	public float getMaxLinearAcceleration() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public Vector2 newVector() {
+        return new Vector2();
+    }
 
-	@Override
-	public void setMaxLinearAcceleration(float maxLinearAcceleration) {
-		// TODO Auto-generated method stub
+    @Override
+    public float vectorToAngle(Vector2 vector) {
+        return (float)Math.atan2(vector.y, vector.x);
+    }
 
-	}
+    @Override
+    public Vector2 angleToVector(Vector2 outVector, float angle) {
+        outVector.x = (float)Math.cos(angle);
+        outVector.y = (float)Math.sin(angle);
 
-	@Override
-	public float getMaxAngularSpeed() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+        return outVector;
+    }
 
-	@Override
-	public void setMaxAngularSpeed(float maxAngularSpeed) {
-		// TODO Auto-generated method stub
+    @Override
+    public float getMaxLinearSpeed() {
+        return maxLinearSpeed;
+    }
 
-	}
+    @Override
+    public void setMaxLinearSpeed(float maxLinearSpeed) {
+        this.maxLinearSpeed = maxLinearSpeed;
+    }
 
-	@Override
-	public float getMaxAngularAcceleration() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public float getMaxLinearAcceleration() {
+        return maxLinearAcceleration;
+    }
 
-	@Override
-	public void setMaxAngularAcceleration(float maxAngularAcceleration) {
-		// TODO Auto-generated method stub
+    @Override
+    public void setMaxLinearAcceleration(float maxLinearAcceleration) {
+        this.maxLinearAcceleration = maxLinearAcceleration;
+    }
 
-	}
+    @Override
+    public float getMaxAngularSpeed() {
+        return maxAngularSpeed;
+    }
 
-	@Override
-	public Vector2 getPosition() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void setMaxAngularSpeed(float maxAngularSpeed) {
+        this.maxAngularSpeed = maxAngularSpeed;
+    }
 
-	@Override
-	public float getOrientation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public float getMaxAngularAcceleration() {
+        return maxAngularAcceleration;
+    }
 
-	@Override
-	public Vector2 getLinearVelocity() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void setMaxAngularAcceleration(float maxAngularAcceleration) {
+        this.maxAngularAcceleration = maxAngularAcceleration;
+    }
 
-	@Override
-	public float getAngularVelocity() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    public SteeringBehavior<Vector2> getSteeringBehavior () {
+        return steeringBehavior;
+    }
 
-	@Override
-	public float getBoundingRadius() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    public void setSteeringBehavior (SteeringBehavior<Vector2> steeringBehavior) {
+        this.steeringBehavior = steeringBehavior;
+    }
 
-	@Override
-	public boolean isTagged() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public static SteeringAcceleration<Vector2> getSteeringOutput() {
+        return steeringOutput;
+    }
 
-	@Override
-	public void setTagged(boolean tagged) {
-		// TODO Auto-generated method stub
+    public PositionComponent getPositionComponent() {
+        return positionComponent;
+    }
 
-	}
+    public VelocityComponent getVelocityComponent() {
+        return velocityComponent;
+    }
 
-	@Override
-	public Vector2 newVector() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public RigidBodyComponent getRigidBodyComponent() {
+        return rigidBodyComponent;
+    }
 
-	@Override
-	public float vectorToAngle(Vector2 vector) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    public OrientationComponent getOrientationComponent() {
+        return orientationComponent;
+    }
 
-	@Override
-	public Vector2 angleToVector(Vector2 outVector, float angle) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public AngularVelocityComponent getAngularVelocityComponent() {
+        return angularVelocityComponent;
+    }
 
-	public void setPosition(float x, float y) {
-		position = new Vector2(x, y);
-	}
+    public ForceComponent getForceComponent() {
+        return forceComponent;
+    }
 
+    public TorqueComponent getTorqueComponent() {
+        return torqueComponent;
+    }
 }
