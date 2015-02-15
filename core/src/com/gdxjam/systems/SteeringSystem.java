@@ -23,21 +23,17 @@ public class SteeringSystem extends IteratingSystem{
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		SteeringBehavior<Vector2> behavior = Components.STEERING_BEHAVIOR.get(entity).getBehavior();
+		SteerableBodyComponent steering = Components.STEERABLE_BODY.get(entity);
+		
 		
 		behavior.calculateSteering(steeringOutput);
-		
-	}
-	
-	public void applySteering(Entity entity, float deltaTime) {
-		SteerableBodyComponent steering = Components.STEERABLE_BODY.get(entity);
-		Body body = steering.getBody();
-		
-		//Uses code from Gdx-ai box2D steering tests
 		boolean anyAccelerations = false;
+		Body body = steering.body;
 		
 		if (!steeringOutput.linear.isZero()) {
-			Vector2 impulse = steeringOutput.linear;
-			body.applyLinearImpulse(impulse, body.getWorldCenter(), true);
+			Vector2 force = steeringOutput.linear.scl(deltaTime);
+			body.applyForceToCenter(force, true);
+			anyAccelerations = true;
 		}
 
 		
@@ -75,7 +71,5 @@ public class SteeringSystem extends IteratingSystem{
 			}
 		}
 	}
-	
-	
 
 }

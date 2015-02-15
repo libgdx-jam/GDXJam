@@ -1,110 +1,141 @@
 package com.gdxjam.screens;
 
-import java.util.ArrayList;
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.gdxjam.Assets;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.gdxjam.Input;
-import com.gdxjam.components.PositionComponent;
-import com.gdxjam.components.VisualComponent;
-import com.gdxjam.map.GameMapPixMap;
-import com.gdxjam.map.Map;
+import com.gdxjam.ai.Battalion;
+import com.gdxjam.components.SteerableBodyComponent;
+import com.gdxjam.components.SteeringBehaviorComponent;
+import com.gdxjam.systems.CameraSystem;
+import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.RenderSystem;
+import com.gdxjam.systems.SteeringSystem;
 
-public class GameScreen implements Screen {
+public class GameScreen extends AbstractScreen {
+	
+	private static final int PIXELS_PER_UNIT = 32;
+	
+	private PooledEngine engine;
+	private PhysicsSystem physicsSystem;
+	
+	private Battalion battalionA;
+	private Battalion battalionB;
 
-	ArrayList<Map> maps = new ArrayList<Map>();
-	GameMapPixMap map;
-
-	SpriteBatch batch;
-	OrthographicCamera camera;
-	Input input;
-
-	PooledEngine engine;
 
 	@Override
 	public void show() {
-
-		map = new GameMapPixMap();
-		map.setKey("test");
-		map.convertPixmap("test.png");
-		// map.save("test");
-		// map.load("test");
-		// Tile tile = new Tile(5, 5);
-		// tile.addTileData(BLOCK_TYPE.POST2);
-		// map.add(tile);
-
-		// System.out.println("------Showing-----");
-
-		batch = new SpriteBatch();
-		camera = new OrthographicCamera(map.size, map.size);
-		camera.update();
-		camera.position.set(map.size / 2, map.size / 2, 0);
-		camera.update();
-		// cameraHelper = new CameraHelper(camera);
-		batch.setProjectionMatrix(camera.combined);
-
 		initEngine();
-		createTestEntity();
+		createTestWorld();
 		
-		input = new Input(camera);
+		Input input = new Input(engine.getSystem(CameraSystem.class).getCamera(), battalionA, battalionB);
 		Gdx.input.setInputProcessor(input);
 	}
 	
-	public void createTestEntity(){
-		Entity entity = engine.createEntity();
+	public void createTestWorld(){
+		Vector2 posA = new Vector2(5, 5);
+		battalionA = new Battalion(posA);
+		createSquad(posA, battalionA);
 		
-		entity.add(engine.createComponent(VisualComponent.class).init(Assets.instance.chest.reg, 200));
-		entity.add(engine.createComponent(PositionComponent.class).init(11, 11));
-
-		engine.addEntity(entity);
+		Vector2 posB = new Vector2(15, 5);
+		battalionB = new Battalion(posB);
+		createSquad(posB, battalionB);
 	}
 	
+	public void createSquad(Vector2 position, Battalion battalion){
+		position.set(position.x - 1, position.y - 1);
+		for(int x = 0; x < 3; x++){
+			for(int y = 0; y < 3; y++){
+				if(x == 1 && y == 1){
+					battalion.addMember(createCommander(new Vector2(position.x + x, position.y + y)));
+				}
+				else{
+					battalion.addMember(createMember(new Vector2(position.x + x, position.y + y)));
+				}
+			}
+		}
+	}
+	
+	public Entity createMember(Vector2 position){
+		Entity entity = engine.createEntity();
+		
+		//Physics
+		BodyDef def = new BodyDef();
+		def.type = BodyType.DynamicBody;
+		def.position.set(position);
+		def.linearDamping = 1.0f;
+		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
+		
+		FixtureDef fixDef = new FixtureDef();
+		CircleShape shape = new CircleShape();
+		shape.setRadius(0.25f);
+		fixDef.shape = shape;
+		
+		body.createFixture(fixDef);
+		shape.dispose();
+		
+		SteerableBodyComponent steerable = (SteerableBodyComponent) engine.createComponent(SteerableBodyComponent.class).init(body);
+		entity.add(steerable);
+		
+		entity.add(engine.createComponent(SteeringBehaviorComponent.class));
+		
+		engine.addEntity(entity);
+		return entity;
+	}
+	
+	public Entity createCommander(Vector2 position){
+		Entity entity = engine.createEntity();
+		
+		//Physics
+		BodyDef def = new BodyDef();
+		def.type = BodyType.DynamicBody;
+		def.position.set(position);
+		def.linearDamping = 1.0f;
+		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
+		
+		FixtureDef fixDef = new FixtureDef();
+		CircleShape shape = new CircleShape();
+		shape.setRadius(0.25f);
+		fixDef.shape = shape;
+		
+		body.createFixture(fixDef);
+		shape.dispose();
+		
+		SteerableBodyComponent steerable = (SteerableBodyComponent) engine.createComponent(SteerableBodyComponent.class).init(body);
+		entity.add(steerable);
+
+		SteeringBehaviorComponent behaviorComp = engine.createComponent(SteeringBehaviorComponent.class);
+		entity.add(behaviorComp);
+
+		engine.addEntity(entity);
+		return entity;
+	}
 	
 	public void initEngine(){
 		engine = new PooledEngine();
-		engine.addSystem(new RenderSystem(camera));
-		map.addToAshley(engine);
+		OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth() / PIXELS_PER_UNIT,  Gdx.graphics.getHeight() / PIXELS_PER_UNIT);
+		camera.position.set(10, 10, 0);
+		engine.addSystem(new CameraSystem(camera));
+		engine.addSystem(new RenderSystem());
+		
+		physicsSystem = new PhysicsSystem();
+		engine.addSystem(physicsSystem);
+		
+		SteeringSystem steeringSystem = new SteeringSystem();
+		engine.addSystem(steeringSystem);
 	}
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		super.render(delta);
 		engine.update(delta);
-
-	}
-
-	@Override
-	public void resize(int width, int height) {
-
-	}
-
-	@Override
-	public void pause() {
-		for (Map map : maps) {
-			map.save(map.getKey());
-		}
-	}
-
-	@Override
-	public void resume() {
-
-	}
-
-	@Override
-	public void hide() {
-
-	}
-
-	@Override
-	public void dispose() {
 	}
 
 }
