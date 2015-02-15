@@ -31,7 +31,6 @@ com_crashlytics_export_strings.xml
 
 ## Eclipse
 .classpath
-.project
 .metadata
 **/bin/
 tmp/
@@ -77,7 +76,6 @@ local.properties
 .loadpath
 
 # Eclipse Core
-.project
 
 # External tool builders
 .externalToolBuilders/
