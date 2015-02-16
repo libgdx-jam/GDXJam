@@ -12,7 +12,7 @@ public class SteerableBodyComponent extends PhysicsComponent implements Steerabl
 	private float maxAngluarAcceleration = 100;
 	
 	private boolean tagged = false;
-	private boolean independentFacing = true;
+	private boolean independentFacing = false;
 
 	
 	@Override
@@ -105,7 +105,7 @@ public class SteerableBodyComponent extends PhysicsComponent implements Steerabl
 
 	@Override
 	public float vectorToAngle(Vector2 vector) {
-		return (float)Math.atan2(-vector.x, vector.y);
+		return vector.angleRad();
 	}
 
 	@Override
