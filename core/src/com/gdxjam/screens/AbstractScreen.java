@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 
-public class AbstractScreen implements Screen{
+public abstract class AbstractScreen implements Screen{
 
 	@Override
 	public void show() {
