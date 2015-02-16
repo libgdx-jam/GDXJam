@@ -102,6 +102,8 @@ local.properties
 .gradle
 build/
 
+thumbs.db
+
 # Ignore Gradle GUI config
 gradle-app.setting
 
