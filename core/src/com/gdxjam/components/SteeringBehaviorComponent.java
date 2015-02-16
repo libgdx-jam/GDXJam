@@ -3,8 +3,9 @@ package com.gdxjam.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool.Poolable;
 
-public class SteeringBehaviorComponent extends Component {
+public class SteeringBehaviorComponent extends Component implements Poolable{
 
 	private SteeringBehavior<Vector2> behavior;
 	
@@ -19,6 +20,11 @@ public class SteeringBehaviorComponent extends Component {
 	
 	public SteeringBehavior<Vector2> getBehavior(){
 		return behavior;
+	}
+
+	@Override
+	public void reset () {
+		behavior = null;
 	}
 
 }

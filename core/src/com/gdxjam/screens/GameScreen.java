@@ -1,3 +1,4 @@
+
 package com.gdxjam.screens;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class GameScreen extends AbstractScreen {
 	PooledEngine engine;
 
 	@Override
-	public void show() {
+	public void show () {
 
 		map = new GameMapPixMap();
 		map.setKey("test");
@@ -53,11 +54,9 @@ public class GameScreen extends AbstractScreen {
 		e.add(new VisualComponent(Assets.instance.chest.reg));
 		e.add(new PositionComponent(11, 11));
 		e.add(new MovementComponent());
-		e.getComponent(MovementComponent.class).entity
-				.setMaxLinearAcceleration(10);
+		e.getComponent(MovementComponent.class).entity.setMaxLinearAcceleration(10);
 		e.getComponent(MovementComponent.class).entity.setMaxLinearSpeed(10);
-		e.getComponent(MovementComponent.class).entity
-				.setMaxAngularAcceleration(40);
+		e.getComponent(MovementComponent.class).entity.setMaxAngularAcceleration(40);
 		e.getComponent(MovementComponent.class).entity.setMaxAngularSpeed(10);
 
 		Entity f = new Entity();
@@ -65,15 +64,13 @@ public class GameScreen extends AbstractScreen {
 		f.add(new PositionComponent(8, 8));
 		f.add(new MovementComponent());
 
-		final Arrive<Vector2> arriveSB = new Arrive<Vector2>(
-				e.getComponent(MovementComponent.class).entity,
-				f.getComponent(MovementComponent.class).entity) //
-				.setTimeToTarget(0.1f) //
-				.setArrivalTolerance(0.001f) //
-				.setDecelerationRadius(80);
+		final Arrive<Vector2> arriveSB = new Arrive<Vector2>(e.getComponent(MovementComponent.class).entity,
+			f.getComponent(MovementComponent.class).entity) //
+			.setTimeToTarget(0.1f) //
+			.setArrivalTolerance(0.001f) //
+			.setDecelerationRadius(80);
 
-		e.getComponent(MovementComponent.class).entity
-				.setSteeringBehavior(arriveSB);
+		e.getComponent(MovementComponent.class).entity.setSteeringBehavior(arriveSB);
 
 		map.addToAshley(engine);
 		engine.addEntity(e);
@@ -85,16 +82,15 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render (float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		engine.update(delta);
 
 	}
 
-
 	@Override
-	public void pause() {
+	public void pause () {
 		for (Map map : maps) {
 			map.save(map.getKey());
 		}
