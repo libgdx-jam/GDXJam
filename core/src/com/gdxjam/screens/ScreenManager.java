@@ -2,7 +2,6 @@ package com.gdxjam.screens;
 
 import com.badlogic.gdx.Screen;
 import com.gdxjam.Main;
-import com.gdxjam.ai.test.TestScreen;
 
 public class ScreenManager {
 
@@ -18,7 +17,9 @@ public class ScreenManager {
 	}
 
 	public Screen getDefault() {
-		return new GameScreen();
+		// return new SteeringBehaviorsTest();
+		//return gameScreen;
+		return new TestScreen();
 	}
 
 	public void init(Main main) {

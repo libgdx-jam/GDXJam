@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.gdxjam.Assets;
+import com.gdxjam.components.PositionComponent;
 import com.gdxjam.components.VisualComponent;
 import com.gdxjam.tiles.Tile;
 import com.gdxjam.utils.Constants.BLOCK_TYPE;
@@ -133,26 +134,26 @@ public class GameMapPixMap implements Map {
 				switch (data) {
 
 				case FLOOR:
-					entity.add(engine.createComponent(VisualComponent.class).init(Assets.instance.grass.reg, 0));
-					//entity.add(engine.createComponent(PositionComponent.class).init(tile.getX(), tile.getY()));
+					entity.add(new VisualComponent(Assets.instance.grass.reg));
+					entity.add(new PositionComponent(tile.getX(), tile.getY()));
 					break;
 
 				case POST1:
-					entity.add(engine.createComponent(VisualComponent.class).init(Assets.instance.post.post1, 0));
-					//entity.add(engine.createComponent(PositionComponent.class).init(tile.getX(), tile.getY()));
+					entity.add(new VisualComponent(Assets.instance.post.post1));
+					entity.add(new PositionComponent(tile.getX(), tile.getY()));
 					break;
 
 				case POST2:
-					entity.add(engine.createComponent(VisualComponent.class).init(Assets.instance.post.post2, 0));
-					//entity.add(engine.createComponent(PositionComponent.class).init(tile.getX(), tile.getY()));
+					entity.add(new VisualComponent(Assets.instance.post.post2));
+					entity.add(new PositionComponent(tile.getX(), tile.getY()));
 					break;
 
 				case EMPTY:
 					break;
 
 				default:
-					entity.add(engine.createComponent(VisualComponent.class).init(Assets.instance.grass.reg, 0));
-					//entity.add(engine.createComponent(PositionComponent.class).init(tile.getX(), tile.getY()));
+					entity.add(new VisualComponent(Assets.instance.grass.reg));
+					entity.add(new PositionComponent(tile.getX(), tile.getY()));
 					break;
 
 				}
