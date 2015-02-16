@@ -5,14 +5,14 @@ import com.badlogic.gdx.math.Vector2;
 
 public class SteerableBodyComponent extends PhysicsComponent implements Steerable<Vector2>{
 	
-	private float maxLinearSpeed = 5f;
-	private float maxLinearAcceleration = 1000;
+	private float maxLinearSpeed;
+	private float maxLinearAcceleration;
 	
-	private float maxAngluarSpeed = 30;
-	private float maxAngluarAcceleration = 100;
+	private float maxAngluarSpeed;
+	private float maxAngluarAcceleration;
 	
-	private boolean tagged = false;
-	private boolean independentFacing = true;
+	private boolean tagged;
+	private boolean independentFacing;
 
 	
 	@Override
@@ -77,7 +77,7 @@ public class SteerableBodyComponent extends PhysicsComponent implements Steerabl
 
 	@Override
 	public float getBoundingRadius() {
-		return 0.5f;	//TODO bounding radius
+		return body.getFixtureList().get(0).getShape().getRadius();
 	}
 
 	@Override
@@ -105,13 +105,12 @@ public class SteerableBodyComponent extends PhysicsComponent implements Steerabl
 
 	@Override
 	public float vectorToAngle(Vector2 vector) {
-		return (float)Math.atan2(-vector.x, vector.y);
+		return vector.angle();
 	}
 
 	@Override
 	public Vector2 angleToVector(Vector2 outVector, float angle) {
-		outVector.x = -(float)Math.sin(angle);
-		outVector.y = (float)Math.cos(angle);
+		outVector.set(0, 1).setAngle(angle);
 		return outVector;
 	}
 	

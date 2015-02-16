@@ -18,7 +18,7 @@ public class ScreenManager {
 	}
 
 	public Screen getDefault() {
-		return new GameScreen();
+		return (Screen) new TestScreen();
 	}
 
 	public void init(Main main) {

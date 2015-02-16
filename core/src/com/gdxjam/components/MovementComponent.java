@@ -1,0 +1,14 @@
+package com.gdxjam.components;
+
+import com.badlogic.ashley.core.Component;
+
+public class MovementComponent extends Component {
+	public float velocityX;
+	public float velocityY;
+
+	public MovementComponent init(float velocityX, float velocityY) {
+		this.velocityX = velocityX;
+		this.velocityY = velocityY;
+		return this;
+	}
+}
