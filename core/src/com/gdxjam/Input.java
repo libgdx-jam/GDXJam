@@ -1,14 +1,22 @@
 package com.gdxjam;
 
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+import com.gdxjam.ai.Battalion;
 
 public class Input implements InputProcessor {
+	
 	OrthographicCamera camera;
 
-	public Input(OrthographicCamera camera) {
+	private Battalion battalionA;
+	private Battalion battalionB;
+	
+	public Input(OrthographicCamera camera, Battalion battalionA, Battalion battalionB) {
 		this.camera = camera;
+		this.battalionA = battalionA;
+		this.battalionB = battalionB;
 	}
 
 	@Override
@@ -25,10 +33,17 @@ public class Input implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		Vector3 touch = camera.unproject(new Vector3(screenX, screenY, 0));
-		camera.position.set(touch.x, touch.y, 0);
-		camera.update();
-		return false;
+		Vector3 pos = new Vector3(screenX, screenY, 0);
+		pos.set(camera.unproject(pos));
+//		camera.position.set(touch.x, touch.y, 0);
+//		camera.update();
+		if(button == Buttons.LEFT){
+			battalionA.setTarget(pos.x, pos.y);
+		}
+		else{
+			battalionB.setTarget(pos.x, pos.y);
+		}
+		return true;
 	}
 
 	@Override
