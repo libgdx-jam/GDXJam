@@ -18,7 +18,8 @@ public class ScreenManager {
 
 	public Screen getDefault() {
 		// return new SteeringBehaviorsTest();
-		return gameScreen;
+		//return gameScreen;
+		return new TestScreen();
 	}
 
 	public void init(Main main) {
