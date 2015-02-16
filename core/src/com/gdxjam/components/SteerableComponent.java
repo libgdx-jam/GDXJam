@@ -1,5 +1,6 @@
 package com.gdxjam.components;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
@@ -29,7 +30,7 @@ public class SteerableComponent implements Steerable<Vector2> {
 
 	SteeringBehavior<Vector2> steeringBehavior;
 
-	public SteerableComponent init(TextureRegion region, boolean independentFacing) {
+	public SteerableComponent(TextureRegion region, boolean independentFacing) {
 		this.independentFacing = independentFacing;
 		this.region = region;
 		this.independentFacing = independentFacing;
@@ -42,7 +43,6 @@ public class SteerableComponent implements Steerable<Vector2> {
 				.getRegionHeight()) / 4f;
 		// this.setOrigin(region.getRegionWidth() * .5f,
 		// region.getRegionHeight() * .5f);
-		return this;
 	}
 
 	// public void setBounds(float x, float y, float width, float height){

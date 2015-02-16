@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -50,27 +51,21 @@ public class GameScreen implements Screen {
 		// cameraHelper = new CameraHelper(camera);
 		batch.setProjectionMatrix(camera.combined);
 
-		initEngine();
-		createTestEntity();
-		
-		input = new Input(camera);
-		Gdx.input.setInputProcessor(input);
-	}
-	
-	public void createTestEntity(){
-		Entity entity = engine.createEntity();
-		
-		entity.add(engine.createComponent(VisualComponent.class).init(Assets.instance.chest.reg, 200));
-		entity.add(engine.createComponent(PositionComponent.class).init(11, 11));
-
-		engine.addEntity(entity);
-	}
-	
-	
-	public void initEngine(){
 		engine = new PooledEngine();
 		engine.addSystem(new RenderSystem(camera));
+		Entity e = new Entity();
+		e.add(new VisualComponent(Assets.instance.chest.reg,200));
+		e.add(new PositionComponent(11, 11));
+
 		map.addToAshley(engine);
+		engine.addEntity(e);
+
+		input = new Input(camera);
+
+			
+
+		Gdx.input.setInputProcessor(input);
+
 	}
 
 	@Override
