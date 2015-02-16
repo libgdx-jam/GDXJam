@@ -9,6 +9,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.gdxjam.components.MovementComponent;
 import com.gdxjam.components.PositionComponent;
+import com.gdxjam.components.VisualComponent;
 
 public class UpdateSystem extends EntitySystem {
 	private ImmutableArray<Entity> entities;
@@ -23,8 +24,7 @@ public class UpdateSystem extends EntitySystem {
 
 	@Override
 	public void addedToEngine(Engine engine) {
-		entities = engine
-				.getEntitiesFor(Family.getFor(MovementComponent.class));
+		entities = engine.getEntitiesFor(Family.all(MovementComponent.class).get());
 	}
 
 	@Override
