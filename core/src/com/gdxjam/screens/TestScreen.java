@@ -11,13 +11,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.gdxjam.BattalionInputTest;
-import com.gdxjam.Input;
 import com.gdxjam.ai.Battalion;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.PhysicsSystem;
-import com.gdxjam.systems.RenderSystem;
 import com.gdxjam.systems.SteeringSystem;
 
 public class TestScreen extends AbstractScreen{
