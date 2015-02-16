@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -21,7 +20,7 @@ import com.gdxjam.map.Map;
 import com.gdxjam.systems.RenderSystem;
 import com.gdxjam.systems.UpdateSystem;
 
-public class GameScreen implements Screen {
+public class GameScreen extends AbstractScreen {
 
 	ArrayList<Map> maps = new ArrayList<Map>();
 	GameMapPixMap map;
@@ -93,30 +92,12 @@ public class GameScreen implements Screen {
 
 	}
 
-	@Override
-	public void resize(int width, int height) {
-
-	}
 
 	@Override
 	public void pause() {
 		for (Map map : maps) {
 			map.save(map.getKey());
 		}
-	}
-
-	@Override
-	public void resume() {
-
-	}
-
-	@Override
-	public void hide() {
-
-	}
-
-	@Override
-	public void dispose() {
 	}
 
 }
