@@ -33,13 +33,15 @@ public class TestScreen extends AbstractScreen {
 	}
 
 	public void createTestWorld () {
-		Vector2 posA = new Vector2(5, 5);
+		Vector2 posA = new Vector2(10, 10);
 		battalionA = new Battalion(posA);
 		createSquad(posA, battalionA);
 
-		Vector2 posB = new Vector2(15, 5);
+		Vector2 posB = new Vector2(0, 10);
 		battalionB = new Battalion(posB);
 		createSquad(posB, battalionB);
+		
+		EntityFactory.createFortress(new Vector2(10, 10), 12, 12);
 	}
 
 	public void createSquad (Vector2 position, Battalion battalion) {
