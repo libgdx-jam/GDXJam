@@ -4,8 +4,9 @@ package com.gdxjam.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Pool.Poolable;
 
-public class SpriteComponent extends Component{
+public class SpriteComponent extends Component implements Poolable{
 	
 	public Sprite sprite;
 	
@@ -14,6 +15,11 @@ public class SpriteComponent extends Component{
 		sprite.setBounds(x, y, width, height);
 		sprite.setOriginCenter();
 		return this;
+	}
+
+	@Override
+	public void reset () {
+		sprite = null;
 	}
 
 }
