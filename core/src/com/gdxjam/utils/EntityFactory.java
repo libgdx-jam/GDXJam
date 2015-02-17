@@ -45,20 +45,22 @@ public class EntityFactory {
 		
 		//Walls
 		float horizontalSegmentSize = (width*0.5f) - (gateSize * 0.5f) - (towerSize * 0.5f);
-		float horiziontalSegmentCenter = (-width * 0.5f) + (horizontalSegmentSize * 0.5f) + (towerSize*0.5f);
+		float horizontalSegmentCenter = (-width * 0.5f) + (horizontalSegmentSize * 0.5f) + (towerSize*0.5f);
+		float horizontalSegmentOffset = (height * 0.5f) + (wallWidth * 0.5f);
 		
 		float verticalSegmentSize = (height*0.5f) - (gateSize * 0.5f) - (towerSize * 0.5f);
 		float verticalSegmentCenter = (-height * 0.5f) + (verticalSegmentSize * 0.5f) + (towerSize * 0.5f);
+		float verticalSegmentOffset = (width* 0.5f) + (wallWidth * 0.5f);
 		
-		FixtureDef topLeftWall = createWallFixture(horizontalSegmentSize, new Vector2(horiziontalSegmentCenter, (height * 0.5f) + (wallWidth * 0.5f)), 0);
-		FixtureDef topRightWall = createWallFixture(horizontalSegmentSize, new Vector2(-horiziontalSegmentCenter, (height * 0.5f) + (wallWidth * 0.5f)), 0);
-		FixtureDef bottomLeftWall = createWallFixture(horizontalSegmentSize, new Vector2(horiziontalSegmentCenter, -(height * 0.5f) - (wallWidth * 0.5f)), 0);
-		FixtureDef bottomRightWall = createWallFixture(horizontalSegmentSize, new Vector2(-horiziontalSegmentCenter, -(height * 0.5f) - (wallWidth * 0.5f)), 0);
+		FixtureDef topLeftWall = createWallFixture(horizontalSegmentSize, new Vector2(horizontalSegmentCenter, horizontalSegmentOffset), 0);
+		FixtureDef topRightWall = createWallFixture(horizontalSegmentSize, new Vector2(-horizontalSegmentCenter, horizontalSegmentOffset), 0);
+		FixtureDef bottomLeftWall = createWallFixture(horizontalSegmentSize,new Vector2(horizontalSegmentCenter, -horizontalSegmentOffset), 0);
+		FixtureDef bottomRightWall = createWallFixture(horizontalSegmentSize, new Vector2(-horizontalSegmentCenter, -horizontalSegmentOffset), 0);
 		
-		FixtureDef leftTopWall = createWallFixture(verticalSegmentSize, new Vector2(-(width* 0.5f) - (wallWidth * 0.5f), verticalSegmentCenter), MathUtils.PI*0.5f);
-		FixtureDef leftBottomWall = createWallFixture(verticalSegmentSize, new Vector2(-(width* 0.5f) - (wallWidth * 0.5f), -verticalSegmentCenter), MathUtils.PI*0.5f);
-		FixtureDef rightTopWall = createWallFixture(verticalSegmentSize, new Vector2((width* 0.5f) + (wallWidth * 0.5f), verticalSegmentCenter), MathUtils.PI*0.5f);
-		FixtureDef rightBottomWall = createWallFixture(verticalSegmentSize, new Vector2((width* 0.5f) + (wallWidth * 0.5f), -verticalSegmentCenter), MathUtils.PI*0.5f);
+		FixtureDef leftTopWall = createWallFixture(verticalSegmentSize, new Vector2(-verticalSegmentOffset, verticalSegmentCenter), MathUtils.PI * 0.5f);
+		FixtureDef leftBottomWall = createWallFixture(verticalSegmentSize, new Vector2(-verticalSegmentOffset, -verticalSegmentCenter), MathUtils.PI * 0.5f);
+		FixtureDef rightTopWall = createWallFixture(verticalSegmentSize, new Vector2(verticalSegmentOffset, verticalSegmentCenter), MathUtils.PI * 0.5f);
+		FixtureDef rightBottomWall = createWallFixture(verticalSegmentSize, new Vector2(verticalSegmentOffset, -verticalSegmentCenter), MathUtils.PI * 0.5f);
 		
 		body.createFixture(topLeftWall);
 		topLeftWall.shape.dispose();
