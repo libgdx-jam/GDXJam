@@ -2,9 +2,11 @@ package com.gdxjam;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.gdxjam.ai.Battalion;
+import com.gdxjam.utils.ScreenshotFactory;
 
 public class BattalionInputTest implements InputProcessor{
 
@@ -71,6 +73,11 @@ public class BattalionInputTest implements InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
+		switch (keycode) {
+		case Keys.F12:
+			ScreenshotFactory.saveScreenshot();
+			return true;
+		}
 
 		return false;
 	}
