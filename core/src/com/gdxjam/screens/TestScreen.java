@@ -33,13 +33,15 @@ public class TestScreen extends AbstractScreen {
 	}
 
 	public void createTestWorld () {
-		Vector2 posA = new Vector2(5, 5);
+		Vector2 posA = new Vector2(10, 10);
 		battalionA = new Battalion(posA);
 		createSquad(posA, battalionA);
 
-		Vector2 posB = new Vector2(15, 5);
+		Vector2 posB = new Vector2(0, 10);
 		battalionB = new Battalion(posB);
 		createSquad(posB, battalionB);
+
+		EntityFactory.createFortress(new Vector2(10, 10), 12, 12);
 	}
 
 	public void createSquad (Vector2 position, Battalion battalion) {
@@ -58,7 +60,7 @@ public class TestScreen extends AbstractScreen {
 	public void initEngine () {
 		engine = new PooledEngine();
 		EntityFactory.setEngine(engine);
-		
+
 		OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth() / PIXELS_PER_UNIT, Gdx.graphics.getHeight()
 			/ PIXELS_PER_UNIT);
 		camera.position.set(10, 10, 0);
@@ -69,10 +71,9 @@ public class TestScreen extends AbstractScreen {
 
 		SteeringSystem steeringSystem = new SteeringSystem();
 		engine.addSystem(steeringSystem);
-		
+
 		engine.addSystem(new SpriteRenderSystem(camera));
-		
-		
+
 	}
 
 	@Override
