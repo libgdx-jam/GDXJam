@@ -85,12 +85,13 @@ public class DesktopInputProcessor implements InputProcessor{
 			return true;
 		case Keys.NUM_2:
 			Squad squad = null;
+			SquadSystem squadSystem = engine.getSystem(SquadSystem.class);
 			for(Entity entity : engine.getEntitiesFor(Family.all(SteerableBodyComponent.class).get())){
 				if(squad == null){
-					squad = engine.getSystem(SquadSystem.class).createSquad(entity);
+					squad = squadSystem.createSquad(entity);
 				}
 				else{
-					squad.addMember(entity);
+					squadSystem.addSquadMember(entity, squad);
 				}
 			}
 			

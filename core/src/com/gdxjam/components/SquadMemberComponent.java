@@ -14,7 +14,7 @@ public class SquadMemberComponent extends Component{
 	}
 	
 	public SteerableTarget getTarget(){
-		return squad.target;
+		return squad.getTarget();
 	}
 
 }

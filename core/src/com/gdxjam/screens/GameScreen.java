@@ -14,8 +14,10 @@ import com.gdxjam.GameWorld;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.EntityRenderSystem;
+import com.gdxjam.systems.GameWorldSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
+import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.systems.StateSystem;
 import com.gdxjam.systems.SteeringSystem;
 import com.gdxjam.utils.EntityFactory;
@@ -43,7 +45,7 @@ public class GameScreen extends AbstractScreen {
 
 		initGUI();
 		
-		DesktopInputProcessor input = new DesktopInputProcessor(engine.getSystem(CameraSystem.class).getCamera(), squadA, squadB, world);
+		DesktopInputProcessor input = new DesktopInputProcessor(engine);
 		Gdx.input.setInputProcessor(input);
 	}
 	
@@ -53,24 +55,24 @@ public class GameScreen extends AbstractScreen {
 		//squadA = createSquad(new Vector2(10, 10));
 		//squadB = createSquad(new Vector2(0, 10));
 
-		EntityFactory.createFortress(new Vector2(10, 10), 12, 12);
+		//EntityFactory.createFortress(new Vector2(10, 10), 12, 12);
 		return world;
 	}
 	
-	public Squad createSquad (Vector2 position) {
-		Squad squad = new Squad(position);
-		position.set(position.x - 1, position.y - 1);
-		for (int x = 0; x < 3; x++) {
-			for (int y = 0; y < 3; y++) {
-				if (x == 1 && y == 1) {
-					squad.addMember(EntityFactory.createCommander(new Vector2(position.x + x, position.y + y)));
-				} else {
-					squad.addMember(EntityFactory.createUnit(new Vector2(position.x + x, position.y + y)));
-				}
-			}
-		}
-		return squad;
-	}
+//	public Squad createSquad (Vector2 position) {
+//		Squad squad = new Squad(position);
+//		position.set(position.x - 1, position.y - 1);
+//		for (int x = 0; x < 3; x++) {
+//			for (int y = 0; y < 3; y++) {
+//				if (x == 1 && y == 1) {
+//					squad.addMember(EntityFactory.createCommander(new Vector2(position.x + x, position.y + y)));
+//				} else {
+//					squad.addMember(EntityFactory.createUnit(new Vector2(position.x + x, position.y + y)));
+//				}
+//			}
+//		}
+//		return squad;
+//	}
 	
 	public void initGUI(){
 		Skin skin = Assets.getManager().get(Assets.SKIN, Skin.class);
@@ -89,12 +91,12 @@ public class GameScreen extends AbstractScreen {
 		foodLabel.setText("Food: " + world.food + " / " + ResourceSystem.foodThreshold);
 	}
 	
-	public void initEngine () {
+	public PooledEngine initEngine () {
 		engine = new PooledEngine();
 		EntityFactory.setEngine(engine);
 
 		CameraSystem cameraSystem = new CameraSystem(64, 36);
-		cameraSystem.getCamera().position.set(10, 10, 0);
+		cameraSystem.getCamera().position.set(32, 18, 0);
 		engine.addSystem(cameraSystem);
 		
 
@@ -102,15 +104,19 @@ public class GameScreen extends AbstractScreen {
 		engine.addSystem(physicsSystem);
 
 		SteeringSystem steeringSystem = new SteeringSystem();
-		engine.addSystem(steeringSystem);
 		
+		//AI
+		engine.addSystem(steeringSystem);
 		engine.addSystem(new StateSystem());
-
+		engine.addSystem(new SquadSystem());
+		
 		engine.addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
+		return engine;
 	}
 	
 	public void loadWorld(GameWorld world){
 		engine.addSystem(new ResourceSystem(world));
+		engine.addSystem(new GameWorldSystem(world));
 	}
 	
 

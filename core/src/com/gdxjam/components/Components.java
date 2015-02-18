@@ -6,6 +6,8 @@ public class Components {
 	
 	public static final ComponentMapper<SpriteComponent> SPRITE = ComponentMapper.getFor(SpriteComponent.class);
 	
+	public static final ComponentMapper<HealthComponent> HEALTH = ComponentMapper.getFor(HealthComponent.class);
+	
 	//AI
 	public static final ComponentMapper<StateComponent> STATE = ComponentMapper.getFor(StateComponent.class);
 	public static final ComponentMapper<SquadMemberComponent> SQUAD_MEMBER = ComponentMapper.getFor(SquadMemberComponent.class);
