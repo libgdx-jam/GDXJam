@@ -3,7 +3,6 @@ package com.gdxjam.screens;
 
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.BattalionInputTest;
 import com.gdxjam.ai.Battalion;
@@ -14,9 +13,7 @@ import com.gdxjam.systems.SteeringSystem;
 import com.gdxjam.utils.EntityFactory;
 
 public class TestScreen extends AbstractScreen {
-
-	private static final int PIXELS_PER_UNIT = 32;
-
+	
 	private PooledEngine engine;
 	private PhysicsSystem physicsSystem;
 
@@ -61,10 +58,10 @@ public class TestScreen extends AbstractScreen {
 		engine = new PooledEngine();
 		EntityFactory.setEngine(engine);
 
-		OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth() / PIXELS_PER_UNIT, Gdx.graphics.getHeight()
-			/ PIXELS_PER_UNIT);
-		camera.position.set(10, 10, 0);
-		engine.addSystem(new CameraSystem(camera));
+		CameraSystem cameraSystem = new CameraSystem(64, 36);
+		cameraSystem.getCamera().position.set(10, 10, 0);
+		engine.addSystem(cameraSystem);
+		
 
 		physicsSystem = new PhysicsSystem();
 		engine.addSystem(physicsSystem);
@@ -72,8 +69,13 @@ public class TestScreen extends AbstractScreen {
 		SteeringSystem steeringSystem = new SteeringSystem();
 		engine.addSystem(steeringSystem);
 
-		engine.addSystem(new SpriteRenderSystem(camera));
+		engine.addSystem(new SpriteRenderSystem(cameraSystem.getCamera()));
 
+	}
+	
+	@Override
+	public void resize (int width, int height) {
+		engine.getSystem(CameraSystem.class).getViewport().update(width, height);
 	}
 
 	@Override
