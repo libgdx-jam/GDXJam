@@ -10,16 +10,29 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Assets implements Disposable, AssetErrorListener {
-
-	public static final String TAG = Assets.class.getName();
-	public static final Assets instance = new Assets();
-	public AssetManager assetManager;
+	
+	public static final String TAG = Assets.class.getSimpleName();
+	private static Assets instance;
+	public static AssetManager manager;
+	
+	public static Assets getInstance(){
+		if(instance == null){
+			instance = new Assets();
+		}
+		return instance;
+	}
+	
+	public static AssetManager getManager(){
+		return manager;
+	}
 
 	public static final String TEXTURE_ATLAS_OBJECTS = "assets.atlas";
+	public static final String SKIN = "skin/uiskin.json";
 
 	public AssetGrass grass;
 	public AssetFonts fonts;
@@ -37,44 +50,44 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetWarrior warrior;
 	public AssetWizard wizard;
 	public AssetColor color;
-
-	private void Assets() {
-	}
-
-	public void init(AssetManager assetManager) {
-		this.assetManager = assetManager;
-		// set asset manager error handler
-		assetManager.setErrorListener(this);
-		assetManager.load(TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
-		// start loading assets and wait until finished
-		assetManager.finishLoading();
-
+	
+	public Assets(){
+		manager = new AssetManager();
+		manager.setErrorListener(this);		// set asset manager error handler
+		
+		loadAssets();
+		
 		Gdx.app.debug(TAG,
-				"# of assets loaded: " + assetManager.getAssetNames().size);
-		for (String a : assetManager.getAssetNames()) {
+			"# of assets loaded: " + manager.getAssetNames().size);
+		for (String a : manager.getAssetNames()) {
 			Gdx.app.debug(TAG, "asset: " + a);
+			
+			TextureAtlas atlas = manager.get(TEXTURE_ATLAS_OBJECTS);
+
+			fonts = new AssetFonts();
+
+			grass = new AssetGrass(atlas);
+			chest = new AssetChest(atlas);
+			floor = new AssetFloor(atlas);
+			wall = new AssetWall(atlas);
+			door = new AssetDoor(atlas);
+			corridor = new AssetCorridor(atlas);
+			stairsUp = new AssetStairsUp(atlas);
+			stairsDown = new AssetStairsDown(atlas);
+			monster = new AssetMonster(atlas);
+			rouge = new AssetRouge(atlas);
+			warrior = new AssetWarrior(atlas);
+			wizard = new AssetWizard(atlas);
+			post = new AssetPost(atlas);
+
+			color = new AssetColor();
 		}
-
-		TextureAtlas atlas = assetManager.get(TEXTURE_ATLAS_OBJECTS);
-
-		fonts = new AssetFonts();
-
-		grass = new AssetGrass(atlas);
-		chest = new AssetChest(atlas);
-		floor = new AssetFloor(atlas);
-		wall = new AssetWall(atlas);
-		door = new AssetDoor(atlas);
-		corridor = new AssetCorridor(atlas);
-		stairsUp = new AssetStairsUp(atlas);
-		stairsDown = new AssetStairsDown(atlas);
-		monster = new AssetMonster(atlas);
-		rouge = new AssetRouge(atlas);
-		warrior = new AssetWarrior(atlas);
-		wizard = new AssetWizard(atlas);
-		post = new AssetPost(atlas);
-
-		color = new AssetColor();
-
+	}
+	
+	public void loadAssets(){
+		manager.load(TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
+		manager.load(SKIN, Skin.class);
+		manager.finishLoading();
 	}
 
 	@Override
@@ -87,7 +100,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	@Override
 	public void dispose() {
-		assetManager.dispose();
+		manager.dispose();
 	}
 
 	public class AssetFonts {

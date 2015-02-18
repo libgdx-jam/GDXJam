@@ -139,7 +139,7 @@ public class EntityFactory {
 		entity.add(engine.createComponent(SteeringBehaviorComponent.class));
 		
 		entity.add(engine.createComponent(SpriteComponent.class)
-			.init(Assets.instance.post.post1, position.x, position.y, 0.5f, 0.5f));
+			.init(Assets.getInstance().post.post1, position.x, position.y, 0.5f, 0.5f));
 
 		engine.addEntity(entity);
 		return entity;
@@ -169,7 +169,7 @@ public class EntityFactory {
 		entity.add(behaviorComp);
 
 		entity.add(engine.createComponent(SpriteComponent.class)
-			.init(Assets.instance.chest.reg, position.x, position.y, 0.5f, 0.5f));
+			.init(Assets.getInstance().chest.reg, position.x, position.y, 0.5f, 0.5f));
 
 		engine.addEntity(entity);
 		return entity;
