@@ -16,6 +16,11 @@ public class SpriteComponent extends Component implements Poolable{
 		sprite.setOriginCenter();
 		return this;
 	}
+	
+	public SpriteComponent init(Sprite sprite) {
+		this.sprite = sprite;
+		return this;
+	}
 
 	@Override
 	public void reset () {

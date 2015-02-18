@@ -11,7 +11,7 @@ import com.gdxjam.components.Components;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.SteerableBodyComponent;
 
-public class SpriteRenderSystem extends IteratingSystem{
+public class EntityRenderSystem extends IteratingSystem{
 	
 	private static final int spriteRotationOffset = -90;
 	
@@ -19,7 +19,7 @@ public class SpriteRenderSystem extends IteratingSystem{
 	private OrthographicCamera camera;
 	
 	
-	public SpriteRenderSystem(OrthographicCamera camera){
+	public EntityRenderSystem(OrthographicCamera camera){
 		super(Family.all(SpriteComponent.class).get());
 		
 		this.camera = camera;

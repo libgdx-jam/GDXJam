@@ -5,17 +5,17 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
-import com.gdxjam.ai.Battalion;
+import com.gdxjam.ai.Squad;
 import com.gdxjam.utils.ScreenshotFactory;
 
-public class BattalionInputTest implements InputProcessor{
+public class DesktopInputProcessor implements InputProcessor{
 
 	OrthographicCamera camera;
 
-	private Battalion battalionA;
-	private Battalion battalionB;
+	private Squad battalionA;
+	private Squad battalionB;
 	
-	public BattalionInputTest(OrthographicCamera camera, Battalion battalionA, Battalion battalionB) {
+	public DesktopInputProcessor(OrthographicCamera camera, Squad battalionA, Squad battalionB) {
 		this.camera = camera;
 		this.battalionA = battalionA;
 		this.battalionB = battalionB;

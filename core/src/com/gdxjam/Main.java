@@ -2,7 +2,7 @@ package com.gdxjam;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.gdxjam.screens.TestScreen;
+import com.gdxjam.screens.GameScreen;
 
 public class Main extends Game {
 
@@ -11,7 +11,7 @@ public class Main extends Game {
 		Assets.instance.init(new AssetManager());
 		
 		GameManager.init(this);
-		GameManager.setScreen(new TestScreen());
+		GameManager.setScreen(new GameScreen());
 	}
 	
 }
