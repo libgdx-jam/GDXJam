@@ -138,17 +138,17 @@ public class GameMapPixMap implements Map {
 				switch (data) {
 				case FLOOR:
 					entity.add(engine.createComponent(SpriteComponent.class)
-						.init(Assets.instance.grass.reg, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
+						.init(Assets.getInstance().grass.reg, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
 					break;
 
 				case POST1:
 					entity.add(engine.createComponent(SpriteComponent.class)
-						.init(Assets.instance.post.post1, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
+						.init(Assets.getInstance().post.post1, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
 					break;
 
 				case POST2:
 					entity.add(engine.createComponent(SpriteComponent.class)
-						.init(Assets.instance.post.post2, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
+						.init(Assets.getInstance().post.post2, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
 					break;
 
 				case EMPTY:
@@ -156,7 +156,7 @@ public class GameMapPixMap implements Map {
 
 				default:
 					entity.add(engine.createComponent(SpriteComponent.class)
-						.init(Assets.instance.grass.reg, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
+						.init(Assets.getInstance().grass.reg, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
 					break;
 				}
 				engine.addEntity(entity);

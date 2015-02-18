@@ -14,11 +14,13 @@ public class DesktopInputProcessor implements InputProcessor{
 
 	private Squad battalionA;
 	private Squad battalionB;
+	private GameWorld world;
 	
-	public DesktopInputProcessor(OrthographicCamera camera, Squad battalionA, Squad battalionB) {
+	public DesktopInputProcessor(OrthographicCamera camera, Squad battalionA, Squad battalionB, GameWorld world) {
 		this.camera = camera;
 		this.battalionA = battalionA;
 		this.battalionB = battalionB;
+		this.world = world;
 	}
 
 	@Override
@@ -74,6 +76,9 @@ public class DesktopInputProcessor implements InputProcessor{
 	@Override
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
+		case Keys.NUM_1:
+			world.food++;
+			return true;
 		case Keys.F12:
 			ScreenshotFactory.saveScreenshot();
 			return true;

@@ -25,49 +25,50 @@ public class SteeringSystem extends IteratingSystem{
 		SteeringBehavior<Vector2> behavior = Components.STEERING_BEHAVIOR.get(entity).getBehavior();
 		SteerableBodyComponent steering = Components.STEERABLE_BODY.get(entity);
 		
-		
-		behavior.calculateSteering(steeringOutput);
-		boolean anyAccelerations = false;
-		Body body = steering.body;
-		
-		if (!steeringOutput.linear.isZero()) {
-			Vector2 force = steeringOutput.linear.scl(deltaTime);
-			body.applyForceToCenter(force, true);
-			anyAccelerations = true;
-		}
-
-		
-		// Update orientation and angular velocity
-		if (steering.isIndependentFacing()) {
-			if (steeringOutput.angular != 0) {
-				body.applyTorque(steeringOutput.angular * deltaTime, true);
+		if(behavior != null){
+			behavior.calculateSteering(steeringOutput);
+			boolean anyAccelerations = false;
+			Body body = steering.body;
+			
+			if (!steeringOutput.linear.isZero()) {
+				Vector2 force = steeringOutput.linear.scl(deltaTime);
+				body.applyForceToCenter(force, true);
 				anyAccelerations = true;
 			}
-		}
-		
-		else {
-			// If we haven't got any velocity, then we can do nothing.
-			Vector2 linVel = body.getLinearVelocity();
-			if (!linVel.isZero(MathUtils.FLOAT_ROUNDING_ERROR)) {
-				float newOrientation = steering.vectorToAngle(linVel);
-				body.setAngularVelocity((newOrientation - steering.getAngularVelocity()) * deltaTime); // this is superfluous if independentFacing is always true
-				body.setTransform(body.getPosition(), newOrientation);
+	
+			
+			// Update orientation and angular velocity
+			if (steering.isIndependentFacing()) {
+				if (steeringOutput.angular != 0) {
+					body.applyTorque(steeringOutput.angular * deltaTime, true);
+					anyAccelerations = true;
+				}
 			}
-		}
-
-		if (anyAccelerations) {
-			// Cap the linear speed
-			Vector2 velocity = body.getLinearVelocity();
-			float currentSpeedSquare = velocity.len2();
-			float maxLinearSpeed = steering.getMaxLinearSpeed();
-			if (currentSpeedSquare > maxLinearSpeed * maxLinearSpeed) {
-				body.setLinearVelocity(velocity.scl(maxLinearSpeed / (float)Math.sqrt(currentSpeedSquare)));
+			
+			else {
+				// If we haven't got any velocity, then we can do nothing.
+				Vector2 linVel = body.getLinearVelocity();
+				if (!linVel.isZero(MathUtils.FLOAT_ROUNDING_ERROR)) {
+					float newOrientation = steering.vectorToAngle(linVel);
+					body.setAngularVelocity((newOrientation - steering.getAngularVelocity()) * deltaTime); // this is superfluous if independentFacing is always true
+					body.setTransform(body.getPosition(), newOrientation);
+				}
 			}
-
-			// Cap the angular speed
-			float maxAngVelocity = steering.getMaxAngularSpeed();
-			if (body.getAngularVelocity() > maxAngVelocity) {
-				body.setAngularVelocity(maxAngVelocity);
+	
+			if (anyAccelerations) {
+				// Cap the linear speed
+				Vector2 velocity = body.getLinearVelocity();
+				float currentSpeedSquare = velocity.len2();
+				float maxLinearSpeed = steering.getMaxLinearSpeed();
+				if (currentSpeedSquare > maxLinearSpeed * maxLinearSpeed) {
+					body.setLinearVelocity(velocity.scl(maxLinearSpeed / (float)Math.sqrt(currentSpeedSquare)));
+				}
+	
+				// Cap the angular speed
+				float maxAngVelocity = steering.getMaxAngularSpeed();
+				if (body.getAngularVelocity() > maxAngVelocity) {
+					body.setAngularVelocity(maxAngVelocity);
+				}
 			}
 		}
 	}
