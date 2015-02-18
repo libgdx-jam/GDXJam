@@ -1,8 +1,6 @@
 
 package com.gdxjam.screens;
 
-import java.util.ArrayList;
-
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -14,11 +12,11 @@ import com.gdxjam.Assets;
 import com.gdxjam.DesktopInputProcessor;
 import com.gdxjam.GameWorld;
 import com.gdxjam.ai.Squad;
-import com.gdxjam.map.Map;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
+import com.gdxjam.systems.StateSystem;
 import com.gdxjam.systems.SteeringSystem;
 import com.gdxjam.utils.EntityFactory;
 
@@ -52,8 +50,8 @@ public class GameScreen extends AbstractScreen {
 	public GameWorld createTestWorld () {
 		GameWorld world = new GameWorld();
 		
-		squadA = createSquad(new Vector2(10, 10));
-		squadB = createSquad(new Vector2(0, 10));
+		//squadA = createSquad(new Vector2(10, 10));
+		//squadB = createSquad(new Vector2(0, 10));
 
 		EntityFactory.createFortress(new Vector2(10, 10), 12, 12);
 		return world;
@@ -106,7 +104,7 @@ public class GameScreen extends AbstractScreen {
 		SteeringSystem steeringSystem = new SteeringSystem();
 		engine.addSystem(steeringSystem);
 		
-
+		engine.addSystem(new StateSystem());
 
 		engine.addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
 	}

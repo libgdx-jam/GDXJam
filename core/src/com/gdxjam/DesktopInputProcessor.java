@@ -1,26 +1,30 @@
 package com.gdxjam;
 
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.gdxjam.ai.Squad;
+import com.gdxjam.components.SteerableBodyComponent;
+import com.gdxjam.systems.CameraSystem;
+import com.gdxjam.systems.GameWorldSystem;
+import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.utils.ScreenshotFactory;
 
 public class DesktopInputProcessor implements InputProcessor{
 
-	OrthographicCamera camera;
-
-	private Squad battalionA;
-	private Squad battalionB;
+	private PooledEngine engine;
+	private OrthographicCamera camera;
 	private GameWorld world;
 	
-	public DesktopInputProcessor(OrthographicCamera camera, Squad battalionA, Squad battalionB, GameWorld world) {
-		this.camera = camera;
-		this.battalionA = battalionA;
-		this.battalionB = battalionB;
-		this.world = world;
+	public DesktopInputProcessor(PooledEngine engine) {
+		this.engine = engine;
+		this.camera = engine.getSystem(CameraSystem.class).getCamera();
+		this.world = engine.getSystem(GameWorldSystem.class).getWorld();
 	}
 
 	@Override
@@ -42,10 +46,10 @@ public class DesktopInputProcessor implements InputProcessor{
 //		camera.position.set(touch.x, touch.y, 0);
 //		camera.update();
 		if(button == Buttons.LEFT){
-			battalionA.setTarget(pos.x, pos.y);
+			//battalionA.setTarget(pos.x, pos.y);
 		}
 		else{
-			battalionB.setTarget(pos.x, pos.y);
+			//battalionB.setTarget(pos.x, pos.y);
 		}
 		return true;
 	}
@@ -79,6 +83,17 @@ public class DesktopInputProcessor implements InputProcessor{
 		case Keys.NUM_1:
 			world.food++;
 			return true;
+		case Keys.NUM_2:
+			Squad squad = null;
+			for(Entity entity : engine.getEntitiesFor(Family.all(SteerableBodyComponent.class).get())){
+				if(squad == null){
+					squad = engine.getSystem(SquadSystem.class).createSquad(entity);
+				}
+				else{
+					squad.addMember(entity);
+				}
+			}
+			
 		case Keys.F12:
 			ScreenshotFactory.saveScreenshot();
 			return true;

@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.gdxjam.Assets;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.SpriteComponent;
+import com.gdxjam.components.StateComponent;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.systems.PhysicsSystem;
@@ -137,6 +138,8 @@ public class EntityFactory {
 		entity.add(steerable);
 
 		entity.add(engine.createComponent(SteeringBehaviorComponent.class));
+		
+		entity.add(engine.createComponent(StateComponent.class).init(entity));
 		
 		entity.add(engine.createComponent(SpriteComponent.class)
 			.init(Assets.getInstance().post.post1, position.x, position.y, 0.5f, 0.5f));
