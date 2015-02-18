@@ -2,21 +2,25 @@ package com.gdxjam;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
-import com.gdxjam.ai.Battalion;
+import com.gdxjam.ai.Squad;
+import com.gdxjam.utils.ScreenshotFactory;
 
-public class BattalionInputTest implements InputProcessor{
+public class DesktopInputProcessor implements InputProcessor{
 
 	OrthographicCamera camera;
 
-	private Battalion battalionA;
-	private Battalion battalionB;
+	private Squad battalionA;
+	private Squad battalionB;
+	private GameWorld world;
 	
-	public BattalionInputTest(OrthographicCamera camera, Battalion battalionA, Battalion battalionB) {
+	public DesktopInputProcessor(OrthographicCamera camera, Squad battalionA, Squad battalionB, GameWorld world) {
 		this.camera = camera;
 		this.battalionA = battalionA;
 		this.battalionB = battalionB;
+		this.world = world;
 	}
 
 	@Override
@@ -71,6 +75,14 @@ public class BattalionInputTest implements InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
+		switch (keycode) {
+		case Keys.NUM_1:
+			world.food++;
+			return true;
+		case Keys.F12:
+			ScreenshotFactory.saveScreenshot();
+			return true;
+		}
 
 		return false;
 	}

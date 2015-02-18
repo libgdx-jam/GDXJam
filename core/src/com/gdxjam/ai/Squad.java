@@ -13,13 +13,13 @@ import com.gdxjam.components.Components;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 
-public class Battalion {
+public class Squad {
 	
 	public SteerableTarget target;
 	public Array<Entity> members;
 	public Array<SteerableBodyComponent> agents;
 	
-	public Battalion(Vector2 position){
+	public Squad(Vector2 position){
 		members = new Array<Entity>();
 		agents = new Array<SteerableBodyComponent>();
 		target = new SteerableTarget(position, 0.5f);
