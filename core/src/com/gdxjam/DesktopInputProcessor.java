@@ -1,22 +1,24 @@
 package com.gdxjam;
 
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.gdxjam.ai.Squad;
+import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.ScreenshotFactory;
 
-public class DesktopInputProcessor implements InputProcessor{
+public class DesktopInputProcessor implements InputProcessor {
 
 	OrthographicCamera camera;
 
 	private Squad battalionA;
 	private Squad battalionB;
 	private GameWorld world;
-	
-	public DesktopInputProcessor(OrthographicCamera camera, Squad battalionA, Squad battalionB, GameWorld world) {
+
+	public DesktopInputProcessor(OrthographicCamera camera, Squad battalionA,
+			Squad battalionB, GameWorld world) {
 		this.camera = camera;
 		this.battalionA = battalionA;
 		this.battalionB = battalionB;
@@ -39,12 +41,11 @@ public class DesktopInputProcessor implements InputProcessor{
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Vector3 pos = new Vector3(screenX, screenY, 0);
 		pos.set(camera.unproject(pos));
-//		camera.position.set(touch.x, touch.y, 0);
-//		camera.update();
-		if(button == Buttons.LEFT){
+		// camera.position.set(touch.x, touch.y, 0);
+		// camera.update();
+		if (button == Buttons.LEFT) {
 			battalionA.setTarget(pos.x, pos.y);
-		}
-		else{
+		} else {
 			battalionB.setTarget(pos.x, pos.y);
 		}
 		return true;
@@ -76,7 +77,13 @@ public class DesktopInputProcessor implements InputProcessor{
 	@Override
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
-		case Keys.NUM_1:
+		
+		//Add keys to select platoons
+		
+		case Keys.SPACE:
+			Constants.pausedGUI = !Constants.pausedGUI;
+			return true;
+		case Keys.PLUS:
 			world.food++;
 			return true;
 		case Keys.F12:
@@ -86,5 +93,5 @@ public class DesktopInputProcessor implements InputProcessor{
 
 		return false;
 	}
-	
+
 }

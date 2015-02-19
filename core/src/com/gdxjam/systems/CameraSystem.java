@@ -6,27 +6,29 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class CameraSystem extends EntitySystem{
+public class CameraSystem extends EntitySystem {
 
 	private OrthographicCamera camera;
 	private Viewport viewport;
-	
-	public CameraSystem(float viewportWidth, float viewportHeight){
+
+	public CameraSystem(float viewportWidth, float viewportHeight) {
 		camera = new OrthographicCamera(viewportWidth, viewportHeight);
-		viewport = new ScalingViewport(Scaling.stretch, viewportWidth, viewportHeight, camera);
+		camera.position.set(10, 10, 0);
+		viewport = new ScalingViewport(Scaling.stretch, viewportWidth,
+				viewportHeight, camera);
 	}
-	
+
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		camera.update();
 	}
-	
-	public OrthographicCamera getCamera(){
-		return (OrthographicCamera)viewport.getCamera();
+
+	public OrthographicCamera getCamera() {
+		return (OrthographicCamera) viewport.getCamera();
 	}
-	
-	public Viewport getViewport(){
+
+	public Viewport getViewport() {
 		return viewport;
 	}
 
