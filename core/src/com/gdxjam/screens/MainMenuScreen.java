@@ -5,7 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.gdxjam.MainMenu;
 
-public class MainMenuScreen implements Screen, MainMenu {
+public class MainMenuScreen extends AbstractScreen implements  MainMenu {
 
 	@Override
 	public void newGame() {
@@ -23,10 +23,11 @@ public class MainMenuScreen implements Screen, MainMenu {
 	public void options() {
 
 	}
-
+	
 	@Override
 	public void exit() {
-		dispose();
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -41,34 +42,6 @@ public class MainMenuScreen implements Screen, MainMenu {
 		Gdx.gl.glClearColor(1, 0, 1, 1);
 	}
 
-	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-
-	}
 
 }

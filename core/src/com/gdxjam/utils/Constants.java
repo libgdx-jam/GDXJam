@@ -1,6 +1,15 @@
 package com.gdxjam.utils;
 
+import com.badlogic.gdx.Input.Keys;
+
 public class Constants {
+
+	public static boolean pausedGUI = false;
+
+	public static final int HOTKEY_PLATOON1 = Keys.NUM_1;
+	public static final int HOTKEY_PLATOON2 = Keys.NUM_2;
+	public static final int HOTKEY_PLATOON3 = Keys.NUM_3;
+	public static final int HOTKEY_PLATOON4 = Keys.NUM_4;
 
 	public static final String BLOCK_TYPE = "tiletype";
 
