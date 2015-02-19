@@ -1,6 +1,7 @@
 package com.gdxjam.systems;
 
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -32,12 +33,12 @@ public class GUISystem extends EntitySystem {
 	public boolean isPaused = false;
 
 	public GUISystem(float viewportWidth, float viewportHeight,
-			Array<Squad> squads) {
+			PooledEngine engine) {
 		camera = new OrthographicCamera(viewportWidth, viewportHeight);
 		viewport = new ScalingViewport(Scaling.stretch, viewportWidth,
 				viewportHeight, camera);
 		stage = new Stage(viewport);
-		this.squads = squads;
+		this.squads = engine.getSystem(SquadSystem.class).getSquads();
 		init();
 	}
 

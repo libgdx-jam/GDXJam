@@ -13,6 +13,7 @@ import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
+import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.systems.SteeringSystem;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityFactory;
@@ -26,11 +27,10 @@ public class GameScreen extends AbstractScreen {
 	private SteeringSystem steeringSystem;
 	private GUISystem gui;
 	private CameraSystem cameraSystem;
+	private SquadSystem squads;
 
 	// private Squad squadA;
 	// private Squad squadB;
-
-	Array<Squad> squads = new Array<Squad>(10);
 
 	@Override
 	public void show() {
@@ -42,19 +42,22 @@ public class GameScreen extends AbstractScreen {
 
 		initGUI();
 
-		DesktopInputProcessor input = new DesktopInputProcessor(engine
-				.getSystem(CameraSystem.class).getCamera(), squads, world);
+		DesktopInputProcessor input = new DesktopInputProcessor(engine, world);
 		Gdx.input.setInputProcessor(input);
 	}
 
 	public GameWorld createTestWorld() {
 		GameWorld world = new GameWorld();
 
-		Squad squadA = createSquad(new Vector2(10, 10));
-		Squad squadB = createSquad(new Vector2(0, 10));
+		Squad squadA = createSquad(new Vector2(0, 10));
+		Squad squadB = createSquad(new Vector2(10, 10));
+		Squad squadC = createSquad(new Vector2(0, 0));
+		Squad squadD = createSquad(new Vector2(10, 0));
 
 		squads.add(squadA);
 		squads.add(squadB);
+		squads.add(squadC);
+		squads.add(squadD);
 
 		EntityFactory.createFortress(new Vector2(10, 10), 12, 12);
 		return world;
@@ -81,7 +84,7 @@ public class GameScreen extends AbstractScreen {
 		/**
 		 * The gui viewport needs to be set to something consistent
 		 * */
-		gui = new GUISystem(640, 360, squads);
+		gui = new GUISystem(640, 360, engine);
 		engine.addSystem(gui);
 
 	}
@@ -110,6 +113,9 @@ public class GameScreen extends AbstractScreen {
 		engine.addSystem(steeringSystem);
 
 		engine.addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
+
+		squads = new SquadSystem();
+		engine.addSystem(squads);
 	}
 
 	public void loadWorld(GameWorld world) {
