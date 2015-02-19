@@ -16,7 +16,7 @@ public class ScreenshotFactory {
 		try {
 			FileHandle fh;
 			do {
-				fh = new FileHandle("screenshot" + counter++ + ".png");
+				fh = new FileHandle("screens/screenshot" + counter++ + ".png");
 			} while (fh.exists());
 			Pixmap pixmap = getScreenshot(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 			PixmapIO.writePNG(fh, pixmap);
