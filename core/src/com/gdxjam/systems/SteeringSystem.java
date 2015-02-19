@@ -25,7 +25,7 @@ public class SteeringSystem extends IteratingSystem{
 		SteeringBehavior<Vector2> behavior = Components.STEERING_BEHAVIOR.get(entity).getBehavior();
 		SteerableBodyComponent steering = Components.STEERABLE_BODY.get(entity);
 		
-		
+		if(behavior == null) return;
 		behavior.calculateSteering(steeringOutput);
 		boolean anyAccelerations = false;
 		Body body = steering.body;
