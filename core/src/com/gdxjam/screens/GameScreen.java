@@ -4,12 +4,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.gdxjam.Assets;
+import com.badlogic.gdx.utils.Array;
 import com.gdxjam.DesktopInputProcessor;
 import com.gdxjam.GameWorld;
 import com.gdxjam.ai.Squad;
@@ -32,8 +27,10 @@ public class GameScreen extends AbstractScreen {
 	private GUISystem gui;
 	private CameraSystem cameraSystem;
 
-	private Squad squadA;
-	private Squad squadB;
+	// private Squad squadA;
+	// private Squad squadB;
+
+	Array<Squad> squads = new Array<Squad>(10);
 
 	@Override
 	public void show() {
@@ -46,16 +43,18 @@ public class GameScreen extends AbstractScreen {
 		initGUI();
 
 		DesktopInputProcessor input = new DesktopInputProcessor(engine
-				.getSystem(CameraSystem.class).getCamera(), squadA, squadB,
-				world);
+				.getSystem(CameraSystem.class).getCamera(), squads, world);
 		Gdx.input.setInputProcessor(input);
 	}
 
 	public GameWorld createTestWorld() {
 		GameWorld world = new GameWorld();
 
-		squadA = createSquad(new Vector2(10, 10));
-		squadB = createSquad(new Vector2(0, 10));
+		Squad squadA = createSquad(new Vector2(10, 10));
+		Squad squadB = createSquad(new Vector2(0, 10));
+
+		squads.add(squadA);
+		squads.add(squadB);
 
 		EntityFactory.createFortress(new Vector2(10, 10), 12, 12);
 		return world;
@@ -82,7 +81,7 @@ public class GameScreen extends AbstractScreen {
 		/**
 		 * The gui viewport needs to be set to something consistent
 		 * */
-		gui = new GUISystem(640, 360);
+		gui = new GUISystem(640, 360, squads);
 		engine.addSystem(gui);
 
 	}

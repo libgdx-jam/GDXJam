@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.ScreenshotFactory;
@@ -13,15 +14,17 @@ public class DesktopInputProcessor implements InputProcessor {
 
 	OrthographicCamera camera;
 
-	private Squad battalionA;
-	private Squad battalionB;
+	private Squad squad1;
+	private Squad squad2;
 	private GameWorld world;
 
-	public DesktopInputProcessor(OrthographicCamera camera, Squad battalionA,
-			Squad battalionB, GameWorld world) {
+	public DesktopInputProcessor(OrthographicCamera camera,
+			Array<Squad> squads, GameWorld world) {
 		this.camera = camera;
-		this.battalionA = battalionA;
-		this.battalionB = battalionB;
+		if (squads.size >= 1) {
+			this.squad1 = squads.get(0);
+			this.squad2 = squads.get(1);
+		}
 		this.world = world;
 	}
 
@@ -41,12 +44,13 @@ public class DesktopInputProcessor implements InputProcessor {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Vector3 pos = new Vector3(screenX, screenY, 0);
 		pos.set(camera.unproject(pos));
-		// camera.position.set(touch.x, touch.y, 0);
-		// camera.update();
 		if (button == Buttons.LEFT) {
-			battalionA.setTarget(pos.x, pos.y);
-		} else {
-			battalionB.setTarget(pos.x, pos.y);
+
+			if (squad1.isSelected())
+				squad1.setTarget(pos.x, pos.y);
+
+			if (squad2.isSelected())
+				squad2.setTarget(pos.x, pos.y);
 		}
 		return true;
 	}
@@ -77,9 +81,18 @@ public class DesktopInputProcessor implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
-		
-		//Add keys to select platoons
-		
+		// Add keys to select platoons
+		case Constants.HOTKEY_PLATOON1:
+			squad1.setSelected(!squad1.isSelected());
+			return true;
+		case Constants.HOTKEY_PLATOON2:
+			squad2.setSelected(!squad2.isSelected());
+			return true;
+		case Constants.HOTKEY_PLATOON3:
+			return true;
+		case Constants.HOTKEY_PLATOON4:
+			return true;
+
 		case Keys.SPACE:
 			Constants.pausedGUI = !Constants.pausedGUI;
 			return true;
