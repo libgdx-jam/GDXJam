@@ -16,7 +16,6 @@ import com.gdxjam.utils.ScreenshotFactory;
 public class DesktopInputProcessor implements InputProcessor {
 
 	OrthographicCamera camera;
-
 	Array<Squad> squads;
 
 	private GameWorld world;

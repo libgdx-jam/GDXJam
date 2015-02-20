@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.gdxjam.screens.AbstractScreen;
 import com.gdxjam.screens.GameScreen;
-import com.gdxjam.screens.TestScreen2;
+import com.gdxjam.screens.TestScreen;
 
 public class SelectorScreen extends AbstractScreen {
 
@@ -27,7 +27,7 @@ public class SelectorScreen extends AbstractScreen {
 		table.setFillParent(true);
 		table.defaults().width(Gdx.graphics.getWidth() / 2).pad(20);
 		addScreen(new GameScreen());
-		addScreen(new TestScreen2());
+		addScreen(new TestScreen());
 
 		stage.addActor(table);
 
