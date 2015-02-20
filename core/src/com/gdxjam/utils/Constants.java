@@ -5,6 +5,13 @@ import com.badlogic.gdx.Input.Keys;
 public class Constants {
 
 	public static boolean pausedGUI = false;
+	
+	//Time
+	public static final float secondsPerMinute = 0.1f;
+	public static final float secondsPerHour = secondsPerMinute * 60;
+	public static final float dawn = 6 * secondsPerHour;
+	public static final float dusk = 18 * secondsPerHour;
+	public static final float transitionTime = 1.0f * secondsPerHour;
 
 	public static final int HOTKEY_PLATOON1 = Keys.NUM_1;
 	public static final int HOTKEY_PLATOON2 = Keys.NUM_2;
