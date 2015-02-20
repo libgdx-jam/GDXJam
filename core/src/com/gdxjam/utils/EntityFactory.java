@@ -2,6 +2,9 @@ package com.gdxjam.utils;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.ai.fsm.StackStateMachine;
+import com.badlogic.gdx.ai.steer.Proximity;
+import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -10,11 +13,10 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Array;
 import com.gdxjam.Assets;
-import com.gdxjam.components.PhysicsComponent;
-import com.gdxjam.components.SpriteComponent;
-import com.gdxjam.components.SteerableBodyComponent;
-import com.gdxjam.components.SteeringBehaviorComponent;
+import com.gdxjam.ai.states.UnitState;
+import com.gdxjam.components.*;
 import com.gdxjam.systems.PhysicsSystem;
 
 public class EntityFactory {
@@ -174,5 +176,29 @@ public class EntityFactory {
 		engine.addEntity(entity);
 		return entity;
 	}
+
+    public static void createSquad(Vector2 position){
+        Entity commander = createCommander(position);
+        Array<SteerableBodyComponent> units = new Array<SteerableBodyComponent>();
+        commander.add(engine.createComponent(CommanderComponent.class).init(new Array<Entity>()));
+        for(int x = -1; x < 2; x++) {
+            for (int y = -1; y < 2; y++) {
+                Entity e;
+                if(x==0 && y==0){
+                    e = commander;
+                }else{
+                    e = createUnit(position.cpy().add(x,y));
+                    e.add(engine.createComponent(CommanderHolderComponent.class).init(commander));
+                    e.add(engine.createComponent(StateMachineComponent.class).init(new StackStateMachine<Entity>(e, UnitState.COLLECT_RESOURCES)));
+                    Components.COMMANDER.get(commander).addUnit(e);
+                }
+                SteerableBodyComponent steerable = Components.STEERABLE_BODY.get(e);
+                units.add(steerable);
+                Proximity<Vector2> proximity = new RadiusProximity<Vector2>(steerable,units,8);
+                ProximityComponent proximityComponent = engine.createComponent(ProximityComponent.class).init(proximity);
+                e.add(proximityComponent);
+            }
+        }
+    }
 
 }
