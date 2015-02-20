@@ -1,7 +1,5 @@
 #LibGdx Community Game Jam
-This project is in active development.
-Check out our progress on the Trello Page.
-https://trello.com/b/G4xowaBm/code
+####Hello and welcome, make yourself comfortable. If you need to be brought up to speed check out the links below: 
+[Libgdx](http://libgdx.badlogicgames.com/features.htm) | [Trello](https://trello.com/gdxjam) | [Original Post](http://www.badlogicgames.com/forum/viewtopic.php?f=11&t=18181) | [GDX-ai](https://github.com/libgdx/gdx-ai/wiki)
 
-Inital project concept and fourm are on the Google Group.
-https://groups.google.com/forum/?hl=en#!forum/libgdx-jam
+We  make  publicly developed open source game/games from start to finish. The time frame is roughly one month from start to end. The purpose is to network and make friends and teach others valuable skills. Most importantly we do this for fun because this is what we love to do.
