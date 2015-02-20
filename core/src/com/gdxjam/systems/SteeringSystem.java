@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.RemovalComponent;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 
@@ -17,7 +18,7 @@ public class SteeringSystem extends IteratingSystem{
 	private static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<Vector2>(new Vector2());
 
 	public SteeringSystem() {
-		super(Family.all(SteeringBehaviorComponent.class).one(SteerableBodyComponent.class).get());
+		super(Family.all(SteeringBehaviorComponent.class).one(SteerableBodyComponent.class).exclude(RemovalComponent.class).get());
 	}
 	
 	@Override

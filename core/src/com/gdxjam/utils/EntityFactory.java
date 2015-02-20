@@ -19,6 +19,7 @@ import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.components.CommanderComponent;
 import com.gdxjam.components.CommanderHolderComponent;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.ProximityComponent;
 import com.gdxjam.components.SpriteComponent;
@@ -152,6 +153,8 @@ public class EntityFactory {
 		
 		entity.add(engine.createComponent(SpriteComponent.class)
 			.init(Assets.getInstance().post.post1, position.x, position.y, 0.5f, 0.5f));
+		
+		entity.add(engine.createComponent(HealthComponent.class));
 
 		engine.addEntity(entity);
 		return entity;
