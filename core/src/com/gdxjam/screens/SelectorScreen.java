@@ -1,4 +1,4 @@
-package com.gdxjam;
+package com.gdxjam.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -10,9 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.gdxjam.screens.AbstractScreen;
-import com.gdxjam.screens.GameScreen;
-import com.gdxjam.screens.TestScreen;
+import com.gdxjam.Assets;
+import com.gdxjam.GameManager;
 
 public class SelectorScreen extends AbstractScreen {
 
@@ -28,6 +27,7 @@ public class SelectorScreen extends AbstractScreen {
 		table.defaults().width(Gdx.graphics.getWidth() / 2).pad(20);
 		addScreen(new GameScreen());
 		addScreen(new TestScreen());
+		addScreen(new SquadFormationTestScreen());
 
 		stage.addActor(table);
 

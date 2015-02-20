@@ -4,8 +4,8 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
-import com.gdxjam.DesktopInputProcessor;
 import com.gdxjam.GameWorld;
+import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GUISystem;
@@ -45,7 +45,7 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	public GameWorld createTestWorld() {
-		GameWorld world = new GameWorld();
+		GameWorld world = new GameWorld(64, 36);
 
 //		Squad squadA = EntityFactory.createSquad(new Vector2(0, 10));
 //		Squad squadB = EntityFactory.createSquad(new Vector2(10, 10));

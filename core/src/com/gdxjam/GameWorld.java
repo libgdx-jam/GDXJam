@@ -4,8 +4,15 @@ import com.gdxjam.map.GameMapPixMap;
 
 public class GameWorld {
 
-	private GameMapPixMap map;
+	public int width;
+	public int height;
+	public GameMapPixMap map;
+	
 	public int food = 0;
-
+	
+	public GameWorld(int width, int height){
+		this.width = width;
+		this.height = height;
+	}
 
 }

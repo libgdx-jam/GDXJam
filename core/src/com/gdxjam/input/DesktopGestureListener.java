@@ -1,4 +1,4 @@
-package com.gdxjam;
+package com.gdxjam.input;
 
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
@@ -7,12 +7,12 @@ import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.systems.CameraSystem;
 
-public class DesktopGestureProcessor implements GestureListener{
+public class DesktopGestureListener implements GestureListener{
 	
 	private PooledEngine engine;
 	private CameraSystem cameraSystem;
 	
-	public DesktopGestureProcessor (PooledEngine engine) {
+	public DesktopGestureListener (PooledEngine engine) {
 		this.engine = engine;
 		this.cameraSystem = engine.getSystem(CameraSystem.class);
 	}
