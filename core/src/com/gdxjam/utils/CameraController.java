@@ -2,7 +2,6 @@ package com.gdxjam.utils;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  * Created by SCAW on 18/02/2015.

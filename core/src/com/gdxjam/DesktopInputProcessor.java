@@ -21,7 +21,7 @@ public class DesktopInputProcessor implements InputProcessor {
 
 	private GameWorld world;
 
-	public DesktopInputProcessor(PooledEngine engine, GameWorld world) {
+	public DesktopInputProcessor(PooledEngine engine) {
 		this.camera = engine.getSystem(CameraSystem.class).getCamera();
 		this.squads = engine.getSystem(SquadSystem.class).getSquads();
 		this.world = world;

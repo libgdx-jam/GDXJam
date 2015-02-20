@@ -8,9 +8,12 @@ import com.badlogic.gdx.ai.steer.behaviors.Alignment;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
 import com.badlogic.gdx.ai.steer.behaviors.Cohesion;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.behaviors.Separation;
+import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.ai.Messages;
+import com.gdxjam.ai.SteerableTarget;
 import com.gdxjam.components.CommanderHolderComponent;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.ProximityComponent;
@@ -22,6 +25,27 @@ import com.gdxjam.components.SteeringBehaviorComponent;
  * Created by SCAW on 16/02/2015.
  */
 public enum UnitState implements State<Entity> {
+	
+	IDLE(){
+		@Override
+		public void enter (Entity entity) {
+			super.enter(entity);
+			SteerableBodyComponent steerable = Components.STEERABLE_BODY.get(entity);
+			SteeringBehaviorComponent behaviorComp = Components.STEERING_BEHAVIOR.get(entity);
+			SteerableTarget target = new SteerableTarget(steerable.body.getPosition().cpy(), 0.5f);
+			Seek<Vector2> seek = new Seek<Vector2>(steerable);
+			seek.setTarget(target);
+			
+			Wander<Vector2> wander = new Wander<Vector2>(steerable);
+			wander.setTarget(target).setWanderRate(5.0f).setWanderRadius(10.0f);
+			
+			BlendedSteering<Vector2> behavior = new BlendedSteering<Vector2>(steerable);
+			behavior.add(seek, 1.0f);
+			behavior.add(wander, 3.0f);
+			
+			behaviorComp.setBehavior(behavior);
+		}
+	},
 
     REGROUP(){
         @Override

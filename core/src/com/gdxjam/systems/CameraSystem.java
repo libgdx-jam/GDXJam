@@ -14,6 +14,11 @@ public class CameraSystem extends EntitySystem{
         cameraController = new CameraController(camera);
 	}
 	
+	public CameraSystem(float viewportWidth, float viewportHeight){
+		camera = new OrthographicCamera(viewportWidth, viewportHeight);
+      cameraController = new CameraController(camera);
+	}
+	
 	public CameraSystem(OrthographicCamera camera){
 		this.camera = camera;
         this.cameraController = new CameraController(camera);

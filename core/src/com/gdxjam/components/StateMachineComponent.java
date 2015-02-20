@@ -16,6 +16,11 @@ public class StateMachineComponent extends Component implements Telegraph {
         this.stateMachine = stateMachine;
         return this;
     }
+    
+    public StateMachineComponent init(Entity entity) {
+   	 stateMachine = new StackStateMachine<Entity>(entity);
+   	 return this;
+	}
 
     @Override
     public boolean handleMessage(Telegram msg) {
