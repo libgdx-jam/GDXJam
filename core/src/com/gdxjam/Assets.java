@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -15,19 +16,19 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Assets implements Disposable, AssetErrorListener {
-	
+
 	public static final String TAG = Assets.class.getSimpleName();
 	private static Assets instance;
 	public static AssetManager manager;
-	
-	public static Assets getInstance(){
-		if(instance == null){
+
+	public static Assets getInstance() {
+		if (instance == null) {
 			instance = new Assets();
 		}
 		return instance;
 	}
-	
-	public static AssetManager getManager(){
+
+	public static AssetManager getManager() {
 		return manager;
 	}
 
@@ -50,18 +51,20 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetWarrior warrior;
 	public AssetWizard wizard;
 	public AssetColor color;
-	
-	public Assets(){
+
+	public AssetHotkey hotkey;
+
+	public Assets() {
 		manager = new AssetManager();
-		manager.setErrorListener(this);		// set asset manager error handler
-		
+		manager.setErrorListener(this); // set asset manager error handler
+
 		loadAssets();
-		
-		Gdx.app.debug(TAG,
-			"# of assets loaded: " + manager.getAssetNames().size);
+
+		Gdx.app.debug(TAG, "# of assets loaded: "
+				+ manager.getAssetNames().size);
 		for (String a : manager.getAssetNames()) {
 			Gdx.app.debug(TAG, "asset: " + a);
-			
+
 			TextureAtlas atlas = manager.get(TEXTURE_ATLAS_OBJECTS);
 
 			fonts = new AssetFonts();
@@ -79,12 +82,13 @@ public class Assets implements Disposable, AssetErrorListener {
 			warrior = new AssetWarrior(atlas);
 			wizard = new AssetWizard(atlas);
 			post = new AssetPost(atlas);
+			hotkey = new AssetHotkey(atlas);
 
 			color = new AssetColor();
 		}
 	}
-	
-	public void loadAssets(){
+
+	public void loadAssets() {
 		manager.load(TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
 		manager.load(SKIN, Skin.class);
 		manager.finishLoading();
@@ -201,6 +205,21 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		public AssetStairsDown(TextureAtlas atlas) {
 			reg = atlas.findRegion("stairsdown");
+		}
+	}
+
+	public class AssetHotkey {
+		public final AtlasRegion left;
+		public final NinePatch button;
+		public AtlasRegion middle;
+		public AtlasRegion right;
+
+		public AssetHotkey(TextureAtlas atlas) {
+			left = atlas.findRegion("hotkeyleft");
+			button = new NinePatch(atlas.findRegion("hotkey"));
+			right = atlas.findRegion("hotkeyright");
+			middle = atlas.findRegion("middlehotkey");
+
 		}
 	}
 

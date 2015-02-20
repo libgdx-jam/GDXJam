@@ -1,14 +1,21 @@
 package com.gdxjam.systems;
 
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -32,18 +39,21 @@ public class GUISystem extends EntitySystem {
 	public boolean isPaused = false;
 
 	public GUISystem(float viewportWidth, float viewportHeight,
-			Array<Squad> squads) {
+			PooledEngine engine) {
 		camera = new OrthographicCamera(viewportWidth, viewportHeight);
 		viewport = new ScalingViewport(Scaling.stretch, viewportWidth,
 				viewportHeight, camera);
 		stage = new Stage(viewport);
-		this.squads = squads;
+		this.squads = engine.getSystem(SquadSystem.class).getSquads();
 		init();
 	}
 
 	public void init() {
 		Skin skin = Assets.getManager().get(Assets.SKIN, Skin.class);
-		foodLabel = new Label("Food: 0 / 0", skin);
+		// foodLabel = new Label("Food: 0 / 0", skin);
+		LabelStyle labelStyle = new LabelStyle(
+				Assets.getInstance().fonts.small, Color.WHITE);
+		foodLabel = new Label("Food: 0 / 0", labelStyle);
 		// foodLabel.setPosition(camera.viewportWidth - 100,
 		// camera.viewportHeight - 50);
 		// foodLabel.setSize(3, 1);
@@ -56,20 +66,43 @@ public class GUISystem extends EntitySystem {
 		stage.addActor(table);
 		table.top().right();
 
-		stage.addActor(foodLabel);
+		stage.addActor(table);
 
 		Table bottomHotkeys = new Table();
-		bottomHotkeys.defaults().pad(10);
+		// bottomHotkeys.defaults().pad(10);
+		ImageButton left = new ImageButton(new TextureRegionDrawable(
+				Assets.getInstance().hotkey.left));
+		bottomHotkeys.add(left);
 
 		for (int x = 0; x < squads.size; x++) {
-			TextButton btn = new TextButton(x + 1 + "", skin);
+			NinePatchDrawable draw = new NinePatchDrawable(
+					Assets.getInstance().hotkey.button);
+
+			TextButtonStyle style = new ImageTextButtonStyle();
+			style.up = draw;
+			style.down = draw.tint(Color.GREEN);
+			style.checked = draw;
+			style.font = Assets.getInstance().fonts.medium;
+
+			TextButton btn = new TextButton(x + 1 + "", style);
+
 			bottomHotkeys.add(btn);
 			hotkeys.add(btn);
 
+			if (x < squads.size - 1) {
+				ImageButton middle = new ImageButton(new TextureRegionDrawable(
+						Assets.getInstance().hotkey.middle));
+				bottomHotkeys.add(middle);
+			}
+
 		}
 
+		ImageButton right = new ImageButton(new TextureRegionDrawable(
+				Assets.getInstance().hotkey.right));
+		bottomHotkeys.add(right);
+
 		bottomHotkeys.setPosition(
-				camera.viewportWidth / 2 - bottomHotkeys.getWidth(), 10);
+				camera.viewportWidth / 2 - bottomHotkeys.getWidth(), 25);
 
 		stage.addActor(bottomHotkeys);
 	}
@@ -78,9 +111,9 @@ public class GUISystem extends EntitySystem {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 
-		for (int x = 0; x < squads.size; x++) {
+		for (int x = 0; x < hotkeys.size; x++) {
 			if (squads.get(x).isSelected()) {
-				hotkeys.get(x).setColor(Color.GREEN);
+				hotkeys.get(x).setColor(Color.DARK_GRAY);
 			} else {
 				hotkeys.get(x).setColor(Color.GRAY);
 			}
