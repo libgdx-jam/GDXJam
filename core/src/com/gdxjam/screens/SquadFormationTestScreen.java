@@ -16,11 +16,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.gdxjam.Assets;
+import com.gdxjam.EntityManager;
 import com.gdxjam.GameWorld;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
@@ -38,10 +41,6 @@ public class SquadFormationTestScreen extends AbstractScreen{
 	
 	private Stage stage;
 	private Label foodLabel;
-	
-	private GameWorld world;
-	private PooledEngine engine;
-	private PhysicsSystem physicsSystem;
 
 	@Override
 	public void show () {
@@ -50,15 +49,14 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		stage = new Stage();
 		initGUI();
 		
-		initEngine();
-		world = createTestWorld();
-		loadWorld(world);
+		EntityManager.getInstance().initSystems();
+		EntityManager.getInstance().loadWorld(createTestWorld());
 		
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		
 		multiplexer.addProcessor(stage);
-		multiplexer.addProcessor(new DesktopInputProcessor(engine));
-		multiplexer.addProcessor(new GestureDetector(new DesktopGestureListener(engine)));
+		multiplexer.addProcessor(new DesktopInputProcessor(EntityManager.getInstance()));
+		multiplexer.addProcessor(new GestureDetector(new DesktopGestureListener(EntityManager.getInstance())));
 		Gdx.input.setInputProcessor(multiplexer);
 	}
 	
@@ -72,34 +70,6 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		return world;
 	}
 
-
-	public PooledEngine initEngine () {
-		engine = new PooledEngine();
-		EntityFactory.setEngine(engine);
-
-		CameraSystem cameraSystem = new CameraSystem(64, 36);
-		cameraSystem.getCamera().position.set(32, 18, 0);
-		engine.addSystem(cameraSystem);
-		
-
-		physicsSystem = new PhysicsSystem();
-		engine.addSystem(physicsSystem);
-
-		SteeringSystem steeringSystem = new SteeringSystem();
-		
-		//AI
-		engine.addSystem(steeringSystem);
-		engine.addSystem(new StateMachineSystem());
-		engine.addSystem(new SquadSystem());
-		
-		engine.addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
-		return engine;
-	}
-	
-	public void loadWorld(GameWorld world){
-		engine.addSystem(new ResourceSystem(world));
-		engine.addSystem(new GameWorldSystem(world));
-	}
 	
 	public void initGUI(){
 		Skin skin = Assets.getManager().get(Assets.SKIN, Skin.class);
@@ -110,9 +80,9 @@ public class SquadFormationTestScreen extends AbstractScreen{
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
 				Squad squad = null;
-				SquadSystem squadSystem = engine.getSystem(SquadSystem.class);
+				SquadSystem squadSystem = EntityManager.getInstance().getSystem(SquadSystem.class);
 				
-				for(Entity entity : engine.getEntitiesFor(Family.all(SteerableBodyComponent.class).get())){
+				for(Entity entity : EntityManager.getInstance().getEntitiesFor(Family.all(SteerableBodyComponent.class).get())){
 					if(squad == null){
 						squad = squadSystem.createSquad(entity);
 					}
@@ -123,11 +93,23 @@ public class SquadFormationTestScreen extends AbstractScreen{
 			}
 		});
 		
+		TextButton killButton = new TextButton("Kill all", skin);
+		killButton.addListener(new ChangeListener() {
+			@Override
+			public void changed (ChangeEvent event, Actor actor) {
+				for(Entity entity: EntityManager.getInstance().getEntitiesFor(Family.all(HealthComponent.class).get())){
+					Components.HEALTH.get(entity).value = 0;
+				}
+				
+			}
+		});
+		
 		
 		Table table = new Table();
 		table.setFillParent(true);
 		table.defaults().pad(10);
 		table.add(formSquadButton);
+		table.add(killButton);
 		table.add(foodLabel);
 	
 		
@@ -142,7 +124,7 @@ public class SquadFormationTestScreen extends AbstractScreen{
 	@Override
 	public void resize (int width, int height) {
 		super.resize(width, height);
-		engine.getSystem(CameraSystem.class).getViewport().update(width, height);
+		EntityManager.getInstance().getSystem(CameraSystem.class).getViewport().update(width, height);
 	}
 
 	@Override
@@ -150,9 +132,8 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.gl20.glClearColor(0, 0, 0, 1);
 		
-		engine.update(delta);
-		updateGUI(world);
-		
+		EntityManager.getInstance().update(delta);
+
 		stage.act();
 		stage.draw();
 	}

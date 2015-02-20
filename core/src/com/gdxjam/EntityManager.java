@@ -1,12 +1,18 @@
 package com.gdxjam;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Disposable;
+import com.gdxjam.components.Components;
+import com.gdxjam.components.RemovalComponent;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GameWorldSystem;
+import com.gdxjam.systems.HealthSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
@@ -41,6 +47,7 @@ public class EntityManager extends PooledEngine implements Disposable{
 		addSystem( new SteeringSystem());
 		addSystem(new StateMachineSystem());
 		addSystem(new SquadSystem());
+		addSystem(new HealthSystem());
 		
 		
 		addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
@@ -49,6 +56,19 @@ public class EntityManager extends PooledEngine implements Disposable{
 	public void loadWorld(GameWorld world){
 		addSystem(new ResourceSystem(world));
 		addSystem(new GameWorldSystem(world));
+	}
+	
+	@Override
+	public void update (float deltaTime) {
+		super.update(deltaTime);
+		
+		for(Entity entity : getEntitiesFor(Family.all(RemovalComponent.class).get())){
+			if(Components.STEERABLE_BODY.has(entity)){
+				Body body = Components.STEERABLE_BODY.get(entity).body;
+				getSystem(PhysicsSystem.class).destroyBody(body);
+			}
+			removeEntity(entity);
+		}
 	}
 
 	@Override
