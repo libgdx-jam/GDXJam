@@ -25,6 +25,7 @@ import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.SteerableBodyComponent;
+import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
@@ -55,6 +56,7 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		
 		multiplexer.addProcessor(stage);
+		multiplexer.addProcessor(new DefaultInputProcessor());
 		multiplexer.addProcessor(new DesktopInputProcessor(EntityManager.getInstance()));
 		multiplexer.addProcessor(new GestureDetector(new DesktopGestureListener(EntityManager.getInstance())));
 		Gdx.input.setInputProcessor(multiplexer);

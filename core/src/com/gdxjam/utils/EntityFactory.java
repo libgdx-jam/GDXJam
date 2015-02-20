@@ -212,7 +212,7 @@ public class EntityFactory {
 		entity.add(behaviorComp);
 
 		entity.add(engine.createComponent(SpriteComponent.class)
-			.init(Assets.getInstance().chest.reg, position.x, position.y, 0.5f, 0.5f));
+			.init(Assets.getManager().get("minimal.pack", TextureAtlas.class).findRegion("commander"), position.x, position.y, 0.5f, 0.5f));
 
 		engine.addEntity(entity);
 		return entity;
