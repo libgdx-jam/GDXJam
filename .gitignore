@@ -112,4 +112,4 @@ gradle-app.setting
 !gradle-wrapper.jar
 
 #ignore screenshot folder
-screens/
+screenshots/

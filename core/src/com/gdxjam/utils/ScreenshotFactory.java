@@ -10,13 +10,15 @@ import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class ScreenshotFactory {
+	
 	private static int counter = 1;
+	private static String directory = "screenshots/";
 
 	public static void saveScreenshot () {
 		try {
 			FileHandle fh;
 			do {
-				fh = new FileHandle("screens/screenshot" + counter++ + ".png");
+				fh = new FileHandle(directory + "screenshot" + counter++ + ".png");
 			} while (fh.exists());
 			Pixmap pixmap = getScreenshot(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 			PixmapIO.writePNG(fh, pixmap);
