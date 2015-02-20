@@ -19,7 +19,7 @@ public class CameraController {
     public void update(float deltaTime){
         if (smooth && toFollow!= null){
             //newPosition = new Vector3(toFollow.x,toFollow.y,0).sub(camera.position).sc
-            camera.position.add(camera.position.cpy().scl(-1).add(toFollow.x,toFollow.y,0).scl(0.1f));
+            camera.position.add(camera.position.cpy().scl(-1).add(toFollow.x,toFollow.y,0).scl(0.04f));
         }
 
         camera.update();

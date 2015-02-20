@@ -55,7 +55,7 @@ public class ResourceGenerator {
         //PROTOTYPE
 
         //Tree size
-        float treeRadius = 0.15f;
+        float treeRadius = 0.10f;
         //Density should be between 0 and 1
         if(density<0 || density>1) density = 0.5f;
 
