@@ -8,64 +8,66 @@ import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.systems.*;
 import com.gdxjam.InputAITest;
 import com.gdxjam.utils.EntityFactory;
-import com.gdxjam.utils.GUITest;
+import com.gdxjam.utils.GUItest;
 import com.gdxjam.utils.generators.ResourceGenerator;
 
-public class TestScreen2 extends AbstractScreen{
+public class TestScreen2 extends AbstractScreen {
 
-	
 	private static final int PIXELS_PER_UNIT = 32;
-	
+
 	private PooledEngine engine;
-    private GUITest GUITest;
+	private GUItest GUITest;
 
-
-    @Override
+	@Override
 	public void show() {
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+		InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
 		initEngine();
-        //gui needs to be created after engine but before world, for the listener to work
-        GUITest = new GUITest(engine);
+		// gui needs to be created after engine but before world, for the
+		// listener to work
+		GUITest = new GUItest(engine);
 
 		createTestWorld();
 
-        //inputs
-        inputMultiplexer.addProcessor(GUITest);
-        inputMultiplexer.addProcessor(new InputAITest(engine));
-        Gdx.input.setInputProcessor(inputMultiplexer);
+		// inputs
+		inputMultiplexer.addProcessor(GUITest);
+		inputMultiplexer.addProcessor(new InputAITest(engine));
+		Gdx.input.setInputProcessor(inputMultiplexer);
 
 	}
-	
-	public void createTestWorld(){
-        EntityFactory.createSquad(new Vector2(15,5));
-        EntityFactory.createSquad(new Vector2(-30,-30));
-        EntityFactory.createSquad(new Vector2(0,30));
-        EntityFactory.createSquad(new Vector2(50,5));
-        ResourceGenerator.generateForest(engine, new Vector2(20,20), 25, 7,0,0.1f);
-        EntityFactory.createFortress(new Vector2(15, 5), 15, 12);
-        ResourceGenerator.generateForest(engine, new Vector2(-10,5), 10, 30,0,0.05f);
+
+	public void createTestWorld() {
+		EntityFactory.createSquad(new Vector2(15, 5));
+		EntityFactory.createSquad(new Vector2(-30, -30));
+		EntityFactory.createSquad(new Vector2(0, 30));
+		EntityFactory.createSquad(new Vector2(50, 5));
+		ResourceGenerator.generateForest(engine, new Vector2(20, 20), 25, 7, 0,
+				0.1f);
+		EntityFactory.createFortress(new Vector2(15, 5), 15, 12);
+		ResourceGenerator.generateForest(engine, new Vector2(-10, 5), 10, 30,
+				0, 0.05f);
 	}
 
-	public void initEngine(){
+	public void initEngine() {
 		engine = new PooledEngine();
-        EntityFactory.setEngine(engine);
+		EntityFactory.setEngine(engine);
 
-		OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth() / PIXELS_PER_UNIT,  Gdx.graphics.getHeight() / PIXELS_PER_UNIT);
+		OrthographicCamera camera = new OrthographicCamera(
+				Gdx.graphics.getWidth() / PIXELS_PER_UNIT,
+				Gdx.graphics.getHeight() / PIXELS_PER_UNIT);
 		camera.position.set(10, 10, 0);
-        CameraSystem cameraSystem = new CameraSystem(camera);
+		CameraSystem cameraSystem = new CameraSystem(camera);
 		engine.addSystem(cameraSystem);
 
-
-        PhysicsSystem physicsSystem = new PhysicsSystem();
+		PhysicsSystem physicsSystem = new PhysicsSystem();
 		engine.addSystem(physicsSystem);
-		
+
 		SteeringSystem steeringSystem = new SteeringSystem();
 		engine.addSystem(steeringSystem);
 
-        engine.addSystem(new CommanderControllerSystem());
+		engine.addSystem(new CommanderControllerSystem());
 
-        engine.addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
+		engine.addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
 	}
 
 	@Override
@@ -73,8 +75,8 @@ public class TestScreen2 extends AbstractScreen{
 		super.render(delta);
 
 		engine.update(delta);
-        GUITest.act(delta);
-        GUITest.draw();
+		GUITest.act(delta);
+		GUITest.draw();
 	}
-	
+
 }

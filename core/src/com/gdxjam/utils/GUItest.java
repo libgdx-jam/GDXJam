@@ -24,12 +24,12 @@ import java.util.HashMap;
 /**
  * Created by SCAW on 18/02/2015.
  */
-public class GUITest extends Stage{
+public class GUItest extends Stage{
     Engine engine;
     Table table;
     Skin skin;
     HashMap<Entity, Actor> commanderButtonMap;
-    public GUITest(final Engine engine) {
+    public GUItest(final Engine engine) {
         super(new StretchViewport(16*80,9*80));
         this.engine = engine;
         commanderButtonMap = new HashMap<Entity,Actor>();
@@ -85,7 +85,7 @@ public class GUITest extends Stage{
 
                         horizontalGroup.setFillParent(true);
                         horizontalGroup.bottom().space(6);
-                        GUITest.this.addActor(horizontalGroup);
+                        GUItest.this.addActor(horizontalGroup);
                     }
                 });
                 commanderButtonMap.put(commander, textButton);

@@ -4,10 +4,18 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.steer.Proximity;
-import com.badlogic.gdx.ai.steer.behaviors.*;
+import com.badlogic.gdx.ai.steer.behaviors.Alignment;
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
+import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
+import com.badlogic.gdx.ai.steer.behaviors.Cohesion;
+import com.badlogic.gdx.ai.steer.behaviors.Separation;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.ai.Messages;
-import com.gdxjam.components.*;
+import com.gdxjam.components.CommanderHolderComponent;
+import com.gdxjam.components.Components;
+import com.gdxjam.components.ProximityComponent;
+import com.gdxjam.components.SteerableBodyComponent;
+import com.gdxjam.components.SteeringBehaviorComponent;
 
 
 /**
@@ -21,7 +29,7 @@ public enum UnitState implements State<Entity> {
             SteerableBodyComponent steerable = Components.STEERABLE_BODY.get(entity);
             SteeringBehaviorComponent behaviorComponent = Components.STEERING_BEHAVIOR.get(entity);
 
-            Proximity proximity = entity.getComponent(ProximityComponent.class).proximity;
+            Proximity<Vector2> proximity = entity.getComponent(ProximityComponent.class).proximity;
             Cohesion<Vector2> cohesion = new Cohesion<Vector2>(steerable, proximity);
             Separation<Vector2> separation = new Separation<Vector2>(steerable, proximity);
             Alignment<Vector2> align = new Alignment<Vector2>(steerable, proximity);

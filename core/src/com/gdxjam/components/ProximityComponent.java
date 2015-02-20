@@ -1,7 +1,6 @@
 package com.gdxjam.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.math.Vector2;
 
