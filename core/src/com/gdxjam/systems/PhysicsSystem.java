@@ -49,6 +49,10 @@ public class PhysicsSystem extends EntitySystem implements Disposable{
 		world.destroyBody(body);
 	}
 	
+	public World getWorld(){
+		return world;
+	}
+	
 	public void drawDebug(){
 		if(renderer == null){
 			renderer = new Box2DDebugRenderer();

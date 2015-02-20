@@ -91,6 +91,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	public void loadAssets() {
 		manager.load(TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
 		manager.load(SKIN, Skin.class);
+		manager.load("minimal.pack", TextureAtlas.class);
 		manager.finishLoading();
 	}
 
