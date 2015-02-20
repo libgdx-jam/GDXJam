@@ -102,7 +102,6 @@ local.properties
 .gradle
 build/
 
-screens/
 
 thumbs.db
 
