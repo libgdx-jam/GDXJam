@@ -4,7 +4,9 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
+import com.gdxjam.Assets;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.ai.states.SquadState;
 import com.gdxjam.components.Components;
@@ -31,6 +33,7 @@ public class SquadSystem extends EntitySystem{
 		SteerableBodyComponent steerable = Components.STEERABLE_BODY.get(commander);
 		Squad squad = new Squad(steerable.getPosition().cpy());
 		addSquadMember(commander, squad);
+		Components.SPRITE.get(commander).sprite.setRegion(Assets.getManager().get("minimal.pack", TextureAtlas.class).findRegion("commander"));
 		squads.add(squad);
 		return squad;
 	}

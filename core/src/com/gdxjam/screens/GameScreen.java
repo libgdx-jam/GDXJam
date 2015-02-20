@@ -1,10 +1,12 @@
 package com.gdxjam.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.EntityManager;
 import com.gdxjam.GameWorld;
+import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.utils.EntityFactory;
@@ -25,8 +27,10 @@ public class GameScreen extends AbstractScreen {
 		EntityManager.getInstance().loadWorld(world);
 
 		initGUI();
-		DesktopInputProcessor input = new DesktopInputProcessor(EntityManager.getInstance());
-		Gdx.input.setInputProcessor(input);
+		InputMultiplexer multiplexer = new InputMultiplexer();
+		multiplexer.addProcessor(new DefaultInputProcessor());
+		multiplexer.addProcessor(new DesktopInputProcessor(EntityManager.getInstance()));
+		Gdx.input.setInputProcessor(multiplexer);
 	}
 
 	public GameWorld createTestWorld() {

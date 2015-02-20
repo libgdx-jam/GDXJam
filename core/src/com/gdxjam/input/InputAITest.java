@@ -2,8 +2,8 @@ package com.gdxjam.input;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ai.steer.SteerableAdapter;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.math.Vector2;
@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.gdxjam.components.Components;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.CommanderControllerSystem;
-import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.ScreenshotFactory;
 
 /**

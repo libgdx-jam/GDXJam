@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.gdxjam.EntityManager;
+import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.InputAITest;
 import com.gdxjam.systems.CameraSystem;
@@ -17,6 +19,7 @@ import com.gdxjam.utils.GUItest;
 import com.gdxjam.utils.generators.WorldGenerator;
 
 public class TestScreen extends AbstractScreen {
+	
 	private PooledEngine engine;
 	private GUItest GUITest;
 
@@ -33,6 +36,7 @@ public class TestScreen extends AbstractScreen {
 
 		// inputs
 		inputMultiplexer.addProcessor(GUITest);
+		inputMultiplexer.addProcessor(new DefaultInputProcessor());
 		inputMultiplexer.addProcessor(new InputAITest(engine));
 		inputMultiplexer.addProcessor(new GestureDetector(new DesktopGestureListener(engine)));
 		Gdx.input.setInputProcessor(inputMultiplexer);
@@ -52,21 +56,8 @@ public class TestScreen extends AbstractScreen {
 	}
 
 	public void initEngine() {
-		engine = new PooledEngine();
-		EntityFactory.setEngine(engine);
-
-		CameraSystem cameraSystem = new CameraSystem(64, 36);
-		engine.addSystem(cameraSystem);
-
-		PhysicsSystem physicsSystem = new PhysicsSystem();
-		engine.addSystem(physicsSystem);
-
-		SteeringSystem steeringSystem = new SteeringSystem();
-		engine.addSystem(steeringSystem);
-
+		engine = EntityManager.getInstance().initSystems();
 		engine.addSystem(new CommanderControllerSystem());
-
-		engine.addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
 	}
 
 	@Override
