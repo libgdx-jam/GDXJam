@@ -3,6 +3,7 @@ package com.gdxjam.screens;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.gdxjam.DesktopInputProcessor;
@@ -103,7 +104,7 @@ public class GameScreen extends AbstractScreen {
 		engine = new PooledEngine();
 		EntityFactory.setEngine(engine);
 
-		cameraSystem = new CameraSystem(64, 36);
+		cameraSystem = new CameraSystem(new OrthographicCamera(64, 36));
 		engine.addSystem(cameraSystem);
 
 		physicsSystem = new PhysicsSystem();
@@ -126,8 +127,6 @@ public class GameScreen extends AbstractScreen {
 	public void resize(int width, int height) {
 		super.resize(width, height);
 
-		engine.getSystem(CameraSystem.class).getViewport()
-				.update(width, height);
 		gui.resize(width, height);
 	}
 
