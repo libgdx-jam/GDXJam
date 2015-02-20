@@ -5,18 +5,22 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.gdxjam.Assets;
-import com.gdxjam.components.PositionComponent;
-import com.gdxjam.components.VisualComponent;
+import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.tiles.Tile;
 import com.gdxjam.utils.Constants.BLOCK_TYPE;
 
 public class GameMapPixMap implements Map {
 
-	private String key;
 	public float size;
+	
+	private static final float unitsPerTile = 3.0f;
+	
+	private String key;
+
 
 	Array<Tile> tiles = new Array<Tile>();
 
@@ -132,30 +136,28 @@ public class GameMapPixMap implements Map {
 			for (BLOCK_TYPE data : tile.getTileData()) {
 				Entity entity = engine.createEntity();
 				switch (data) {
-
 				case FLOOR:
-					entity.add(new VisualComponent(Assets.instance.grass.reg));
-					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					entity.add(engine.createComponent(SpriteComponent.class)
+						.init(Assets.getInstance().grass.reg, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
 					break;
 
 				case POST1:
-					entity.add(new VisualComponent(Assets.instance.post.post1));
-					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					entity.add(engine.createComponent(SpriteComponent.class)
+						.init(Assets.getInstance().post.post1, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
 					break;
 
 				case POST2:
-					entity.add(new VisualComponent(Assets.instance.post.post2));
-					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					entity.add(engine.createComponent(SpriteComponent.class)
+						.init(Assets.getInstance().post.post2, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
 					break;
 
 				case EMPTY:
 					break;
 
 				default:
-					entity.add(new VisualComponent(Assets.instance.grass.reg));
-					entity.add(new PositionComponent(tile.getX(), tile.getY()));
+					entity.add(engine.createComponent(SpriteComponent.class)
+						.init(Assets.getInstance().grass.reg, tile.getX(), tile.getY(), unitsPerTile, unitsPerTile ));
 					break;
-
 				}
 				engine.addEntity(entity);
 			}

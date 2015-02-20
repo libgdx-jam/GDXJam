@@ -1,122 +1,155 @@
 package com.gdxjam.screens;
 
-import java.util.ArrayList;
-
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.gdxjam.Assets;
-import com.gdxjam.Input;
-import com.gdxjam.components.MovementComponent;
-import com.gdxjam.components.PositionComponent;
-import com.gdxjam.components.VisualComponent;
-import com.gdxjam.map.GameMapPixMap;
-import com.gdxjam.map.Map;
-import com.gdxjam.systems.RenderSystem;
-import com.gdxjam.systems.UpdateSystem;
+import com.badlogic.gdx.utils.Array;
+import com.gdxjam.DesktopInputProcessor;
+import com.gdxjam.GameWorld;
+import com.gdxjam.ai.Squad;
+import com.gdxjam.systems.CameraSystem;
+import com.gdxjam.systems.EntityRenderSystem;
+import com.gdxjam.systems.GUISystem;
+import com.gdxjam.systems.PhysicsSystem;
+import com.gdxjam.systems.ResourceSystem;
+import com.gdxjam.systems.SteeringSystem;
+import com.gdxjam.utils.Constants;
+import com.gdxjam.utils.EntityFactory;
 
-public class GameScreen implements Screen {
+public class GameScreen extends AbstractScreen {
 
-	ArrayList<Map> maps = new ArrayList<Map>();
-	GameMapPixMap map;
+	private GameWorld world;
 
-	SpriteBatch batch;
-	OrthographicCamera camera;
-	Input input;
+	private PooledEngine engine;
+	private PhysicsSystem physicsSystem;
+	private SteeringSystem steeringSystem;
+	private GUISystem gui;
+	private CameraSystem cameraSystem;
 
-	PooledEngine engine;
+	// private Squad squadA;
+	// private Squad squadB;
+
+	Array<Squad> squads = new Array<Squad>(10);
 
 	@Override
 	public void show() {
+		super.show();
 
-		map = new GameMapPixMap();
-		map.setKey("test");
-		map.convertPixmap("test.png");
+		initEngine();
+		world = createTestWorld();
+		loadWorld(world);
 
-		batch = new SpriteBatch();
-		camera = new OrthographicCamera(map.size, map.size);
-		camera.update();
-		camera.position.set(map.size / 2, map.size / 2, 0);
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
+		initGUI();
 
-		engine = new PooledEngine();
-		engine.addSystem(new RenderSystem(camera));
-		engine.addSystem(new UpdateSystem());
-
-		Entity e = new Entity();
-		e.add(new VisualComponent(Assets.instance.chest.reg));
-		e.add(new PositionComponent(11, 11));
-		e.add(new MovementComponent());
-		e.getComponent(MovementComponent.class).entity
-				.setMaxLinearAcceleration(10);
-		e.getComponent(MovementComponent.class).entity.setMaxLinearSpeed(10);
-		e.getComponent(MovementComponent.class).entity
-				.setMaxAngularAcceleration(40);
-		e.getComponent(MovementComponent.class).entity.setMaxAngularSpeed(10);
-
-		Entity f = new Entity();
-		f.add(new VisualComponent(Assets.instance.chest.open));
-		f.add(new PositionComponent(8, 8));
-		f.add(new MovementComponent());
-
-		final Arrive<Vector2> arriveSB = new Arrive<Vector2>(
-				e.getComponent(MovementComponent.class).entity,
-				f.getComponent(MovementComponent.class).entity) //
-				.setTimeToTarget(0.1f) //
-				.setArrivalTolerance(0.001f) //
-				.setDecelerationRadius(80);
-
-		e.getComponent(MovementComponent.class).entity
-				.setSteeringBehavior(arriveSB);
-
-		map.addToAshley(engine);
-		engine.addEntity(e);
-		engine.addEntity(f);
-
-		input = new Input(camera, f);
+		DesktopInputProcessor input = new DesktopInputProcessor(engine
+				.getSystem(CameraSystem.class).getCamera(), squads, world);
 		Gdx.input.setInputProcessor(input);
+	}
 
+	public GameWorld createTestWorld() {
+		GameWorld world = new GameWorld();
+
+		Squad squadA = createSquad(new Vector2(10, 10));
+		Squad squadB = createSquad(new Vector2(0, 10));
+
+		squads.add(squadA);
+		squads.add(squadB);
+
+		EntityFactory.createFortress(new Vector2(10, 10), 12, 12);
+		return world;
+	}
+
+	public Squad createSquad(Vector2 position) {
+		Squad squad = new Squad(position);
+		position.set(position.x - 1, position.y - 1);
+		for (int x = 0; x < 3; x++) {
+			for (int y = 0; y < 3; y++) {
+				if (x == 1 && y == 1) {
+					squad.addMember(EntityFactory.createCommander(new Vector2(
+							position.x + x, position.y + y)));
+				} else {
+					squad.addMember(EntityFactory.createUnit(new Vector2(
+							position.x + x, position.y + y)));
+				}
+			}
+		}
+		return squad;
+	}
+
+	public void initGUI() {
+		/**
+		 * The gui viewport needs to be set to something consistent
+		 * */
+		gui = new GUISystem(640, 360, squads);
+		engine.addSystem(gui);
+
+	}
+
+	public void updateGUI(GameWorld world, float deltaTime) {
+
+		if (Constants.pausedGUI != gui.isPaused) {
+			gui.setPaused(Constants.pausedGUI);
+		}
+
+		gui.foodLabel.setText("Food: " + world.food + " / "
+				+ ResourceSystem.foodThreshold);
+	}
+
+	public void initEngine() {
+		engine = new PooledEngine();
+		EntityFactory.setEngine(engine);
+
+		cameraSystem = new CameraSystem(64, 36);
+		engine.addSystem(cameraSystem);
+
+		physicsSystem = new PhysicsSystem();
+		engine.addSystem(physicsSystem);
+
+		steeringSystem = new SteeringSystem();
+		engine.addSystem(steeringSystem);
+
+		engine.addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
+	}
+
+	public void loadWorld(GameWorld world) {
+		engine.addSystem(new ResourceSystem(world));
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+
+		engine.getSystem(CameraSystem.class).getViewport()
+				.update(width, height);
+		gui.resize(width, height);
 	}
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl20.glClearColor(0, 0, 0, 1);
+
+		updateGUI(world, delta);
 		engine.update(delta);
 
 	}
 
 	@Override
-	public void resize(int width, int height) {
-
-	}
-
-	@Override
 	public void pause() {
-		for (Map map : maps) {
-			map.save(map.getKey());
-		}
+		super.pause();
+		gui.pause();
+
+		// for (Map map : maps) {
+		// map.save(map.getKey());
+		// }
 	}
 
 	@Override
 	public void resume() {
-
-	}
-
-	@Override
-	public void hide() {
-
-	}
-
-	@Override
-	public void dispose() {
+		// TODO Auto-generated method stub
+		super.resume();
+		gui.resume();
 	}
 
 }
