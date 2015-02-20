@@ -159,7 +159,7 @@ public class TestScreen2 extends AbstractScreen{
 		engine = new PooledEngine();
 		OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth() / PIXELS_PER_UNIT,  Gdx.graphics.getHeight() / PIXELS_PER_UNIT);
 		camera.position.set(10, 10, 0);
-		engine.addSystem(new CameraSystem(camera, new CameraController(camera)));
+		engine.addSystem(new CameraSystem(camera));
 		
 		physicsSystem = new PhysicsSystem();
 		engine.addSystem(physicsSystem);

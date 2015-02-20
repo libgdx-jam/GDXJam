@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ai.msg.MessageDispatcher;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -29,7 +30,7 @@ public class InputAITest implements InputProcessor {
         switch (keycode){
             case Input.Keys.R:
                 for(Entity e : Components.COMMANDER.get(commander).units){
-                    MessageDispatcher.getInstance().dispatchMessage(0f,Components.COMMANDER.get(commander), Components.STATE_MACHINE.get(e), Messages.REGROUP_ORDER);
+                    MessageManager.getInstance().dispatchMessage(0f, Components.COMMANDER.get(commander), Components.STATE_MACHINE.get(e), Messages.REGROUP_ORDER);
                 }
                 return true;
 

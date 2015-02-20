@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageDispatcher;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -70,7 +71,7 @@ public class GUItest extends Stage{
                             @Override
                             public void clicked(InputEvent event, float x, float y) {
                                 for(Entity e : Components.COMMANDER.get(entity).units) {
-                                    MessageDispatcher.getInstance().dispatchMessage(0f, Components.COMMANDER.get(entity), Components.STATE_MACHINE.get(e), Messages.REGROUP_ORDER);
+                                    MessageManager.getInstance().dispatchMessage(0f, Components.COMMANDER.get(entity), Components.STATE_MACHINE.get(e), Messages.REGROUP_ORDER);
                                 }
                             }
                         });

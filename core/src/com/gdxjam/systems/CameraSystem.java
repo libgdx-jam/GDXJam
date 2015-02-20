@@ -14,14 +14,10 @@ public class CameraSystem extends EntitySystem{
         cameraController = new CameraController(camera);
 	}
 	
-	public CameraSystem(OrthographicCamera camera, CameraController cameraController){
+	public CameraSystem(OrthographicCamera camera){
 		this.camera = camera;
-        this.cameraController = cameraController;
+        this.cameraController = new CameraController(camera);
 	}
-
-    public CameraSystem(OrthographicCamera camera){
-        this.camera = camera;
-    }
 	
 	
 	@Override
