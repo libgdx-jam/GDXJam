@@ -57,10 +57,10 @@ public class GUItest extends Stage{
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         engine.getSystem(CommanderControllerSystem.class).selectedCommander = commander;
-                        engine.getSystem(CameraSystem.class).cameraController.goToSmooth(Components.STEERABLE_BODY.get(commander).getPosition());
+                        engine.getSystem(CameraSystem.class).goToSmooth(Components.STEERABLE_BODY.get(commander).getPosition());
 
                         if (getTapCount() > 1) {
-                            engine.getSystem(CameraSystem.class).cameraController.smoothFollow(Components.STEERABLE_BODY.get(commander).getPosition());
+                            engine.getSystem(CameraSystem.class).smoothFollow(Components.STEERABLE_BODY.get(commander).getPosition());
                         }
                         HorizontalGroup horizontalGroup = new HorizontalGroup();
                         Label numberOfUnitsLabel = new Label("Units: " + Components.COMMANDER.get(commander).units.size, skin);

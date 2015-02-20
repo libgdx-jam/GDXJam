@@ -1,30 +1,31 @@
-package com.gdxjam;
+package com.gdxjam.input;
 
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.gdxjam.GameWorld;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.systems.CameraSystem;
+import com.gdxjam.systems.GameWorldSystem;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.ScreenshotFactory;
 
 public class DesktopInputProcessor implements InputProcessor {
 
-	OrthographicCamera camera;
-
 	Array<Squad> squads;
 
 	private GameWorld world;
+	private PooledEngine engine;
+	private CameraSystem cameraSystem;
 
-	public DesktopInputProcessor(PooledEngine engine, GameWorld world) {
-		this.camera = engine.getSystem(CameraSystem.class).getCamera();
+	public DesktopInputProcessor(PooledEngine engine) {
+		this.engine = engine;
+		this.cameraSystem = engine.getSystem(CameraSystem.class);
 		this.squads = engine.getSystem(SquadSystem.class).getSquads();
-		this.world = world;
+		this.world = engine.getSystem(GameWorldSystem.class).getWorld();
 	}
 
 	@Override
@@ -41,12 +42,10 @@ public class DesktopInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		Vector3 pos = new Vector3(screenX, screenY, 0);
-		pos.set(camera.unproject(pos));
 		if (button == Buttons.LEFT) {
 			for (Squad squad : squads) {
 				if (squad.isSelected()) {
-					squad.setTarget(pos.x, pos.y);
+					squad.setTarget(cameraSystem.screenToWorldCords(screenX, screenY));
 				}
 			}
 		}
@@ -55,7 +54,7 @@ public class DesktopInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean scrolled(int amount) {
-
+      cameraSystem.zoom(amount*0.1f);
 		return false;
 	}
 

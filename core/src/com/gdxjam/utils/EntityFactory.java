@@ -9,14 +9,22 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.gdxjam.Assets;
 import com.gdxjam.ai.states.UnitState;
-import com.gdxjam.components.*;
+import com.gdxjam.components.CommanderComponent;
+import com.gdxjam.components.CommanderHolderComponent;
+import com.gdxjam.components.Components;
+import com.gdxjam.components.PhysicsComponent;
+import com.gdxjam.components.ProximityComponent;
+import com.gdxjam.components.SpriteComponent;
+import com.gdxjam.components.StateMachineComponent;
+import com.gdxjam.components.SteerableBodyComponent;
+import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.systems.PhysicsSystem;
 
 public class EntityFactory {
@@ -139,6 +147,8 @@ public class EntityFactory {
 		entity.add(steerable);
 
 		entity.add(engine.createComponent(SteeringBehaviorComponent.class));
+		
+		entity.add(engine.createComponent(StateMachineComponent.class).init(entity));
 		
 		entity.add(engine.createComponent(SpriteComponent.class)
 			.init(Assets.getInstance().post.post1, position.x, position.y, 0.5f, 0.5f));

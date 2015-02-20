@@ -3,17 +3,17 @@ package com.gdxjam.screens;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.gdxjam.DesktopInputProcessor;
 import com.gdxjam.GameWorld;
-import com.gdxjam.ai.Squad;
+import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GUISystem;
+import com.gdxjam.systems.GameWorldSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
+import com.gdxjam.systems.StateMachineSystem;
 import com.gdxjam.systems.SteeringSystem;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityFactory;
@@ -27,7 +27,6 @@ public class GameScreen extends AbstractScreen {
 	private SteeringSystem steeringSystem;
 	private GUISystem gui;
 	private CameraSystem cameraSystem;
-	private SquadSystem squads;
 
 	// private Squad squadA;
 	// private Squad squadB;
@@ -41,43 +40,20 @@ public class GameScreen extends AbstractScreen {
 		loadWorld(world);
 
 		initGUI();
-
-		DesktopInputProcessor input = new DesktopInputProcessor(engine, world);
+		DesktopInputProcessor input = new DesktopInputProcessor(engine);
 		Gdx.input.setInputProcessor(input);
 	}
 
 	public GameWorld createTestWorld() {
-		GameWorld world = new GameWorld();
+		GameWorld world = new GameWorld(64, 36);
 
-		Squad squadA = createSquad(new Vector2(0, 10));
-		Squad squadB = createSquad(new Vector2(10, 10));
-		Squad squadC = createSquad(new Vector2(0, 0));
-		Squad squadD = createSquad(new Vector2(10, 0));
-
-		squads.add(squadA);
-		squads.add(squadB);
-		squads.add(squadC);
-		squads.add(squadD);
+//		Squad squadA = EntityFactory.createSquad(new Vector2(0, 10));
+//		Squad squadB = EntityFactory.createSquad(new Vector2(10, 10));
+//		Squad squadC = EntityFactory.createSquad(new Vector2(0, 0));
+//		Squad squadD = EntityFactory.createSquad(new Vector2(10, 0));
 
 		EntityFactory.createFortress(new Vector2(10, 10), 12, 12);
 		return world;
-	}
-
-	public Squad createSquad(Vector2 position) {
-		Squad squad = new Squad(position);
-		position.set(position.x - 1, position.y - 1);
-		for (int x = 0; x < 3; x++) {
-			for (int y = 0; y < 3; y++) {
-				if (x == 1 && y == 1) {
-					squad.addMember(EntityFactory.createCommander(new Vector2(
-							position.x + x, position.y + y)));
-				} else {
-					squad.addMember(EntityFactory.createUnit(new Vector2(
-							position.x + x, position.y + y)));
-				}
-			}
-		}
-		return squad;
 	}
 
 	public void initGUI() {
@@ -86,7 +62,6 @@ public class GameScreen extends AbstractScreen {
 		 * */
 		gui = new GUISystem(640, 360, engine);
 		engine.addSystem(gui);
-
 	}
 
 	public void updateGUI(GameWorld world, float deltaTime) {
@@ -99,11 +74,13 @@ public class GameScreen extends AbstractScreen {
 				+ ResourceSystem.foodThreshold);
 	}
 
-	public void initEngine() {
+
+	public PooledEngine initEngine () {
 		engine = new PooledEngine();
 		EntityFactory.setEngine(engine);
 
-		cameraSystem = new CameraSystem(new OrthographicCamera(64, 36));
+		CameraSystem cameraSystem = new CameraSystem(64, 36);
+		cameraSystem.getCamera().position.set(32, 18, 0);
 		engine.addSystem(cameraSystem);
 
 		physicsSystem = new PhysicsSystem();
@@ -114,12 +91,23 @@ public class GameScreen extends AbstractScreen {
 
 		engine.addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
 
-		squads = new SquadSystem();
-		engine.addSystem(squads);
+		SquadSystem squadSystem = new SquadSystem();
+		engine.addSystem(squadSystem);
+		
+		SteeringSystem steeringSystem = new SteeringSystem();
+		
+		//AI
+		engine.addSystem(steeringSystem);
+		engine.addSystem(new StateMachineSystem());
+		engine.addSystem(new SquadSystem());
+		
+		engine.addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
+		return engine;
 	}
 
 	public void loadWorld(GameWorld world) {
 		engine.addSystem(new ResourceSystem(world));
+		engine.addSystem(new GameWorldSystem(world));
 	}
 
 	@Override
