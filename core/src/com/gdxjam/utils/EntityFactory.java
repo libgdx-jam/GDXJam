@@ -40,14 +40,8 @@ public class EntityFactory {
 		EntityFactory.engine = engine;
 	}
 	
-	public static Entity createFortress(Vector2 position, float width, float height){
-		Entity entity = engine.createEntity();
-		
-		BodyDef def = new BodyDef();
-		def.type = BodyType.StaticBody;
-		def.position.set(position);
-		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
-		
+	public static void createFortress(Vector2 position, float width, float height){
+
 		//Towers
 		createTower(new Vector2(position.x - (width * 0.5f), position.y + height * 0.5f));
 		createTower(new Vector2(position.x + (width * 0.5f), position.y + height * 0.5f));
@@ -63,37 +57,36 @@ public class EntityFactory {
 		float verticalSegmentCenter = (-height * 0.5f) + (verticalSegmentSize * 0.5f) + (towerSize * 0.5f);
 		float verticalSegmentOffset = (width* 0.5f) + (wallWidth * 0.5f);
 		
-		FixtureDef topLeftWall = createWallFixture(horizontalSegmentSize, new Vector2(horizontalSegmentCenter, horizontalSegmentOffset), 0);
-		FixtureDef topRightWall = createWallFixture(horizontalSegmentSize, new Vector2(-horizontalSegmentCenter, horizontalSegmentOffset), 0);
-		FixtureDef bottomLeftWall = createWallFixture(horizontalSegmentSize,new Vector2(horizontalSegmentCenter, -horizontalSegmentOffset), 0);
-		FixtureDef bottomRightWall = createWallFixture(horizontalSegmentSize, new Vector2(-horizontalSegmentCenter, -horizontalSegmentOffset), 0);
+		createWall(new Vector2(horizontalSegmentCenter, horizontalSegmentOffset).add(position), horizontalSegmentSize, 0);
+		createWall(new Vector2(-horizontalSegmentCenter, horizontalSegmentOffset).add(position), horizontalSegmentSize, 0);
+		createWall(new Vector2(horizontalSegmentCenter, -horizontalSegmentOffset).add(position), horizontalSegmentSize, 0);
+		createWall(new Vector2(-horizontalSegmentCenter, -horizontalSegmentOffset).add(position), horizontalSegmentSize, 0);
+
+		createWall(new Vector2(-verticalSegmentOffset, verticalSegmentCenter).add(position), verticalSegmentSize, MathUtils.PI * 0.5f);
+		createWall(new Vector2(-verticalSegmentOffset, -verticalSegmentCenter).add(position), verticalSegmentSize, MathUtils.PI * 0.5f);
+		createWall(new Vector2(verticalSegmentOffset, verticalSegmentCenter).add(position), verticalSegmentSize, MathUtils.PI * 0.5f);
+		createWall(new Vector2(verticalSegmentOffset, -verticalSegmentCenter).add(position), verticalSegmentSize, MathUtils.PI * 0.5f);
+
+	}
+	
+	public static Entity createWall(Vector2 center, float length, float rotation){
+		Entity entity = engine.createEntity();
 		
-		FixtureDef leftTopWall = createWallFixture(verticalSegmentSize, new Vector2(-verticalSegmentOffset, verticalSegmentCenter), MathUtils.PI * 0.5f);
-		FixtureDef leftBottomWall = createWallFixture(verticalSegmentSize, new Vector2(-verticalSegmentOffset, -verticalSegmentCenter), MathUtils.PI * 0.5f);
-		FixtureDef rightTopWall = createWallFixture(verticalSegmentSize, new Vector2(verticalSegmentOffset, verticalSegmentCenter), MathUtils.PI * 0.5f);
-		FixtureDef rightBottomWall = createWallFixture(verticalSegmentSize, new Vector2(verticalSegmentOffset, -verticalSegmentCenter), MathUtils.PI * 0.5f);
+		BodyDef def = new BodyDef();
+		def.type = BodyType.StaticBody;
+		def.position.set(center);
+		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
 		
-		body.createFixture(topLeftWall);
-		topLeftWall.shape.dispose();
-		body.createFixture(topRightWall);
-		topRightWall.shape.dispose();
+		FixtureDef fixdef = new FixtureDef();
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(length * 0.5f, wallWidth * 0.5f, new Vector2(0, 0), rotation);
+		fixdef.shape = shape;
 		
-		body.createFixture(bottomLeftWall);
-		bottomLeftWall.shape.dispose();
-		body.createFixture(bottomRightWall);
-		bottomRightWall.shape.dispose();
-		
-		body.createFixture(leftTopWall);
-		leftTopWall.shape.dispose();
-		body.createFixture(leftBottomWall);
-		leftBottomWall.shape.dispose();
-		
-		body.createFixture(rightTopWall);
-		rightTopWall.shape.dispose();
-		body.createFixture(rightBottomWall);
-		rightBottomWall.shape.dispose();
+		body.createFixture(fixdef);
+		fixdef.shape.dispose();
 		
 		entity.add(engine.createComponent(PhysicsComponent.class).init(body));
+		entity.add(engine.createComponent(HealthComponent.class));
 		
 		engine.addEntity(entity);
 		return entity;
