@@ -44,19 +44,15 @@ public class GUISystem extends EntitySystem {
 		viewport = new ScalingViewport(Scaling.stretch, viewportWidth,
 				viewportHeight, camera);
 		stage = new Stage(viewport);
-		this.squads = engine.getSystem(SquadSystem.class).getSquads();
-		init();
+		init(engine);
 	}
 
-	public void init() {
-		Skin skin = Assets.getManager().get(Assets.SKIN, Skin.class);
-		// foodLabel = new Label("Food: 0 / 0", skin);
+	public void init(PooledEngine engine) {
+		this.squads = engine.getSystem(SquadSystem.class).getSquads();
+
 		LabelStyle labelStyle = new LabelStyle(
 				Assets.getInstance().fonts.small, Color.WHITE);
 		foodLabel = new Label("Food: 0 / 0", labelStyle);
-		// foodLabel.setPosition(camera.viewportWidth - 100,
-		// camera.viewportHeight - 50);
-		// foodLabel.setSize(3, 1);
 
 		Table table = new Table();
 		table.setFillParent(true);
@@ -69,7 +65,6 @@ public class GUISystem extends EntitySystem {
 		stage.addActor(table);
 
 		Table bottomHotkeys = new Table();
-		// bottomHotkeys.defaults().pad(10);
 		ImageButton left = new ImageButton(new TextureRegionDrawable(
 				Assets.getInstance().hotkey.left));
 		bottomHotkeys.add(left);
@@ -104,7 +99,9 @@ public class GUISystem extends EntitySystem {
 		bottomHotkeys.setPosition(
 				camera.viewportWidth / 2 - bottomHotkeys.getWidth(), 25);
 
-		stage.addActor(bottomHotkeys);
+		// only add the bottom hotbar if there is something there to add
+		if (squads.size >= 1)
+			stage.addActor(bottomHotkeys);
 	}
 
 	@Override

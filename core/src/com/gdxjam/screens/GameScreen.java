@@ -79,7 +79,7 @@ public class GameScreen extends AbstractScreen {
 		engine = new PooledEngine();
 		EntityFactory.setEngine(engine);
 
-		CameraSystem cameraSystem = new CameraSystem(64, 36);
+		cameraSystem = new CameraSystem(64, 36);
 		cameraSystem.getCamera().position.set(32, 18, 0);
 		engine.addSystem(cameraSystem);
 
