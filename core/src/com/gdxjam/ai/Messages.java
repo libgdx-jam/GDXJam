@@ -7,7 +7,4 @@ public class Messages {
     public static final int
             REGROUP_ORDER = 1,
             RESOUCES_ORDER = 2;
-
-
-
 }

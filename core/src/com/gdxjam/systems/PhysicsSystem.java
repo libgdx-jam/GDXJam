@@ -8,8 +8,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Disposable;
 
-public class PhysicsSystem extends EntitySystem{
+public class PhysicsSystem extends EntitySystem implements Disposable{
 	
 	private static final float TIME_STEP = 1.0f/60.f;
 	private static final int VELOCITY_ITERATIONS = 8;
@@ -49,5 +50,10 @@ public class PhysicsSystem extends EntitySystem{
 			renderer = new Box2DDebugRenderer();
 		}
 		renderer.render(world, camera.combined);
+	}
+
+	@Override
+	public void dispose () {
+		world.dispose();
 	}
 }
