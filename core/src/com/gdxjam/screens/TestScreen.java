@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.EntityManager;
+import com.gdxjam.GameWorld;
 import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.InputAITest;
@@ -44,6 +45,8 @@ public class TestScreen extends AbstractScreen {
 	}
 
 	public void createTestWorld() {
+		GameWorld world = new GameWorld(64, 36);
+		EntityManager.getInstance().loadWorld(world);
 		EntityFactory.createSquad(new Vector2(15, 5));
 		EntityFactory.createSquad(new Vector2(-30, -30));
 		EntityFactory.createSquad(new Vector2(0, 30));
