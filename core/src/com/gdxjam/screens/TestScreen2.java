@@ -17,7 +17,7 @@ public class TestScreen2 extends AbstractScreen{
 	private static final int PIXELS_PER_UNIT = 32;
 	
 	private PooledEngine engine;
-    private GUITest guiTest;
+    private GUITest GUITest;
 
 
     @Override
@@ -26,12 +26,12 @@ public class TestScreen2 extends AbstractScreen{
 
 		initEngine();
         //gui needs to be created after engine but before world, for the listener to work
-        guiTest = new GUITest(engine);
+        GUITest = new GUITest(engine);
 
 		createTestWorld();
 
         //inputs
-        inputMultiplexer.addProcessor(guiTest);
+        inputMultiplexer.addProcessor(GUITest);
         inputMultiplexer.addProcessor(new InputAITest(engine));
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -39,9 +39,12 @@ public class TestScreen2 extends AbstractScreen{
 	
 	public void createTestWorld(){
         EntityFactory.createSquad(new Vector2(15,5));
+        EntityFactory.createSquad(new Vector2(-30,-30));
+        EntityFactory.createSquad(new Vector2(0,30));
+        EntityFactory.createSquad(new Vector2(50,5));
         ResourceGenerator.generateForest(engine, new Vector2(20,20), 25, 7,0,0.1f);
         EntityFactory.createFortress(new Vector2(15, 5), 15, 12);
-        ResourceGenerator.generateForest(engine, new Vector2(0,5), 10, 30,0,0.3f);
+        ResourceGenerator.generateForest(engine, new Vector2(-10,5), 10, 30,0,0.05f);
 	}
 
 	public void initEngine(){
@@ -70,8 +73,8 @@ public class TestScreen2 extends AbstractScreen{
 		super.render(delta);
 
 		engine.update(delta);
-        guiTest.act(delta);
-        guiTest.draw();
+        GUITest.act(delta);
+        GUITest.draw();
 	}
 	
 }

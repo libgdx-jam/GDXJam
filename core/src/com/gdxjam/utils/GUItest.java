@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -29,7 +30,7 @@ public class GUITest extends Stage{
     Skin skin;
     HashMap<Entity, Actor> commanderButtonMap;
     public GUITest(final Engine engine) {
-        super(new StretchViewport(16*50,9*50));
+        super(new StretchViewport(16*80,9*80));
         this.engine = engine;
         commanderButtonMap = new HashMap<Entity,Actor>();
 
@@ -42,15 +43,16 @@ public class GUITest extends Stage{
         newCommanderButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
+                EntityFactory.createSquad(new Vector2((float)Math.random()*50f,(float)Math.random()*50f));
             }
         });
         commanderGroup.addActor(newCommanderButton);
 
+        //Listener to listen when a new Commander/squad is added to the engine
         engine.addEntityListener(Family.all(CommanderComponent.class).get(), new EntityListener() {
             @Override
             public void entityAdded(final Entity commander) {
-                TextButton textButton = new TextButton("COMMANDER" + (commanderGroup.getChildren().size +""), skin);
+                TextButton textButton = new TextButton("COMMANDER " + (commanderGroup.getChildren().size +""), skin);
                 textButton.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
@@ -78,11 +80,11 @@ public class GUITest extends Stage{
                         TextButton resourcesB = new TextButton("Resources", skin);
                         horizontalGroup.addActor(resourcesB);
 
-                        TextButton addUnitB = new TextButton("Add Unit", skin);
-                        horizontalGroup.addActor(addUnitB);
+                        TextButton attackB = new TextButton("Attack", skin);
+                        horizontalGroup.addActor(attackB);
 
                         horizontalGroup.setFillParent(true);
-                        horizontalGroup.bottom();
+                        horizontalGroup.bottom().space(6);
                         GUITest.this.addActor(horizontalGroup);
                     }
                 });
@@ -98,10 +100,19 @@ public class GUITest extends Stage{
             }
         });
 
-
+        VerticalGroup commandsExplanation = new VerticalGroup();
+        commandsExplanation.addActor(new Label("Commands:", skin));
+        commandsExplanation.addActor(new Label("Select Commander on th RightTab", skin));
+        commandsExplanation.addActor(new Label("Double click to camera follow commander", skin));
+        commandsExplanation.addActor(new Label("'Regroup Order' for units follow commander", skin));
+        commandsExplanation.addActor(new Label("Mouse scroll to zoom", skin));
+        commandsExplanation.addActor(new Label("'new' to add a new commander on random position", skin));
+        commandsExplanation.setFillParent(true);
+        commandsExplanation.left();
+        this.addActor(commandsExplanation);
 
         commanderGroup.setFillParent(true);
-        commanderGroup.right();
+        commanderGroup.right().space(3f).padRight(2f).padTop(2f);
         this.addActor(commanderGroup);
     }
 

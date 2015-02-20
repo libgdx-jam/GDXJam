@@ -45,12 +45,13 @@ public class InputAITest implements InputProcessor {
     public boolean touchDown(final int screenX, final int screenY, int pointer, int button) {
         Entity entity = engine.getSystem(CommanderControllerSystem.class).selectedCommander;
         if (entity != null){
+            Vector3 pos = new Vector3(screenX, screenY, 0);
+            pos.set(engine.getSystem(CameraSystem.class).getCamera().unproject(pos));
+            final Vector2 posR =new Vector2(pos.x,pos.y);
             Arrive<Vector2> arrive = new Arrive<Vector2>(Components.STEERABLE_BODY.get(entity), new SteerableAdapter<Vector2>(){
                 @Override
                 public Vector2 getPosition() {
-                    Vector3 pos = new Vector3(screenX, screenY, 0);
-                    pos.set(engine.getSystem(CameraSystem.class).getCamera().unproject(pos));
-                    return  new Vector2(pos.x,pos.y);
+                    return posR.cpy();
 
                 }
             }).setTimeToTarget(0.01f).setArrivalTolerance(0.002f).setDecelerationRadius(5f);
