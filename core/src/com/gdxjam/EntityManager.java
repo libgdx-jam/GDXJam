@@ -52,13 +52,13 @@ public class EntityManager extends PooledEngine implements Disposable{
 		
 		
 		addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
+		addSystem(new LightingSystem());
 		return this;
 	}
 	
 	public void loadWorld(GameWorld world){
 		addSystem(new ResourceSystem(world));
 		addSystem(new GameWorldSystem(world));
-		addSystem(new LightingSystem());
 	}
 	
 	@Override

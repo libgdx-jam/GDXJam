@@ -36,12 +36,15 @@ import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.systems.StateMachineSystem;
 import com.gdxjam.systems.SteeringSystem;
+import com.gdxjam.ui.GameTimeTable;
 import com.gdxjam.utils.EntityFactory;
 
 public class SquadFormationTestScreen extends AbstractScreen{
 	
 	private Stage stage;
 	private Label foodLabel;
+	private GameTimeTable gameTimeTable;
+	private GameWorld world;
 
 	@Override
 	public void show () {
@@ -51,7 +54,8 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		initGUI();
 		
 		EntityManager.getInstance().initSystems();
-		EntityManager.getInstance().loadWorld(createTestWorld());
+		world = createTestWorld();
+		EntityManager.getInstance().loadWorld(world);
 		
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		
@@ -76,6 +80,8 @@ public class SquadFormationTestScreen extends AbstractScreen{
 	public void initGUI(){
 		Skin skin = Assets.getManager().get(Assets.SKIN, Skin.class);
 		foodLabel = new Label("Food: 0 / 0", skin);
+		
+		gameTimeTable = new GameTimeTable(skin);
 		
 		TextButton formSquadButton = new TextButton("Form Squad", skin);
 		formSquadButton.addListener(new ChangeListener() {
@@ -113,6 +119,7 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		table.add(formSquadButton);
 		table.add(killButton);
 		table.add(foodLabel);
+		table.add(gameTimeTable);
 	
 		
 		stage.addActor(table);
@@ -121,6 +128,7 @@ public class SquadFormationTestScreen extends AbstractScreen{
 	
 	public void updateGUI(GameWorld world){
 		foodLabel.setText("Food: " + world.food + " / " + ResourceSystem.foodThreshold);
+		gameTimeTable.update();
 	}
 
 	@Override
@@ -135,6 +143,7 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		Gdx.gl20.glClearColor(0, 0, 0, 1);
 		
 		EntityManager.getInstance().update(delta);
+		updateGUI(world);
 
 		stage.act();
 		stage.draw();
