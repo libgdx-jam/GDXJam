@@ -20,7 +20,7 @@ public class ScreenshotFactory {
 			do {
 				fh = new FileHandle(directory + "screenshot" + counter++ + ".png");
 			} while (fh.exists());
-			Pixmap pixmap = getScreenshot(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+			Pixmap pixmap = getScreenshot(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 			PixmapIO.writePNG(fh, pixmap);
 			pixmap.dispose();
 		} catch (Exception e) {

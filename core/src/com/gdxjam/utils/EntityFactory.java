@@ -122,13 +122,14 @@ public class EntityFactory {
 		return def;
 	}
 	
-	public static Entity createTree(Vector2 position, float radius){
+	public static Entity createTree(Vector2 position, float radius, String type){
 		Entity entity = engine.createEntity();
       entity.add(engine.createComponent(ResourceComponent.class).init(ResourceType.WOOD, 1));
       
       BodyDef def = new BodyDef();
       def.type = BodyDef.BodyType.StaticBody;
       def.position.set(position);
+      def.angle = MathUtils.random(360);
       Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
       
       CircleShape shape = new CircleShape();
@@ -140,7 +141,7 @@ public class EntityFactory {
       entity.add((SteerableBodyComponent)engine.createComponent(SteerableBodyComponent.class).init(body));
       
       entity.add(engine.createComponent(SpriteComponent.class)
-   		.init(Assets.getManager().get("minimal.pack", TextureAtlas.class).findRegion("tree"), position.x, position.y, radius * 2, radius * 2));
+   		.init(Assets.getManager().get("minimal.pack", TextureAtlas.class).findRegion(type), position.x, position.y, radius * 2, radius * 2));
 	
 		engine.addEntity(entity);
 		return entity;
