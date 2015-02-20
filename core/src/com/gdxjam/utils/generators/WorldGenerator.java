@@ -16,7 +16,7 @@ public class WorldGenerator {
 		WorldGenerator.engine = engine;
 	}
 	
-	public static void generateForest(Vector2 center, float width, float height, float minRadius, float maxRadius, float density){
+	public static void generateForest(Vector2 center, float width, float height, float minRadius, float maxRadius, float density, String type){
       //PROTOTYPE
       //Density should be between 0 and 1
       if(density<0 || density>1) density = 0.5f;
@@ -39,7 +39,7 @@ public class WorldGenerator {
           }
       }
       for(Circle c : circles){
-          EntityFactory.createTree(new Vector2(c.x,c.y), c.radius);
+          EntityFactory.createTree(new Vector2(c.x,c.y), c.radius, type);
       }
   }
 		

@@ -18,3 +18,17 @@ tree
   orig: 64, 64
   offset: 0, 0
   index: -1
+commander
+  rotate: false
+  xy: 0, 64
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+mushroom
+  rotate: false
+  xy: 64, 64
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
