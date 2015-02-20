@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.ai.fsm.StackStateMachine;
 import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -22,6 +23,8 @@ import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.ProximityComponent;
+import com.gdxjam.components.ResourceComponent;
+import com.gdxjam.components.ResourceComponent.ResourceType;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.SteerableBodyComponent;
@@ -119,6 +122,37 @@ public class EntityFactory {
 		return def;
 	}
 	
+	public static Entity createTree(Vector2 position, float radius){
+		Entity entity = engine.createEntity();
+      entity.add(engine.createComponent(ResourceComponent.class).init(ResourceType.WOOD, 1));
+      
+      BodyDef def = new BodyDef();
+      def.type = BodyDef.BodyType.StaticBody;
+      def.position.set(position);
+      Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
+      
+      CircleShape shape = new CircleShape();
+      shape.setRadius(radius);
+      body.createFixture(shape, 1.0f);
+      shape.dispose();
+      
+      
+      entity.add((SteerableBodyComponent)engine.createComponent(SteerableBodyComponent.class).init(body));
+      
+      entity.add(engine.createComponent(SpriteComponent.class)
+   		.init(Assets.getManager().get("minimal.pack", TextureAtlas.class).findRegion("tree"), position.x, position.y, radius * 2, radius * 2));
+	
+		engine.addEntity(entity);
+		return entity;
+	}
+	
+	public static Entity createResourceNode(Vector2 position, ResourceType type, int amount){
+		Entity entity = engine.createEntity();
+      entity.add(engine.createComponent(ResourceComponent.class).init(type, amount));
+      engine.addEntity(entity);
+      return entity;
+	}
+	
 	public static Entity createUnit(Vector2 position){
 		Entity entity = engine.createEntity();
 
@@ -145,7 +179,7 @@ public class EntityFactory {
 		entity.add(engine.createComponent(StateMachineComponent.class).init(entity));
 		
 		entity.add(engine.createComponent(SpriteComponent.class)
-			.init(Assets.getInstance().post.post1, position.x, position.y, 0.5f, 0.5f));
+			.init(Assets.getManager().get("minimal.pack", TextureAtlas.class).findRegion("unit"), position.x, position.y, 0.5f, 0.5f));
 		
 		entity.add(engine.createComponent(HealthComponent.class));
 

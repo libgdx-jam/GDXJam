@@ -14,7 +14,7 @@ import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.SteeringSystem;
 import com.gdxjam.utils.EntityFactory;
 import com.gdxjam.utils.GUItest;
-import com.gdxjam.utils.generators.ResourceGenerator;
+import com.gdxjam.utils.generators.WorldGenerator;
 
 public class TestScreen extends AbstractScreen {
 	private PooledEngine engine;
@@ -44,11 +44,9 @@ public class TestScreen extends AbstractScreen {
 		EntityFactory.createSquad(new Vector2(-30, -30));
 		EntityFactory.createSquad(new Vector2(0, 30));
 		EntityFactory.createSquad(new Vector2(50, 5));
-		ResourceGenerator.generateForest(engine, new Vector2(20, 20), 25, 7, 0,
-				0.1f);
+		WorldGenerator.generateForest(new Vector2(20, 20), 25, 7, 0.1f, 0.2f, 0.1f);
+		WorldGenerator.generateForest(new Vector2(-10, 5), 10, 30, 0.1f, 0.2f, 0.05f);
 		EntityFactory.createFortress(new Vector2(15, 5), 15, 12);
-		ResourceGenerator.generateForest(engine, new Vector2(-10, 5), 10, 30,
-				0, 0.05f);
 	}
 
 	public void initEngine() {

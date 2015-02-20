@@ -12,9 +12,11 @@ public class ResourceComponent extends Component {
     }
 
     public ResourceType resourceType;
+    public int amount; 
 
-    public ResourceComponent init(ResourceType resourceType){
+    public ResourceComponent init(ResourceType resourceType, int amount){
         this.resourceType = resourceType;
+        this.amount = amount;
         return this;
     }
 

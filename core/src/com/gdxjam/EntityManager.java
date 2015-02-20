@@ -13,6 +13,7 @@ import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GameWorldSystem;
 import com.gdxjam.systems.HealthSystem;
+import com.gdxjam.systems.LightingSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
@@ -56,6 +57,7 @@ public class EntityManager extends PooledEngine implements Disposable{
 	public void loadWorld(GameWorld world){
 		addSystem(new ResourceSystem(world));
 		addSystem(new GameWorldSystem(world));
+		addSystem(new LightingSystem());
 	}
 	
 	@Override
