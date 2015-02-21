@@ -32,7 +32,7 @@ public class SquadSystem extends EntitySystem{
 	
 	public Squad createSquad(Entity commander){
 		SteerableBodyComponent steerable = Components.STEERABLE_BODY.get(commander);
-		int index = squads.indexOf(null, true);
+		int index = squads.size;
 		Squad squad = new Squad(steerable.getPosition().cpy(), index);
 		
 		addUnitToSquad(commander, squad);
