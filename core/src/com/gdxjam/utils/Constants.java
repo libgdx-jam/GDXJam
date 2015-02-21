@@ -17,13 +17,6 @@ public class Constants {
 	public static final float sunsetBegin = 18 * secondsPerHour;
 	public static final float sunsetEnd = 19 * secondsPerHour;
 	public static final float sunsetDuration = sunsetEnd - sunsetBegin;
-
-	// Keybinds
-	public static final int HOTKEY_PLATOON1 = Keys.NUM_1;
-	public static final int HOTKEY_PLATOON2 = Keys.NUM_2;
-	public static final int HOTKEY_PLATOON3 = Keys.NUM_3;
-	public static final int HOTKEY_PLATOON4 = Keys.NUM_4;
-
-	public static final String BLOCK_TYPE = "tiletype";
-
+	public static final int maxSquads = 5;
+	
 }

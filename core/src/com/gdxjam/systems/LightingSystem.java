@@ -19,6 +19,7 @@ public class LightingSystem extends EntitySystem{
 
 	public void init(World world){
 		rayHandler = new RayHandler(world);
+		ambient.set(NIGHT);
 		rayHandler.setAmbientLight(ambient);
 	}
 	
