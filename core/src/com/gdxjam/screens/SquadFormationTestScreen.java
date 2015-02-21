@@ -135,6 +135,7 @@ public class SquadFormationTestScreen extends AbstractScreen{
 	public void resize (int width, int height) {
 		super.resize(width, height);
 		EntityManager.getInstance().getSystem(CameraSystem.class).getViewport().update(width, height);
+		stage.getViewport().update(width, height);
 	}
 
 	@Override

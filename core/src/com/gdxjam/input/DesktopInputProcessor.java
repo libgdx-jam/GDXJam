@@ -4,9 +4,9 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.utils.Array;
 import com.gdxjam.GameWorld;
-import com.gdxjam.ai.Squad;
+import com.gdxjam.ai.states.SquadState;
+import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.GameWorldSystem;
 import com.gdxjam.systems.SquadSystem;
@@ -15,16 +15,15 @@ import com.gdxjam.utils.ScreenshotFactory;
 
 public class DesktopInputProcessor implements InputProcessor {
 
-	Array<Squad> squads;
-
 	private GameWorld world;
+	private SquadSystem squadSystem;
 	private PooledEngine engine;
 	private CameraSystem cameraSystem;
 
 	public DesktopInputProcessor(PooledEngine engine) {
 		this.engine = engine;
 		this.cameraSystem = engine.getSystem(CameraSystem.class);
-		this.squads = engine.getSystem(SquadSystem.class).getSquads();
+		this.squadSystem = engine.getSystem(SquadSystem.class);
 		this.world = engine.getSystem(GameWorldSystem.class).getWorld();
 	}
 
@@ -42,14 +41,11 @@ public class DesktopInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (button == Buttons.LEFT) {
-			for (Squad squad : squads) {
-				if (squad.isSelected()) {
-					squad.setTarget(cameraSystem.screenToWorldCords(screenX, screenY));
-				}
-			}
+		if(button == Buttons.LEFT){
+			squadSystem.setTarget(cameraSystem.screenToWorldCords(screenX, screenY));
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override
@@ -78,20 +74,36 @@ public class DesktopInputProcessor implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
-		// Add keys to select platoons
-		case Constants.HOTKEY_PLATOON1:
-			squads.get(0).setSelected(!squads.get(0).isSelected());
+		
+		case Keybinds.SQUAD0:
+			squadSystem.toggleSelected(0);
 			return true;
-		case Constants.HOTKEY_PLATOON2:
-			squads.get(1).setSelected(!squads.get(1).isSelected());
+		case Keybinds.SQUAD1:
+			squadSystem.toggleSelected(1);
 			return true;
-		case Constants.HOTKEY_PLATOON3:
-			squads.get(2).setSelected(!squads.get(2).isSelected());
+		case Keybinds.SQUAD2:
+			squadSystem.toggleSelected(2);
 			return true;
-		case Constants.HOTKEY_PLATOON4:
-			squads.get(3).setSelected(!squads.get(3).isSelected());
-
+		case Keybinds.SQUAD3:
+			squadSystem.toggleSelected(3);
 			return true;
+		case Keybinds.SQUAD4:
+			squadSystem.toggleSelected(4);
+			return true;
+			
+		case Keybinds.ACTION0:
+			squadSystem.setState(SquadState.MOVE);
+			return true;
+		case Keybinds.ACTION1:
+			squadSystem.setState(UnitState.IDLE);
+			return true;
+		case Keybinds.ACTION2:
+			return true;
+		case Keybinds.ACTION3:
+			return true;
+		case Keybinds.ACTION4:
+			return true;
+			
 
 		case Keys.SPACE:
 			Constants.pausedGUI = !Constants.pausedGUI;
