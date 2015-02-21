@@ -1,6 +1,5 @@
 package com.gdxjam.utils;
 
-import com.badlogic.gdx.Input.Keys;
 
 public class Constants {
 
