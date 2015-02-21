@@ -34,6 +34,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	public static final String SKIN = "skin/uiskin.json";
 
 	public AssetHotkey hotkey;
+	public AssetFonts fonts;
 
 	public Assets() {
 		manager = new AssetManager();
@@ -49,6 +50,7 @@ public class Assets implements Disposable, AssetErrorListener {
 			TextureAtlas atlas = manager.get(TEXTURE_ATLAS_OBJECTS);
 
 			hotkey = new AssetHotkey(atlas);
+			fonts = new AssetFonts();
 		}
 	}
 
