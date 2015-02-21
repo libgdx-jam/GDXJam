@@ -24,6 +24,7 @@ import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.ProximityComponent;
 import com.gdxjam.components.ResourceComponent;
+import com.gdxjam.components.UnitComponent;
 import com.gdxjam.components.ResourceComponent.ResourceType;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.StateMachineComponent;
@@ -220,6 +221,8 @@ public class EntityFactory {
 		entity.add(engine.createComponent(SpriteComponent.class).init(
 				Assets.getInstance().minimal.unit, position.x, position.y,
 				0.5f, 0.5f));
+		
+		entity.add(engine.createComponent(UnitComponent.class));
 
 		entity.add(engine.createComponent(HealthComponent.class));
 

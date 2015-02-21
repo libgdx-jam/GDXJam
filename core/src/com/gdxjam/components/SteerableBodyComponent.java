@@ -10,11 +10,10 @@ public class SteerableBodyComponent extends PhysicsComponent implements Steerabl
 	
 	private float maxAngluarSpeed = 30;
 	private float maxAngluarAcceleration = 100;
+	private boolean independentFacing = false;
 	
 	private boolean tagged = false;
-	private boolean independentFacing = false;
 
-	
 	@Override
 	public float getMaxLinearSpeed() {
 		return maxLinearSpeed;

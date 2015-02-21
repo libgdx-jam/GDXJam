@@ -10,7 +10,7 @@ public class Components {
 	
 	//AI
 	public static final ComponentMapper<CommanderComponent> COMMANDER = ComponentMapper.getFor(CommanderComponent.class);
-	public static final ComponentMapper<SquadMemberComponent> SQUAD_MEMBER = ComponentMapper.getFor(SquadMemberComponent.class);
+	public static final ComponentMapper<UnitComponent> UNIT = ComponentMapper.getFor(UnitComponent.class);
 	public static final ComponentMapper<SteeringBehaviorComponent> STEERING_BEHAVIOR = ComponentMapper.getFor(SteeringBehaviorComponent.class);
 	public static final ComponentMapper<SteerableBodyComponent> STEERABLE_BODY = ComponentMapper.getFor(SteerableBodyComponent.class);
 

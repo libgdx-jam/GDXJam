@@ -2,7 +2,6 @@ package com.gdxjam.screens;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
@@ -16,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.gdxjam.Assets;
 import com.gdxjam.EntityManager;
 import com.gdxjam.GameWorld;
@@ -29,13 +27,8 @@ import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
-import com.gdxjam.systems.EntityRenderSystem;
-import com.gdxjam.systems.GameWorldSystem;
-import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
-import com.gdxjam.systems.StateMachineSystem;
-import com.gdxjam.systems.SteeringSystem;
 import com.gdxjam.ui.GameTimeTable;
 import com.gdxjam.utils.EntityFactory;
 
@@ -95,7 +88,7 @@ public class SquadFormationTestScreen extends AbstractScreen{
 						squad = squadSystem.createSquad(entity);
 					}
 					else{
-						squadSystem.addSquadMember(entity, squad);
+						squadSystem.addUnitToSquad(entity, squad);
 					}
 				}
 			}
