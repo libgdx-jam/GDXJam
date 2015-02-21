@@ -10,22 +10,20 @@ import com.gdxjam.components.SteerableBodyComponent;
 
 public class Squad implements Telegraph{
 
-	public int index = 0;
 	public SteerableTarget target;
-	public Array<Entity> entities;
+	public Array<Entity> members;
 	public Array<SteerableBodyComponent> agents;
-	
-	public boolean selected = false;
+	private boolean selected = false;
 
-	public Squad(Vector2 position, int index) {
-		entities = new Array<Entity>();
+	public Squad(Vector2 position) {
+		members = new Array<Entity>();
 		agents = new Array<SteerableBodyComponent>();
 		target = new SteerableTarget(position, 1.0f);
 	}
 
 	
-	public void addEntity(Entity entity){
-		entities.add(entity);
+	public void addMember(Entity entity){
+		members.add(entity);
 		agents.add(Components.STEERABLE_BODY.get(entity));
 	}
 
@@ -52,6 +50,7 @@ public class Squad implements Telegraph{
 	public Array<SteerableBodyComponent> getAgents(){
 		return agents;
 	}
+
 
 	@Override
 	public boolean handleMessage (Telegram msg) {
