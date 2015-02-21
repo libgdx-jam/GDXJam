@@ -33,7 +33,7 @@ public class SquadSystem extends EntitySystem{
 		SteerableBodyComponent steerable = Components.STEERABLE_BODY.get(commander);
 		Squad squad = new Squad(steerable.getPosition().cpy());
 		addSquadMember(commander, squad);
-		Components.SPRITE.get(commander).sprite.setRegion(Assets.getManager().get("minimal.pack", TextureAtlas.class).findRegion("commander"));
+		Components.SPRITE.get(commander).sprite.setRegion(Assets.getInstance().minimal.red);
 		squads.add(squad);
 		return squad;
 	}
