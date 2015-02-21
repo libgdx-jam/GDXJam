@@ -1,6 +1,8 @@
 package com.gdxjam;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.gdxjam.screens.AbstractScreen;
 
 public class GameManager {
@@ -9,6 +11,7 @@ public class GameManager {
 	
 	public static void init(Game game){
 		GameManager.game = game;
+		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 	}
 	
 	public static void setScreen(AbstractScreen screen){

@@ -31,27 +31,19 @@ public class GameWorldSystem extends EntitySystem{
 			world.time = 0;
 		}
 		if(lightingSystem != null){
-			if(isSunrise(world.time)){
-				lightingSystem.sunrise((1 / (Constants.secondsPerHour * Constants.secondsPerMinute)) * deltaTime);
+			
+			if(world.time > Constants.sunriseBegin && world.time < Constants.sunriseEnd){
+				lightingSystem.sunrise(deltaTime * (1 / Constants.sunriseDuration));
 			}
-			else if(isSunset(world.time)){
-				lightingSystem.sunset((1 / (Constants.secondsPerHour * Constants.secondsPerMinute)) * deltaTime);
+			
+			else if(world.time > Constants.sunsetBegin && world.time < Constants.sunsetEnd){
+				lightingSystem.sunset(deltaTime * (1 / Constants.sunsetDuration));
 			}
 			
 		}
 		
 	}
-	
-	
-	public boolean isSunrise(float time){
-		float halfTransTime = Constants.transitionTime * 0.5f;
-		return (time > Constants.dawn - halfTransTime && time < Constants.dawn + halfTransTime);
-	}
-	
-	public boolean isSunset(float time){
-		float halfTransTime = Constants.transitionTime * 0.5f;
-		return (time > Constants.dusk - halfTransTime && time < Constants.dusk + halfTransTime);
-	}
+
 	
 	public GameWorld getWorld(){
 		return world;
