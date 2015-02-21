@@ -11,25 +11,26 @@ import com.badlogic.gdx.ai.steer.behaviors.Separation;
 import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.components.Components;
-import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
+import com.gdxjam.components.UnitComponent;
 
 public enum SquadState implements State<Entity>{
+	
 	MOVE(){
 		@Override
 		public void enter (Entity entity) {
 			SteerableBodyComponent steerable = Components.STEERABLE_BODY.get(entity);
 			SteeringBehaviorComponent behaviorComponent = Components.STEERING_BEHAVIOR.get(entity);
-			SquadMemberComponent member = Components.SQUAD_MEMBER.get(entity);
+			UnitComponent unit = Components.UNIT.get(entity);
 			
-			RadiusProximity<Vector2> cohesionProximity = new RadiusProximity<Vector2>(steerable, member.squad.getAgents(), 8f);
-			RadiusProximity<Vector2> seperationProximity = new RadiusProximity<Vector2>(steerable, member.squad.getAgents(), 2f);
+			RadiusProximity<Vector2> cohesionProximity = new RadiusProximity<Vector2>(steerable, unit.squad.getAgents(), 8f);
+			RadiusProximity<Vector2> seperationProximity = new RadiusProximity<Vector2>(steerable, unit.squad.getAgents(), 2f);
 			
 			Cohesion<Vector2> cohesion = new Cohesion<Vector2>(steerable, cohesionProximity);
 			Separation<Vector2> separation = new Separation<Vector2>(steerable, seperationProximity);
 			Alignment<Vector2> align = new Alignment<Vector2>(steerable, cohesionProximity);
-			Arrive<Vector2> arrive = new Arrive<Vector2>(steerable, member.squad.getTarget()).setTimeToTarget(0.01f).setArrivalTolerance(0.002f).setDecelerationRadius(5f);
+			Arrive<Vector2> arrive = new Arrive<Vector2>(steerable, unit.squad.getTarget()).setTimeToTarget(0.01f).setArrivalTolerance(0.002f).setDecelerationRadius(5f);
 			
 			BlendedSteering<Vector2> behavior = new BlendedSteering<Vector2>(steerable);
 			behavior.add(separation, 1000);

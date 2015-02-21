@@ -1,10 +1,12 @@
 package com.gdxjam.ai;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.gdxjam.ai.states.SquadState;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.SteerableBodyComponent;
 
@@ -15,12 +17,16 @@ public class Squad implements Telegraph{
 	public Array<Entity> entities;
 	public Array<SteerableBodyComponent> agents;
 	
+	public State<Entity> state;
+	
 	public boolean selected = false;
 
 	public Squad(Vector2 position, int index) {
 		entities = new Array<Entity>();
 		agents = new Array<SteerableBodyComponent>();
 		target = new SteerableTarget(position, 1.0f);
+		
+		state = SquadState.MOVE;
 	}
 
 	
