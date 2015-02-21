@@ -32,129 +32,165 @@ import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.systems.PhysicsSystem;
 
 public class EntityFactory {
-	
+
 	private static PooledEngine engine;
-	
+
 	private static final float wallWidth = 0.75f;
 	private static final float gateSize = 1.5f;
 	private static final float towerSize = 2.5f;
-	
-	public static void setEngine(PooledEngine engine){
+
+	public static void setEngine(PooledEngine engine) {
 		EntityFactory.engine = engine;
 	}
-	
-	public static void createFortress(Vector2 position, float width, float height){
 
-		//Towers
-		createTower(new Vector2(position.x - (width * 0.5f), position.y + height * 0.5f));
-		createTower(new Vector2(position.x + (width * 0.5f), position.y + height * 0.5f));
-		createTower(new Vector2(position.x - (width * 0.5f), position.y - height * 0.5f));
-		createTower(new Vector2(position.x + (width * 0.5f), position.y - height * 0.5f));
-		
-		//Walls
-		float horizontalSegmentSize = (width*0.5f) - (gateSize * 0.5f) - (towerSize * 0.5f);
-		float horizontalSegmentCenter = (-width * 0.5f) + (horizontalSegmentSize * 0.5f) + (towerSize*0.5f);
+	public static void createFortress(Vector2 position, float width,
+			float height) {
+
+		// Towers
+		createTower(new Vector2(position.x - (width * 0.5f), position.y
+				+ height * 0.5f));
+		createTower(new Vector2(position.x + (width * 0.5f), position.y
+				+ height * 0.5f));
+		createTower(new Vector2(position.x - (width * 0.5f), position.y
+				- height * 0.5f));
+		createTower(new Vector2(position.x + (width * 0.5f), position.y
+				- height * 0.5f));
+
+		// Walls
+		float horizontalSegmentSize = (width * 0.5f) - (gateSize * 0.5f)
+				- (towerSize * 0.5f);
+		float horizontalSegmentCenter = (-width * 0.5f)
+				+ (horizontalSegmentSize * 0.5f) + (towerSize * 0.5f);
 		float horizontalSegmentOffset = (height * 0.5f) + (wallWidth * 0.5f);
-		
-		float verticalSegmentSize = (height*0.5f) - (gateSize * 0.5f) - (towerSize * 0.5f);
-		float verticalSegmentCenter = (-height * 0.5f) + (verticalSegmentSize * 0.5f) + (towerSize * 0.5f);
-		float verticalSegmentOffset = (width* 0.5f) + (wallWidth * 0.5f);
-		
-		createWall(new Vector2(horizontalSegmentCenter, horizontalSegmentOffset).add(position), horizontalSegmentSize, 0);
-		createWall(new Vector2(-horizontalSegmentCenter, horizontalSegmentOffset).add(position), horizontalSegmentSize, 0);
-		createWall(new Vector2(horizontalSegmentCenter, -horizontalSegmentOffset).add(position), horizontalSegmentSize, 0);
-		createWall(new Vector2(-horizontalSegmentCenter, -horizontalSegmentOffset).add(position), horizontalSegmentSize, 0);
 
-		createWall(new Vector2(-verticalSegmentOffset, verticalSegmentCenter).add(position), verticalSegmentSize, MathUtils.PI * 0.5f);
-		createWall(new Vector2(-verticalSegmentOffset, -verticalSegmentCenter).add(position), verticalSegmentSize, MathUtils.PI * 0.5f);
-		createWall(new Vector2(verticalSegmentOffset, verticalSegmentCenter).add(position), verticalSegmentSize, MathUtils.PI * 0.5f);
-		createWall(new Vector2(verticalSegmentOffset, -verticalSegmentCenter).add(position), verticalSegmentSize, MathUtils.PI * 0.5f);
+		float verticalSegmentSize = (height * 0.5f) - (gateSize * 0.5f)
+				- (towerSize * 0.5f);
+		float verticalSegmentCenter = (-height * 0.5f)
+				+ (verticalSegmentSize * 0.5f) + (towerSize * 0.5f);
+		float verticalSegmentOffset = (width * 0.5f) + (wallWidth * 0.5f);
+
+		createWall(
+				new Vector2(horizontalSegmentCenter, horizontalSegmentOffset)
+						.add(position),
+				horizontalSegmentSize, 0);
+		createWall(new Vector2(-horizontalSegmentCenter,
+				horizontalSegmentOffset).add(position), horizontalSegmentSize,
+				0);
+		createWall(new Vector2(horizontalSegmentCenter,
+				-horizontalSegmentOffset).add(position), horizontalSegmentSize,
+				0);
+		createWall(new Vector2(-horizontalSegmentCenter,
+				-horizontalSegmentOffset).add(position), horizontalSegmentSize,
+				0);
+
+		createWall(
+				new Vector2(-verticalSegmentOffset, verticalSegmentCenter)
+						.add(position),
+				verticalSegmentSize, MathUtils.PI * 0.5f);
+		createWall(
+				new Vector2(-verticalSegmentOffset, -verticalSegmentCenter)
+						.add(position),
+				verticalSegmentSize, MathUtils.PI * 0.5f);
+		createWall(
+				new Vector2(verticalSegmentOffset, verticalSegmentCenter)
+						.add(position),
+				verticalSegmentSize, MathUtils.PI * 0.5f);
+		createWall(
+				new Vector2(verticalSegmentOffset, -verticalSegmentCenter)
+						.add(position),
+				verticalSegmentSize, MathUtils.PI * 0.5f);
 
 	}
-	
-	public static Entity createWall(Vector2 center, float length, float rotation){
+
+	public static Entity createWall(Vector2 center, float length, float rotation) {
 		Entity entity = engine.createEntity();
-		
+
 		BodyDef def = new BodyDef();
 		def.type = BodyType.StaticBody;
 		def.position.set(center);
 		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
-		
+
 		FixtureDef fixdef = new FixtureDef();
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(length * 0.5f, wallWidth * 0.5f, new Vector2(0, 0), rotation);
+		shape.setAsBox(length * 0.5f, wallWidth * 0.5f, new Vector2(0, 0),
+				rotation);
 		fixdef.shape = shape;
-		
+
 		body.createFixture(fixdef);
 		fixdef.shape.dispose();
-		
+
 		entity.add(engine.createComponent(PhysicsComponent.class).init(body));
 		entity.add(engine.createComponent(HealthComponent.class));
-		
+
 		engine.addEntity(entity);
 		return entity;
 	}
-	
-	public static Entity createTower(Vector2 position){
+
+	public static Entity createTower(Vector2 position) {
 		Entity entity = engine.createEntity();
-		
+
 		BodyDef def = new BodyDef();
 		def.type = BodyType.StaticBody;
 		def.position.set(position);
 		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
-		
+
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(towerSize * 0.5f, towerSize * 0.5f);
-		
+
 		body.createFixture(shape, 0.0f);
-		
+
 		entity.add(engine.createComponent(PhysicsComponent.class).init(body));
-		
+
 		engine.addEntity(entity);
 		return entity;
 	}
-	
-	public static FixtureDef createWallFixture(float length, Vector2 center, float rotation){
+
+	public static FixtureDef createWallFixture(float length, Vector2 center,
+			float rotation) {
 		FixtureDef def = new FixtureDef();
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(length * 0.5f, wallWidth * 0.5f, center, rotation);
 		def.shape = shape;
 		return def;
 	}
-	
-	public static Entity createTree(Vector2 position, float radius, String type){
+
+	public static Entity createTree(Vector2 position, float radius, String type) {
 		Entity entity = engine.createEntity();
-      entity.add(engine.createComponent(ResourceComponent.class).init(ResourceType.WOOD, 1));
-      
-      BodyDef def = new BodyDef();
-      def.type = BodyDef.BodyType.StaticBody;
-      def.position.set(position);
-      def.angle = MathUtils.random(360);
-      Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
-      
-      CircleShape shape = new CircleShape();
-      shape.setRadius(radius);
-      body.createFixture(shape, 1.0f);
-      shape.dispose();
-      
-      
-      entity.add((SteerableBodyComponent)engine.createComponent(SteerableBodyComponent.class).init(body));
-      
-      entity.add(engine.createComponent(SpriteComponent.class)
-   		.init(Assets.getManager().get("minimal.pack", TextureAtlas.class).findRegion(type), position.x, position.y, radius * 2, radius * 2));
-	
+		entity.add(engine.createComponent(ResourceComponent.class).init(
+				ResourceType.WOOD, 1));
+
+		BodyDef def = new BodyDef();
+		def.type = BodyDef.BodyType.StaticBody;
+		def.position.set(position);
+		def.angle = MathUtils.random(360);
+		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
+
+		CircleShape shape = new CircleShape();
+		shape.setRadius(radius);
+		body.createFixture(shape, 1.0f);
+		shape.dispose();
+
+		entity.add((SteerableBodyComponent) engine.createComponent(
+				SteerableBodyComponent.class).init(body));
+
+		entity.add(engine.createComponent(SpriteComponent.class).init(
+				Assets.getInstance().minimal.tree, position.x, position.y,
+				radius * 2, radius * 2));
+
 		engine.addEntity(entity);
 		return entity;
 	}
-	
-	public static Entity createResourceNode(Vector2 position, ResourceType type, int amount){
+
+	public static Entity createResourceNode(Vector2 position,
+			ResourceType type, int amount) {
 		Entity entity = engine.createEntity();
-      entity.add(engine.createComponent(ResourceComponent.class).init(type, amount));
-      engine.addEntity(entity);
-      return entity;
+		entity.add(engine.createComponent(ResourceComponent.class).init(type,
+				amount));
+		engine.addEntity(entity);
+		return entity;
 	}
-	
-	public static Entity createUnit(Vector2 position){
+
+	public static Entity createUnit(Vector2 position) {
 		Entity entity = engine.createEntity();
 
 		// Physics
@@ -172,25 +208,28 @@ public class EntityFactory {
 		body.createFixture(fixDef);
 		shape.dispose();
 
-		SteerableBodyComponent steerable = (SteerableBodyComponent)engine.createComponent(SteerableBodyComponent.class).init(body);
+		SteerableBodyComponent steerable = (SteerableBodyComponent) engine
+				.createComponent(SteerableBodyComponent.class).init(body);
 		entity.add(steerable);
 
 		entity.add(engine.createComponent(SteeringBehaviorComponent.class));
-		
-		entity.add(engine.createComponent(StateMachineComponent.class).init(entity));
-		
-		entity.add(engine.createComponent(SpriteComponent.class)
-			.init(Assets.getManager().get("minimal.pack", TextureAtlas.class).findRegion("unit"), position.x, position.y, 0.5f, 0.5f));
-		
+
+		entity.add(engine.createComponent(StateMachineComponent.class).init(
+				entity));
+
+		entity.add(engine.createComponent(SpriteComponent.class).init(
+				Assets.getInstance().minimal.unit, position.x, position.y,
+				0.5f, 0.5f));
+
 		entity.add(engine.createComponent(HealthComponent.class));
 
 		engine.addEntity(entity);
 		return entity;
 	}
-	
-	public static Entity createCommander(Vector2 position){
+
+	public static Entity createCommander(Vector2 position) {
 		Entity entity = engine.createEntity();
-		
+
 		BodyDef def = new BodyDef();
 		def.type = BodyType.DynamicBody;
 		def.position.set(position);
@@ -205,41 +244,52 @@ public class EntityFactory {
 		body.createFixture(fixDef);
 		shape.dispose();
 
-		SteerableBodyComponent steerable = (SteerableBodyComponent)engine.createComponent(SteerableBodyComponent.class).init(body);
+		SteerableBodyComponent steerable = (SteerableBodyComponent) engine
+				.createComponent(SteerableBodyComponent.class).init(body);
 		entity.add(steerable);
 
-		SteeringBehaviorComponent behaviorComp = engine.createComponent(SteeringBehaviorComponent.class);
+		SteeringBehaviorComponent behaviorComp = engine
+				.createComponent(SteeringBehaviorComponent.class);
 		entity.add(behaviorComp);
 
-		entity.add(engine.createComponent(SpriteComponent.class)
-			.init(Assets.getManager().get("minimal.pack", TextureAtlas.class).findRegion("commander"), position.x, position.y, 0.5f, 0.5f));
+		entity.add(engine.createComponent(SpriteComponent.class).init(
+				Assets.getInstance().minimal.commander, position.x, position.y,
+				0.5f, 0.5f));
 
 		engine.addEntity(entity);
 		return entity;
 	}
 
-    public static void createSquad(Vector2 position){
-        Entity commander = createCommander(position);
-        Array<SteerableBodyComponent> units = new Array<SteerableBodyComponent>();
-        commander.add(engine.createComponent(CommanderComponent.class).init(new Array<Entity>()));
-        for(int x = -1; x < 2; x++) {
-            for (int y = -1; y < 2; y++) {
-                Entity e;
-                if(x==0 && y==0){
-                    e = commander;
-                }else{
-                    e = createUnit(position.cpy().add(x,y));
-                    e.add(engine.createComponent(CommanderHolderComponent.class).init(commander));
-                    e.add(engine.createComponent(StateMachineComponent.class).init(new StackStateMachine<Entity>(e, UnitState.COLLECT_RESOURCES)));
-                    Components.COMMANDER.get(commander).addUnit(e);
-                }
-                SteerableBodyComponent steerable = Components.STEERABLE_BODY.get(e);
-                units.add(steerable);
-                Proximity<Vector2> proximity = new RadiusProximity<Vector2>(steerable,units,8);
-                ProximityComponent proximityComponent = engine.createComponent(ProximityComponent.class).init(proximity);
-                e.add(proximityComponent);
-            }
-        }
-    }
+	public static void createSquad(Vector2 position) {
+		Entity commander = createCommander(position);
+		Array<SteerableBodyComponent> units = new Array<SteerableBodyComponent>();
+		commander.add(engine.createComponent(CommanderComponent.class).init(
+				new Array<Entity>()));
+		for (int x = -1; x < 2; x++) {
+			for (int y = -1; y < 2; y++) {
+				Entity e;
+				if (x == 0 && y == 0) {
+					e = commander;
+				} else {
+					e = createUnit(position.cpy().add(x, y));
+					e.add(engine
+							.createComponent(CommanderHolderComponent.class)
+							.init(commander));
+					e.add(engine.createComponent(StateMachineComponent.class)
+							.init(new StackStateMachine<Entity>(e,
+									UnitState.COLLECT_RESOURCES)));
+					Components.COMMANDER.get(commander).addUnit(e);
+				}
+				SteerableBodyComponent steerable = Components.STEERABLE_BODY
+						.get(e);
+				units.add(steerable);
+				Proximity<Vector2> proximity = new RadiusProximity<Vector2>(
+						steerable, units, 8);
+				ProximityComponent proximityComponent = engine.createComponent(
+						ProximityComponent.class).init(proximity);
+				e.add(proximityComponent);
+			}
+		}
+	}
 
 }

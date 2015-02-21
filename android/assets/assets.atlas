@@ -1,9 +1,23 @@
 
 assets.png
-size: 256,64
+size: 256,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+blue
+  rotate: false
+  xy: 2, 52
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+green
+  rotate: false
+  xy: 68, 52
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 hotkey
   rotate: false
   xy: 2, 2
@@ -13,22 +27,29 @@ hotkey
   index: -1
 hotkeyleft
   rotate: false
-  xy: 52, 2
+  xy: 200, 68
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 hotkeyright
   rotate: false
-  xy: 102, 2
+  xy: 52, 2
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 middlehotkey
   rotate: false
-  xy: 152, 2
+  xy: 250, 68
   size: 2, 48
   orig: 2, 48
+  offset: 0, 0
+  index: -1
+red
+  rotate: false
+  xy: 134, 52
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1

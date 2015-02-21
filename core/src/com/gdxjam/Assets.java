@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -35,6 +36,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	public AssetHotkey hotkey;
 	public AssetFonts fonts;
+	public AssetMinimal minimal;
 
 	public Assets() {
 		manager = new AssetManager();
@@ -51,13 +53,14 @@ public class Assets implements Disposable, AssetErrorListener {
 
 			hotkey = new AssetHotkey(atlas);
 			fonts = new AssetFonts();
+			minimal = new AssetMinimal(atlas);
 		}
 	}
 
 	public void loadAssets() {
 		manager.load(TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
 		manager.load(SKIN, Skin.class);
-		manager.load("minimal.pack", TextureAtlas.class);
+		// manager.load("minimal.pack", TextureAtlas.class);
 		manager.finishLoading();
 	}
 
@@ -72,6 +75,26 @@ public class Assets implements Disposable, AssetErrorListener {
 	@Override
 	public void dispose() {
 		manager.dispose();
+	}
+
+	public class AssetMinimal {
+		public final AtlasRegion red, blue, green;
+		public final AtlasRegion commander;
+		public final AtlasRegion unit;
+		public final AtlasRegion tree;
+
+		public AssetMinimal(TextureAtlas atlas) {
+			red = atlas.findRegion("red");
+			blue = atlas.findRegion("blue");
+			green = atlas.findRegion("green");
+			// These extra references are going to be used once I make real
+			// assets for them but now you can change the textures used all in
+			// one
+			// place @aplace21
+			commander = red; // = atlas.findRegion("commander");
+			unit = blue; // = atlas.findRegion("unit");
+			tree = green; // = atlas.findRegion("tree);"
+		}
 	}
 
 	public class AssetFonts {
