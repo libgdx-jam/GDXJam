@@ -1,13 +1,20 @@
 package com.gdxjam.input;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Keys;
+import com.gdxjam.EntityManager;
+import com.gdxjam.GameManager;
+import com.gdxjam.screens.SelectorScreen;
 
 public class DefaultInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
-
+		case Keys.ESCAPE:
+			EntityManager.getInstance().dispose();
+			GameManager.setScreen(new SelectorScreen());
+			return true;
 		}
 		return false;
 	}

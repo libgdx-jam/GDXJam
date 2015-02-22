@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.gdxjam.Assets;
 import com.gdxjam.GameManager;
+import com.gdxjam.test.assets.AssetPlaygroundScreen;
 
 public class SelectorScreen extends AbstractScreen {
 
