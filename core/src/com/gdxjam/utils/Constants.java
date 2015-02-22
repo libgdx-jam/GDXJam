@@ -1,6 +1,5 @@
 package com.gdxjam.utils;
 
-
 public class Constants {
 
 	public static boolean pausedGUI = false;
@@ -17,5 +16,7 @@ public class Constants {
 	public static final float sunsetEnd = 19 * secondsPerHour;
 	public static final float sunsetDuration = sunsetEnd - sunsetBegin;
 	public static final int maxSquads = 5;
-	
+
+	public static final int PLANETS = 10;
+
 }

@@ -8,7 +8,7 @@ import com.gdxjam.Main;
 
 public class DesktopLauncher {
 
-	private static boolean rebuildAtlas = true;
+	private static boolean rebuildAtlas = false;
 	private static boolean drawDebugOutline = false;
 
 	public static void main(String[] arg) {
@@ -19,7 +19,7 @@ public class DesktopLauncher {
 			settings.maxHeight = 2048;
 			settings.debug = drawDebugOutline;
 			try {
-				TexturePacker.process(settings, "assets-raw",
+				TexturePacker.processIfModified(settings, "assets-raw",
 						"../android/assets", "assets");
 			} catch (Exception e) {
 				e.printStackTrace();

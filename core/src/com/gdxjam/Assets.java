@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -37,6 +38,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetHotkey hotkey;
 	public AssetFonts fonts;
 	public AssetMinimal minimal;
+	public AssetPlanet planet;
 
 	public Assets() {
 		manager = new AssetManager();
@@ -54,6 +56,7 @@ public class Assets implements Disposable, AssetErrorListener {
 			hotkey = new AssetHotkey(atlas);
 			fonts = new AssetFonts();
 			minimal = new AssetMinimal(atlas);
+			planet = new AssetPlanet(atlas);
 		}
 	}
 
@@ -120,6 +123,32 @@ public class Assets implements Disposable, AssetErrorListener {
 									// leaks!
 		}
 
+	}
+
+	public class AssetPlanet {
+		public final AtlasRegion planet1;
+		public final AtlasRegion planet2;
+		public final AtlasRegion planet3;
+		public final AtlasRegion planet4;
+		public final AtlasRegion planet5;
+		public final AtlasRegion planet6;
+		public final AtlasRegion planet7;
+		public final AtlasRegion planet8;
+		public final AtlasRegion planet9;
+		public final AtlasRegion planet10;
+
+		public AssetPlanet(TextureAtlas atlas) {
+			planet1 = atlas.findRegion("planet1");
+			planet2 = atlas.findRegion("planet2");
+			planet3 = atlas.findRegion("planet3");
+			planet4 = atlas.findRegion("planet4");
+			planet5 = atlas.findRegion("planet5");
+			planet6 = atlas.findRegion("planet6");
+			planet7 = atlas.findRegion("planet7");
+			planet8 = atlas.findRegion("planet8");
+			planet9 = atlas.findRegion("planet9");
+			planet10 = atlas.findRegion("planet10");
+		}
 	}
 
 	public class AssetHotkey {
