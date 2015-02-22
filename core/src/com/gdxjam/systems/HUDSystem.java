@@ -3,17 +3,13 @@ package com.gdxjam.systems;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectIntMap;
-import com.gdxjam.Assets;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.ui.HotkeyTable;
 import com.gdxjam.ui.HotkeyTable.HotkeyTableStyle;
@@ -22,7 +18,7 @@ import com.gdxjam.utils.Constants;
 public class HUDSystem extends EntitySystem implements Disposable {
 
 	private Stage stage;
-	private HotkeyTable hotkeyTable;
+	private HotkeyTable hotkeyTable, actionTable;
 	private final ObjectIntMap<Squad> squadKeyMap = new ObjectIntMap<Squad>(Constants.maxSquads);
 
 	private Skin skin;
@@ -32,6 +28,20 @@ public class HUDSystem extends EntitySystem implements Disposable {
 		this.skin = skin;
 
 		initGUI();
+
+		stage.addListener(new InputListener() {
+			@Override
+			public boolean keyDown(InputEvent event, int keycode) {
+				hotkeyTable.setChecked(keycode);
+				actionTable.setChecked(keycode);
+				return false;
+			}
+
+			@Override
+			public boolean keyUp(InputEvent event, int keycode) {
+				return false;
+			}
+		});
 	}
 
 	public void initGUI() {
@@ -40,17 +50,19 @@ public class HUDSystem extends EntitySystem implements Disposable {
 		bottomTable.bottom();
 
 		hotkeyTable = new HotkeyTable(new HotkeyTableStyle(Color.WHITE, Color.DARK_GRAY));
+		actionTable = createActionTable();
+
 		bottomTable.add(hotkeyTable);
 		stage.addActor(bottomTable);
 
 		Table actionTableContainer = new Table();
 		actionTableContainer.setFillParent(true);
 		actionTableContainer.bottom().left();
-		actionTableContainer.add(createActionTable());
+		actionTableContainer.add(actionTable);
 		stage.addActor(actionTableContainer);
 	}
 
-	public Table createActionTable() {
+	public HotkeyTable createActionTable() {
 		HotkeyTable table = new HotkeyTable();
 		table.addHotkey(Keys.Q, "Q");
 		table.addHotkey(Keys.W, "W");
@@ -91,7 +103,7 @@ public class HUDSystem extends EntitySystem implements Disposable {
 	public Stage getStage() {
 		return stage;
 	}
-	
+
 	public HotkeyTable getHotkeyTable() {
 		return hotkeyTable;
 	}

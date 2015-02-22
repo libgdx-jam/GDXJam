@@ -8,40 +8,29 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Assets implements Disposable, AssetErrorListener {
-	
+
 	public static final String TAG = Assets.class.getSimpleName();
-	
+
 	private static Assets instance;
+
 	public static Assets getInstance() {
 		if (instance == null) {
 			instance = new Assets();
 		}
 		return instance;
 	}
-	
+
 	public static AssetManager manager;
+
 	public static AssetManager getManager() {
 		return manager;
 	}
-
-	
-	public enum ArtStyle{
-		PIXEL,
-		MINIMAL_ALEX,
-		MINIMAL_TWIEBS;
-	}
-	
-	/**
-	 * Developer flag used to test different art styles
-	 */
-	public static final ArtStyle style = ArtStyle.MINIMAL_ALEX;
 
 	public static final String TEXTURE_ATLAS_OBJECTS = "assets.atlas";
 	public static final String SKIN = "skin/uiskin.json";
@@ -49,6 +38,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetHotkey hotkey;
 	public AssetFonts fonts;
 	public AssetMinimal minimal;
+	public AssetPlanet planet;
 
 	public Assets() {
 		manager = new AssetManager();
@@ -66,6 +56,7 @@ public class Assets implements Disposable, AssetErrorListener {
 			hotkey = new AssetHotkey(atlas);
 			fonts = new AssetFonts();
 			minimal = new AssetMinimal(atlas);
+			planet = new AssetPlanet(atlas);
 		}
 	}
 
@@ -88,8 +79,6 @@ public class Assets implements Disposable, AssetErrorListener {
 	public void dispose() {
 		manager.dispose();
 	}
-	
-	
 
 	public class AssetMinimal {
 		public final AtlasRegion commander;
@@ -99,20 +88,11 @@ public class Assets implements Disposable, AssetErrorListener {
 		public final AtlasRegion wallRegion;
 
 		public AssetMinimal(TextureAtlas atlas) {
-			switch(style){
-			default:
-			case MINIMAL_ALEX:
-				commander = atlas.findRegion("red");
-				unit = atlas.findRegion("blue");
-				tree = atlas.findRegion("green");
-				break;
-			case MINIMAL_TWIEBS:
-				commander = atlas.findRegion("commander");
-				unit = atlas.findRegion("unit");
-				tree = atlas.findRegion("tree");
-				break;
-			}
-			
+
+			commander = atlas.findRegion("commander");
+			unit = atlas.findRegion("unit");
+			tree = atlas.findRegion("tree");
+
 			wall = atlas.createPatch("wall");
 			wallRegion = atlas.findRegion("wall");
 		}
@@ -141,6 +121,32 @@ public class Assets implements Disposable, AssetErrorListener {
 									// leaks!
 		}
 
+	}
+
+	public class AssetPlanet {
+		public final AtlasRegion planet1;
+		public final AtlasRegion planet2;
+		public final AtlasRegion planet3;
+		public final AtlasRegion planet4;
+		public final AtlasRegion planet5;
+		public final AtlasRegion planet6;
+		public final AtlasRegion planet7;
+		public final AtlasRegion planet8;
+		public final AtlasRegion planet9;
+		public final AtlasRegion planet10;
+
+		public AssetPlanet(TextureAtlas atlas) {
+			planet1 = atlas.findRegion("planet1");
+			planet2 = atlas.findRegion("planet2");
+			planet3 = atlas.findRegion("planet3");
+			planet4 = atlas.findRegion("planet4");
+			planet5 = atlas.findRegion("planet5");
+			planet6 = atlas.findRegion("planet6");
+			planet7 = atlas.findRegion("planet7");
+			planet8 = atlas.findRegion("planet8");
+			planet9 = atlas.findRegion("planet9");
+			planet10 = atlas.findRegion("planet10");
+		}
 	}
 
 	public class AssetHotkey {
