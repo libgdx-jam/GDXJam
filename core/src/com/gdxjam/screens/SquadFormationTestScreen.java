@@ -31,6 +31,7 @@ import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.ui.GameTimeTable;
 import com.gdxjam.utils.EntityFactory;
+import com.gdxjam.utils.generators.WorldGenerator;
 
 public class SquadFormationTestScreen extends AbstractScreen{
 	
@@ -61,11 +62,13 @@ public class SquadFormationTestScreen extends AbstractScreen{
 	
 	public GameWorld createTestWorld () {
 		GameWorld world = new GameWorld(64, 36);
-		int unitCount = 250;
+		int unitCount = 2;
 		for(int i = 0; i < unitCount; i++){
 			Entity entity = EntityFactory.createUnit(new Vector2(MathUtils.random(0, world.width), MathUtils.random(0, world.height)));
 			Components.STATE_MACHINE.get(entity).stateMachine.changeState(UnitState.IDLE);
 		}
+		
+		WorldGenerator.generateForest(new Vector2(10, 10), 1, 1, 0.1f, 0.2f, 0.1f, "TREE");
 		return world;
 	}
 
