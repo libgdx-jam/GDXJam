@@ -4,9 +4,12 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.gdxjam.EntityManager;
+import com.gdxjam.GameManager;
 import com.gdxjam.GameWorld;
 import com.gdxjam.ai.states.SquadState;
 import com.gdxjam.ai.states.UnitState;
+import com.gdxjam.screens.SelectorScreen;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.GameWorldSystem;
 import com.gdxjam.systems.SquadSystem;
@@ -112,6 +115,10 @@ public class DesktopInputProcessor implements InputProcessor {
 			return true;
 		case Keys.F12:
 			ScreenshotFactory.saveScreenshot();
+			return true;
+		case Keys.ESCAPE:
+			EntityManager.getInstance().dispose();
+			GameManager.setScreen(new SelectorScreen());
 			return true;
 		}
 

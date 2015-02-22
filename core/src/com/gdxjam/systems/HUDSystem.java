@@ -91,5 +91,9 @@ public class HUDSystem extends EntitySystem implements Disposable {
 	public Stage getStage() {
 		return stage;
 	}
+	
+	public HotkeyTable getHotkeyTable() {
+		return hotkeyTable;
+	}
 
 }
