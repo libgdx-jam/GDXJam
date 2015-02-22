@@ -17,11 +17,9 @@ public class DesktopInputProcessor implements InputProcessor {
 
 	private GameWorld world;
 	private SquadSystem squadSystem;
-	private PooledEngine engine;
 	private CameraSystem cameraSystem;
 
 	public DesktopInputProcessor(PooledEngine engine) {
-		this.engine = engine;
 		this.cameraSystem = engine.getSystem(CameraSystem.class);
 		this.squadSystem = engine.getSystem(SquadSystem.class);
 		this.world = engine.getSystem(GameWorldSystem.class).getWorld();
@@ -41,8 +39,9 @@ public class DesktopInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if(button == Buttons.LEFT){
-			squadSystem.setTarget(cameraSystem.screenToWorldCords(screenX, screenY));
+		if (button == Buttons.LEFT) {
+			squadSystem.setTarget(cameraSystem.screenToWorldCords(screenX,
+					screenY));
 			return true;
 		}
 		return false;
@@ -50,7 +49,7 @@ public class DesktopInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean scrolled(int amount) {
-      cameraSystem.zoom(amount*0.1f);
+		cameraSystem.zoom(amount * 0.1f);
 		return false;
 	}
 
@@ -74,7 +73,7 @@ public class DesktopInputProcessor implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
-		
+
 		case Keybinds.SQUAD0:
 			squadSystem.toggleSelected(0);
 			return true;
@@ -90,7 +89,7 @@ public class DesktopInputProcessor implements InputProcessor {
 		case Keybinds.SQUAD4:
 			squadSystem.toggleSelected(4);
 			return true;
-			
+
 		case Keybinds.ACTION0:
 			squadSystem.setState(SquadState.MOVE);
 			return true;
@@ -103,7 +102,6 @@ public class DesktopInputProcessor implements InputProcessor {
 			return true;
 		case Keybinds.ACTION4:
 			return true;
-			
 
 		case Keys.SPACE:
 			Constants.pausedGUI = !Constants.pausedGUI;
