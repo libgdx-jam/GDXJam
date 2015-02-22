@@ -172,7 +172,7 @@ public class EntityFactory {
 		shape.dispose();
 
 		entity.add(engine.createComponent(
-				PhysicsComponent.class).init(body));
+				SteerableBodyComponent.class).init(body));
 		
 		entity.add(engine.createComponent(HealthComponent.class));
 

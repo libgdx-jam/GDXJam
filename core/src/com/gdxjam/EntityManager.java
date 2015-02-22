@@ -78,7 +78,11 @@ public class EntityManager extends PooledEngine implements Disposable{
 	protected void removeEntityInternal (Entity entity) {
 		if(Components.STEERABLE_BODY.has(entity)){
 			Body body = Components.STEERABLE_BODY.get(entity).body;
-			//getSystem(PhysicsSystem.class).destroyBody(body);
+			getSystem(PhysicsSystem.class).destroyBody(body);
+		}
+		else if(Components.PHYSICS.has(entity)){
+			Body body = Components.PHYSICS.get(entity).body;
+			getSystem(PhysicsSystem.class).destroyBody(body);
 		}
 		
 		super.removeEntityInternal(entity);

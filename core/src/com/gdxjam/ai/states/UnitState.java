@@ -21,7 +21,6 @@ import com.gdxjam.components.CommanderHolderComponent;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.ProximityComponent;
-import com.gdxjam.components.RemovalComponent;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.UnitComponent;
@@ -100,8 +99,8 @@ public enum UnitState implements State<Entity> {
     		 unit.target = resource;
     		 
     		 Arrive<Vector2> arrive = new Arrive<Vector2>(Components.STEERABLE_BODY.get(entity));
-    		 arrive.setTimeToTarget(0.01f).setArrivalTolerance(0.002f).setDecelerationRadius(1f);
-    		 arrive.setTarget(new SteerableTarget(Components.PHYSICS.get(resource).body.getPosition(), 1.0f));
+    		 arrive.setTarget(new SteerableTarget(Components.STEERABLE_BODY.get(resource).body.getPosition(), 1.0f));
+    		 arrive.setTimeToTarget(0.01f).setArrivalTolerance(0.002f).setDecelerationRadius(2f);
     		 
     		 SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
     		 behavior.setBehavior(arrive);
@@ -123,16 +122,15 @@ public enum UnitState implements State<Entity> {
       		 distance.sub((Vector2) arrive.getTarget().getPosition());
       		 
       		 if(distance.len2() < 1.5f){
-      			 HealthComponent health = Components.HEALTH.get(unit.target);
-      			 health.value -= 1;
-      			 if(health.value <= 0){
-      				 unit.target = null;
-      				 
+      			 if(Components.HEALTH.has(unit.target)){
+      				 HealthComponent health = Components.HEALTH.get(unit.target);
+         			 health.value -= 1;
+         			 if(health.value <= 0){
+         				 unit.target = null;
+         			 }
       			 }
-   		 }
-   		 
-
-   			 
+      			
+      		 }
    		 }
    		 
    		 
