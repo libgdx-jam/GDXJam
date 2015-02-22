@@ -14,7 +14,6 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 	SpriteBatch batch;
 	OrthographicCamera camera;
 	ShaderProgram shader;
-	Texture blurred;
 
 	@Override
 	public void show() {
@@ -39,7 +38,6 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 		camera.position.set(100, 100, 0);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
-		// blurred = newBlur("green.png");
 	}
 
 	@Override
@@ -71,6 +69,8 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 	@Override
 	public void dispose() {
 		super.dispose();
+		batch.dispose();
+		shader.dispose();
 	}
 
 }
