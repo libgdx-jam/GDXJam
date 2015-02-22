@@ -63,5 +63,6 @@ public class PhysicsSystem extends EntitySystem implements Disposable{
 	@Override
 	public void dispose () {
 		world.dispose();
+		renderer.dispose();
 	}
 }
