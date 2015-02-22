@@ -21,7 +21,9 @@ public class HotkeyTable extends Table {
 	private InputProcessor inputProcessor;
 
 	private final HorizontalGroup hotkeyRow = new HorizontalGroup();
+	/** all the buttons keyed by their associated keycode */
 	private final IntMap<Button> buttonMap = new IntMap<Button>();
+	/** the button group for radio button style selection (if desired) */
 	private final ButtonGroup<Button> buttonGroup = new ButtonGroup<Button>();
 
 	public HotkeyTable() {
@@ -84,4 +86,5 @@ public class HotkeyTable extends Table {
 
 		public Color buttonColor = Color.WHITE, buttonSelectedColor = Color.GREEN;
 	}
+
 }

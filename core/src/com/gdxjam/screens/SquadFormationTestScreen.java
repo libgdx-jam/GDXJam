@@ -27,6 +27,7 @@ import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
+import com.gdxjam.systems.HUDSystem;
 import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.ui.GameTimeTable;
@@ -53,6 +54,7 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		
+		multiplexer.addProcessor(EntityManager.getInstance().getSystem(HUDSystem.class).getStage());
 		multiplexer.addProcessor(stage);
 		multiplexer.addProcessor(new DefaultInputProcessor());
 		multiplexer.addProcessor(new DesktopInputProcessor(EntityManager.getInstance()));
