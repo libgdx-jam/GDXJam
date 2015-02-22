@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.SpriteComponent;
-import com.gdxjam.components.SteerableBodyComponent;
 
 public class EntityRenderSystem extends IteratingSystem implements Disposable {
 
@@ -37,10 +37,9 @@ public class EntityRenderSystem extends IteratingSystem implements Disposable {
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		SpriteComponent spriteComp = Components.SPRITE.get(entity);
-
-		if (Components.STEERABLE_BODY.has(entity)) {
-			SteerableBodyComponent physics = Components.STEERABLE_BODY
-					.get(entity);
+		
+		if(Components.STEERABLE_BODY.has(entity) || Components.PHYSICS.has(entity)){
+			PhysicsComponent physics = Components.STEERABLE_BODY.has(entity) ? Components.STEERABLE_BODY.get(entity) : Components.PHYSICS.get(entity);
 			Vector2 pos = physics.body.getPosition();
 			spriteComp.sprite.setCenter(pos.x, pos.y);
 			spriteComp.sprite

@@ -21,6 +21,7 @@ import com.gdxjam.components.CommanderComponent;
 import com.gdxjam.components.CommanderHolderComponent;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
+import com.gdxjam.components.LumberComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.ProximityComponent;
 import com.gdxjam.components.ResourceComponent;
@@ -157,8 +158,7 @@ public class EntityFactory {
 
 	public static Entity createTree(Vector2 position, float radius, String type) {
 		Entity entity = engine.createEntity();
-		entity.add(engine.createComponent(ResourceComponent.class).init(
-				ResourceType.WOOD, 1));
+		entity.add(engine.createComponent(LumberComponent.class).init(1));
 
 		BodyDef def = new BodyDef();
 		def.type = BodyDef.BodyType.StaticBody;
@@ -171,8 +171,10 @@ public class EntityFactory {
 		body.createFixture(shape, 1.0f);
 		shape.dispose();
 
-		entity.add((SteerableBodyComponent) engine.createComponent(
+		entity.add(engine.createComponent(
 				SteerableBodyComponent.class).init(body));
+		
+		entity.add(engine.createComponent(HealthComponent.class));
 
 		entity.add(engine.createComponent(SpriteComponent.class).init(
 				Assets.getInstance().minimal.tree, position.x, position.y,
@@ -182,14 +184,6 @@ public class EntityFactory {
 		return entity;
 	}
 
-	public static Entity createResourceNode(Vector2 position,
-			ResourceType type, int amount) {
-		Entity entity = engine.createEntity();
-		entity.add(engine.createComponent(ResourceComponent.class).init(type,
-				amount));
-		engine.addEntity(entity);
-		return entity;
-	}
 
 	public static Entity createUnit(Vector2 position) {
 		Entity entity = engine.createEntity();
@@ -205,9 +199,33 @@ public class EntityFactory {
 		CircleShape shape = new CircleShape();
 		shape.setRadius(0.25f);
 		fixDef.shape = shape;
-
+		
 		body.createFixture(fixDef);
 		shape.dispose();
+		
+		float range = 1.0f;
+		float arc = 90f;
+		Vector2 vertices[] = new Vector2[8];
+		for(int i = 0; i <= 7; i++){
+			vertices[i] = new Vector2();
+		}
+		
+		vertices[0].set(0,0);
+		for(int i = 0; i < 7; i++){
+			float angle = (i / 6.0f * arc * MathUtils.degRad) - (90 * MathUtils.degRad);
+			vertices[i+1].set(range * MathUtils.cos(angle), range * MathUtils.sin(angle));
+		}
+		
+		PolygonShape poly = new PolygonShape();
+		poly.set(vertices);
+		
+		FixtureDef sensorDef = new FixtureDef();
+		sensorDef.shape = poly;
+		sensorDef.isSensor = true;
+		body.createFixture(sensorDef);
+		poly.dispose();
+
+
 
 		SteerableBodyComponent steerable = (SteerableBodyComponent) engine
 				.createComponent(SteerableBodyComponent.class).init(body);

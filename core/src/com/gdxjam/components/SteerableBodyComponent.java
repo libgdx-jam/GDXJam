@@ -2,8 +2,9 @@ package com.gdxjam.components;
 
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool.Poolable;
 
-public class SteerableBodyComponent extends PhysicsComponent implements Steerable<Vector2>{
+public class SteerableBodyComponent extends PhysicsComponent implements Steerable<Vector2>, Poolable{
 	
 	private float maxLinearSpeed = 5f;
 	private float maxLinearAcceleration = 1000;
