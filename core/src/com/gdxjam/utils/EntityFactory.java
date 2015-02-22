@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.ai.fsm.StackStateMachine;
 import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -22,15 +21,14 @@ import com.gdxjam.components.CommanderHolderComponent;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.LumberComponent;
+import com.gdxjam.components.NinePatchComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.ProximityComponent;
-import com.gdxjam.components.ResourceComponent;
-import com.gdxjam.components.UnitComponent;
-import com.gdxjam.components.ResourceComponent.ResourceType;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
+import com.gdxjam.components.UnitComponent;
 import com.gdxjam.systems.PhysicsSystem;
 
 public class EntityFactory {
@@ -142,19 +140,13 @@ public class EntityFactory {
 		body.createFixture(shape, 0.0f);
 
 		entity.add(engine.createComponent(PhysicsComponent.class).init(body));
-
+		
+		entity.add(engine.createComponent(NinePatchComponent.class).init(Assets.getInstance().minimal.wall));
+		
 		engine.addEntity(entity);
 		return entity;
 	}
 
-	public static FixtureDef createWallFixture(float length, Vector2 center,
-			float rotation) {
-		FixtureDef def = new FixtureDef();
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(length * 0.5f, wallWidth * 0.5f, center, rotation);
-		def.shape = shape;
-		return def;
-	}
 
 	public static Entity createTree(Vector2 position, float radius, String type) {
 		Entity entity = engine.createEntity();

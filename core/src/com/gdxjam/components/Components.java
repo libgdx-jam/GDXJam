@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 public class Components {
 	
 	public static final ComponentMapper<SpriteComponent> SPRITE = ComponentMapper.getFor(SpriteComponent.class);
+	public static final ComponentMapper<NinePatchComponent> NINE_PATCH = ComponentMapper.getFor(NinePatchComponent.class);
 	
 	public static final ComponentMapper<HealthComponent> HEALTH = ComponentMapper.getFor(HealthComponent.class);
 	public static final ComponentMapper<PhysicsComponent> PHYSICS = ComponentMapper.getFor(PhysicsComponent.class);

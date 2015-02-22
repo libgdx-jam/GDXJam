@@ -15,21 +15,33 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Assets implements Disposable, AssetErrorListener {
-
+	
 	public static final String TAG = Assets.class.getSimpleName();
+	
 	private static Assets instance;
-	public static AssetManager manager;
-
 	public static Assets getInstance() {
 		if (instance == null) {
 			instance = new Assets();
 		}
 		return instance;
 	}
-
+	
+	public static AssetManager manager;
 	public static AssetManager getManager() {
 		return manager;
 	}
+
+	
+	public enum ArtStyle{
+		PIXEL,
+		MINIMAL_ALEX,
+		MINIMAL_TWIEBS;
+	}
+	
+	/**
+	 * Developer flag used to test different art styles
+	 */
+	public static final ArtStyle style = ArtStyle.MINIMAL_ALEX;
 
 	public static final String TEXTURE_ATLAS_OBJECTS = "assets.atlas";
 	public static final String SKIN = "skin/uiskin.json";
@@ -76,24 +88,33 @@ public class Assets implements Disposable, AssetErrorListener {
 	public void dispose() {
 		manager.dispose();
 	}
+	
+	
 
 	public class AssetMinimal {
-		public final AtlasRegion red, blue, green;
 		public final AtlasRegion commander;
 		public final AtlasRegion unit;
 		public final AtlasRegion tree;
+		public final NinePatch wall;
+		public final AtlasRegion wallRegion;
 
 		public AssetMinimal(TextureAtlas atlas) {
-			red = atlas.findRegion("red");
-			blue = atlas.findRegion("blue");
-			green = atlas.findRegion("green");
-			// These extra references are going to be used once I make real
-			// assets for them but now you can change the textures used all in
-			// one
-			// place @aplace21
-			commander = red; // = atlas.findRegion("commander");
-			unit = blue; // = atlas.findRegion("unit");
-			tree = green; // = atlas.findRegion("tree);"
+			switch(style){
+			default:
+			case MINIMAL_ALEX:
+				commander = atlas.findRegion("red");
+				unit = atlas.findRegion("blue");
+				tree = atlas.findRegion("green");
+				break;
+			case MINIMAL_TWIEBS:
+				commander = atlas.findRegion("commander");
+				unit = atlas.findRegion("unit");
+				tree = atlas.findRegion("tree");
+				break;
+			}
+			
+			wall = atlas.createPatch("wall");
+			wallRegion = atlas.findRegion("wall");
 		}
 	}
 
@@ -130,7 +151,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		public AssetHotkey(TextureAtlas atlas) {
 			left = atlas.findRegion("hotkeyleft");
-			button = new NinePatch(atlas.findRegion("hotkey"));
+			button = atlas.createPatch("hotkey");
 			right = atlas.findRegion("hotkeyright");
 			middle = atlas.findRegion("middlehotkey");
 

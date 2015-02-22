@@ -37,7 +37,7 @@ public class SquadSystem extends EntitySystem{
 		Squad squad = new Squad(steerable.getPosition().cpy(), index);
 		
 		addUnitToSquad(commander, squad);
-		Components.SPRITE.get(commander).sprite.setRegion(Assets.getInstance().minimal.red);
+		Components.SPRITE.get(commander).sprite.setRegion(Assets.getInstance().minimal.commander);
 		squads.add(squad);
 		engine.getSystem(HUDSystem.class).addSquad(squad);
 		
