@@ -25,7 +25,7 @@ public class Squad implements Telegraph{
 		entities = new Array<Entity>();
 		agents = new Array<SteerableBodyComponent>();
 		target = new SteerableTarget(position, 1.0f);
-		
+		this.index = index;
 		state = SquadState.MOVE;
 	}
 

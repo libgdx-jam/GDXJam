@@ -9,6 +9,7 @@ import com.gdxjam.GameWorld;
 import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.GUISystem;
+import com.gdxjam.systems.HUDSystem;
 import com.gdxjam.utils.EntityFactory;
 
 public class GameScreen extends AbstractScreen {
@@ -28,6 +29,7 @@ public class GameScreen extends AbstractScreen {
 
 		initGUI();
 		InputMultiplexer multiplexer = new InputMultiplexer();
+		multiplexer.addProcessor(EntityManager.getInstance().getSystem(HUDSystem.class).getStage());
 		multiplexer.addProcessor(new DefaultInputProcessor());
 		multiplexer.addProcessor(new DesktopInputProcessor(EntityManager.getInstance()));
 		Gdx.input.setInputProcessor(multiplexer);
