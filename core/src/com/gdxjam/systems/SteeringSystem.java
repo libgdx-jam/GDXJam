@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.gdxjam.components.Components;
@@ -27,6 +26,7 @@ public class SteeringSystem extends IteratingSystem{
 		SteerableBodyComponent steering = Components.STEERABLE_BODY.get(entity);
 		
 		if(behavior == null) return;
+		if(steering.body == null) return;	//We shouldn't need this
 		behavior.calculateSteering(steeringOutput);
 		boolean anyAccelerations = false;
 		Body body = steering.body;

@@ -97,6 +97,7 @@ public class DesktopInputProcessor implements InputProcessor {
 			squadSystem.setState(UnitState.IDLE);
 			return true;
 		case Keybinds.ACTION2:
+			squadSystem.setState(UnitState.COLLECT_RESOURCES);
 			return true;
 		case Keybinds.ACTION3:
 			return true;

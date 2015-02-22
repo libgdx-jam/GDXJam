@@ -35,7 +35,6 @@ public class PhysicsComponent extends Component implements Poolable{
 //	}
 	
 	public Body body;
-	public boolean tagged = false;
 	
 	public PhysicsComponent init(Body body){
 		this.body = body;
