@@ -4,7 +4,6 @@ import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -19,7 +18,6 @@ public class LightingSystem extends EntitySystem{
 
 	public void init(World world){
 		rayHandler = new RayHandler(world);
-		ambient.set(NIGHT);
 		rayHandler.setAmbientLight(ambient);
 	}
 	
@@ -37,7 +35,6 @@ public class LightingSystem extends EntitySystem{
 		float b = (target.b - base.b) * scale;
 		float a = (target.a - base.a) * scale;
 		ambient.add(r, g, b, a);
-		Gdx.app.debug(TAG, "a: " + ambient.a);
 		rayHandler.setAmbientLight(ambient);
 	}
 	
