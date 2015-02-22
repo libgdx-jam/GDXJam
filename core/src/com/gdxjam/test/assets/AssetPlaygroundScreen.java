@@ -14,7 +14,6 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 	SpriteBatch batch;
 	OrthographicCamera camera;
 	ShaderProgram shader;
-	Texture blurred;
 
 	@Override
 	public void show() {
@@ -26,20 +25,19 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 				Gdx.files.internal("shaders/grayscale.frag"));
 		if (!shader.isCompiled()) {
 			System.err.println(shader.getLog());
-			//System.exit(0);
+			// System.exit(0);
 		}
 		if (shader.getLog().length() != 0)
 			System.out.println(shader.getLog());
 
 		batch = new SpriteBatch(1000, shader);
 		batch.setShader(shader);
-		 //batch.setShader(SpriteBatch.createDefaultShader());
+		batch.setShader(SpriteBatch.createDefaultShader());
 
 		camera = new OrthographicCamera(200, 200);
 		camera.position.set(100, 100, 0);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
-		// blurred = newBlur("green.png");
 	}
 
 	@Override
@@ -47,8 +45,15 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 		super.render(delta);
 		camera.update();
 		batch.begin();
+		// Grayscaled shader
+		batch.setShader(shader);
 		batch.draw(Assets.getInstance().planet.planet1, 100, 100, 100, 100);
-		batch.draw(Assets.getInstance().minimal.commander, 0, 0, 100, 100);
+
+		// default shader
+		batch.setShader(SpriteBatch.createDefaultShader());
+		batch.draw(Assets.getInstance().minimal.commander, 0, 0, 10, 10);
+		batch.draw(Assets.getInstance().mothership.green, 50, 50, 50, 50);
+
 		batch.end();
 
 	}
@@ -64,6 +69,8 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 	@Override
 	public void dispose() {
 		super.dispose();
+		batch.dispose();
+		shader.dispose();
 	}
 
 }

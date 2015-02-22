@@ -39,6 +39,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetFonts fonts;
 	public AssetMinimal minimal;
 	public AssetPlanet planet;
+	public AssetMothership mothership;
 
 	public Assets() {
 		manager = new AssetManager();
@@ -57,6 +58,7 @@ public class Assets implements Disposable, AssetErrorListener {
 			fonts = new AssetFonts();
 			minimal = new AssetMinimal(atlas);
 			planet = new AssetPlanet(atlas);
+			mothership = new AssetMothership(atlas);
 		}
 	}
 
@@ -96,6 +98,15 @@ public class Assets implements Disposable, AssetErrorListener {
 			wall = atlas.createPatch("wall");
 			wallRegion = atlas.findRegion("wall");
 		}
+	}
+
+	public class AssetMothership {
+		public final AtlasRegion green;
+
+		public AssetMothership(TextureAtlas atlas) {
+			green = atlas.findRegion("mothershipgreen");
+		}
+
 	}
 
 	public class AssetFonts {
