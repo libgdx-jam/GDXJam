@@ -1,6 +1,6 @@
 
 assets.png
-size: 512,128
+size: 2048,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -13,14 +13,14 @@ blue
   index: -1
 commander
   rotate: false
-  xy: 68, 52
+  xy: 908, 656
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 green
   rotate: false
-  xy: 134, 52
+  xy: 1210, 958
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -50,35 +50,105 @@ hotkeyright
   index: -1
 middlehotkey
   rotate: false
-  xy: 464, 68
+  xy: 152, 2
   size: 2, 48
   orig: 2, 48
   offset: 0, 0
   index: -1
+planet1
+  rotate: false
+  xy: 2, 722
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+planet10
+  rotate: false
+  xy: 606, 118
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+planet2
+  rotate: false
+  xy: 2, 420
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+planet3
+  rotate: false
+  xy: 304, 722
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+planet4
+  rotate: false
+  xy: 2, 118
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+planet5
+  rotate: false
+  xy: 304, 420
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+planet6
+  rotate: false
+  xy: 606, 722
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+planet7
+  rotate: false
+  xy: 304, 118
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+planet8
+  rotate: false
+  xy: 606, 420
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+planet9
+  rotate: false
+  xy: 908, 722
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
 red
   rotate: false
-  xy: 200, 52
+  xy: 68, 52
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 tree
   rotate: false
-  xy: 266, 52
+  xy: 134, 52
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 unit
   rotate: false
-  xy: 332, 52
+  xy: 908, 590
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 wall
   rotate: false
-  xy: 398, 52
+  xy: 974, 656
   size: 64, 64
   split: 14, 14, 18, 13
   orig: 64, 64
