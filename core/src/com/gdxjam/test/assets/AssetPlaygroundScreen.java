@@ -31,7 +31,7 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 		super.render(delta);
 		camera.update();
 		batch.begin();
-		batch.draw(Assets.getInstance().minimal.blue, 5, 5, 1, 1);
+		batch.draw(Assets.getInstance().minimal.unit, 5, 5, 1, 1);
 		batch.end();
 
 	}

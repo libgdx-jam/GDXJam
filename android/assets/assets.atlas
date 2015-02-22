@@ -1,6 +1,6 @@
 
 assets.png
-size: 256,128
+size: 512,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -11,9 +11,16 @@ blue
   orig: 64, 64
   offset: 0, 0
   index: -1
-green
+commander
   rotate: false
   xy: 68, 52
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+green
+  rotate: false
+  xy: 134, 52
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -22,34 +29,58 @@ hotkey
   rotate: false
   xy: 2, 2
   size: 48, 48
+  split: 14, 16, 14, 16
+  pad: 13, 16, 15, 13
   orig: 48, 48
   offset: 0, 0
   index: -1
 hotkeyleft
-  rotate: false
-  xy: 200, 68
-  size: 48, 48
-  orig: 48, 48
-  offset: 0, 0
-  index: -1
-hotkeyright
   rotate: false
   xy: 52, 2
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
+hotkeyright
+  rotate: false
+  xy: 102, 2
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
 middlehotkey
   rotate: false
-  xy: 250, 68
+  xy: 464, 68
   size: 2, 48
   orig: 2, 48
   offset: 0, 0
   index: -1
 red
   rotate: false
-  xy: 134, 52
+  xy: 200, 52
   size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+tree
+  rotate: false
+  xy: 266, 52
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+unit
+  rotate: false
+  xy: 332, 52
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+wall
+  rotate: false
+  xy: 398, 52
+  size: 64, 64
+  split: 14, 14, 18, 13
   orig: 64, 64
   offset: 0, 0
   index: -1
