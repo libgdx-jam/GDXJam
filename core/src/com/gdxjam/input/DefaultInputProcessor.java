@@ -12,7 +12,7 @@ public class DefaultInputProcessor implements InputProcessor {
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
 		case Keys.ESCAPE:
-			EntityManager.getInstance().dispose();
+			GameManager.disposeEngine();
 			GameManager.setScreen(new SelectorScreen());
 			return true;
 		}

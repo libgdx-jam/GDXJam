@@ -9,6 +9,7 @@ import com.gdxjam.components.ResourceComponent.ResourceType;
 public class ResourceSystem extends EntitySystem{
 	
 	public int population = 0;
+	
 	public IntMap<Integer> resources = new IntMap<Integer>();
 	
 	private GameWorld world;

@@ -25,22 +25,8 @@ import com.gdxjam.utils.EntityFactory;
 
 public class EntityManager extends PooledEngine implements Disposable{
 	private static String TAG = "[" + EntityManager.class.getSimpleName() + "]";
-	private static EntityManager instance;
-	public static synchronized EntityManager getInstance(){
-		if(instance == null){
-			instance = new EntityManager();
-		}
-		return instance;
-	}
-	
-	public EntityManager(){
-		Gdx.app.log(TAG, "initalized instance");
-	}
-	
 	
 	public EntityManager initSystems(GameWorld world){
-		EntityFactory.setEngine(this);
-
 		CameraSystem cameraSystem = new CameraSystem(64, 36);
 		cameraSystem.getCamera().position.set(32, 18, 0);
 		addSystem(cameraSystem);
@@ -91,9 +77,6 @@ public class EntityManager extends PooledEngine implements Disposable{
 
 	@Override
 	public void dispose () {
-		
-		if(instance == null)	return;
-		
 		Gdx.app.log(TAG, "disposing instance");
 		removeAllEntities();
 		clearPools();
@@ -104,8 +87,6 @@ public class EntityManager extends PooledEngine implements Disposable{
 			system = null;
 			removeSystem(system);
 		}
-		
-		instance = null;
 	}
 	
 }

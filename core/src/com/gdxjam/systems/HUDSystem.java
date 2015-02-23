@@ -23,14 +23,14 @@ import com.gdxjam.utils.Constants;
 public class HUDSystem extends EntitySystem implements Disposable {
 
 	private Stage stage;
+	private Skin skin;
 	private HotkeyTable hotkeyTable, actionTable;
 	private GameTimeTable gameTimeTable;
-	private final ObjectIntMap<Squad> squadKeyMap = new ObjectIntMap<Squad>(Constants.maxSquads);
-	private GameWorld world;
 	
+	private final ObjectIntMap<Squad> squadKeyMap = new ObjectIntMap<Squad>(Constants.maxSquads);
 	private ResourceGroup resources;
 
-	private Skin skin;
+	private GameWorld world;
 
 	public HUDSystem(Skin skin) {
 		this.stage = new Stage();

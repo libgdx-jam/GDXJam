@@ -14,7 +14,7 @@ import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.behaviors.Separation;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.math.Vector2;
-import com.gdxjam.EntityManager;
+import com.gdxjam.GameManager;
 import com.gdxjam.ai.Messages;
 import com.gdxjam.ai.SteerableTarget;
 import com.gdxjam.components.CommanderHolderComponent;
@@ -94,7 +94,7 @@ public enum UnitState implements State<Entity> {
    	 public void enter(Entity entity){
       	 //Test code
       	 UnitComponent unit = Components.UNIT.get(entity);
-   		 ImmutableArray<Entity> entities = EntityManager.getInstance().getEntitiesFor(Family.all(unit.assignedResource.component).get());
+   		 ImmutableArray<Entity> entities = GameManager.getEngine().getEntitiesFor(Family.all(unit.assignedResource.component).get());
     		 Entity resource = entities.first();
     		 unit.target = resource;
     		 

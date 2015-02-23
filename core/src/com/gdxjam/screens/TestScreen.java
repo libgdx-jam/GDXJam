@@ -1,11 +1,11 @@
 package com.gdxjam.screens;
 
-import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.EntityManager;
+import com.gdxjam.GameManager;
 import com.gdxjam.GameWorld;
 import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopGestureListener;
@@ -42,7 +42,7 @@ public class TestScreen extends AbstractScreen {
 
 	public void createTestWorld() {
 		GameWorld world = new GameWorld(64, 36);
-		engine = EntityManager.getInstance().initSystems(world);
+		engine = GameManager.initEngine().initSystems(world);
 		engine.addSystem(new CommanderControllerSystem());
 		EntityFactory.createSquad(new Vector2(15, 5));
 		EntityFactory.createSquad(new Vector2(-30, -30));
