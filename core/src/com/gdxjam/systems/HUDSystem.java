@@ -16,9 +16,8 @@ import com.gdxjam.ai.Squad;
 import com.gdxjam.components.ResourceComponent.ResourceType;
 import com.gdxjam.ui.GameTimeTable;
 import com.gdxjam.ui.HotkeyTable;
-import com.gdxjam.ui.ResourceGroup;
-import com.gdxjam.ui.ResourceTable;
 import com.gdxjam.ui.HotkeyTable.HotkeyTableStyle;
+import com.gdxjam.ui.ResourceGroup;
 import com.gdxjam.utils.Constants;
 
 public class HUDSystem extends EntitySystem implements Disposable {
@@ -124,6 +123,10 @@ public class HUDSystem extends EntitySystem implements Disposable {
 	public void updateResource(ResourceType type, int amount){
 		resources.update(type, amount);
 	}
+	
+	public void updatePopulation(float population){
+		//Population
+	}
 
 	@Override
 	public void update(float deltaTime) {
@@ -135,17 +138,17 @@ public class HUDSystem extends EntitySystem implements Disposable {
 		stage.draw();
 	}
 
-	@Override
-	public void dispose() {
-		stage.dispose();
-	}
-
 	public Stage getStage() {
 		return stage;
 	}
 
-	public HotkeyTable getHotkeyTable() {
-		return hotkeyTable;
+//	public HotkeyTable getHotkeyTable() {
+//		return hotkeyTable;
+//	}
+	
+	@Override
+	public void dispose() {
+		stage.dispose();
 	}
 
 }

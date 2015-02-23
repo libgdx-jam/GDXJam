@@ -3,7 +3,6 @@ package com.gdxjam.systems;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.math.Vector2;
@@ -15,11 +14,17 @@ import com.gdxjam.components.ResourceComponent.ResourceType;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.UnitComponent;
 import com.gdxjam.utils.Constants;
+import com.gdxjam.utils.EntityFactory;
 
 public class SquadSystem extends EntitySystem{
+	
 	private static final String TAG = "[" + SquadSystem.class.getSimpleName() +"]";
 	public Array<Squad> squads;
-	private PooledEngine engine;
+	
+	private int population;
+	
+	private HUDSystem hudSystem;
+	private ResourceSystem resourceSystem;
 	
 	public SquadSystem(){
 		squads = new Array<Squad>(true, Constants.maxSquads);
@@ -28,7 +33,19 @@ public class SquadSystem extends EntitySystem{
 	@Override
 	public void addedToEngine (Engine engine) {
 		super.addedToEngine(engine);
-		this.engine = (PooledEngine)engine;
+		hudSystem = engine.getSystem(HUDSystem.class);
+		resourceSystem = engine.getSystem(ResourceSystem.class);
+	}
+	
+	public void createUnit(Vector2 position){
+		EntityFactory.createUnit(position);
+		population++;
+		hudSystem.updatePopulation(population);
+	}
+	
+	public void killUnit(Entity entity){
+		population--;
+		hudSystem.updatePopulation(population);
 	}
 	
 	public Squad createSquad(Entity commander){
@@ -39,7 +56,7 @@ public class SquadSystem extends EntitySystem{
 		addUnitToSquad(commander, squad);
 		Components.SPRITE.get(commander).sprite.setRegion(Assets.getInstance().minimal.commander);
 		squads.add(squad);
-		engine.getSystem(HUDSystem.class).addSquad(squad);
+		hudSystem.addSquad(squad);
 		
 		return squad;
 	}
@@ -68,8 +85,6 @@ public class SquadSystem extends EntitySystem{
 	}
 	
 	public boolean toggleSelected(Squad squad){
-		HUDSystem hudSystem = engine.getSystem(HUDSystem.class);
-		
 		squad.selected = !squad.selected;
 		hudSystem.setSelected(squad);
 		return squad.selected;

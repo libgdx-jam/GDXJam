@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -28,9 +27,7 @@ import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.HUDSystem;
-import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
-import com.gdxjam.ui.GameTimeTable;
 import com.gdxjam.utils.EntityFactory;
 import com.gdxjam.utils.generators.WorldGenerator;
 

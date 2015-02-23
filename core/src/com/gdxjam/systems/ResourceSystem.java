@@ -2,17 +2,14 @@ package com.gdxjam.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntMap;
 import com.gdxjam.GameWorld;
 import com.gdxjam.components.ResourceComponent.ResourceType;
-import com.gdxjam.utils.EntityFactory;
 
 public class ResourceSystem extends EntitySystem{
 	
+	public int population = 0;
 	public IntMap<Integer> resources = new IntMap<Integer>();
-	public static final int foodThreshold = 1;
 	
 	private GameWorld world;
 	private HUDSystem hudSystem;
