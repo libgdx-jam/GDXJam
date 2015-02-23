@@ -1,5 +1,6 @@
 package com.gdxjam.systems;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -10,8 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectIntMap;
+import com.gdxjam.GameWorld;
 import com.gdxjam.ai.Squad;
+import com.gdxjam.components.ResourceComponent.ResourceType;
+import com.gdxjam.ui.GameTimeTable;
 import com.gdxjam.ui.HotkeyTable;
+import com.gdxjam.ui.ResourceGroup;
+import com.gdxjam.ui.ResourceTable;
 import com.gdxjam.ui.HotkeyTable.HotkeyTableStyle;
 import com.gdxjam.utils.Constants;
 
@@ -19,7 +25,11 @@ public class HUDSystem extends EntitySystem implements Disposable {
 
 	private Stage stage;
 	private HotkeyTable hotkeyTable, actionTable;
+	private GameTimeTable gameTimeTable;
 	private final ObjectIntMap<Squad> squadKeyMap = new ObjectIntMap<Squad>(Constants.maxSquads);
+	private GameWorld world;
+	
+	private ResourceGroup resources;
 
 	private Skin skin;
 
@@ -60,6 +70,24 @@ public class HUDSystem extends EntitySystem implements Disposable {
 		actionTableContainer.bottom().left();
 		actionTableContainer.add(actionTable);
 		stage.addActor(actionTableContainer);
+		
+		//Game time table
+		gameTimeTable = new GameTimeTable(skin);
+
+		
+		/** Resource Table		 */
+		resources = new ResourceGroup(skin);
+		
+		Table topTable = new Table();
+		topTable.setFillParent(true);
+		topTable.top().right();
+		
+		topTable.defaults().pad(5);
+		topTable.add(resources);
+		topTable.add(gameTimeTable);
+
+		stage.addActor(topTable);
+		
 	}
 
 	public HotkeyTable createActionTable() {
@@ -72,6 +100,12 @@ public class HUDSystem extends EntitySystem implements Disposable {
 		return table;
 	}
 
+	@Override
+	public void addedToEngine (Engine engine) {
+		super.addedToEngine(engine);
+		world = engine.getSystem(GameWorldSystem.class).getWorld();
+	}
+	
 	public void addSquad(Squad squad) {
 		String strIndex = String.valueOf(squad.index + 1);
 		int keycode = Keys.valueOf(strIndex);
@@ -86,10 +120,16 @@ public class HUDSystem extends EntitySystem implements Disposable {
 	public void resize(int screenWidth, int screenHeight) {
 		stage.getViewport().update(screenWidth, screenHeight);
 	}
+	
+	public void updateResource(ResourceType type, int amount){
+		resources.update(type, amount);
+	}
 
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
+		
+		gameTimeTable.update(world);
 
 		stage.act();
 		stage.draw();

@@ -37,7 +37,8 @@ public class EntityManager extends PooledEngine implements Disposable{
 		Gdx.app.log(TAG, "initalized instance");
 	}
 	
-	public EntityManager initSystems(){
+	
+	public EntityManager initSystems(GameWorld world){
 		EntityFactory.setEngine(this);
 
 		CameraSystem cameraSystem = new CameraSystem(64, 36);
@@ -56,14 +57,14 @@ public class EntityManager extends PooledEngine implements Disposable{
 		addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
 		addSystem(new LightingSystem());
 		
+		addSystem(new ResourceSystem(world));
+		addSystem(new GameWorldSystem(world));
+		
 		addSystem(new HUDSystem(Assets.getManager().get(Assets.SKIN, Skin.class)));
+
 		return this;
 	}
 	
-	public void loadWorld(GameWorld world){
-		addSystem(new ResourceSystem(world));
-		addSystem(new GameWorldSystem(world));
-	}
 	
 	@Override
 	public void update (float deltaTime) {

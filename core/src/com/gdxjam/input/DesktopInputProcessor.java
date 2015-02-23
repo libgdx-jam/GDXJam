@@ -76,7 +76,9 @@ public class DesktopInputProcessor implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
-
+		/**
+		 * Squad Hotkeys
+		 */
 		case Keybinds.SQUAD0:
 			squadSystem.toggleSelected(0);
 			return true;
@@ -93,6 +95,9 @@ public class DesktopInputProcessor implements InputProcessor {
 			squadSystem.toggleSelected(4);
 			return true;
 
+		/**
+		 * Squad action groups
+		 */
 		case Keybinds.ACTION0:
 			squadSystem.setState(SquadState.MOVE);
 			return true;
@@ -110,9 +115,6 @@ public class DesktopInputProcessor implements InputProcessor {
 		case Keys.SPACE:
 			Constants.pausedGUI = !Constants.pausedGUI;
 			return true;
-		case Keys.PLUS:
-			world.food++;
-			return true;
 		case Keys.F12:
 			ScreenshotFactory.saveScreenshot();
 			return true;
@@ -120,6 +122,7 @@ public class DesktopInputProcessor implements InputProcessor {
 			EntityManager.getInstance().dispose();
 			GameManager.setScreen(new SelectorScreen());
 			return true;
+			
 		}
 
 		return false;
