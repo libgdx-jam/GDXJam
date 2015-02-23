@@ -119,7 +119,7 @@ public class DesktopInputProcessor implements InputProcessor {
 			ScreenshotFactory.saveScreenshot();
 			return true;
 		case Keys.ESCAPE:
-			EntityManager.getInstance().dispose();
+			GameManager.disposeEngine();
 			GameManager.setScreen(new SelectorScreen());
 			return true;
 			

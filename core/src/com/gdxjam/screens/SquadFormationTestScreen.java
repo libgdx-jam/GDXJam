@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.gdxjam.Assets;
 import com.gdxjam.EntityManager;
+import com.gdxjam.GameManager;
 import com.gdxjam.GameWorld;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.ai.states.UnitState;
@@ -34,6 +35,7 @@ import com.gdxjam.utils.generators.WorldGenerator;
 public class SquadFormationTestScreen extends AbstractScreen{
 	
 	private Stage stage;
+	private EntityManager engine;
 	
 	@Override
 	public void show () {
@@ -43,16 +45,17 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		//initGUI();
 		
 		GameWorld world = new GameWorld(64, 36);
-		EntityManager.getInstance().initSystems(world);
+		engine = GameManager.initEngine();
+		engine.initSystems(world);
 		generateWorld(world);
 		
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		
-		multiplexer.addProcessor(EntityManager.getInstance().getSystem(HUDSystem.class).getStage());
+		multiplexer.addProcessor(engine.getSystem(HUDSystem.class).getStage());
 		multiplexer.addProcessor(stage);
 		multiplexer.addProcessor(new DefaultInputProcessor());
-		multiplexer.addProcessor(new DesktopInputProcessor(EntityManager.getInstance()));
-		multiplexer.addProcessor(new GestureDetector(new DesktopGestureListener(EntityManager.getInstance())));
+		multiplexer.addProcessor(new DesktopInputProcessor(engine));
+		multiplexer.addProcessor(new GestureDetector(new DesktopGestureListener(engine)));
 		Gdx.input.setInputProcessor(multiplexer);
 	}
 	
@@ -77,9 +80,9 @@ public class SquadFormationTestScreen extends AbstractScreen{
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
 				Squad squad = null;
-				SquadSystem squadSystem = EntityManager.getInstance().getSystem(SquadSystem.class);
+				SquadSystem squadSystem = engine.getSystem(SquadSystem.class);
 				
-				for(Entity entity : EntityManager.getInstance().getEntitiesFor(Family.all(SteerableBodyComponent.class).get())){
+				for(Entity entity : engine.getEntitiesFor(Family.all(SteerableBodyComponent.class).get())){
 					if(squad == null){
 						squad = squadSystem.createSquad(entity);
 					}
@@ -94,7 +97,7 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		killButton.addListener(new ChangeListener() {
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
-				for(Entity entity: EntityManager.getInstance().getEntitiesFor(Family.all(HealthComponent.class).get())){
+				for(Entity entity: engine.getEntitiesFor(Family.all(HealthComponent.class).get())){
 					Components.HEALTH.get(entity).value = 0;
 				}
 				
@@ -115,7 +118,7 @@ public class SquadFormationTestScreen extends AbstractScreen{
 	@Override
 	public void resize (int width, int height) {
 		super.resize(width, height);
-		EntityManager.getInstance().getSystem(CameraSystem.class).getViewport().update(width, height);
+		engine.getSystem(CameraSystem.class).getViewport().update(width, height);
 		stage.getViewport().update(width, height);
 	}
 
@@ -124,7 +127,7 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.gl20.glClearColor(0, 0, 0, 1);
 		
-		EntityManager.getInstance().update(delta);
+		engine.update(delta);
 
 		stage.act();
 		stage.draw();
