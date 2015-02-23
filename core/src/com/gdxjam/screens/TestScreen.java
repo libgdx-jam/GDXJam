@@ -17,19 +17,19 @@ import com.gdxjam.utils.generators.WorldGenerator;
 
 public class TestScreen extends AbstractScreen {
 	
-	private PooledEngine engine;
 	private GUItest GUITest;
+	private EntityManager engine;
 
 	@Override
 	public void show() {
 		InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
-		initEngine();
 		// gui needs to be created after engine but before world, for the
 		// listener to work
+		createTestWorld();
 		GUITest = new GUItest(engine);
 
-		createTestWorld();
+
 
 		// inputs
 		inputMultiplexer.addProcessor(GUITest);
@@ -42,7 +42,8 @@ public class TestScreen extends AbstractScreen {
 
 	public void createTestWorld() {
 		GameWorld world = new GameWorld(64, 36);
-		EntityManager.getInstance().loadWorld(world);
+		engine = EntityManager.getInstance().initSystems(world);
+		engine.addSystem(new CommanderControllerSystem());
 		EntityFactory.createSquad(new Vector2(15, 5));
 		EntityFactory.createSquad(new Vector2(-30, -30));
 		EntityFactory.createSquad(new Vector2(0, 30));
@@ -54,10 +55,6 @@ public class TestScreen extends AbstractScreen {
 		EntityFactory.createFortress(new Vector2(15, 5), 15, 12);
 	}
 
-	public void initEngine() {
-		engine = EntityManager.getInstance().initSystems();
-		engine.addSystem(new CommanderControllerSystem());
-	}
 
 	@Override
 	public void render(float delta) {

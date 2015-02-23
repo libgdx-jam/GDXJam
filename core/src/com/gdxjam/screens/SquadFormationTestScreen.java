@@ -37,20 +37,17 @@ import com.gdxjam.utils.generators.WorldGenerator;
 public class SquadFormationTestScreen extends AbstractScreen{
 	
 	private Stage stage;
-	private Label foodLabel;
-	private GameTimeTable gameTimeTable;
-	private GameWorld world;
-
+	
 	@Override
 	public void show () {
 		super.show();
 		
 		stage = new Stage();
-		initGUI();
+		//initGUI();
 		
-		EntityManager.getInstance().initSystems();
-		world = createTestWorld();
-		EntityManager.getInstance().loadWorld(world);
+		GameWorld world = new GameWorld(64, 36);
+		EntityManager.getInstance().initSystems(world);
+		generateWorld(world);
 		
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		
@@ -62,8 +59,8 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		Gdx.input.setInputProcessor(multiplexer);
 	}
 	
-	public GameWorld createTestWorld () {
-		GameWorld world = new GameWorld(64, 36);
+	public GameWorld generateWorld (GameWorld world) {
+		
 		int unitCount = 2;
 		for(int i = 0; i < unitCount; i++){
 			Entity entity = EntityFactory.createUnit(new Vector2(MathUtils.random(0, world.width), MathUtils.random(0, world.height)));
@@ -77,9 +74,6 @@ public class SquadFormationTestScreen extends AbstractScreen{
 	
 	public void initGUI(){
 		Skin skin = Assets.getManager().get(Assets.SKIN, Skin.class);
-		foodLabel = new Label("Food: 0 / 0", skin);
-		
-		gameTimeTable = new GameTimeTable(skin);
 		
 		TextButton formSquadButton = new TextButton("Form Squad", skin);
 		formSquadButton.addListener(new ChangeListener() {
@@ -116,19 +110,11 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		table.defaults().pad(10);
 		table.add(formSquadButton);
 		table.add(killButton);
-		table.add(foodLabel);
-		table.add(gameTimeTable);
-	
 		
 		stage.addActor(table);
 		table.top().right();
 	}
 	
-	public void updateGUI(GameWorld world){
-		foodLabel.setText("Food: " + world.food + " / " + ResourceSystem.foodThreshold);
-		gameTimeTable.update();
-	}
-
 	@Override
 	public void resize (int width, int height) {
 		super.resize(width, height);
@@ -142,7 +128,6 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		Gdx.gl20.glClearColor(0, 0, 0, 1);
 		
 		EntityManager.getInstance().update(delta);
-		updateGUI(world);
 
 		stage.act();
 		stage.draw();
