@@ -3,7 +3,6 @@ package com.gdxjam.systems;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.utils.IntMap;
-import com.gdxjam.GameWorld;
 import com.gdxjam.components.ResourceComponent.ResourceType;
 
 public class ResourceSystem extends EntitySystem{
@@ -12,11 +11,9 @@ public class ResourceSystem extends EntitySystem{
 	
 	public IntMap<Integer> resources = new IntMap<Integer>();
 	
-	private GameWorld world;
 	private HUDSystem hudSystem;
 	
-	public ResourceSystem(GameWorld world){
-		this.world = world;
+	public ResourceSystem(){
 	}
 	
 	@Override

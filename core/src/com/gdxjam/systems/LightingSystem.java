@@ -6,14 +6,17 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Disposable;
+import com.gdxjam.utils.Constants;
 
-public class LightingSystem extends EntitySystem{
+public class LightingSystem extends EntitySystem implements Disposable{
 	private static final String TAG = "[" + LightingSystem.class.getSimpleName() + "]";
 	
 	private static final Color DAY = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 	private static final Color NIGHT = new Color(0.0f, 0.0f, 0.0f, 0.4f);
 	private static final Color ambient = NIGHT.cpy();
 	
+	private float time = 5 * Constants.secondsPerHour;
 	private RayHandler rayHandler;
 
 	public void init(World world){
@@ -21,12 +24,9 @@ public class LightingSystem extends EntitySystem{
 		rayHandler.setAmbientLight(ambient);
 	}
 	
-	public void sunrise(float scale){
-		blendLighting(NIGHT, DAY, scale);
-	}
 	
 	public void sunset(float scale){
-		blendLighting(DAY, NIGHT, scale);
+		
 	}
 	
 	public void blendLighting(Color base, Color target, float scale){
@@ -48,9 +48,28 @@ public class LightingSystem extends EntitySystem{
 	@Override
 	public void update (float deltaTime) {
 		super.update(deltaTime);
+		time += deltaTime;
+		
+		if(time > Constants.secondsPerHour * 24){
+			time = 0;
+		}
+		
+		if(time > Constants.sunriseBegin && time < Constants.sunriseEnd){
+			blendLighting(NIGHT, DAY, deltaTime * (1 / Constants.sunriseDuration));
+		}
+		
+		else if(time > Constants.sunsetBegin && time < Constants.sunsetEnd){
+			blendLighting(DAY, NIGHT, deltaTime * (1 / Constants.sunsetDuration));
+		}
+		
 		if(rayHandler != null){
 			rayHandler.updateAndRender();
 		}
+	}
+
+	@Override
+	public void dispose () {
+		rayHandler.dispose();
 	}
 	
 }

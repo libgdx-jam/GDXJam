@@ -30,6 +30,7 @@ public class SelectorScreen extends AbstractScreen {
 		addScreen(new TestScreen());
 		addScreen(new SquadFormationTestScreen());
 		addScreen(new AssetPlaygroundScreen());
+		addScreen(new GameScreen());
 
 		stage.addActor(table);
 
