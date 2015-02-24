@@ -185,7 +185,7 @@ public class EntityFactory {
 		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
 
 		CircleShape shape = new CircleShape();
-		float radius = 10;
+		float radius = 12;
 		shape.setRadius(radius);
 		body.createFixture(shape, 1.0f);
 		shape.dispose();
@@ -196,13 +196,40 @@ public class EntityFactory {
 		entity.add(engine.createComponent(HealthComponent.class));
 
 		entity.add(engine.createComponent(SpriteComponent.class).init(
-				Assets.getInstance().minimal.tree, position.x, position.y,
+				Assets.spacecraft.outpost, position.x, position.y,
 				radius * 2, radius * 2));
 
 		engine.addEntity(entity);
 		return entity;
 	}
+	
+	public static Entity createAsteroid(Vector2 position, float radius){
+		Entity entity = engine.createEntity();
+		
+		BodyDef def = new BodyDef();
+		def.type = BodyDef.BodyType.KinematicBody;
+		def.angularVelocity = MathUtils.random(0.0f, 4.0f);
+		def.position.set(position);
+		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
+		
+		CircleShape shape = new CircleShape();
+		shape.setRadius(radius);
+		body.createFixture(shape, 1.0f);
+		shape.dispose();
+		
+		entity.add(engine.createComponent(
+			SteerableBodyComponent.class).init(body));
+		
+		entity.add(engine.createComponent(HealthComponent.class));
 
+		entity.add(engine.createComponent(SpriteComponent.class).init(
+				Assets.getInstance().minimal.commander, position.x, position.y,
+				radius * 2, radius * 2));
+	
+		engine.addEntity(entity);
+		return entity;
+	}
+	
 
 	public static Entity createUnit(Vector2 position) {
 		Entity entity = engine.createEntity();
