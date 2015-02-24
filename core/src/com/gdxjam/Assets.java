@@ -36,12 +36,12 @@ public class Assets implements Disposable, AssetErrorListener {
 	public static final String TEXTURE_ATLAS_OBJECTS = "assets.atlas";
 	public static final String SKIN = "skin/uiskin.json";
 
-	public AssetHotkey hotkey;
-	public AssetFonts fonts;
-	public AssetMinimal minimal;
-	public AssetPlanet planet;
-	public AssetMothership mothership;
-	
+	public static AssetHotkey hotkey;
+	public static AssetFonts fonts;
+	public static AssetMinimal minimal;
+	public static AssetPlanet planet;
+	public static AssetMothership mothership;
+
 	public static AssetSpacecraft spacecraft;
 
 	public Assets() {
@@ -71,8 +71,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		manager.load(SKIN, Skin.class);
 		// manager.load("minimal.pack", TextureAtlas.class);
 		manager.finishLoading();
-		
-		
+
 	}
 
 	@Override
@@ -105,21 +104,22 @@ public class Assets implements Disposable, AssetErrorListener {
 			wallRegion = atlas.findRegion("wall");
 		}
 	}
-	
-	public static class AssetSpacecraft{
+
+	public static class AssetSpacecraft {
 		public final AtlasRegion outpost;
-		//public final AtlasRegion ship;
-		
-		public AssetSpacecraft(TextureAtlas atlas){
+
+		// public final AtlasRegion ship;
+
+		public AssetSpacecraft(TextureAtlas atlas) {
 			outpost = atlas.findRegion("outpost");
 		}
 	}
 
 	public class AssetMothership {
-		public final AtlasRegion green;
+		public final AtlasRegion ship;
 
 		public AssetMothership(TextureAtlas atlas) {
-			green = atlas.findRegion("mothershipgreen");
+			ship = atlas.findRegion("att3");
 		}
 
 	}

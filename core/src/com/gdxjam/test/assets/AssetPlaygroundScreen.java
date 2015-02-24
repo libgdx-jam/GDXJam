@@ -1,76 +1,34 @@
 package com.gdxjam.test.assets;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.gdxjam.Assets;
+import com.badlogic.gdx.math.Vector2;
+import com.gdxjam.EntityManager;
+import com.gdxjam.GameManager;
+import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.screens.AbstractScreen;
+import com.gdxjam.utils.EntityFactory;
 
 public class AssetPlaygroundScreen extends AbstractScreen {
 
-	SpriteBatch batch;
-	OrthographicCamera camera;
-	ShaderProgram shader;
+	private EntityManager engine;
 
 	@Override
 	public void show() {
 		super.show();
 
-		ShaderProgram.pedantic = false;
-		shader = new ShaderProgram(
-				Gdx.files.internal("shaders/grayscale.vert"),
-				Gdx.files.internal("shaders/grayscale.frag"));
-		if (!shader.isCompiled()) {
-			System.err.println(shader.getLog());
-			// System.exit(0);
-		}
-		if (shader.getLog().length() != 0)
-			System.out.println(shader.getLog());
+		engine = GameManager.initEngine();
+		createWorld();
+		Gdx.input.setInputProcessor(new DefaultInputProcessor());
+	}
 
-		batch = new SpriteBatch(1000, shader);
-		batch.setShader(shader);
-		batch.setShader(SpriteBatch.createDefaultShader());
-
-		camera = new OrthographicCamera(200, 200);
-		camera.position.set(100, 100, 0);
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
+	public void createWorld() {
+		EntityFactory.createMothership(new Vector2(32, 18));
 	}
 
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		camera.update();
-		batch.begin();
-		// Grayscaled shader
-		batch.setShader(shader);
-		batch.draw(Assets.getInstance().planet.planet1, 100, 100, 100, 100);
 
-		// default shader
-		batch.setShader(SpriteBatch.createDefaultShader());
-		batch.draw(Assets.getInstance().minimal.commander, 0, 0, 10, 10);
-		batch.draw(Assets.getInstance().mothership.green, 50, 50, 50, 50);
-
-		batch.end();
-
+		engine.update(delta);
 	}
-
-	@Override
-	public void resize(int width, int height) {
-		super.resize(width, height);
-		shader.begin();
-		shader.setUniformf("resolution", width, height);
-		shader.end();
-	}
-
-	@Override
-	public void dispose() {
-		super.dispose();
-		batch.dispose();
-		shader.dispose();
-	}
-
 }
