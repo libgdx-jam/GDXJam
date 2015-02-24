@@ -118,9 +118,9 @@ public class SquadSystem extends EntitySystem{
 	@Override
 	public void update (float deltaTime) {
 		super.update(deltaTime);
-		if(squads.size > 0){
-			squads.get(0);
-		}
+//		if(squads.size > 0){
+//			squads.get(0);
+//		}
 	}
 
 }

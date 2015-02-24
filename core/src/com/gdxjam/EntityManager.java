@@ -12,7 +12,6 @@ import com.gdxjam.components.Components;
 import com.gdxjam.components.RemovalComponent;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.EntityRenderSystem;
-import com.gdxjam.systems.GameWorldSystem;
 import com.gdxjam.systems.HUDSystem;
 import com.gdxjam.systems.HealthSystem;
 import com.gdxjam.systems.LightingSystem;
@@ -21,12 +20,15 @@ import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.systems.StateMachineSystem;
 import com.gdxjam.systems.SteeringSystem;
-import com.gdxjam.utils.EntityFactory;
 
 public class EntityManager extends PooledEngine implements Disposable{
 	private static String TAG = "[" + EntityManager.class.getSimpleName() + "]";
 	
-	public EntityManager initSystems(GameWorld world){
+	public EntityManager () {
+		initSystems();
+	}
+	
+	private EntityManager initSystems(){
 		CameraSystem cameraSystem = new CameraSystem(64, 36);
 		cameraSystem.getCamera().position.set(32, 18, 0);
 		addSystem(cameraSystem);
@@ -43,9 +45,7 @@ public class EntityManager extends PooledEngine implements Disposable{
 		addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
 		addSystem(new LightingSystem());
 		
-		addSystem(new ResourceSystem(world));
-		addSystem(new GameWorldSystem(world));
-		
+		addSystem(new ResourceSystem());	
 		addSystem(new HUDSystem(Assets.getManager().get(Assets.SKIN, Skin.class)));
 
 		return this;

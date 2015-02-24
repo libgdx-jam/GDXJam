@@ -4,28 +4,23 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.gdxjam.EntityManager;
 import com.gdxjam.GameManager;
-import com.gdxjam.GameWorld;
 import com.gdxjam.ai.states.SquadState;
 import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.screens.SelectorScreen;
 import com.gdxjam.systems.CameraSystem;
-import com.gdxjam.systems.GameWorldSystem;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.ScreenshotFactory;
 
 public class DesktopInputProcessor implements InputProcessor {
 
-	private GameWorld world;
 	private SquadSystem squadSystem;
 	private CameraSystem cameraSystem;
 
 	public DesktopInputProcessor(PooledEngine engine) {
 		this.cameraSystem = engine.getSystem(CameraSystem.class);
 		this.squadSystem = engine.getSystem(SquadSystem.class);
-		this.world = engine.getSystem(GameWorldSystem.class).getWorld();
 	}
 
 	@Override

@@ -4,7 +4,6 @@ package com.gdxjam.ui;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.gdxjam.GameWorld;
 import com.gdxjam.utils.Constants;
 
 public class GameTimeTable extends Table {
@@ -17,9 +16,7 @@ public class GameTimeTable extends Table {
 		
 	}
 
-	public void update (GameWorld world) {
-		float time = world.time;
-
+	public void update (float time) {
 		int hour = (int)(time / Constants.secondsPerHour);
 		int minute = (int)((time - (hour * Constants.secondsPerHour)) / Constants.secondsPerMinute);
 

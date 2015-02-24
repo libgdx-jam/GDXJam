@@ -6,8 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -17,9 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.gdxjam.Assets;
 import com.gdxjam.EntityManager;
 import com.gdxjam.GameManager;
-import com.gdxjam.GameWorld;
 import com.gdxjam.ai.Squad;
-import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.SteerableBodyComponent;
@@ -29,8 +25,6 @@ import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.HUDSystem;
 import com.gdxjam.systems.SquadSystem;
-import com.gdxjam.utils.EntityFactory;
-import com.gdxjam.utils.generators.WorldGenerator;
 
 public class SquadFormationTestScreen extends AbstractScreen{
 	
@@ -44,10 +38,8 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		stage = new Stage();
 		//initGUI();
 		
-		GameWorld world = new GameWorld(64, 36);
 		engine = GameManager.initEngine();
-		engine.initSystems(world);
-		generateWorld(world);
+//		generateWorld(world);
 		
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		
@@ -59,17 +51,17 @@ public class SquadFormationTestScreen extends AbstractScreen{
 		Gdx.input.setInputProcessor(multiplexer);
 	}
 	
-	public GameWorld generateWorld (GameWorld world) {
-		
-		int unitCount = 2;
-		for(int i = 0; i < unitCount; i++){
-			Entity entity = EntityFactory.createUnit(new Vector2(MathUtils.random(0, world.width), MathUtils.random(0, world.height)));
-			Components.STATE_MACHINE.get(entity).stateMachine.changeState(UnitState.IDLE);
-		}
-		
-		WorldGenerator.generateForest(new Vector2(10, 10), 1, 1, 0.1f, 0.2f, 0.1f, "TREE");
-		return world;
-	}
+//	public GameWorld generateWorld (GameWorld world) {
+//		
+//		int unitCount = 2;
+//		for(int i = 0; i < unitCount; i++){
+//			Entity entity = EntityFactory.createUnit(new Vector2(MathUtils.random(0, world.width), MathUtils.random(0, world.height)));
+//			Components.STATE_MACHINE.get(entity).stateMachine.changeState(UnitState.IDLE);
+//		}
+//		
+//		WorldGenerator.generateForest(new Vector2(10, 10), 1, 1, 0.1f, 0.2f, 0.1f, "TREE");
+//		return world;
+//	}
 
 	
 	public void initGUI(){

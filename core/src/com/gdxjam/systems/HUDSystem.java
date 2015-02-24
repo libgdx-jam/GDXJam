@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectIntMap;
-import com.gdxjam.GameWorld;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.components.ResourceComponent.ResourceType;
 import com.gdxjam.ui.GameTimeTable;
@@ -29,8 +28,6 @@ public class HUDSystem extends EntitySystem implements Disposable {
 	
 	private final ObjectIntMap<Squad> squadKeyMap = new ObjectIntMap<Squad>(Constants.maxSquads);
 	private ResourceGroup resources;
-
-	private GameWorld world;
 
 	public HUDSystem(Skin skin) {
 		this.stage = new Stage();
@@ -102,7 +99,6 @@ public class HUDSystem extends EntitySystem implements Disposable {
 	@Override
 	public void addedToEngine (Engine engine) {
 		super.addedToEngine(engine);
-		world = engine.getSystem(GameWorldSystem.class).getWorld();
 	}
 	
 	public void addSquad(Squad squad) {
@@ -131,8 +127,6 @@ public class HUDSystem extends EntitySystem implements Disposable {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		
-		gameTimeTable.update(world);
 
 		stage.act();
 		stage.draw();
