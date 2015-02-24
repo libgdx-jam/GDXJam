@@ -184,7 +184,18 @@ public class EntityFactory {
 		def.position.set(position);
 		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
 
-		
+		// Vector2[] vertices = new Vector2[4];
+		//
+		// vertices[0] = new Vector2(0f, 0f);
+		// vertices[1] = new Vector2(10f, 0f);
+		// vertices[2] = new Vector2(0f, 10f);
+		// vertices[3] = new Vector2(10f, 10f);
+		//
+		// PolygonShape poly = new PolygonShape();
+		// poly.set(vertices);
+		// body.createFixture(poly, 1.0f);
+		// poly.dispose();
+
 		CircleShape shape = new CircleShape();
 		float radius = 12;
 		shape.setRadius(radius);
@@ -197,8 +208,8 @@ public class EntityFactory {
 		entity.add(engine.createComponent(HealthComponent.class));
 
 		entity.add(engine.createComponent(SpriteComponent.class).init(
-				Assets.getInstance().mothership.ship, position.x, position.y, radius,
-				radius * 2));
+				Assets.getInstance().mothership.ship, position.x, position.y,
+				radius, radius * 2));
 
 		engine.addEntity(entity);
 		return entity;
