@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -40,6 +41,8 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetMinimal minimal;
 	public AssetPlanet planet;
 	public AssetMothership mothership;
+	
+	public static AssetSpacecraft spacecraft;
 
 	public Assets() {
 		manager = new AssetManager();
@@ -59,6 +62,7 @@ public class Assets implements Disposable, AssetErrorListener {
 			minimal = new AssetMinimal(atlas);
 			planet = new AssetPlanet(atlas);
 			mothership = new AssetMothership(atlas);
+			spacecraft = new AssetSpacecraft(atlas);
 		}
 	}
 
@@ -67,6 +71,8 @@ public class Assets implements Disposable, AssetErrorListener {
 		manager.load(SKIN, Skin.class);
 		// manager.load("minimal.pack", TextureAtlas.class);
 		manager.finishLoading();
+		
+		
 	}
 
 	@Override
@@ -97,6 +103,15 @@ public class Assets implements Disposable, AssetErrorListener {
 
 			wall = atlas.createPatch("wall");
 			wallRegion = atlas.findRegion("wall");
+		}
+	}
+	
+	public static class AssetSpacecraft{
+		public final AtlasRegion outpost;
+		//public final AtlasRegion ship;
+		
+		public AssetSpacecraft(TextureAtlas atlas){
+			outpost = atlas.findRegion("outpost");
 		}
 	}
 

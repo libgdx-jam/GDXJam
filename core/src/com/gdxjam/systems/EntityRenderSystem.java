@@ -16,7 +16,7 @@ import com.gdxjam.components.SpriteComponent;
 
 public class EntityRenderSystem extends IteratingSystem implements Disposable {
 
-	private static final int spriteRotationOffset = -90;
+	private static final int spriteRotationOffset = -0;
 
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
