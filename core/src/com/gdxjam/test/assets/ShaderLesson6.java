@@ -28,7 +28,7 @@ public class ShaderLesson6 extends AbstractScreen {
 	// our constants...
 	public static final float DEFAULT_LIGHT_Z = 0.075f;
 	public static final float AMBIENT_INTENSITY = 0.2f;
-	public static final float LIGHT_INTENSITY = 1f;
+	public static final float LIGHT_INTENSITY = 10f;
 
 	public static final Vector3 LIGHT_POS = new Vector3(0f, 0f, DEFAULT_LIGHT_Z);
 
@@ -117,8 +117,8 @@ public class ShaderLesson6 extends AbstractScreen {
 
 	@Override
 	public void show() {
-		rock = new Texture(Gdx.files.internal("data/rock.png"));
-		rockNormals = new Texture(Gdx.files.internal("data/rock_n.png"));
+		rock = new Texture(Gdx.files.internal("data/att3.png"));
+		rockNormals = new Texture(Gdx.files.internal("data/att3-normalmap.png"));
 
 		ShaderProgram.pedantic = false;
 		shader = new ShaderProgram(VERT, FRAG);
@@ -190,16 +190,12 @@ public class ShaderLesson6 extends AbstractScreen {
 
 		// shader will now be in use...
 
-		// update light position, normalized to screen resolution
-		float x = Gdx.input.getX() / (float) Gdx.graphics.getWidth();
-		float y = Gdx.input.getY() / (float) Gdx.graphics.getHeight();
-
+		// update light position,
 		Vector3 input = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 		input = cam.unproject(input);
-
-		LIGHT_POS.x = input.x/ (float) Gdx.graphics.getWidth();
-		LIGHT_POS.y = input.y/ (float) Gdx.graphics.getHeight();
-		
+		// normalized to screen resolution
+		LIGHT_POS.x = input.x / (float) Gdx.graphics.getWidth();
+		LIGHT_POS.y = input.y / (float) Gdx.graphics.getHeight();
 
 		// send a Vector4f to GLSL
 		shader.setUniformf("LightPos", LIGHT_POS);
@@ -213,7 +209,7 @@ public class ShaderLesson6 extends AbstractScreen {
 		rock.bind(0);
 
 		// draw the texture unit 0 with our shader effect applied
-		batch.draw(rock, 0, 0);
+		batch.draw(rock, 100, 100);
 
 		batch.end();
 	}
