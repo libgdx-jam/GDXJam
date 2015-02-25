@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.gdxjam.Assets;
 import com.gdxjam.GameManager;
 import com.gdxjam.test.assets.AssetPlaygroundScreen;
+import com.gdxjam.test.assets.ShaderLesson6;
 
 public class SelectorScreen extends AbstractScreen {
 
@@ -26,11 +27,12 @@ public class SelectorScreen extends AbstractScreen {
 		table = new Table();
 		table.setFillParent(true);
 		table.defaults().width(Gdx.graphics.getWidth() / 2).pad(20);
-		//addScreen(new GameScreen());
+		// addScreen(new GameScreen());
 		addScreen(new TestScreen());
 		addScreen(new SquadFormationTestScreen());
 		addScreen(new AssetPlaygroundScreen());
 		addScreen(new GameScreen());
+		addScreen(new ShaderLesson6());
 
 		stage.addActor(table);
 
