@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.gdxjam.GameManager;
+import com.gdxjam.Assets;
 import com.gdxjam.components.SteerableBodyComponent;
 
 /**
@@ -40,7 +40,7 @@ public class NormalMapRendererSystem extends EntitySystem implements Disposable 
 
 	// our constants...
 	public static final float DEFAULT_LIGHT_Z = 0.075f;
-	public static final float AMBIENT_INTENSITY = 0.2f;
+	public static final float AMBIENT_INTENSITY = 1f;
 	public static final float LIGHT_INTENSITY = 5f;
 
 	public static final Vector3 LIGHT_POS = new Vector3(0f, 0f, DEFAULT_LIGHT_Z);
@@ -141,6 +141,9 @@ public class NormalMapRendererSystem extends EntitySystem implements Disposable 
 		normal = new Texture(Gdx.files.internal("data/base3n.png"));
 
 		sprite = new Sprite(texture);
+		sprite.setSize(300, 300);
+		sprite.setPosition(0, 0);
+		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
 
 		ShaderProgram.pedantic = false;
 		shader = new ShaderProgram(VERT, FRAG);
@@ -173,12 +176,12 @@ public class NormalMapRendererSystem extends EntitySystem implements Disposable 
 		batch = new SpriteBatch(1000, shader);
 		batch.setShader(shader);
 
-		cam = new OrthographicCamera(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight());
+		cam = new OrthographicCamera(100, 100);
+		cam.position.set(0, 0, 0);
+		// cam = engine.getSystem(CameraSystem.class).getCamera();
 		cam.setToOrtho(false);
 
-		// handle mouse wheel
-		Gdx.input.setInputProcessor(new InputAdapter() {
+		engine.getSystem(InputSystem.class).add(new InputAdapter() {
 			public boolean scrolled(int delta) {
 				// LibGDX mouse wheel is inverted compared to lwjgl-basics
 				LIGHT_POS.z = Math.max(0f, LIGHT_POS.z - (delta * 0.005f));
@@ -186,22 +189,34 @@ public class NormalMapRendererSystem extends EntitySystem implements Disposable 
 				return true;
 			}
 		});
-		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+		resize(100, 100);
+
 	}
 
 	public void resize(int width, int height) {
-		cam.setToOrtho(false, width, height);
-		batch.setProjectionMatrix(cam.combined);
+		System.out.println(cam.viewportWidth + " " + cam.viewportHeight);
 
 		shader.begin();
-		shader.setUniformf("Resolution", width, height);
+		shader.setUniformf("Resolution", Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight());
 		shader.end();
+
+		// cam.setToOrtho(false, width, height);
+		cam.viewportHeight = height;
+		cam.viewportWidth = width;
+		batch.setProjectionMatrix(cam.projection);
+
+		System.out.println(cam.viewportWidth + " " + cam.viewportHeight);
+
 	}
 
 	@Override
 	public void update(float delta) {
+		resize(100, 100);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		sprite.rotate(3f * delta);
+		// -resize(100, 100);
+		sprite.rotate(-3f * delta);
 
 		// reset light Z
 		if (Gdx.input.isTouched()) {
@@ -212,6 +227,7 @@ public class NormalMapRendererSystem extends EntitySystem implements Disposable 
 		SteerableBodyComponent steerable = entity
 				.getComponent(SteerableBodyComponent.class);
 
+		batch.setProjectionMatrix(cam.projection);
 		batch.begin();
 
 		// shader will now be in use...
@@ -223,10 +239,10 @@ public class NormalMapRendererSystem extends EntitySystem implements Disposable 
 		LIGHT_POS.x = input.x / (float) Gdx.graphics.getWidth();
 		LIGHT_POS.y = input.y / (float) Gdx.graphics.getHeight();
 
-		System.out.println(input.x + " " + input.y
-				+ "----------------------------");
-		System.out.println(Gdx.graphics.getWidth() + " "
-				+ Gdx.graphics.getHeight());
+		// System.out.println(input.x + " " + input.y
+		// + "----------------------------");
+		// System.out.println(Gdx.graphics.getWidth() + " "
+		// + Gdx.graphics.getHeight());
 
 		// send a Vector4f to GLSL
 		shader.setUniformf("LightPos", LIGHT_POS);
@@ -242,9 +258,16 @@ public class NormalMapRendererSystem extends EntitySystem implements Disposable 
 		// draw the texture unit 0 with our shader effect applied
 		// batch.draw(texture, steerable.body.getPosition().x,
 		// steerable.body.getPosition().y);
-		sprite.draw(batch);
+		// sprite.draw(batch);
 
+		// batch.draw(Assets.minimal.commander, 10, 10, 100, 100);
+		batch.draw(texture, sprite.getX(), sprite.getY(), sprite.getOriginX(),
+				sprite.getOriginY(), sprite.getWidth(), sprite.getHeight(),
+				sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation(),
+				0, 0, sprite.getRegionWidth(), sprite.getRegionHeight(), false,
+				false);
 		batch.end();
+
 	}
 
 	@Override

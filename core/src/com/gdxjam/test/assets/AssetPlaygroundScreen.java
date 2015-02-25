@@ -6,6 +6,7 @@ import com.gdxjam.Assets;
 import com.gdxjam.EntityManager;
 import com.gdxjam.GameManager;
 import com.gdxjam.screens.AbstractScreen;
+import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.NormalMapRendererSystem;
 import com.gdxjam.utils.EntityFactory;
 
@@ -19,15 +20,14 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 		super.show();
 		engine = GameManager.initEngine();
 
-		entity = EntityFactory.createMothership(new Vector2(32, 18));
-		engine.addSystem(new NormalMapRendererSystem(entity,
-				Assets.mothership.ship, Assets.mothership.normal));
 		createWorld();
-		// Gdx.input.setInputProcessor(new DefaultInputProcessor());
 	}
 
 	public void createWorld() {
-		// EntityFactory.createMothership(new Vector2(32, 18));
+		entity = EntityFactory.createMothership(new Vector2(100, 100));
+		engine.removeSystem(engine.getSystem(EntityRenderSystem.class));
+		engine.addSystem(new NormalMapRendererSystem(entity,
+				Assets.mothership.ship, Assets.mothership.normal));
 	}
 
 	@Override

@@ -29,6 +29,7 @@ import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.UnitComponent;
+import com.gdxjam.systems.NormalMapRendererSystem;
 import com.gdxjam.systems.PhysicsSystem;
 
 public class EntityFactory {
@@ -209,9 +210,11 @@ public class EntityFactory {
 
 		// entity.add(engine.createComponent(SpriteComponent.class).init(
 		// Assets.getInstance().mothership.ship, position.x, position.y,
-		//		radius, radius * 2));
+		// radius, radius * 2));
 
 		engine.addEntity(entity);
+		engine.addSystem(new NormalMapRendererSystem(entity,
+				Assets.mothership.ship, Assets.mothership.normal));
 		return entity;
 	}
 
