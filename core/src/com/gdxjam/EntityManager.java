@@ -14,6 +14,7 @@ import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.HUDSystem;
 import com.gdxjam.systems.HealthSystem;
+import com.gdxjam.systems.InputSystem;
 import com.gdxjam.systems.LightingSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
@@ -21,72 +22,73 @@ import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.systems.StateMachineSystem;
 import com.gdxjam.systems.SteeringSystem;
 
-public class EntityManager extends PooledEngine implements Disposable{
+public class EntityManager extends PooledEngine implements Disposable {
 	private static String TAG = "[" + EntityManager.class.getSimpleName() + "]";
-	
-	public EntityManager () {
+
+	public EntityManager() {
 		initSystems();
 	}
-	
-	private EntityManager initSystems(){
+
+	private EntityManager initSystems() {
 		CameraSystem cameraSystem = new CameraSystem(64, 36);
 		cameraSystem.getCamera().position.set(32, 18, 0);
 		addSystem(cameraSystem);
 
 		addSystem(new PhysicsSystem());
 
-		//AI
-		addSystem( new SteeringSystem());
+		// AI
+		addSystem(new SteeringSystem());
 		addSystem(new StateMachineSystem());
 		addSystem(new SquadSystem());
 		addSystem(new HealthSystem());
-		
-		
+
 		addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
 		addSystem(new LightingSystem());
-		
-		addSystem(new ResourceSystem());	
-		addSystem(new HUDSystem(Assets.getManager().get(Assets.SKIN, Skin.class)));
+
+		addSystem(new ResourceSystem());
+		addSystem(new HUDSystem(Assets.getManager()
+				.get(Assets.SKIN, Skin.class)));
+
+		addSystem(new InputSystem());
 
 		return this;
 	}
-	
-	
+
 	@Override
-	public void update (float deltaTime) {
+	public void update(float deltaTime) {
 		super.update(deltaTime);
-		
-		for(Entity entity : getEntitiesFor(Family.all(RemovalComponent.class).get())){
+
+		for (Entity entity : getEntitiesFor(Family.all(RemovalComponent.class)
+				.get())) {
 			removeEntity(entity);
 		}
 	}
-	
+
 	@Override
-	protected void removeEntityInternal (Entity entity) {
-		if(Components.STEERABLE_BODY.has(entity)){
+	protected void removeEntityInternal(Entity entity) {
+		if (Components.STEERABLE_BODY.has(entity)) {
 			Body body = Components.STEERABLE_BODY.get(entity).body;
 			getSystem(PhysicsSystem.class).destroyBody(body);
-		}
-		else if(Components.PHYSICS.has(entity)){
+		} else if (Components.PHYSICS.has(entity)) {
 			Body body = Components.PHYSICS.get(entity).body;
 			getSystem(PhysicsSystem.class).destroyBody(body);
 		}
-		
+
 		super.removeEntityInternal(entity);
 	}
 
 	@Override
-	public void dispose () {
+	public void dispose() {
 		Gdx.app.log(TAG, "disposing instance");
 		removeAllEntities();
 		clearPools();
-		for(EntitySystem system : getSystems()){
-			if(system instanceof Disposable){
-				((Disposable)system).dispose();
+		for (EntitySystem system : getSystems()) {
+			if (system instanceof Disposable) {
+				((Disposable) system).dispose();
 			}
 			system = null;
 			removeSystem(system);
 		}
 	}
-	
+
 }
