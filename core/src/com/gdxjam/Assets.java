@@ -8,16 +8,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Assets implements Disposable, AssetErrorListener {
-
 	public static final String TAG = Assets.class.getSimpleName();
-
+	
 	private static Assets instance;
 
 	public static Assets getInstance() {
@@ -26,6 +24,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 		return instance;
 	}
+
 
 	public static AssetManager manager;
 
@@ -41,8 +40,8 @@ public class Assets implements Disposable, AssetErrorListener {
 	public static AssetMinimal minimal;
 	public static AssetPlanet planet;
 	public static AssetMothership mothership;
-
 	public static AssetSpacecraft spacecraft;
+	public static AssetSpace space;
 
 	public Assets() {
 		manager = new AssetManager();
@@ -63,6 +62,8 @@ public class Assets implements Disposable, AssetErrorListener {
 			planet = new AssetPlanet(atlas);
 			mothership = new AssetMothership(atlas);
 			spacecraft = new AssetSpacecraft(atlas);
+			space = new AssetSpace(atlas);
+			
 		}
 	}
 
@@ -122,6 +123,14 @@ public class Assets implements Disposable, AssetErrorListener {
 			ship = atlas.findRegion("att3");
 		}
 
+	}
+	
+	public class AssetSpace{
+		public final AtlasRegion asteroid;
+		
+		public AssetSpace(TextureAtlas atlas){
+			this.asteroid = atlas.findRegion("asteroid");
+		}
 	}
 
 	public class AssetFonts {
