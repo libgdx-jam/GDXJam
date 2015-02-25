@@ -43,7 +43,6 @@ public class EntityManager extends PooledEngine implements Disposable{
 		
 		
 		addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
-		addSystem(new LightingSystem());
 		
 		addSystem(new ResourceSystem());	
 		addSystem(new HUDSystem(Assets.getManager().get(Assets.SKIN, Skin.class)));

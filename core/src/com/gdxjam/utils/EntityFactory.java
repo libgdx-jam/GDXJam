@@ -247,7 +247,7 @@ public class EntityFactory {
 
 		BodyDef def = new BodyDef();
 		def.type = BodyDef.BodyType.KinematicBody;
-		def.angularVelocity = MathUtils.random(0.0f, 4.0f);
+		def.angularVelocity = MathUtils.random(0.0f, 1.0f);
 		def.position.set(position);
 		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
 
@@ -262,7 +262,7 @@ public class EntityFactory {
 		entity.add(engine.createComponent(HealthComponent.class));
 
 		entity.add(engine.createComponent(SpriteComponent.class).init(
-				Assets.getInstance().minimal.commander, position.x, position.y,
+				Assets.space.asteroid, position.x, position.y,
 				radius * 2, radius * 2));
 
 		engine.addEntity(entity);
