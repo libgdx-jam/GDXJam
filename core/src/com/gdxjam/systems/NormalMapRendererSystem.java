@@ -41,7 +41,7 @@ public class NormalMapRendererSystem extends EntitySystem implements Disposable 
 	// our constants...
 	public static final float DEFAULT_LIGHT_Z = 0.075f;
 	public static final float AMBIENT_INTENSITY = 0.2f;
-	public static final float LIGHT_INTENSITY = 100f;
+	public static final float LIGHT_INTENSITY = 5f;
 
 	public static final Vector3 LIGHT_POS = new Vector3(0f, 0f, DEFAULT_LIGHT_Z);
 
@@ -220,9 +220,8 @@ public class NormalMapRendererSystem extends EntitySystem implements Disposable 
 		Vector3 input = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 		input = cam.unproject(input);
 		// normalized to screen resolution
-		LIGHT_POS.x = 1000 / (float) Gdx.graphics.getWidth();
-		LIGHT_POS.y = 1000 / (float) Gdx.graphics.getHeight();
-		
+		LIGHT_POS.x = input.x / (float) Gdx.graphics.getWidth();
+		LIGHT_POS.y = input.y / (float) Gdx.graphics.getHeight();
 
 		System.out.println(input.x + " " + input.y
 				+ "----------------------------");
