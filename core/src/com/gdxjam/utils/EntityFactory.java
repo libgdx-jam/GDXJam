@@ -207,9 +207,9 @@ public class EntityFactory {
 
 		entity.add(engine.createComponent(HealthComponent.class));
 
-		entity.add(engine.createComponent(SpriteComponent.class).init(
-				Assets.getInstance().mothership.ship, position.x, position.y,
-				radius, radius * 2));
+		// entity.add(engine.createComponent(SpriteComponent.class).init(
+		// Assets.getInstance().mothership.ship, position.x, position.y,
+		//		radius, radius * 2));
 
 		engine.addEntity(entity);
 		return entity;
