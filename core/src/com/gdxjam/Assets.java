@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -85,6 +86,8 @@ public class Assets implements Disposable, AssetErrorListener {
 	@Override
 	public void dispose() {
 		manager.dispose();
+		mothership.normal.dispose();
+		mothership.ship.dispose();
 	}
 
 	public class AssetMinimal {
@@ -116,10 +119,13 @@ public class Assets implements Disposable, AssetErrorListener {
 	}
 
 	public class AssetMothership {
-		public final AtlasRegion ship;
+		public final Texture ship;
+		public final Texture normal;
 
 		public AssetMothership(TextureAtlas atlas) {
-			ship = atlas.findRegion("att3");
+			ship = new Texture(Gdx.files.internal("data/base3.png"));
+			normal = new Texture(Gdx.files.internal("data/base3n.png"));
+
 		}
 
 	}

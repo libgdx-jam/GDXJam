@@ -1,24 +1,37 @@
-package com.gdxjam.test.assets;
+package com.gdxjam.systems;
 
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.gdxjam.screens.AbstractScreen;
+import com.gdxjam.GameManager;
+import com.gdxjam.components.SteerableBodyComponent;
 
 /**
- * LibGDX port of ShaderLesson6, i.e. normal mapping in 2D games.
+ * This system will only function with one pairing of an image and its normal
+ * map. It uses a custom shader and lighting to light a normal map image. This
+ * is to simulate the time lapse around the mothership.
  * 
- * @author davedes
- */
-public class ShaderLesson6 extends AbstractScreen {
+ * @author aplace21
+ * 
+ * */
+public class NormalMapRendererSystem extends EntitySystem implements Disposable {
+	Entity entity;
 
-	Texture mothership, mothershipNormalMap;
+	Sprite sprite;
+
+	private Texture texture;
+	private Texture normal;
 
 	SpriteBatch batch;
 	OrthographicCamera cam;
@@ -28,7 +41,7 @@ public class ShaderLesson6 extends AbstractScreen {
 	// our constants...
 	public static final float DEFAULT_LIGHT_Z = 0.075f;
 	public static final float AMBIENT_INTENSITY = 0.2f;
-	public static final float LIGHT_INTENSITY = 10f;
+	public static final float LIGHT_INTENSITY = 100f;
 
 	public static final Vector3 LIGHT_POS = new Vector3(0f, 0f, DEFAULT_LIGHT_Z);
 
@@ -115,11 +128,20 @@ public class ShaderLesson6 extends AbstractScreen {
 			+ "	gl_FragColor = vColor * vec4(FinalColor, DiffuseColor.a);\n"
 			+ "}";
 
+	public NormalMapRendererSystem(Entity entity, Texture texture,
+			Texture normal) {
+		this.entity = entity;
+		this.texture = texture;
+		this.normal = normal;
+	}
+
 	@Override
-	public void show() {
-		mothership = new Texture(Gdx.files.internal("data/base3.png"));
-		mothershipNormalMap = new Texture(Gdx.files.internal("data/base3n.png"));
- 
+	public void addedToEngine(Engine engine) {
+		texture = new Texture(Gdx.files.internal("data/base3.png"));
+		normal = new Texture(Gdx.files.internal("data/base3n.png"));
+
+		sprite = new Sprite(texture);
+
 		ShaderProgram.pedantic = false;
 		shader = new ShaderProgram(VERT, FRAG);
 		// ensure it compiled
@@ -164,9 +186,9 @@ public class ShaderLesson6 extends AbstractScreen {
 				return true;
 			}
 		});
+		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 
-	@Override
 	public void resize(int width, int height) {
 		cam.setToOrtho(false, width, height);
 		batch.setProjectionMatrix(cam.combined);
@@ -177,14 +199,18 @@ public class ShaderLesson6 extends AbstractScreen {
 	}
 
 	@Override
-	public void render(float delta) {
+	public void update(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		sprite.rotate(3f * delta);
 
 		// reset light Z
 		if (Gdx.input.isTouched()) {
 			LIGHT_POS.z = DEFAULT_LIGHT_Z;
 			System.out.println("New light Z: " + LIGHT_POS.z);
 		}
+
+		SteerableBodyComponent steerable = entity
+				.getComponent(SteerableBodyComponent.class);
 
 		batch.begin();
 
@@ -194,47 +220,40 @@ public class ShaderLesson6 extends AbstractScreen {
 		Vector3 input = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 		input = cam.unproject(input);
 		// normalized to screen resolution
-		LIGHT_POS.x = input.x / (float) Gdx.graphics.getWidth();
-		LIGHT_POS.y = input.y / (float) Gdx.graphics.getHeight();
+		LIGHT_POS.x = 1000 / (float) Gdx.graphics.getWidth();
+		LIGHT_POS.y = 1000 / (float) Gdx.graphics.getHeight();
+		
+
+		System.out.println(input.x + " " + input.y
+				+ "----------------------------");
+		System.out.println(Gdx.graphics.getWidth() + " "
+				+ Gdx.graphics.getHeight());
 
 		// send a Vector4f to GLSL
 		shader.setUniformf("LightPos", LIGHT_POS);
 
 		// bind normal map to texture unit 1
-		mothershipNormalMap.bind(1);
+		normal.bind(1);
 
 		// bind diffuse color to texture unit 0
 		// important that we specify 0 otherwise we'll still be bound to
 		// glActiveTexture(GL_TEXTURE1)
-		mothership.bind(0);
+		texture.bind(0);
 
 		// draw the texture unit 0 with our shader effect applied
-		batch.draw(mothership, 100, 100);
+		// batch.draw(texture, steerable.body.getPosition().x,
+		// steerable.body.getPosition().y);
+		sprite.draw(batch);
 
 		batch.end();
 	}
 
 	@Override
-	public void pause() {
-
-	}
-
-	@Override
-	public void resume() {
-
-	}
-
-	@Override
 	public void dispose() {
 		batch.dispose();
-		mothership.dispose();
-		mothershipNormalMap.dispose();
+		texture.dispose();
+		normal.dispose();
 		shader.dispose();
 	}
 
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-
-	}
 }
