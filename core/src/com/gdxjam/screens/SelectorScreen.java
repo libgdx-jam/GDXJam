@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.gdxjam.Assets;
 import com.gdxjam.GameManager;
 import com.gdxjam.test.assets.AssetPlaygroundScreen;
+import com.gdxjam.test.assets.NormalMapTestScreen;
 
 public class SelectorScreen extends AbstractScreen {
 
@@ -21,7 +22,6 @@ public class SelectorScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		super.show();
 		stage = new Stage();
 		table = new Table();
 		table.setFillParent(true);
@@ -29,8 +29,9 @@ public class SelectorScreen extends AbstractScreen {
 		// addScreen(new GameScreen());
 		addScreen(new TestScreen());
 		addScreen(new SquadFormationTestScreen());
-		addScreen(new AssetPlaygroundScreen());
+		addScreen(new NormalMapTestScreen());
 		addScreen(new GameScreen());
+		addScreen(new AssetPlaygroundScreen());
 
 		stage.addActor(table);
 
@@ -72,9 +73,6 @@ public class SelectorScreen extends AbstractScreen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		super.dispose();
-
 		stage.dispose();
 	}
 
