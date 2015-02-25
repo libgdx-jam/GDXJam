@@ -4,9 +4,23 @@ size: 2048,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+att3
+  rotate: false
+  xy: 1812, 700
+  size: 117, 320
+  orig: 117, 320
+  offset: 0, 0
+  index: -1
+att3-normalmap
+  rotate: false
+  xy: 1512, 398
+  size: 117, 320
+  orig: 117, 320
+  offset: 0, 0
+  index: -1
 blue
   rotate: false
-  xy: 1512, 654
+  xy: 1931, 956
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -27,7 +41,7 @@ green
   index: -1
 hotkey
   rotate: false
-  xy: 2, 2
+  xy: 1761, 670
   size: 48, 48
   split: 14, 16, 14, 16
   pad: 13, 16, 15, 13
@@ -36,14 +50,14 @@ hotkey
   index: -1
 hotkeyleft
   rotate: false
-  xy: 68, 68
+  xy: 1997, 972
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 hotkeyright
   rotate: false
-  xy: 908, 302
+  xy: 2, 2
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
@@ -57,7 +71,7 @@ middlehotkey
   index: -1
 mothershipgreen
   rotate: false
-  xy: 1812, 892
+  xy: 1631, 590
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -141,28 +155,28 @@ planet9
   index: -1
 red
   rotate: false
-  xy: 1812, 826
+  xy: 1631, 524
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 tree
   rotate: false
-  xy: 1942, 956
+  xy: 1931, 890
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 unit
   rotate: false
-  xy: 1512, 588
+  xy: 68, 52
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 wall
   rotate: false
-  xy: 1578, 654
+  xy: 908, 286
   size: 64, 64
   split: 14, 14, 18, 13
   orig: 64, 64
