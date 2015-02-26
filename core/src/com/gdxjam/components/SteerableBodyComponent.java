@@ -1,19 +1,24 @@
 package com.gdxjam.components;
 
 import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Pool.Poolable;
+import com.gdxjam.utils.Location2;
+import com.gdxjam.utils.Vector2Utils;
 
-public class SteerableBodyComponent extends PhysicsComponent implements Steerable<Vector2>, Poolable{
-	
+public class SteerableBodyComponent extends PhysicsComponent implements
+		Steerable<Vector2> {
+
 	private float maxLinearSpeed = 5f;
 	private float maxLinearAcceleration = 1000;
-	
+
 	private float maxAngluarSpeed = 30;
 	private float maxAngluarAcceleration = 100;
 	private boolean independentFacing = false;
-	
+
 	private boolean tagged = false;
+
+	private Location2 target;
 
 	@Override
 	public float getMaxLinearSpeed() {
@@ -66,6 +71,11 @@ public class SteerableBodyComponent extends PhysicsComponent implements Steerabl
 	}
 
 	@Override
+	public void setOrientation(float orientation) {
+		body.setTransform(getPosition(), orientation);
+	}
+
+	@Override
 	public Vector2 getLinearVelocity() {
 		return body.getLinearVelocity();
 	}
@@ -77,44 +87,40 @@ public class SteerableBodyComponent extends PhysicsComponent implements Steerabl
 
 	@Override
 	public float getBoundingRadius() {
-		return 0.5f;	//TODO bounding radius
+		return 0.5f; // TODO bounding radius
 	}
 
 	@Override
 	public boolean isTagged() {
 		return tagged;
 	}
-	
+
 	@Override
 	public void setTagged(boolean tagged) {
 		this.tagged = tagged;
 	}
-	
-	public void setIndependentFacing(boolean independentFacing){
+
+	public void setIndependentFacing(boolean independentFacing) {
 		this.independentFacing = independentFacing;
 	}
-	
-	public boolean isIndependentFacing(){
+
+	public boolean isIndependentFacing() {
 		return independentFacing;
 	}
 
 	@Override
-	public Vector2 newVector() {
-		return new Vector2();
+	public Location<Vector2> newLocation() {
+		return new Location2();
 	}
 
 	@Override
 	public float vectorToAngle(Vector2 vector) {
-		return vector.angleRad();
+		return Vector2Utils.vectorToAngle(vector);
 	}
 
 	@Override
 	public Vector2 angleToVector(Vector2 outVector, float angle) {
-		outVector.x = -(float)Math.sin(angle);
-		outVector.y = (float)Math.cos(angle);
-		return outVector;
+		return Vector2Utils.angleToVector(outVector, angle);
 	}
-	
-	
 
 }
