@@ -41,7 +41,6 @@ public class Assets implements Disposable, AssetErrorListener {
 	public static AssetFonts fonts;
 	public static AssetMinimal minimal;
 	public static AssetPlanet planet;
-	public static AssetMothership mothership;
 
 	public static AssetSpacecraft spacecraft;
 
@@ -62,7 +61,6 @@ public class Assets implements Disposable, AssetErrorListener {
 			fonts = new AssetFonts();
 			minimal = new AssetMinimal(atlas);
 			planet = new AssetPlanet(atlas);
-			mothership = new AssetMothership(atlas);
 			spacecraft = new AssetSpacecraft(atlas);
 		}
 	}
@@ -86,8 +84,6 @@ public class Assets implements Disposable, AssetErrorListener {
 	@Override
 	public void dispose() {
 		manager.dispose();
-		mothership.normal.dispose();
-		mothership.ship.dispose();
 	}
 
 	public class AssetMinimal {
@@ -118,18 +114,6 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 	}
 
-	public class AssetMothership {
-		public final Texture ship;
-		public final Texture normal;
-
-		public AssetMothership(TextureAtlas atlas) {
-			ship = new Texture(Gdx.files.internal("data/base3.png"));
-			normal = new Texture(Gdx.files.internal("data/base3n.png"));
-
-		}
-
-	}
-
 	public class AssetFonts {
 
 		public final BitmapFont small;
@@ -156,6 +140,9 @@ public class Assets implements Disposable, AssetErrorListener {
 	}
 
 	public class AssetPlanet {
+		public final AtlasRegion largePlanetGreen;
+		public final AtlasRegion largePlanetRed;
+
 		public final AtlasRegion planet1;
 		public final AtlasRegion planet2;
 		public final AtlasRegion planet3;
@@ -168,6 +155,8 @@ public class Assets implements Disposable, AssetErrorListener {
 		public final AtlasRegion planet10;
 
 		public AssetPlanet(TextureAtlas atlas) {
+			largePlanetGreen = atlas.findRegion("largegreenplanet");
+			largePlanetRed = atlas.findRegion("largeredplanet");
 			planet1 = atlas.findRegion("planet1");
 			planet2 = atlas.findRegion("planet2");
 			planet3 = atlas.findRegion("planet3");

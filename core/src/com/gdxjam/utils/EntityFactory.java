@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.ai.fsm.StackStateMachine;
 import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Array;
 import com.gdxjam.Assets;
 import com.gdxjam.ai.states.UnitState;
@@ -29,7 +31,6 @@ import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.UnitComponent;
-import com.gdxjam.systems.NormalMapRendererSystem;
 import com.gdxjam.systems.PhysicsSystem;
 
 public class EntityFactory {
@@ -44,6 +45,7 @@ public class EntityFactory {
 		EntityFactory.engine = engine;
 	}
 
+	@Deprecated
 	public static void createFortress(Vector2 position, float width,
 			float height) {
 
@@ -103,6 +105,7 @@ public class EntityFactory {
 
 	}
 
+	@Deprecated
 	public static Entity createWall(Vector2 center, float length, float rotation) {
 		Entity entity = engine.createEntity();
 
@@ -127,6 +130,7 @@ public class EntityFactory {
 		return entity;
 	}
 
+	@Deprecated
 	public static Entity createTower(Vector2 position) {
 		Entity entity = engine.createEntity();
 
@@ -149,6 +153,7 @@ public class EntityFactory {
 		return entity;
 	}
 
+	@Deprecated
 	public static Entity createTree(Vector2 position, float radius, String type) {
 		Entity entity = engine.createEntity();
 		entity.add(engine.createComponent(LumberComponent.class).init(1));
@@ -177,47 +182,9 @@ public class EntityFactory {
 		return entity;
 	}
 
-	public static Entity createMothership(Vector2 position) {
-		Entity entity = engine.createEntity();
-
-		BodyDef def = new BodyDef();
-		def.type = BodyDef.BodyType.StaticBody;
-		def.position.set(position);
-		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
-
-		// Vector2[] vertices = new Vector2[4];
-		//
-		// vertices[0] = new Vector2(0f, 0f);
-		// vertices[1] = new Vector2(10f, 0f);
-		// vertices[2] = new Vector2(0f, 10f);
-		// vertices[3] = new Vector2(10f, 10f);
-		//
-		// PolygonShape poly = new PolygonShape();
-		// poly.set(vertices);
-		// body.createFixture(poly, 1.0f);
-		// poly.dispose();
-
-		CircleShape shape = new CircleShape();
-		float radius = 12;
-		shape.setRadius(radius);
-		body.createFixture(shape, 1.0f);
-		shape.dispose();
-
-		entity.add(engine.createComponent(SteerableBodyComponent.class).init(
-				body));
-
-		entity.add(engine.createComponent(HealthComponent.class));
-
-		// entity.add(engine.createComponent(SpriteComponent.class).init(
-		// Assets.getInstance().mothership.ship, position.x, position.y,
-		// radius, radius * 2));
-
-		engine.addEntity(entity);
-		engine.addSystem(new NormalMapRendererSystem(entity,
-				Assets.mothership.ship, Assets.mothership.normal));
-		return entity;
-	}
-
+	/*
+	 * This should be changed to createCircleEntity
+	 */
 	public static Entity createOutpost(Vector2 position) {
 		Entity entity = engine.createEntity();
 
@@ -400,4 +367,31 @@ public class EntityFactory {
 		}
 	}
 
+	public static Entity createEntity(Sprite sprite, Shape shape) {
+		Entity entity = engine.createEntity();
+
+		BodyDef def = new BodyDef();
+		def.type = BodyDef.BodyType.StaticBody;
+		def.position.set(sprite.getX(), sprite.getY());
+		Body body = engine.getSystem(PhysicsSystem.class).createBody(def);
+
+		body.createFixture(shape, 1.0f);
+		shape.dispose();
+
+		entity.add(engine.createComponent(SteerableBodyComponent.class).init(
+				body));
+
+		entity.add(engine.createComponent(HealthComponent.class));
+
+		entity.add(engine.createComponent(SpriteComponent.class).init(sprite));
+
+		engine.addEntity(entity);
+		return entity;
+	}
+
+	public static Entity createCircleEntity(Sprite sprite) {
+		CircleShape shape = new CircleShape();
+		shape.setRadius(sprite.getWidth() / 2);
+		return createEntity(sprite, shape);
+	}
 }
