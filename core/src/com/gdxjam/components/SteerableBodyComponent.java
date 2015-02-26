@@ -1,6 +1,7 @@
 package com.gdxjam.components;
 
 import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
@@ -98,10 +99,6 @@ public class SteerableBodyComponent extends PhysicsComponent implements Steerabl
 		return independentFacing;
 	}
 
-	@Override
-	public Vector2 newVector() {
-		return new Vector2();
-	}
 
 	@Override
 	public float vectorToAngle(Vector2 vector) {
@@ -113,6 +110,18 @@ public class SteerableBodyComponent extends PhysicsComponent implements Steerabl
 		outVector.x = -(float)Math.sin(angle);
 		outVector.y = (float)Math.cos(angle);
 		return outVector;
+	}
+
+	@Override
+	public void setOrientation (float orientation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Location<Vector2> newLocation () {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

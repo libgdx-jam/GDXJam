@@ -38,7 +38,7 @@ public class GameScreen extends AbstractScreen {
 
 	public void createWorld(int width, int height) {
 		EntityFactory.createOutpost(new Vector2(width * 0.5f, height * 0.5f));
-		AsteroidGenerator generator = new AsteroidGenerator(MathUtils.random(9999), 8, 64);
+		AsteroidGenerator generator = new AsteroidGenerator(MathUtils.random(9999), 8, 64, width, height);
 		generator.scatterAsteroids(width, height, 64, 64, 0.4f);
 		engine.getSystem(CameraSystem.class).getCamera().position.set(width * 0.5f, height * 0.5f, 0);
 	}

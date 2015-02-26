@@ -1,6 +1,7 @@
 package com.gdxjam.ai;
 
 import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 
 public class SteerableTarget implements Steerable<Vector2>{
@@ -87,10 +88,6 @@ public class SteerableTarget implements Steerable<Vector2>{
 	@Override
 	public void setTagged(boolean tagged) {}
 
-	@Override
-	public Vector2 newVector() {
-		return new Vector2();
-	}
 
 	@Override
 	public float vectorToAngle(Vector2 vector) {
@@ -102,6 +99,18 @@ public class SteerableTarget implements Steerable<Vector2>{
 		outVector.x = -(float)Math.sin(angle);
 		outVector.y = (float)Math.cos(angle);
 		return outVector;
+	}
+
+	@Override
+	public void setOrientation (float orientation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Location<Vector2> newLocation () {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
