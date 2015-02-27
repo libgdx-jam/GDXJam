@@ -47,13 +47,13 @@ public class SelectorScreen extends AbstractScreen {
 
 	public void addScreen(final AbstractScreen screen) {
 		NinePatchDrawable draw = new NinePatchDrawable(
-				Assets.getInstance().hotkey.button);
+				Assets.hotkey.button);
 
 		TextButtonStyle style = new ImageTextButtonStyle();
 		style.up = draw;
 		style.down = draw.tint(Color.DARK_GRAY);
 		style.checked = draw;
-		style.font = Assets.getInstance().fonts.medium;
+		style.font = Assets.fonts.medium;
 
 		TextButton btn = new TextButton(screen.getClass().getSimpleName(),
 				style);
