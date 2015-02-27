@@ -3,14 +3,12 @@ package com.gdxjam.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.EntityManager;
 import com.gdxjam.GameManager;
 import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.InputAITest;
 import com.gdxjam.systems.CommanderControllerSystem;
-import com.gdxjam.utils.EntityFactory;
 import com.gdxjam.utils.GUItest;
 
 public class TestScreen extends AbstractScreen {
@@ -41,15 +39,10 @@ public class TestScreen extends AbstractScreen {
 	public void createTestWorld() {
 		engine = GameManager.initEngine();
 		engine.addSystem(new CommanderControllerSystem());
-		EntityFactory.createSquad(new Vector2(15, 5));
-		EntityFactory.createSquad(new Vector2(-30, -30));
-		EntityFactory.createSquad(new Vector2(0, 30));
-		EntityFactory.createSquad(new Vector2(50, 5));
 //		WorldGenerator.generateForest(new Vector2(20, 20), 25, 7, 0.1f, 0.2f, 0.1f, "tree");
 //		WorldGenerator.generateForest(new Vector2(-10, 5), 10, 30, 0.1f, 0.2f, 0.05f, "tree");
 //		
 //		WorldGenerator.generateForest(new Vector2(20, -20), 50, 15, 0.5f, 2.0f, 0.50f, "mushroom");
-		EntityFactory.createFortress(new Vector2(15, 5), 15, 12);
 	}
 
 

@@ -22,9 +22,6 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 		sprite2.setPosition(20, 20);
 		sprite2.setSize(10, 10);
 
-		EntityFactory.createCircleEntity(sprite);
-		EntityFactory.createCircleEntity(sprite2);
-
 	}
 
 	@Override
