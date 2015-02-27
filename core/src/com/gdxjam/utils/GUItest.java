@@ -43,7 +43,7 @@ public class GUItest extends Stage{
         newCommanderButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                EntityFactory.createSquad(new Vector2((float)Math.random()*50f,(float)Math.random()*50f));
+                //EntityFactory.createSquad(new Vector2((float)Math.random()*50f,(float)Math.random()*50f));
             }
         });
         commanderGroup.addActor(newCommanderButton);

@@ -15,7 +15,6 @@ import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.HUDSystem;
 import com.gdxjam.systems.HealthSystem;
 import com.gdxjam.systems.InputSystem;
-import com.gdxjam.systems.LightingSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
@@ -46,7 +45,6 @@ public class EntityManager extends PooledEngine implements Disposable {
 		addSystem(new HealthSystem());
 
 		addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
-		addSystem(new LightingSystem());
 
 		addSystem(new ResourceSystem());
 		addSystem(new HUDSystem(Assets.getManager()
