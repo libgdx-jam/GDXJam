@@ -43,6 +43,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	public static AssetPlanet planet;
 
 	public static AssetSpacecraft spacecraft;
+	public static AssetSpace space;
 
 	public Assets() {
 		manager = new AssetManager();
@@ -62,6 +63,7 @@ public class Assets implements Disposable, AssetErrorListener {
 			minimal = new AssetMinimal(atlas);
 			planet = new AssetPlanet(atlas);
 			spacecraft = new AssetSpacecraft(atlas);
+			space = new AssetSpace(atlas);
 		}
 	}
 
@@ -111,6 +113,14 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		public AssetSpacecraft(TextureAtlas atlas) {
 			outpost = atlas.findRegion("outpost");
+		}
+	}
+	
+	public static class AssetSpace{
+		public final AtlasRegion asteroid;
+		
+		public AssetSpace(TextureAtlas atlas){
+			asteroid = atlas.findRegion("asteroid");
 		}
 	}
 

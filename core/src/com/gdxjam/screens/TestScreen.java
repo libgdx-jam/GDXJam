@@ -12,7 +12,6 @@ import com.gdxjam.input.InputAITest;
 import com.gdxjam.systems.CommanderControllerSystem;
 import com.gdxjam.utils.EntityFactory;
 import com.gdxjam.utils.GUItest;
-import com.gdxjam.utils.generators.WorldGenerator;
 
 public class TestScreen extends AbstractScreen {
 	
