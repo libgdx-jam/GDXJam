@@ -19,7 +19,7 @@ import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.StateMachineComponent;
-import com.gdxjam.components.SteerableBodyComponent;
+import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.components.UnitComponent;
@@ -48,7 +48,7 @@ public class EntityFactory {
 	public static Entity createOutpost(Vector2 position) {
 		Entity entity = 
 				 buildEntity(position)
-				.steerableBody(BodyType.StaticBody)
+				.physicsBody(BodyType.StaticBody)
 				.circleCollider(outpostRadius)
 				.sprite(Assets.spacecraft.outpost, outpostRadius * 2, outpostRadius * 2)
 				.health(1000)
@@ -59,7 +59,7 @@ public class EntityFactory {
 	public static Entity createAsteroid(Vector2 position, float radius) {
 		Entity entity = 
 				 buildEntity(position)
-				.steerableBody(BodyType.KinematicBody)
+				.physicsBody(BodyType.KinematicBody)
 				.circleCollider(radius)
 				.health(50)
 				.sprite(Assets.space.asteroid, radius * 2, radius * 2)
@@ -70,8 +70,9 @@ public class EntityFactory {
 	public static Entity createUnit(Vector2 position) {
 		Entity entity = 
 				 buildEntity(position)
-				.steerableBody(BodyType.DynamicBody)
+				.physicsBody(BodyType.DynamicBody)
 				.circleCollider(unitRadius)
+				.steerable()
 				.health(100)
 				.sprite(Assets.spacecraft.ship, unitRadius * 2, unitRadius * 2)
 				.getWithoutAdding();
@@ -122,24 +123,34 @@ public class EntityFactory {
 			entity = engine.createEntity();
 		}
 
-		public EntityBuilder steerableBody(BodyType type) {
+		public EntityBuilder physicsBody(BodyType type) {
 			BodyDef def = new BodyDef();
 			def.type = type;
 			def.position.set(position);
 			Body body = physicsSystem.createBody(def);
 
-			PhysicsComponent physics = engine.createComponent(
-					SteerableBodyComponent.class).init(body);
+			PhysicsComponent physics = engine.createComponent(PhysicsComponent.class).init(body);
 			entity.add(physics);
+			return this;
+		}
+		
+		public EntityBuilder steerable(){
+			PhysicsComponent physics = Components.PHYSICS.get(entity);
+			if(physics == null){
+				Gdx.app.error(TAG, "cannot create a steerable without physics!");
+				return this;
+			}
+			SteerableComponent steerable = engine.createComponent(SteerableComponent.class).init(physics.body);
+			entity.add(steerable);
 			return this;
 		}
 
 		public EntityBuilder circleCollider(float radius) {
 			CircleShape shape = new CircleShape();
 			shape.setRadius(radius);
-			SteerableBodyComponent physics = Components.STEERABLE_BODY.get(entity);
+			PhysicsComponent physics = Components.PHYSICS.get(entity);
 			if (physics == null) {
-				steerableBody(DEFAULT_BODY);
+				physicsBody(DEFAULT_BODY);
 			}
 
 			physics.body.createFixture(shape, 1.0f);
@@ -150,9 +161,7 @@ public class EntityFactory {
 			Body body;
 			if(Components.PHYSICS.has(entity)){
 				body = Components.PHYSICS.get(entity).body;
-			} else if (Components.STEERABLE_BODY.has(entity)){
-				body = Components.STEERABLE_BODY.get(entity).body;
-			} else {
+			}  else {
 				Gdx.app.error(TAG, "can not add range sensor : entity does not have a physics component!");
 				return this;
 			}
@@ -195,7 +204,7 @@ public class EntityFactory {
 			def.isSensor = true;
 			def.shape = shape;
 			
-			SteerableBodyComponent physics = Components.STEERABLE_BODY.get(entity);
+			PhysicsComponent physics = Components.PHYSICS.get(entity);
 			if(physics == null){
 				Gdx.app.error(TAG, "can not add target finder to entity without a body");
 				return this;

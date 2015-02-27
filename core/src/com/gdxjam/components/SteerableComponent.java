@@ -1,12 +1,14 @@
 package com.gdxjam.components;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.gdxjam.utils.Location2;
 import com.gdxjam.utils.Vector2Utils;
 
-public class SteerableBodyComponent extends PhysicsComponent implements
+public class SteerableComponent extends Component implements
 		Steerable<Vector2> {
 
 	private float maxLinearSpeed = 5f;
@@ -18,7 +20,18 @@ public class SteerableBodyComponent extends PhysicsComponent implements
 
 	private boolean tagged = false;
 
-	private Location2 target;
+	private Location2 target = new Location2();
+	
+	private Body body;
+	
+	public Body getBody(){
+		return body;
+	}
+	
+	public SteerableComponent init(Body body){
+		this.body = body;
+		return this;
+	}
 
 	@Override
 	public float getMaxLinearSpeed() {

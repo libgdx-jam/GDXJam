@@ -12,10 +12,12 @@ public class Components {
 	public static final ComponentMapper<FactionComponent> FACTION = ComponentMapper.getFor(FactionComponent.class);
 	public static final ComponentMapper<ResourceComponent> RESOURCE = ComponentMapper.getFor(ResourceComponent.class);
 	
+	public static final ComponentMapper<SquadMemberComponent> SQUAD_MEMBER = ComponentMapper.getFor(SquadMemberComponent.class);
+	
 	//AI
 	public static final ComponentMapper<UnitComponent> UNIT = ComponentMapper.getFor(UnitComponent.class);
 	public static final ComponentMapper<SteeringBehaviorComponent> STEERING_BEHAVIOR = ComponentMapper.getFor(SteeringBehaviorComponent.class);
-	public static final ComponentMapper<SteerableBodyComponent> STEERABLE_BODY = ComponentMapper.getFor(SteerableBodyComponent.class);
+	public static final ComponentMapper<SteerableComponent> STEERABLE = ComponentMapper.getFor(SteerableComponent.class);
 
     public static final ComponentMapper<StateMachineComponent> STATE_MACHINE = ComponentMapper.getFor(StateMachineComponent.class);
     public static final ComponentMapper<ProximityComponent> PROXIMITY = ComponentMapper.getFor(ProximityComponent.class);

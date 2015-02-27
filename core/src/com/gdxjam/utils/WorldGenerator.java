@@ -3,6 +3,7 @@ package com.gdxjam.utils;
 
 import java.util.Random;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.GameManager;
@@ -63,11 +64,13 @@ public class WorldGenerator {
 	}
 	
 	public void createSquad(Vector2 position){
+		Squad squad = GameManager.getEngine().getSystem(SquadSystem.class).createSquad(position);
 		int posX = (int)position.x;
 		int posY = (int)position.y;
 		for(int x = -1; x < 2; x++) {
 			for (int y = -1; y < 2; y++){
-				EntityFactory.createUnit(new Vector2(posX + x, posY + y));
+				Entity entity = EntityFactory.createUnit(new Vector2(posX + x, posY + y));
+				GameManager.getEngine().getSystem(SquadSystem.class).addMember(entity, squad);
 			}
 		}
 	}

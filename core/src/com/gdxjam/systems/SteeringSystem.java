@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.RemovalComponent;
-import com.gdxjam.components.SteerableBodyComponent;
+import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 
 public class SteeringSystem extends IteratingSystem{
@@ -17,19 +17,19 @@ public class SteeringSystem extends IteratingSystem{
 	private static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<Vector2>(new Vector2());
 
 	public SteeringSystem() {
-		super(Family.all(SteeringBehaviorComponent.class).one(SteerableBodyComponent.class).exclude(RemovalComponent.class).get());
+		super(Family.all(SteeringBehaviorComponent.class).one(SteerableComponent.class).exclude(RemovalComponent.class).get());
 	}
 	
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		SteeringBehavior<Vector2> behavior = Components.STEERING_BEHAVIOR.get(entity).getBehavior();
-		SteerableBodyComponent steering = Components.STEERABLE_BODY.get(entity);
+		SteerableComponent steerable = Components.STEERABLE.get(entity);
 		
 		if(behavior == null) return;
-		if(steering.body == null) return;	//We shouldn't need this
+		if(steerable.getBody() == null) return;	//We shouldn't need this
 		behavior.calculateSteering(steeringOutput);
 		boolean anyAccelerations = false;
-		Body body = steering.body;
+		Body body = steerable.getBody();
 		
 		if (!steeringOutput.linear.isZero()) {
 			Vector2 force = steeringOutput.linear.scl(deltaTime);
@@ -39,7 +39,7 @@ public class SteeringSystem extends IteratingSystem{
 
 		
 		// Update orientation and angular velocity
-		if (steering.isIndependentFacing()) {
+		if (steerable.isIndependentFacing()) {
 			if (steeringOutput.angular != 0) {
 				body.applyTorque(steeringOutput.angular * deltaTime, true);
 				anyAccelerations = true;
@@ -50,8 +50,8 @@ public class SteeringSystem extends IteratingSystem{
 			// If we haven't got any velocity, then we can do nothing.
 			Vector2 linVel = body.getLinearVelocity();
 			if (!linVel.isZero(0.1f)) {
-				float newOrientation = steering.vectorToAngle(linVel);
-				body.setAngularVelocity((newOrientation - steering.getAngularVelocity()) * deltaTime); // this is superfluous if independentFacing is always true
+				float newOrientation = steerable.vectorToAngle(linVel);
+				body.setAngularVelocity((newOrientation - steerable.getAngularVelocity()) * deltaTime); // this is superfluous if independentFacing is always true
 				body.setTransform(body.getPosition(), newOrientation);
 			}
 		}
@@ -60,13 +60,13 @@ public class SteeringSystem extends IteratingSystem{
 			// Cap the linear speed
 			Vector2 velocity = body.getLinearVelocity();
 			float currentSpeedSquare = velocity.len2();
-			float maxLinearSpeed = steering.getMaxLinearSpeed();
+			float maxLinearSpeed = steerable.getMaxLinearSpeed();
 			if (currentSpeedSquare > maxLinearSpeed * maxLinearSpeed) {
 				body.setLinearVelocity(velocity.scl(maxLinearSpeed / (float)Math.sqrt(currentSpeedSquare)));
 			}
 
 			// Cap the angular speed
-			float maxAngVelocity = steering.getMaxAngularSpeed();
+			float maxAngVelocity = steerable.getMaxAngularSpeed();
 			if (body.getAngularVelocity() > maxAngVelocity) {
 				body.setAngularVelocity(maxAngVelocity);
 			}
