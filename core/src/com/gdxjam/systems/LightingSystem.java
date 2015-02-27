@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.gdxjam.utils.Constants;
 
+@Deprecated
 public class LightingSystem extends EntitySystem implements Disposable{
 	private static final String TAG = "[" + LightingSystem.class.getSimpleName() + "]";
 	
