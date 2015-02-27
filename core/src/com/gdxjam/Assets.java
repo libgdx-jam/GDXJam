@@ -1,8 +1,6 @@
 package com.gdxjam;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetDescriptor;
-import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -16,6 +14,9 @@ import com.badlogic.gdx.utils.Disposable;
 public class Assets implements Disposable {
 
 	public static final String TAG = Assets.class.getSimpleName();
+	
+	public static boolean rebuildAtlas = false;
+	public static boolean drawDebugOutline = false;
 
 	public static AssetManager manager;
 	public static AssetManager getManager() {
@@ -60,11 +61,13 @@ public class Assets implements Disposable {
 
 	public static class AssetSpacecraft {
 		public final AtlasRegion outpost;
+		public final AtlasRegion ship;
 
 		// public final AtlasRegion ship;
 
 		public AssetSpacecraft(TextureAtlas atlas) {
 			outpost = atlas.findRegion("outpost");
+			ship = atlas.findRegion("ship");
 		}
 	}
 	

@@ -8,7 +8,6 @@ import com.gdxjam.GameManager;
 import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.InputAITest;
-import com.gdxjam.systems.CommanderControllerSystem;
 import com.gdxjam.utils.GUItest;
 
 public class TestScreen extends AbstractScreen {
@@ -38,7 +37,6 @@ public class TestScreen extends AbstractScreen {
 
 	public void createTestWorld() {
 		engine = GameManager.initEngine();
-		engine.addSystem(new CommanderControllerSystem());
 //		WorldGenerator.generateForest(new Vector2(20, 20), 25, 7, 0.1f, 0.2f, 0.1f, "tree");
 //		WorldGenerator.generateForest(new Vector2(-10, 5), 10, 30, 0.1f, 0.2f, 0.05f, "tree");
 //		

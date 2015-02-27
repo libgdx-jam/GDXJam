@@ -1,6 +1,8 @@
 
 package com.gdxjam.utils;
 
+import java.util.Random;
+
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -10,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 public class WorldGenerator {
 
 	private final OpenSimplexNoise noise;
+	private Random rng;
 
 	private int width;
 	private int height;
@@ -25,6 +28,7 @@ public class WorldGenerator {
 		this.height = height;
 		radius = width * 0.5f;
 		noise = new OpenSimplexNoise(seed);
+		rng = new Random(seed);
 		this.param = param;
 	}
 
@@ -41,8 +45,28 @@ public class WorldGenerator {
 	public void populateWorld () {
 		Vector2 center = new Vector2(width * 0.5f, height * 0.5f);
 		EntityFactory.createOutpost(center);
+		
+		float distance = 16.0f;
 
-		// TODO Create starting squads
+		float seperationAngle = 360.0f / (float)param.initalSquads;
+		//float initalAngle = rng.nextInt(359);
+		float initalAngle = 18.0f;
+		
+		for(int i = 0; i < param.initalSquads; i++){
+			Vector2 angleVec = new Vector2(distance, 0.0f).setAngle(initalAngle + seperationAngle * i);
+			Vector2 position = center.cpy().add(angleVec);
+			createSquad(position);
+		}
+	}
+	
+	public void createSquad(Vector2 position){
+		int posX = (int)position.x;
+		int posY = (int)position.y;
+		for(int x = -1; x < 2; x++) {
+			for (int y = -1; y < 2; y++){
+				EntityFactory.createUnit(new Vector2(posX + x, posY + y));
+			}
+		}
 	}
 
 	public void generateAsteroidField () {
