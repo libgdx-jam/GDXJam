@@ -13,6 +13,7 @@ import com.gdxjam.GameManager;
 import com.gdxjam.ai.SteerableTarget;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
+import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.UnitComponent;
@@ -57,7 +58,7 @@ public enum UnitState implements State<Entity> {
    	 public void enter(Entity entity){
       	 //Test code
       	 UnitComponent unit = Components.UNIT.get(entity);
-   		 ImmutableArray<Entity> entities = GameManager.getEngine().getEntitiesFor(Family.all(unit.assignedResource.component).get());
+   		 ImmutableArray<Entity> entities = GameManager.getEngine().getEntitiesFor(Family.all(ResourceComponent.class).get());
     		 Entity resource = entities.first();
     		 unit.target = resource;
     		 
