@@ -7,7 +7,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.gdxjam.EntityManager;
 import com.gdxjam.GameManager;
-import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
@@ -27,7 +26,6 @@ public class GameScreen extends AbstractScreen {
 		
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(engine.getSystem(HUDSystem.class).getStage());
-		multiplexer.addProcessor(new DefaultInputProcessor());
 		multiplexer.addProcessor(new DesktopInputProcessor(engine));
 		multiplexer.addProcessor(new GestureDetector(new DesktopGestureListener(engine)));
 		Gdx.input.setInputProcessor(multiplexer);

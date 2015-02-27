@@ -26,8 +26,6 @@ public class SelectorScreen extends AbstractScreen {
 		table.setFillParent(true);
 		table.defaults().width(Gdx.graphics.getWidth() / 2).pad(20);
 
-		addScreen(new TestScreen());
-		addScreen(new SquadFormationTestScreen());
 		addScreen(new GameScreen());
 		addScreen(new AssetPlaygroundScreen());
 
