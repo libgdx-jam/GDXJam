@@ -3,10 +3,13 @@ package com.gdxjam.utils;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.utils.Array;
@@ -17,6 +20,7 @@ import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
+import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.components.UnitComponent;
 import com.gdxjam.systems.PhysicsSystem;
 
@@ -28,6 +32,8 @@ import com.gdxjam.systems.PhysicsSystem;
  */
 
 public class EntityFactory {
+	
+	private static final String TAG = "[" + EntityFactory.class.getSimpleName() +"]";
 	
 	private static PooledEngine engine;
 	private static PhysicsSystem physicsSystem;
@@ -126,7 +132,6 @@ public class EntityFactory {
 			def.position.set(position);
 			Body body = physicsSystem.createBody(def);
 			
-			
 			PhysicsComponent physics = engine.createComponent(SteerableBodyComponent.class).init(body);
 			components.add(physics);
 			return this;
@@ -141,6 +146,27 @@ public class EntityFactory {
 			}
 			
 			physics.body.createFixture(shape, 1.0f);
+			return this;
+		}
+		
+		public EntityBuilder targetFinder(float range){
+			CircleShape shape = new CircleShape();
+			shape.setRadius(range);
+			FixtureDef def = new FixtureDef();
+			def.isSensor = true;
+			def.shape = shape;
+			
+			SteerableBodyComponent physics = getComponent(SteerableBodyComponent.class);
+			if(physics == null){
+				Gdx.app.error(TAG, "can not add target finder to entity without a body");
+				return this;
+			}
+			Fixture fixture = physics.body.createFixture(def);
+			
+			TargetFinderComponent targetFinder = engine.createComponent(TargetFinderComponent.class);
+			fixture.setUserData(targetFinder);
+			
+			components.add(targetFinder);
 			return this;
 		}
 		
@@ -162,6 +188,10 @@ public class EntityFactory {
 			Entity entity = engine.createEntity();
 			
 			for(Component component : components){
+				if(component.getClass() == SteerableBodyComponent.class){
+					SteerableBodyComponent steerable = (SteerableBodyComponent) component;
+					steerable.body.setUserData(entity);
+				}
 				entity.add(component);
 			}
 			
