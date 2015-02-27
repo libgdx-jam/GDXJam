@@ -1,6 +1,5 @@
 package com.gdxjam.utils;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -11,8 +10,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
-import com.badlogic.gdx.utils.Array;
 import com.gdxjam.Assets;
+import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.SpriteComponent;
@@ -42,26 +41,32 @@ public class EntityFactory {
 		float radius = 12.0f;
 
 		Entity entity = new EntityBuilder(position)
-				.steerableBody(BodyType.StaticBody).circleCollider(12.0f)
+				.steerableBody(BodyType.StaticBody)
+				.circleCollider(12.0f)
 				.sprite(Assets.spacecraft.outpost, radius * 2, radius * 2)
-				.health(1000).build();
+				.health(1000)
+				.addToEngine();
 		return entity;
 	}
 
 	public static Entity createAsteroid(Vector2 position, float radius) {
 		Entity entity = new EntityBuilder(position)
-				.steerableBody(BodyType.KinematicBody).circleCollider(radius)
+				.steerableBody(BodyType.KinematicBody)
+				.circleCollider(radius)
 				.health(50)
-				.sprite(Assets.space.asteroid, radius * 2, radius * 2).build();
+				.sprite(Assets.space.asteroid, radius * 2, radius * 2)
+				.addToEngine();
 		return entity;
 	}
 
 	public static Entity createUnit(Vector2 position) {
 		float radius = 0.25f;
 		Entity entity = new EntityBuilder(position)
-				.steerableBody(BodyType.DynamicBody).circleCollider(radius)
+				.steerableBody(BodyType.DynamicBody)
+				.circleCollider(radius)
 				.health(100)
-				.sprite(Assets.spacecraft.ship, radius * 2, radius * 2).build();
+				.sprite(Assets.spacecraft.ship, radius * 2, radius * 2)
+				.getWithoutAdding();
 
 		entity.add(engine.createComponent(SteeringBehaviorComponent.class));
 		entity.add(engine.createComponent(StateMachineComponent.class).init(
@@ -91,7 +96,8 @@ public class EntityFactory {
 		// sensorDef.isSensor = true;
 		// body.createFixture(sensorDef);
 		// poly.dispose();
-
+		
+		engine.addEntity(entity);
 		return entity;
 	}
 
@@ -99,20 +105,11 @@ public class EntityFactory {
 		private static final BodyType DEFAULT_BODY = BodyType.DynamicBody;
 
 		public Vector2 position;
-		public Array<Component> components = new Array<Component>();
+		public Entity entity;
 
 		public EntityBuilder(Vector2 position) {
 			this.position = position;
-		}
-
-		@SuppressWarnings("unchecked")
-		public <T extends Component> T getComponent(Class<T> componentType) {
-			for (Component component : components) {
-				if (component.getClass() == componentType) {
-					return (T) component;
-				}
-			}
-			return null;
+			entity = engine.createEntity();
 		}
 
 		public EntityBuilder steerableBody(BodyType type) {
@@ -123,14 +120,14 @@ public class EntityFactory {
 
 			PhysicsComponent physics = engine.createComponent(
 					SteerableBodyComponent.class).init(body);
-			components.add(physics);
+			entity.add(physics);
 			return this;
 		}
 
 		public EntityBuilder circleCollider(float radius) {
 			CircleShape shape = new CircleShape();
 			shape.setRadius(radius);
-			SteerableBodyComponent physics = getComponent(SteerableBodyComponent.class);
+			SteerableBodyComponent physics = Components.STEERABLE_BODY.get(entity);
 			if (physics == null) {
 				steerableBody(DEFAULT_BODY);
 			}
@@ -144,7 +141,7 @@ public class EntityFactory {
 					.createComponent(HealthComponent.class);
 			health.max = value;
 			health.value = value;
-			components.add(health);
+			entity.add(health);
 			return this;
 		}
 
@@ -153,23 +150,22 @@ public class EntityFactory {
 			SpriteComponent spriteComp = engine.createComponent(
 					SpriteComponent.class).init(region, position.x, position.y,
 					width, height);
-			components.add(spriteComp);
+			entity.add(spriteComp);
 			return this;
 		}
 
-		public Entity build() {
-			Entity entity = engine.createEntity();
-
-			for (Component component : components) {
-				entity.add(component);
-			}
-
+		public Entity addToEngine() {
 			engine.addEntity(entity);
+			return entity;
+		}
+		
+		public Entity getWithoutAdding(){
 			return entity;
 		}
 
 	}
-
+	
+	@Deprecated
 	public static Entity createEntity(Sprite sprite, Shape shape) {
 		Entity entity = engine.createEntity();
 
@@ -192,6 +188,7 @@ public class EntityFactory {
 		return entity;
 	}
 
+	@Deprecated
 	public static Entity createCircleEntity(Sprite sprite) {
 		CircleShape shape = new CircleShape();
 		shape.setRadius(sprite.getWidth() / 2);

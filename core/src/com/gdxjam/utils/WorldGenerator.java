@@ -5,6 +5,9 @@ import java.util.Random;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.gdxjam.GameManager;
+import com.gdxjam.ai.Squad;
+import com.gdxjam.systems.SquadSystem;
 
 /** @author Torin Wiebelt (Twiebs) Generates world bounds Generates the game world by creating an asteroid field using fBm applied
  *         OpenSimplexNoise Populates the world with entities. */
@@ -152,7 +155,7 @@ public class WorldGenerator {
 		public float lacunarity = 2.0f;
 		public float frequency = 1.0f / 64.0f;
 		public float gain = 1.0f / lacunarity;
-		public float heightThreshold = -0.8f;
+		public float heightThreshold = -0.7f;
 
 		public float asteroidDensity = 0.4f;
 		public float asteroidScattering = 0.25f;
