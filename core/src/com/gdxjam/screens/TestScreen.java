@@ -46,10 +46,10 @@ public class TestScreen extends AbstractScreen {
 		EntityFactory.createSquad(new Vector2(-30, -30));
 		EntityFactory.createSquad(new Vector2(0, 30));
 		EntityFactory.createSquad(new Vector2(50, 5));
-		WorldGenerator.generateForest(new Vector2(20, 20), 25, 7, 0.1f, 0.2f, 0.1f, "tree");
-		WorldGenerator.generateForest(new Vector2(-10, 5), 10, 30, 0.1f, 0.2f, 0.05f, "tree");
-		
-		WorldGenerator.generateForest(new Vector2(20, -20), 50, 15, 0.5f, 2.0f, 0.50f, "mushroom");
+//		WorldGenerator.generateForest(new Vector2(20, 20), 25, 7, 0.1f, 0.2f, 0.1f, "tree");
+//		WorldGenerator.generateForest(new Vector2(-10, 5), 10, 30, 0.1f, 0.2f, 0.05f, "tree");
+//		
+//		WorldGenerator.generateForest(new Vector2(20, -20), 50, 15, 0.5f, 2.0f, 0.50f, "mushroom");
 		EntityFactory.createFortress(new Vector2(15, 5), 15, 12);
 	}
 
