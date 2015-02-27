@@ -23,6 +23,12 @@ public class InputSystem extends EntitySystem {
 		input.addProcessor(index, processor);
 	}
 
+	public void add(InputProcessor... processor) {
+		for (InputProcessor input : processor) {
+			add(input);
+		}
+	}
+
 	public void remove(InputProcessor processor) {
 		input.removeProcessor(processor);
 	}

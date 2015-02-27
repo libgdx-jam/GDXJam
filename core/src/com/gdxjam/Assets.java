@@ -40,7 +40,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	public static AssetHotkey hotkey;
 	public static AssetFonts fonts;
 	public static AssetMinimal minimal;
-	public static AssetPlanet planet;
+	public static AssetSpace space;
 
 	public static AssetSpacecraft spacecraft;
 
@@ -60,7 +60,7 @@ public class Assets implements Disposable, AssetErrorListener {
 			hotkey = new AssetHotkey(atlas);
 			fonts = new AssetFonts();
 			minimal = new AssetMinimal(atlas);
-			planet = new AssetPlanet(atlas);
+			space = new AssetSpace(atlas);
 			spacecraft = new AssetSpacecraft(atlas);
 		}
 	}
@@ -139,7 +139,9 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	}
 
-	public class AssetPlanet {
+	public class AssetSpace {
+		public final AtlasRegion space;
+
 		public final AtlasRegion largePlanetGreen;
 		public final AtlasRegion largePlanetRed;
 
@@ -154,7 +156,8 @@ public class Assets implements Disposable, AssetErrorListener {
 		public final AtlasRegion planet9;
 		public final AtlasRegion planet10;
 
-		public AssetPlanet(TextureAtlas atlas) {
+		public AssetSpace(TextureAtlas atlas) {
+			space = atlas.findRegion("space");
 			largePlanetGreen = atlas.findRegion("largegreenplanet");
 			largePlanetRed = atlas.findRegion("largeredplanet");
 			planet1 = atlas.findRegion("planet1");

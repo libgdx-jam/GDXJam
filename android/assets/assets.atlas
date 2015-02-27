@@ -1,6 +1,6 @@
 
 assets.png
-size: 2048,1024
+size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -22,35 +22,35 @@ hotkey
   index: -1
 hotkeyleft
   rotate: false
-  xy: 908, 302
+  xy: 52, 2
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 hotkeyright
   rotate: false
-  xy: 974, 368
+  xy: 1747, 1394
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 largegreenplanet
   rotate: false
-  xy: 604, 462
+  xy: 304, 162
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 largeredplanet
   rotate: false
-  xy: 1768, 442
+  xy: 604, 462
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 middlehotkey
   rotate: false
-  xy: 1931, 720
+  xy: 562, 370
   size: 2, 48
   orig: 2, 48
   offset: 0, 0
@@ -64,105 +64,112 @@ outpost
   index: -1
 planet1
   rotate: false
-  xy: 2, 118
+  xy: 1028, 1746
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet10
   rotate: false
-  xy: 606, 116
+  xy: 1632, 1444
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet2
   rotate: false
-  xy: 604, 720
+  xy: 2, 118
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet3
   rotate: false
-  xy: 906, 720
+  xy: 604, 720
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet4
   rotate: false
-  xy: 1208, 720
+  xy: 1028, 1444
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet5
   rotate: false
-  xy: 1510, 720
+  xy: 1330, 1746
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet6
   rotate: false
-  xy: 304, 118
+  xy: 1028, 1142
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet7
   rotate: false
-  xy: 862, 418
+  xy: 1330, 1444
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet8
   rotate: false
-  xy: 1164, 418
+  xy: 1632, 1746
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet9
   rotate: false
-  xy: 1466, 418
+  xy: 1330, 1142
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 ship1
   rotate: false
-  xy: 1931, 836
+  xy: 1632, 1258
   size: 113, 184
   orig: 113, 184
   offset: 0, 0
   index: -1
 ship2
   rotate: false
-  xy: 1812, 700
+  xy: 906, 700
   size: 117, 320
   orig: 117, 320
   offset: 0, 0
   index: -1
+space
+  rotate: false
+  xy: 2, 1022
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
 tree
   rotate: false
-  xy: 908, 352
+  xy: 1028, 1076
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 unit
   rotate: false
-  xy: 1931, 770
+  xy: 1934, 1982
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 wall
   rotate: false
-  xy: 68, 52
+  xy: 1632, 1192
   size: 64, 64
   split: 14, 14, 18, 13
   orig: 64, 64
