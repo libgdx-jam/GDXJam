@@ -10,57 +10,59 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
-public class PhysicsSystem extends EntitySystem implements Disposable{
-	
-	private static final float TIME_STEP = 1.0f/60.f;
+public class PhysicsSystem extends EntitySystem implements Disposable {
+
+	private static final float TIME_STEP = 1.0f / 60.f;
 	private static final int VELOCITY_ITERATIONS = 8;
 	private static final int POSITION_ITERATIONS = 8;
 	public static boolean debug = false;
-	
+
 	private World world;
 	private Box2DDebugRenderer renderer;
 	private OrthographicCamera camera;
 
-	public PhysicsSystem(){
+	public PhysicsSystem() {
 		world = new World(new Vector2(0, 0), true);
 	}
-	
+
 	@Override
 	public void addedToEngine(Engine engine) {
 		super.addedToEngine(engine);
 		this.camera = engine.getSystem(CameraSystem.class).getCamera();
+		renderer = new Box2DDebugRenderer();
+
 	}
-	
+
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
-		if(debug){
+		if (debug) {
 			drawDebug();
 		}
 	}
-	
-	public Body createBody(BodyDef def){
+
+	public Body createBody(BodyDef def) {
 		return world.createBody(def);
 	}
-	
-	public void destroyBody(Body body){
+
+	public void destroyBody(Body body) {
 		world.destroyBody(body);
 	}
-	
-	public World getWorld(){
+
+	public World getWorld() {
 		return world;
 	}
-	
-	public void drawDebug(){
-		if(renderer == null){
+
+	public void drawDebug() {
+		if (renderer == null) {
 			renderer = new Box2DDebugRenderer();
 		}
 		renderer.render(world, camera.combined);
 	}
 
 	@Override
-	public void dispose () {
+	public void dispose() {
 		world.dispose();
 		renderer.dispose();
 	}
