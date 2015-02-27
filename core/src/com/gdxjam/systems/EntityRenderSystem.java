@@ -43,8 +43,8 @@ public class EntityRenderSystem extends IteratingSystem implements Disposable {
 		if(Components.SPRITE.has(entity)){
 			SpriteComponent spriteComp = Components.SPRITE.get(entity);
 			
-			if(Components.STEERABLE_BODY.has(entity) || Components.PHYSICS.has(entity)){
-				PhysicsComponent physics = Components.STEERABLE_BODY.has(entity) ? Components.STEERABLE_BODY.get(entity) : Components.PHYSICS.get(entity);
+			if(Components.PHYSICS.has(entity)){
+				PhysicsComponent physics = Components.PHYSICS.get(entity);
 				Vector2 pos = physics.body.getPosition();
 				spriteComp.sprite.setCenter(pos.x, pos.y);
 				spriteComp.sprite
