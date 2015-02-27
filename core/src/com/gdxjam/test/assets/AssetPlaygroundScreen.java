@@ -7,7 +7,6 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.Assets;
 import com.gdxjam.GameManager;
-import com.gdxjam.input.DefaultInputProcessor;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.screens.AbstractScreen;
@@ -24,7 +23,7 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 		super.show();
 		engine = GameManager.initEngine();
 
-		engine.getSystem(InputSystem.class).add(new DefaultInputProcessor(), new DesktopInputProcessor(engine),
+		engine.getSystem(InputSystem.class).add(new DesktopInputProcessor(engine),
 			new GestureDetector(new DesktopGestureListener(engine)));
 
 // Sprite sprite = new Sprite(Assets.space.largePlanetGreen);
