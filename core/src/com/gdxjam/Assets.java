@@ -4,33 +4,24 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
 
-public class Assets implements Disposable, AssetErrorListener {
+public class Assets implements Disposable {
 
 	public static final String TAG = Assets.class.getSimpleName();
 
-	private static Assets instance;
-
-	public static Assets getInstance() {
-		if (instance == null) {
-			instance = new Assets();
-		}
-		return instance;
-	}
-
 	public static AssetManager manager;
-
 	public static AssetManager getManager() {
+		if(manager == null){
+			manager = new AssetManager();
+		}
 		return manager;
 	}
 
@@ -39,71 +30,32 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	public static AssetHotkey hotkey;
 	public static AssetFonts fonts;
-	public static AssetMinimal minimal;
 	public static AssetPlanet planet;
 
 	public static AssetSpacecraft spacecraft;
 	public static AssetSpace space;
 
-	public Assets() {
-		manager = new AssetManager();
-		manager.setErrorListener(this); // set asset manager error handler
 
-		loadAssets();
-
-		Gdx.app.debug(TAG, "# of assets loaded: "
-				+ manager.getAssetNames().size);
-		for (String a : manager.getAssetNames()) {
-			Gdx.app.debug(TAG, "asset: " + a);
-
-			TextureAtlas atlas = manager.get(TEXTURE_ATLAS_OBJECTS);
-
-			hotkey = new AssetHotkey(atlas);
-			fonts = new AssetFonts();
-			minimal = new AssetMinimal(atlas);
-			planet = new AssetPlanet(atlas);
-			spacecraft = new AssetSpacecraft(atlas);
-			space = new AssetSpace(atlas);
-		}
-	}
-
-	public void loadAssets() {
+	public static void load() {
+		getManager();	//Insure the manager exists
 		manager.load(TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
 		manager.load(SKIN, Skin.class);
-		// manager.load("minimal.pack", TextureAtlas.class);
-		manager.finishLoading();
+	}
+	
+	public static void create(){
+		TextureAtlas atlas = manager.get(TEXTURE_ATLAS_OBJECTS);
 
+		hotkey = new AssetHotkey(atlas);
+		fonts = new AssetFonts();
+		planet = new AssetPlanet(atlas);
+		spacecraft = new AssetSpacecraft(atlas);
+		space = new AssetSpace(atlas);
 	}
 
-	@Override
-	public void error(AssetDescriptor asset, Throwable throwable) {
-		String filename = asset.fileName;
-		Gdx.app.error(TAG, "Couldn't load asset '" + filename + "'",
-				(Exception) throwable);
-
-	}
 
 	@Override
 	public void dispose() {
 		manager.dispose();
-	}
-
-	public class AssetMinimal {
-		public final AtlasRegion commander;
-		public final AtlasRegion unit;
-		public final AtlasRegion tree;
-		public final NinePatch wall;
-		public final AtlasRegion wallRegion;
-
-		public AssetMinimal(TextureAtlas atlas) {
-
-			commander = atlas.findRegion("commander");
-			unit = atlas.findRegion("unit");
-			tree = atlas.findRegion("tree");
-
-			wall = atlas.createPatch("wall");
-			wallRegion = atlas.findRegion("wall");
-		}
 	}
 
 	public static class AssetSpacecraft {
@@ -124,7 +76,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 	}
 
-	public class AssetFonts {
+	public static class AssetFonts {
 
 		public final BitmapFont small;
 		public final BitmapFont medium;
@@ -149,7 +101,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	}
 
-	public class AssetPlanet {
+	public static class AssetPlanet {
 		public final AtlasRegion largePlanetGreen;
 		public final AtlasRegion largePlanetRed;
 
@@ -180,7 +132,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 	}
 
-	public class AssetHotkey {
+	public static class AssetHotkey {
 		public final AtlasRegion left;
 		public final NinePatch button;
 		public AtlasRegion middle;

@@ -31,23 +31,23 @@ public class HotkeyTable extends Table {
 	}
 
 	public HotkeyTable(HotkeyTableStyle style) {
-		NinePatchDrawable draw = new NinePatchDrawable(Assets.getInstance().hotkey.button);
+		NinePatchDrawable draw = new NinePatchDrawable(Assets.hotkey.button);
 
 		hotkeyStyle = new ImageTextButtonStyle();
 		hotkeyStyle.up = draw;
 		hotkeyStyle.down = draw.tint(style.buttonSelectedColor);
 		hotkeyStyle.checked = hotkeyStyle.down;
-		hotkeyStyle.font = Assets.getInstance().fonts.medium;
+		hotkeyStyle.font = Assets.fonts.medium;
 
-		add(new Image(Assets.getInstance().hotkey.left));
+		add(new Image(Assets.hotkey.left));
 		add(hotkeyRow);
-		add(new Image(Assets.getInstance().hotkey.right));
+		add(new Image(Assets.hotkey.right));
 	}
 
 	/** adds a hotkey that calls keyDown with the keycode on the inputProcessor */
 	public void addHotkey(final int keycode, final String label) {
 		if (hotkeyRow.getChildren().size > 0) {
-			hotkeyRow.addActor(new Image(Assets.getInstance().hotkey.middle));
+			hotkeyRow.addActor(new Image(Assets.hotkey.middle));
 		}
 		final TextButton btn = new TextButton(label, hotkeyStyle);
 		btn.addListener(new InputListener() {
