@@ -7,15 +7,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.gdxjam.components.Components;
-import com.gdxjam.components.NinePatchComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.SpriteComponent;
 
 public class EntityRenderSystem extends IteratingSystem implements Disposable {
 
+	private static final String TAG = "[" + EntityRenderSystem.class.getSimpleName() + "]";
 	private static final int spriteRotationOffset = -0;
 
 	private SpriteBatch batch;
@@ -30,6 +29,7 @@ public class EntityRenderSystem extends IteratingSystem implements Disposable {
 
 	@Override
 	public void update(float deltaTime) {
+		//Gdx.app.log(TAG, "Updating entityRenderSystem");
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		super.update(deltaTime);
@@ -38,6 +38,8 @@ public class EntityRenderSystem extends IteratingSystem implements Disposable {
 
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
+		//Gdx.app.log(TAG, "Renderering an entity");
+		
 		if(Components.SPRITE.has(entity)){
 			SpriteComponent spriteComp = Components.SPRITE.get(entity);
 			
@@ -52,8 +54,7 @@ public class EntityRenderSystem extends IteratingSystem implements Disposable {
 	
 			spriteComp.sprite.draw(batch);
 		}
-		
-
+	
 	}
 
 	@Override
