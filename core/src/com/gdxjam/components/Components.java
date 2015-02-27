@@ -9,6 +9,8 @@ public class Components {
 	
 	public static final ComponentMapper<HealthComponent> HEALTH = ComponentMapper.getFor(HealthComponent.class);
 	public static final ComponentMapper<PhysicsComponent> PHYSICS = ComponentMapper.getFor(PhysicsComponent.class);
+	public static final ComponentMapper<FactionComponent> FACTION = ComponentMapper.getFor(FactionComponent.class);
+	public static final ComponentMapper<ResourceComponent> RESOURCE = ComponentMapper.getFor(ResourceComponent.class);
 	
 	//AI
 	public static final ComponentMapper<CommanderComponent> COMMANDER = ComponentMapper.getFor(CommanderComponent.class);
