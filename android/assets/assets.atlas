@@ -11,16 +11,9 @@ asteroid
   orig: 800, 800
   offset: 0, 0
   index: -1
-commander
-  rotate: false
-  xy: 304, 24
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
 hotkey
   rotate: false
-  xy: 370, 40
+  xy: 604, 836
   size: 48, 48
   split: 14, 16, 14, 16
   pad: 13, 16, 15, 13
@@ -29,35 +22,35 @@ hotkey
   index: -1
 hotkeyleft
   rotate: false
-  xy: 604, 770
+  xy: 1106, 1728
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 hotkeyright
   rotate: false
-  xy: 670, 836
+  xy: 1666, 1658
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 largegreenplanet
   rotate: false
-  xy: 304, 348
+  xy: 1408, 1450
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 largeredplanet
   rotate: false
-  xy: 304, 90
+  xy: 1106, 1148
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 middlehotkey
   rotate: false
-  xy: 2012, 1960
+  xy: 1025, 1124
   size: 2, 48
   orig: 2, 48
   offset: 0, 0
@@ -71,77 +64,84 @@ outpost
   index: -1
 planet1
   rotate: false
-  xy: 804, 1708
+  xy: 2, 304
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet10
   rotate: false
-  xy: 1710, 1406
+  xy: 1106, 1406
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet2
   rotate: false
-  xy: 2, 304
+  xy: 804, 1476
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet3
   rotate: false
-  xy: 804, 1406
+  xy: 2, 2
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet4
   rotate: false
-  xy: 1106, 1708
+  xy: 304, 304
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet5
   rotate: false
-  xy: 2, 2
+  xy: 304, 2
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet6
   rotate: false
-  xy: 1106, 1406
+  xy: 804, 1174
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet7
   rotate: false
-  xy: 1408, 1708
+  xy: 1276, 1708
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet8
   rotate: false
-  xy: 1408, 1406
+  xy: 1578, 1708
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 planet9
   rotate: false
-  xy: 1710, 1708
+  xy: 723, 872
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
+ship
+  rotate: false
+  xy: 804, 1778
+  size: 470, 230
+  orig: 470, 230
+  offset: 0, 0
+  index: -1
 ship1
   rotate: false
-  xy: 804, 1220
+  xy: 1880, 1824
   size: 113, 184
   orig: 113, 184
   offset: 0, 0
@@ -151,27 +151,5 @@ ship2
   xy: 604, 886
   size: 117, 320
   orig: 117, 320
-  offset: 0, 0
-  index: -1
-tree
-  rotate: false
-  xy: 604, 820
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-unit
-  rotate: false
-  xy: 723, 1142
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-wall
-  rotate: false
-  xy: 919, 1340
-  size: 64, 64
-  split: 14, 14, 18, 13
-  orig: 64, 64
   offset: 0, 0
   index: -1

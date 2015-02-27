@@ -65,7 +65,7 @@ public class EntityFactory {
 			.steerableBody(BodyType.DynamicBody)
 			.circleCollider(radius)
 			.health(100)
-			.sprite(Assets.spacecraft.outpost, radius * 2, radius * 2)
+			.sprite(Assets.spacecraft.ship, radius * 2, radius * 2)
 			.build();
 		
 		entity.add(engine.createComponent(SteeringBehaviorComponent.class));
