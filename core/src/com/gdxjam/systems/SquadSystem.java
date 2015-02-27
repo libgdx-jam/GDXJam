@@ -7,10 +7,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.gdxjam.Assets;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.components.Components;
-import com.gdxjam.components.ResourceComponent.ResourceType;
 import com.gdxjam.components.SteerableBodyComponent;
 import com.gdxjam.components.UnitComponent;
 import com.gdxjam.utils.Constants;
@@ -99,7 +97,6 @@ public class SquadSystem extends EntitySystem{
 		if(Components.UNIT.has(entity)){
 			UnitComponent unit = Components.UNIT.get(entity);
 			unit.squad = squad;
-			unit.assignedResource = ResourceType.WOOD;
 			
 			squad.addEntity(entity);
 			Components.STATE_MACHINE.get(entity).stateMachine.changeState(squad.state);

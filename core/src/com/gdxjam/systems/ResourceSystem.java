@@ -2,15 +2,11 @@ package com.gdxjam.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.gdx.utils.IntMap;
-import com.gdxjam.components.ResourceComponent.ResourceType;
 
 public class ResourceSystem extends EntitySystem{
 	
 	public int population = 0;
-	
-	public IntMap<Integer> resources = new IntMap<Integer>();
-	
+	public int resources = 0;
 	private HUDSystem hudSystem;
 	
 	public ResourceSystem(){
@@ -22,10 +18,9 @@ public class ResourceSystem extends EntitySystem{
 		hudSystem = engine.getSystem(HUDSystem.class);
 	}
 	
-	public void modifyResource(ResourceType type, int amount){
-		int resource = resources.get(type.ordinal()) + amount;
-		resources.put(type.ordinal(), resource);
-		hudSystem.updateResource(type, resource);
+	public void modifyResource(int amount){
+		resources += amount;
+		hudSystem.updateResource(resources);
 	}
 	
 	@Override

@@ -7,16 +7,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectIntMap;
 import com.gdxjam.ai.Squad;
-import com.gdxjam.components.ResourceComponent.ResourceType;
-import com.gdxjam.ui.GameTimeTable;
 import com.gdxjam.ui.HotkeyTable;
 import com.gdxjam.ui.HotkeyTable.HotkeyTableStyle;
-import com.gdxjam.ui.ResourceGroup;
 import com.gdxjam.utils.Constants;
 
 public class HUDSystem extends EntitySystem implements Disposable {
@@ -24,10 +22,10 @@ public class HUDSystem extends EntitySystem implements Disposable {
 	private Stage stage;
 	private Skin skin;
 	private HotkeyTable hotkeyTable, actionTable;
-	private GameTimeTable gameTimeTable;
 	
 	private final ObjectIntMap<Squad> squadKeyMap = new ObjectIntMap<Squad>(Constants.maxSquads);
-	private ResourceGroup resources;
+	
+	private Label resourceLabel;
 
 	public HUDSystem(Skin skin) {
 		this.stage = new Stage();
@@ -67,20 +65,18 @@ public class HUDSystem extends EntitySystem implements Disposable {
 		actionTableContainer.add(actionTable);
 		stage.addActor(actionTableContainer);
 		
-		//Game time table
-		gameTimeTable = new GameTimeTable(skin);
-
-		
 		/** Resource Table		 */
-		resources = new ResourceGroup(skin);
+		resourceLabel = new Label("Resources: XXX", skin);
+		Table resourceTable = new Table();
+		resourceTable.add(resourceLabel);
+		
 		
 		Table topTable = new Table();
 		topTable.setFillParent(true);
 		topTable.top().right();
 		
 		topTable.defaults().pad(5);
-		topTable.add(resources);
-		topTable.add(gameTimeTable);
+		topTable.add(resourceTable);
 
 		stage.addActor(topTable);
 		
@@ -116,8 +112,8 @@ public class HUDSystem extends EntitySystem implements Disposable {
 		stage.getViewport().update(screenWidth, screenHeight);
 	}
 	
-	public void updateResource(ResourceType type, int amount){
-		resources.update(type, amount);
+	public void updateResource(int amount){
+		resourceLabel.setText("Resources: " + amount);
 	}
 	
 	public void updatePopulation(float population){
