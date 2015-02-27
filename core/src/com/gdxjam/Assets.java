@@ -1,13 +1,10 @@
 package com.gdxjam;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -33,8 +30,8 @@ public class Assets implements Disposable {
 	public static AssetHotkey hotkey;
 	public static AssetFonts fonts;
 	public static AssetSpace space;
-
 	public static AssetSpacecraft spacecraft;
+	public static Skin skin;
 
 	public static void load() {
 		getManager(); // Insure the manager exists
@@ -44,7 +41,7 @@ public class Assets implements Disposable {
 
 	public static void create() {
 		TextureAtlas atlas = manager.get(TEXTURE_ATLAS_OBJECTS);
-
+		skin = manager.get(SKIN);
 		hotkey = new AssetHotkey(atlas);
 		fonts = new AssetFonts();
 		space = new AssetSpace(atlas);
@@ -75,20 +72,9 @@ public class Assets implements Disposable {
 		public final BitmapFont large;
 
 		public AssetFonts() {
-			FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
-					Gdx.files.internal("fonts/emulogic.ttf"));
-			FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-			parameter.size = 12;
-			small = generator.generateFont(parameter); // font size 12 pixels
-
-			parameter.size = 16;
-			medium = generator.generateFont(parameter);
-
-			parameter.size = 32;
-			large = generator.generateFont(parameter);
-
-			generator.dispose(); // don't forget to dispose to avoid memory
-									// leaks!
+			small = skin.getFont("default-font");
+			medium = skin.getFont("default-font");
+			large = skin.getFont("default-font");
 		}
 
 	}

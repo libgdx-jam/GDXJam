@@ -20,7 +20,6 @@ import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.systems.StateMachineSystem;
 import com.gdxjam.systems.SteeringSystem;
-import com.gdxjam.utils.Constants;
 
 public class EntityManager extends PooledEngine implements Disposable {
 	private static String TAG = "[" + EntityManager.class.getSimpleName() + "]";
@@ -30,10 +29,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 	}
 
 	private EntityManager initSystems() {
-		CameraSystem cameraSystem = new CameraSystem(
-				Constants.WORLD_WIDTH_METERS, Constants.WORLD_HEIGHT_METERS);
-		cameraSystem.getCamera().position.set(Constants.WORLD_WIDTH_METERS / 2,
-				Constants.WORLD_HEIGHT_METERS / 2, 0);
+		CameraSystem cameraSystem = new CameraSystem(64, 36);
 		addSystem(cameraSystem);
 
 		addSystem(new PhysicsSystem());
@@ -46,9 +42,10 @@ public class EntityManager extends PooledEngine implements Disposable {
 
 		addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
 
-		addSystem(new ResourceSystem());
+
 		addSystem(new HUDSystem(Assets.getManager()
 				.get(Assets.SKIN, Skin.class)));
+		addSystem(new ResourceSystem());
 
 		InputSystem input = new InputSystem();
 		addSystem(input);

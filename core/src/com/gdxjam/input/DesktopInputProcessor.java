@@ -1,8 +1,11 @@
 package com.gdxjam.input;
 
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.gdxjam.GameManager;
 import com.gdxjam.ai.states.SquadState;
@@ -111,7 +114,10 @@ public class DesktopInputProcessor implements InputProcessor {
 			Constants.pausedGUI = !Constants.pausedGUI;
 			return true;
 		case Keys.F12:
-			ScreenshotFactory.saveScreenshot();
+			if(Gdx.app.getType() == ApplicationType.Desktop){
+				//NOTE: Comment this out to run GWT
+				//ScreenshotFactory.saveScreenshot();
+			}
 			return true;
 		case Keys.ESCAPE:
 			GameManager.disposeEngine();

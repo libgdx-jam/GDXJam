@@ -6,7 +6,7 @@ import com.badlogic.ashley.core.EntitySystem;
 public class ResourceSystem extends EntitySystem{
 	
 	public int population = 0;
-	public int resources = 0;
+	public int resources = 500;
 	private HUDSystem hudSystem;
 	
 	public ResourceSystem(){
@@ -16,6 +16,7 @@ public class ResourceSystem extends EntitySystem{
 	public void addedToEngine (Engine engine) {
 		super.addedToEngine(engine);
 		hudSystem = engine.getSystem(HUDSystem.class);
+		hudSystem.updateResource(resources);
 	}
 	
 	public void modifyResource(int amount){

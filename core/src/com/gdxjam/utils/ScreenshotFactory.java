@@ -4,7 +4,6 @@ package com.gdxjam.utils;
 import java.nio.ByteBuffer;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -15,17 +14,17 @@ public class ScreenshotFactory {
 	private static String directory = "screenshots/";
 
 	public static void saveScreenshot () {
-		try {
-			FileHandle fh;
-			do {
-				fh = new FileHandle(directory + "screenshot" + counter++ + ".png");
-			} while (fh.exists());
-			Pixmap pixmap = getScreenshot(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-			PixmapIO.writePNG(fh, pixmap);
-			pixmap.dispose();
-		} catch (Exception e) {
+		String path = directory + "screenshot" + counter++ + ".png";
+		
+		while(Gdx.files.local(path).exists()){
+			counter++;
+			path = directory + "screenshot" + counter++ + ".png";
 		}
-	}
+
+			Pixmap pixmap = getScreenshot(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+			PixmapIO.writePNG(Gdx.files.local(path), pixmap);
+			pixmap.dispose();
+		} 
 
 	private static Pixmap getScreenshot (int x, int y, int w, int h, boolean yDown) {
 		final Pixmap pixmap = ScreenUtils.getFrameBufferPixmap(x, y, w, h);
