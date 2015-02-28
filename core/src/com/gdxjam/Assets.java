@@ -101,7 +101,7 @@ public class Assets implements Disposable {
 			space = atlas.findRegion("space");
 			largePlanetGreen = atlas.findRegion("largegreenplanet");
 			largePlanetRed = atlas.findRegion("largeredplanet");
-			asteroid = atlas.findRegion("asteroid");
+			asteroid = atlas.findRegion("asteroid1");
 			planet1 = atlas.findRegion("planet1");
 			planet2 = atlas.findRegion("planet2");
 			planet3 = atlas.findRegion("planet3");
