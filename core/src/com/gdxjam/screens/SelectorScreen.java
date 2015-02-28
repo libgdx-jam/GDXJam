@@ -28,6 +28,7 @@ public class SelectorScreen extends AbstractScreen {
 
 		addScreen(new GameScreen());
 		addScreen(new AssetPlaygroundScreen());
+		addScreen(new MainMenuScreen());
 
 		stage.addActor(table);
 
@@ -44,8 +45,7 @@ public class SelectorScreen extends AbstractScreen {
 	}
 
 	public void addScreen(final AbstractScreen screen) {
-		NinePatchDrawable draw = new NinePatchDrawable(
-				Assets.hotkey.button);
+		NinePatchDrawable draw = new NinePatchDrawable(Assets.hotkey.button);
 
 		TextButtonStyle style = new ImageTextButtonStyle();
 		style.up = draw;

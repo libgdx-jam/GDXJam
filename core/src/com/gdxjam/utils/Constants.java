@@ -23,4 +23,6 @@ public class Constants {
 
 	public static final float PIXEL_PER_METER = 32;
 
+	public static final CharSequence GAME_TITLE = "Title Goes Here";
+
 }
