@@ -1,3 +1,4 @@
+
 package com.gdxjam;
 
 import com.badlogic.ashley.core.Entity;
@@ -25,14 +26,12 @@ import com.gdxjam.utils.Constants;
 public class EntityManager extends PooledEngine implements Disposable {
 	private static String TAG = "[" + EntityManager.class.getSimpleName() + "]";
 
-	public EntityManager() {
+	public EntityManager () {
 		initSystems();
 	}
 
-	private EntityManager initSystems() {
-		CameraSystem cameraSystem = new CameraSystem(
-				Constants.WORLD_WIDTH_METERS / 2,
-				Constants.WORLD_HEIGHT_METERS / 2);
+	private EntityManager initSystems () {
+		CameraSystem cameraSystem = new CameraSystem(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
 		addSystem(cameraSystem);
 
 		addSystem(new PhysicsSystem());
@@ -43,10 +42,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 
 		addSystem(new HealthSystem());
 
-		addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
-
-		addSystem(new HUDSystem(Assets.getManager()
-				.get(Assets.SKIN, Skin.class)));
+		addSystem(new HUDSystem(Assets.getManager().get(Assets.SKIN, Skin.class)));
 
 		addSystem(new ResourceSystem());
 		addSystem(new SquadSystem());
@@ -55,21 +51,22 @@ public class EntityManager extends PooledEngine implements Disposable {
 		addSystem(input);
 		Gdx.input.setInputProcessor(input.getMultiplexer());
 
+		// Renderering happens last
+		addSystem(new EntityRenderSystem());
 		return this;
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update (float deltaTime) {
 		super.update(deltaTime);
 
-		for (Entity entity : getEntitiesFor(Family.all(RemovalComponent.class)
-				.get())) {
+		for (Entity entity : getEntitiesFor(Family.all(RemovalComponent.class).get())) {
 			removeEntity(entity);
 		}
 	}
 
 	@Override
-	protected void removeEntityInternal(Entity entity) {
+	protected void removeEntityInternal (Entity entity) {
 		if (Components.PHYSICS.has(entity)) {
 			Body body = Components.PHYSICS.get(entity).body;
 			getSystem(PhysicsSystem.class).destroyBody(body);
@@ -79,13 +76,13 @@ public class EntityManager extends PooledEngine implements Disposable {
 	}
 
 	@Override
-	public void dispose() {
+	public void dispose () {
 		Gdx.app.log(TAG, "disposing instance");
 		removeAllEntities();
 		clearPools();
 		for (EntitySystem system : getSystems()) {
 			if (system instanceof Disposable) {
-				((Disposable) system).dispose();
+				((Disposable)system).dispose();
 			}
 			system = null;
 			removeSystem(system);

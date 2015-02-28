@@ -26,6 +26,6 @@ public class Constants {
 	public static final CharSequence GAME_TITLE = "Title Goes Here";
 
 	// Supports the 16:9 ratio
-	public static final float WORLD_WIDTH_METERS = 64;
-	public static final float WORLD_HEIGHT_METERS = 36;
+	public static final float VIEWPORT_WIDTH = 64;
+	public static final float VIEWPORT_HEIGHT = 36;
 }
