@@ -37,7 +37,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 		// AI
 		addSystem(new SteeringSystem());
 		addSystem(new StateMachineSystem());
-		addSystem(new SquadSystem());
+
 		addSystem(new HealthSystem());
 
 		addSystem(new EntityRenderSystem(cameraSystem.getCamera()));
@@ -45,7 +45,9 @@ public class EntityManager extends PooledEngine implements Disposable {
 
 		addSystem(new HUDSystem(Assets.getManager()
 				.get(Assets.SKIN, Skin.class)));
+		
 		addSystem(new ResourceSystem());
+		addSystem(new SquadSystem());
 
 		InputSystem input = new InputSystem();
 		addSystem(input);
@@ -66,10 +68,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 
 	@Override
 	protected void removeEntityInternal(Entity entity) {
-		if (Components.STEERABLE_BODY.has(entity)) {
-			Body body = Components.STEERABLE_BODY.get(entity).body;
-			getSystem(PhysicsSystem.class).destroyBody(body);
-		} else if (Components.PHYSICS.has(entity)) {
+		if (Components.PHYSICS.has(entity)) {
 			Body body = Components.PHYSICS.get(entity).body;
 			getSystem(PhysicsSystem.class).destroyBody(body);
 		}

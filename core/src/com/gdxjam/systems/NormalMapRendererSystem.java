@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.gdxjam.Assets;
-import com.gdxjam.components.SteerableBodyComponent;
+import com.gdxjam.components.SteerableComponent;
 
 /**
  * This system will only function with one pairing of an image and its normal
@@ -224,8 +224,8 @@ public class NormalMapRendererSystem extends EntitySystem implements Disposable 
 			System.out.println("New light Z: " + LIGHT_POS.z);
 		}
 
-		SteerableBodyComponent steerable = entity
-				.getComponent(SteerableBodyComponent.class);
+		SteerableComponent steerable = entity
+				.getComponent(SteerableComponent.class);
 
 		batch.setProjectionMatrix(cam.projection);
 		batch.begin();
