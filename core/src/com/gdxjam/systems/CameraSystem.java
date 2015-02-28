@@ -128,6 +128,7 @@ public class CameraSystem extends EntitySystem {
 
 			camera = new OrthographicCamera(viewportWidth, viewportHeight);
 			camera.position.set(viewportWidth * 0.5f, viewportHeight * 0.5f, 0);
+			camera.update();
 		}
 
 		public OrthographicCamera getCamera () {
