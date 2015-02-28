@@ -29,6 +29,4 @@ public class Components {
 
 	public static final ComponentMapper<StateMachineComponent> STATE_MACHINE = ComponentMapper
 			.getFor(StateMachineComponent.class);
-	public static final ComponentMapper<ProximityComponent> PROXIMITY = ComponentMapper
-			.getFor(ProximityComponent.class);
 }
