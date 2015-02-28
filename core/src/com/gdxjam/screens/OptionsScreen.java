@@ -2,13 +2,11 @@ package com.gdxjam.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.gdxjam.Options;
 
-public class OptionsScreen extends AbstractScreen implements Options {
+public class OptionsScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 
 	}
 
