@@ -1,3 +1,4 @@
+
 package com.gdxjam;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -6,18 +7,19 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Assets implements Disposable {
 
 	public static final String TAG = Assets.class.getSimpleName();
 
-	public static boolean rebuildAtlas = true;
+	public static boolean rebuildAtlas = false;
 	public static boolean drawDebugOutline = false;
 
 	public static AssetManager manager;
 
-	public static AssetManager getManager() {
+	public static AssetManager getManager () {
 		if (manager == null) {
 			manager = new AssetManager();
 		}
@@ -33,13 +35,13 @@ public class Assets implements Disposable {
 	public static AssetSpacecraft spacecraft;
 	public static Skin skin;
 
-	public static void load() {
+	public static void load () {
 		getManager(); // Insure the manager exists
 		manager.load(TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
 		manager.load(SKIN, Skin.class);
 	}
 
-	public static void create() {
+	public static void create () {
 		TextureAtlas atlas = manager.get(TEXTURE_ATLAS_OBJECTS);
 		skin = manager.get(SKIN);
 		hotkey = new AssetHotkey(atlas);
@@ -49,7 +51,7 @@ public class Assets implements Disposable {
 	}
 
 	@Override
-	public void dispose() {
+	public void dispose () {
 		manager.dispose();
 	}
 
@@ -59,7 +61,7 @@ public class Assets implements Disposable {
 
 		// public final AtlasRegion ship;
 
-		public AssetSpacecraft(TextureAtlas atlas) {
+		public AssetSpacecraft (TextureAtlas atlas) {
 			outpost = atlas.findRegion("outpost");
 			ship = atlas.findRegion("ship");
 		}
@@ -71,7 +73,7 @@ public class Assets implements Disposable {
 		public final BitmapFont medium;
 		public final BitmapFont large;
 
-		public AssetFonts() {
+		public AssetFonts () {
 			small = skin.getFont("default-font");
 			medium = skin.getFont("default-font");
 			large = skin.getFont("default-font");
@@ -80,38 +82,16 @@ public class Assets implements Disposable {
 	}
 
 	public static class AssetSpace {
-		public AtlasRegion space;
-		public final AtlasRegion largePlanetGreen;
-		public final AtlasRegion largePlanetRed;
+		public AtlasRegion background;
 
-		public final AtlasRegion asteroid;
+		public final Array<AtlasRegion> planets;
+		public final Array<AtlasRegion> asteroids;
 
-		public final AtlasRegion planet1;
-		public final AtlasRegion planet2;
-		public final AtlasRegion planet3;
-		public final AtlasRegion planet4;
-		public final AtlasRegion planet5;
-		public final AtlasRegion planet6;
-		public final AtlasRegion planet7;
-		public final AtlasRegion planet8;
-		public final AtlasRegion planet9;
-		public final AtlasRegion planet10;
+		public AssetSpace (TextureAtlas atlas) {
+			background = atlas.findRegion("space");
 
-		public AssetSpace(TextureAtlas atlas) {
-			space = atlas.findRegion("space");
-			largePlanetGreen = atlas.findRegion("largegreenplanet");
-			largePlanetRed = atlas.findRegion("largeredplanet");
-			asteroid = atlas.findRegion("asteroid1");
-			planet1 = atlas.findRegion("planet1");
-			planet2 = atlas.findRegion("planet2");
-			planet3 = atlas.findRegion("planet3");
-			planet4 = atlas.findRegion("planet4");
-			planet5 = atlas.findRegion("planet5");
-			planet6 = atlas.findRegion("planet6");
-			planet7 = atlas.findRegion("planet7");
-			planet8 = atlas.findRegion("planet8");
-			planet9 = atlas.findRegion("planet9");
-			planet10 = atlas.findRegion("planet10");
+			planets = atlas.findRegions("planet");
+			asteroids = atlas.findRegions("asteroid");
 		}
 	}
 
@@ -121,7 +101,7 @@ public class Assets implements Disposable {
 		public AtlasRegion middle;
 		public AtlasRegion right;
 
-		public AssetHotkey(TextureAtlas atlas) {
+		public AssetHotkey (TextureAtlas atlas) {
 			left = atlas.findRegion("hotkeyleft");
 			button = atlas.createPatch("hotkey");
 			right = atlas.findRegion("hotkeyright");
