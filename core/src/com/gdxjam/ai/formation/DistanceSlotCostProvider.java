@@ -13,4 +13,10 @@ public class DistanceSlotCostProvider implements SlotCostProvider<Vector2>{
 		return cost + 1;
 	}
 
+	@Override
+	public void calculateCosts() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
