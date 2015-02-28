@@ -33,34 +33,31 @@ import com.gdxjam.systems.PhysicsSystem;
 
 public class EntityFactory {
 
-	private static final String TAG = "[" + EntityFactory.class.getSimpleName() +"]";
-	
+	private static final String TAG = "[" + EntityFactory.class.getSimpleName()
+			+ "]";
+
 	private static PooledEngine engine;
 	private static PhysicsSystem physicsSystem;
-	
-	private static float outpostRadius = 12.0f;
-	private static float unitRadius = 0.25f;
-	
-	public static EntityBuilder buildEntity(Vector2 position){
+
+	private static float outpostRadius = 8.0f;
+	private static float unitRadius = Constants.unitRadius;
+
+	public static EntityBuilder buildEntity(Vector2 position) {
 		return new EntityBuilder(position);
 	}
 
 	public static Entity createOutpost(Vector2 position) {
-		Entity entity = 
-				 buildEntity(position)
+		Entity entity = buildEntity(position)
 				.physicsBody(BodyType.StaticBody)
 				.circleCollider(outpostRadius)
-				.sprite(Assets.spacecraft.outpost, outpostRadius * 2, outpostRadius * 2)
-				.health(1000)
-				.addToEngine();
+				.sprite(Assets.spacecraft.outpost, outpostRadius * 2,
+						outpostRadius * 2).health(1000).addToEngine();
 		return entity;
 	}
 
 	public static Entity createAsteroid(Vector2 position, float radius) {
-		Entity entity = 
-				 buildEntity(position)
-				.physicsBody(BodyType.KinematicBody)
-				.circleCollider(radius)
+		Entity entity = buildEntity(position)
+				.physicsBody(BodyType.KinematicBody).circleCollider(radius)
 				.health(50)
 				.sprite(Assets.space.asteroid, radius * 2, radius * 2)
 				.addToEngine();
@@ -68,12 +65,8 @@ public class EntityFactory {
 	}
 
 	public static Entity createUnit(Vector2 position) {
-		Entity entity = 
-				 buildEntity(position)
-				.physicsBody(BodyType.DynamicBody)
-				.circleCollider(unitRadius)
-				.steerable()
-				.health(100)
+		Entity entity = buildEntity(position).physicsBody(BodyType.DynamicBody)
+				.circleCollider(unitRadius).steerable().health(100)
 				.sprite(Assets.spacecraft.ship, unitRadius * 2, unitRadius * 2)
 				.getWithoutAdding();
 
@@ -81,35 +74,35 @@ public class EntityFactory {
 		entity.add(engine.createComponent(StateMachineComponent.class).init(
 				entity));
 		entity.add(engine.createComponent(UnitComponent.class));
-		
+
 		engine.addEntity(entity);
 		return entity;
 	}
-	
-	public static Entity createBackgroundArt(Vector2 position, float width, float height, TextureRegion region){
-		Entity entity =
-			buildEntity(position)
-			.sprite(region, width, height)
-			.addToEngine();
-		
-		//TODO add paralaxComponent to be processed by the paralaxSystem
+
+	public static Entity createBackgroundArt(Vector2 position, float width,
+			float height, TextureRegion region) {
+		Entity entity = buildEntity(position).sprite(region, width, height)
+				.addToEngine();
+
+		// TODO add paralaxComponent to be processed by the paralaxSystem
 		return entity;
 	}
-	
+
 	/**
 	 * Called when the GameManager first initializes a new engine
-	 * @param engine The engine that the factory will use to create its entities
+	 * 
+	 * @param engine
+	 *            The engine that the factory will use to create its entities
 	 */
 	public static void setEngine(PooledEngine engine) {
 		EntityFactory.engine = engine;
 		physicsSystem = engine.getSystem(PhysicsSystem.class);
 	}
-	
-	
+
 	/**
-	 * Creates an entity from the engine when first instantiated
-	 * Exit builder by calling addToEngine() or getWithoutAdding()
-	 *
+	 * Creates an entity from the engine when first instantiated Exit builder by
+	 * calling addToEngine() or getWithoutAdding()
+	 * 
 	 */
 
 	public static class EntityBuilder {
@@ -129,18 +122,20 @@ public class EntityFactory {
 			def.position.set(position);
 			Body body = physicsSystem.createBody(def);
 
-			PhysicsComponent physics = engine.createComponent(PhysicsComponent.class).init(body);
+			PhysicsComponent physics = engine.createComponent(
+					PhysicsComponent.class).init(body);
 			entity.add(physics);
 			return this;
 		}
-		
-		public EntityBuilder steerable(){
+
+		public EntityBuilder steerable() {
 			PhysicsComponent physics = Components.PHYSICS.get(entity);
-			if(physics == null){
+			if (physics == null) {
 				Gdx.app.error(TAG, "cannot create a steerable without physics!");
 				return this;
 			}
-			SteerableComponent steerable = engine.createComponent(SteerableComponent.class).init(physics.body);
+			SteerableComponent steerable = engine.createComponent(
+					SteerableComponent.class).init(physics.body);
 			entity.add(steerable);
 			return this;
 		}
@@ -156,36 +151,39 @@ public class EntityFactory {
 			physics.body.createFixture(shape, 1.0f);
 			return this;
 		}
-		
-		public EntityBuilder rangeSensor(float range, float arc){
+
+		public EntityBuilder rangeSensor(float range, float arc) {
 			Body body;
-			if(Components.PHYSICS.has(entity)){
+			if (Components.PHYSICS.has(entity)) {
 				body = Components.PHYSICS.get(entity).body;
-			}  else {
-				Gdx.app.error(TAG, "can not add range sensor : entity does not have a physics component!");
+			} else {
+				Gdx.app.error(TAG,
+						"can not add range sensor : entity does not have a physics component!");
 				return this;
 			}
-			
-			 Vector2 vertices[] = new Vector2[8];
-			 
-			 for (int i = 0; i <= 7; i++) {
-				 vertices[i] = new Vector2(0, 0);
-			 }
-			
-			 for (int i = 0; i < 7; i++) {
-				 float angle = (i / 6.0f * arc * MathUtils.degRad) - (90 * MathUtils.degRad);
-				 vertices[i + 1].set(range * MathUtils.cos(angle), range * MathUtils.sin(angle));
-			 }
 
-			 PolygonShape poly = new PolygonShape();
-			 poly.set(vertices);
+			Vector2 vertices[] = new Vector2[8];
 
-			 FixtureDef sensorDef = new FixtureDef();
-			 sensorDef.shape = poly;
-			 sensorDef.isSensor = true;
-			 body.createFixture(sensorDef);
-			 poly.dispose();
-			 return this;
+			for (int i = 0; i <= 7; i++) {
+				vertices[i] = new Vector2(0, 0);
+			}
+
+			for (int i = 0; i < 7; i++) {
+				float angle = (i / 6.0f * arc * MathUtils.degRad)
+						- (90 * MathUtils.degRad);
+				vertices[i + 1].set(range * MathUtils.cos(angle), range
+						* MathUtils.sin(angle));
+			}
+
+			PolygonShape poly = new PolygonShape();
+			poly.set(vertices);
+
+			FixtureDef sensorDef = new FixtureDef();
+			sensorDef.shape = poly;
+			sensorDef.isSensor = true;
+			body.createFixture(sensorDef);
+			poly.dispose();
+			return this;
 		}
 
 		public EntityBuilder health(int value) {
@@ -195,29 +193,30 @@ public class EntityFactory {
 			health.value = value;
 			entity.add(health);
 			return this;
-			}
-		
-		public EntityBuilder targetFinder(float range){
+		}
+
+		public EntityBuilder targetFinder(float range) {
 			CircleShape shape = new CircleShape();
 			shape.setRadius(range);
 			FixtureDef def = new FixtureDef();
 			def.isSensor = true;
 			def.shape = shape;
-			
+
 			PhysicsComponent physics = Components.PHYSICS.get(entity);
-			if(physics == null){
-				Gdx.app.error(TAG, "can not add target finder to entity without a body");
+			if (physics == null) {
+				Gdx.app.error(TAG,
+						"can not add target finder to entity without a body");
 				return this;
 			}
 			Fixture fixture = physics.body.createFixture(def);
-			
-			TargetFinderComponent targetFinder = engine.createComponent(TargetFinderComponent.class);
+
+			TargetFinderComponent targetFinder = engine
+					.createComponent(TargetFinderComponent.class);
 			fixture.setUserData(targetFinder);
-			
+
 			entity.add(targetFinder);
 			return this;
 		}
-		
 
 		public EntityBuilder sprite(TextureRegion region, float width,
 				float height) {
@@ -232,8 +231,8 @@ public class EntityFactory {
 			engine.addEntity(entity);
 			return entity;
 		}
-		
-		public Entity getWithoutAdding(){
+
+		public Entity getWithoutAdding() {
 			return entity;
 		}
 

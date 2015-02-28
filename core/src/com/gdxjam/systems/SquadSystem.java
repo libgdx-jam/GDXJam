@@ -23,119 +23,125 @@ import com.gdxjam.components.UnitComponent;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityFactory;
 
-public class SquadSystem extends EntitySystem{
-	
-	private static final String TAG = "[" + SquadSystem.class.getSimpleName() +"]";
+public class SquadSystem extends EntitySystem {
+
+	private static final String TAG = "[" + SquadSystem.class.getSimpleName()
+			+ "]";
 	public Array<Squad> squads;
-	
+
 	private int population;
-	
+
 	private HUDSystem hudSystem;
 	private ResourceSystem resourceSystem;
 	private PooledEngine engine;
-	
-	public SquadSystem(){
+
+	public SquadSystem() {
 		squads = new Array<Squad>(true, Constants.maxSquads);
 
 	}
-	
+
 	@Override
-	public void addedToEngine (Engine engine) {
+	public void addedToEngine(Engine engine) {
 		super.addedToEngine(engine);
 		hudSystem = engine.getSystem(HUDSystem.class);
 		resourceSystem = engine.getSystem(ResourceSystem.class);
 		this.engine = (PooledEngine) engine;
 	}
-	
-	public Squad createSquad(Vector2 position){
+
+	public Squad createSquad(Vector2 position) {
 		int index = squads.size;
 		Squad squad = new Squad(position, index);
-		DefensiveCircleFormationPattern<Vector2> pattern = new DefensiveCircleFormationPattern<Vector2>(Constants.unitRadius);
+		DefensiveCircleFormationPattern<Vector2> pattern = new DefensiveCircleFormationPattern<Vector2>(
+				Constants.squadRadius);
 		FreeSlotAssignmentStrategy<Vector2> slotAssignmentStrategy = new FreeSlotAssignmentStrategy<Vector2>();
-		
-		squad.formation = new Formation<Vector2>(squad.anchor, pattern, slotAssignmentStrategy);
-		
+
+		squad.formation = new Formation<Vector2>(squad.anchor, pattern,
+				slotAssignmentStrategy);
+
 		squads.add(squad);
 		hudSystem.addSquad(squad);
 		return squad;
 	}
-	
-	public void addMember(Entity entity, Squad squad){
-		SquadMemberComponent squadMember = engine.createComponent(SquadMemberComponent.class);
+
+	public void addMember(Entity entity, Squad squad) {
+		SquadMemberComponent squadMember = engine
+				.createComponent(SquadMemberComponent.class);
 		entity.add(squadMember);
-		
+
 		SteerableComponent steer = Components.STEERABLE.get(entity);
-		SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
-		
-		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steer, squadMember.getTargetLocation())
-			.setLimiter(new LinearLimiter(3500, 8))
-			.setTimeToTarget(0.1f)
-			.setArrivalTolerance(0.001f)
-			.setDecelerationRadius(3f);
+		SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR
+				.get(entity);
+
+		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steer,
+				squadMember.getTargetLocation())
+				.setLimiter(new LinearLimiter(3500, 8)).setTimeToTarget(0.1f)
+				.setArrivalTolerance(0.001f).setDecelerationRadius(3f);
 		behavior.setBehavior(arriveSB);
-		
+
 		squad.formation.addMember(squadMember);
 	}
 
-	public void setTarget(Vector2 target){
+	public void setTarget(Vector2 target) {
 		for (Squad squad : squads) {
 			if (squad.isSelected()) {
 				squad.setTarget(target);
 			}
 		}
 	}
-	
-	public void setState(State<Entity> state){
-		for(Squad squad : squads){
-			if(squad.selected){
+
+	public void setState(State<Entity> state) {
+		for (Squad squad : squads) {
+			if (squad.selected) {
 				setState(state, squad);
 			}
 		}
 	}
-	
-	public void setState(State<Entity> state, Squad squad){
+
+	public void setState(State<Entity> state, Squad squad) {
 		squad.state = state;
-		for(Entity entity : squad.entities){
-			Components.STATE_MACHINE.get(entity).stateMachine.changeState(state);
+		for (Entity entity : squad.entities) {
+			Components.STATE_MACHINE.get(entity).stateMachine
+					.changeState(state);
 		}
 	}
-	
-	public boolean toggleSelected(Squad squad){
+
+	public boolean toggleSelected(Squad squad) {
 		squad.selected = !squad.selected;
 		hudSystem.setSelected(squad);
 		return squad.selected;
 	}
-	
-	public boolean toggleSelected(int index){
-		if(squads.size > index){
+
+	public boolean toggleSelected(int index) {
+		if (squads.size > index) {
 			return toggleSelected(squads.get(index));
 		}
 		return false;
 	}
-	
-	public Squad addUnitToSquad(Entity entity, Squad squad){
-		
-		if(Components.UNIT.has(entity)){
+
+	public Squad addUnitToSquad(Entity entity, Squad squad) {
+
+		if (Components.UNIT.has(entity)) {
 			UnitComponent unit = Components.UNIT.get(entity);
 			unit.squad = squad;
-			
+
 			squad.addEntity(entity);
-			Components.STATE_MACHINE.get(entity).stateMachine.changeState(squad.state);
-		}
-		else{
-			Gdx.app.error(TAG, "entity cannot be added to squad " + squad.index + " : Entity is not a unit");
+			Components.STATE_MACHINE.get(entity).stateMachine
+					.changeState(squad.state);
+		} else {
+			Gdx.app.error(TAG, "entity cannot be added to squad " + squad.index
+					+ " : Entity is not a unit");
 		}
 		return squad;
 	}
-	
-	public Array<Squad> getSquads(){
+
+	public Array<Squad> getSquads() {
 		return squads;
 	}
-	
+
 	@Override
-	public void update (float deltaTime) {
+	public void update(float deltaTime) {
 		super.update(deltaTime);
-		for(Squad squad : squads){
+		for (Squad squad : squads) {
 			squad.formation.updateSlots();
 		}
 	}
