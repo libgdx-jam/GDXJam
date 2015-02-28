@@ -7,13 +7,15 @@ import com.gdxjam.Main;
 
 public class HtmlLauncher extends GwtApplication {
 
-        @Override
-        public GwtApplicationConfiguration getConfig () {
-                return new GwtApplicationConfiguration(1280, 720);
-        }
+	@Override
+	public GwtApplicationConfiguration getConfig() {
+		GwtApplicationConfiguration config = new GwtApplicationConfiguration(
+				1280, 720);
+		return config;
+	}
 
-        @Override
-        public ApplicationListener getApplicationListener () {
-                return new Main();
-        }
+	@Override
+	public ApplicationListener getApplicationListener() {
+		return new Main();
+	}
 }

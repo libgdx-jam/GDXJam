@@ -26,11 +26,7 @@ public class AssetPlaygroundScreen extends AbstractScreen {
 				new DesktopInputProcessor(engine),
 				new GestureDetector(new DesktopGestureListener(engine)));
 
-		EntityFactory.createBackgroundArt(new Vector2(
-				(Constants.WORLD_WIDTH_METERS / 2)
-						- (Constants.WORLD_WIDTH_METERS / 2),
-				(Constants.WORLD_HEIGHT_METERS / 2)
-						- (Constants.WORLD_HEIGHT_METERS / 2)),
+		EntityFactory.createBackgroundArt(new Vector2(0, 0),
 				Constants.WORLD_WIDTH_METERS, Constants.WORLD_HEIGHT_METERS,
 				Assets.space.space);
 		EntityFactory.createBackgroundArt(new Vector2(10, 10), 10, 10,

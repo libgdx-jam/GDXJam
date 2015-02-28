@@ -39,19 +39,19 @@ public class EntityFactory {
 	private static PooledEngine engine;
 	private static PhysicsSystem physicsSystem;
 
-	private static float outpostRadius = 8.0f;
+	private static float mothershipRadius = Constants.mothershipRadius;
 	private static float unitRadius = Constants.unitRadius;
 
 	public static EntityBuilder buildEntity(Vector2 position) {
 		return new EntityBuilder(position);
 	}
 
-	public static Entity createOutpost(Vector2 position) {
+	public static Entity createMothership(Vector2 position) {
 		Entity entity = buildEntity(position)
 				.physicsBody(BodyType.StaticBody)
-				.circleCollider(outpostRadius)
-				.sprite(Assets.spacecraft.outpost, outpostRadius * 2,
-						outpostRadius * 2).health(1000).addToEngine();
+				.circleCollider(mothershipRadius)
+				.sprite(Assets.spacecraft.outpost, mothershipRadius * 2,
+						mothershipRadius * 2).health(1000).addToEngine();
 		return entity;
 	}
 
