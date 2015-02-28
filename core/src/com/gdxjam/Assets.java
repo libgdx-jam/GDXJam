@@ -14,7 +14,7 @@ public class Assets implements Disposable {
 
 	public static final String TAG = Assets.class.getSimpleName();
 
-	public static boolean rebuildAtlas = false;
+	public static boolean rebuildAtlas = true;
 	public static boolean drawDebugOutline = false;
 
 	public static AssetManager manager;

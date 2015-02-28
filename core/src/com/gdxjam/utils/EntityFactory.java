@@ -60,7 +60,7 @@ public class EntityFactory {
 		Entity entity = buildEntity(position)
 				.physicsBody(BodyType.KinematicBody).circleCollider(radius)
 				.health(50)
-				.sprite(Assets.space.asteroids.random(), radius * 2, radius * 2)
+				.sprite(Assets.space.asteroids.first(), radius * 2, radius * 2)
 				.addToEngine();
 		return entity;
 	}
