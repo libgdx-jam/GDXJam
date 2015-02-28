@@ -7,21 +7,22 @@ public class ResourceSystem extends EntitySystem{
 	
 	public int population = 0;
 	public int resources = 500;
-	private HUDSystem hudSystem;
+	private GUISystem guiSystem;
 	
-	public ResourceSystem(){
+	public ResourceSystem(GUISystem guiSystem){
+		this.guiSystem = guiSystem;
 	}
 	
 	@Override
 	public void addedToEngine (Engine engine) {
 		super.addedToEngine(engine);
-		hudSystem = engine.getSystem(HUDSystem.class);
-		hudSystem.updateResource(resources);
+		//guiSystem = engine.getSystem(guiSystem.class);
+		guiSystem.updateResource(resources);
 	}
 	
 	public void modifyResource(int amount){
 		resources += amount;
-		hudSystem.updateResource(resources);
+		guiSystem.updateResource(resources);
 	}
 	
 	@Override

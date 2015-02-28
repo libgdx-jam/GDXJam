@@ -12,12 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectIntMap;
+import com.gdxjam.Assets;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.ui.HotkeyTable;
 import com.gdxjam.ui.HotkeyTable.HotkeyTableStyle;
 import com.gdxjam.utils.Constants;
 
-public class HUDSystem extends EntitySystem implements Disposable {
+public class GUISystem extends EntitySystem implements Disposable {
 
 	private Stage stage;
 	private Skin skin;
@@ -27,9 +28,9 @@ public class HUDSystem extends EntitySystem implements Disposable {
 	
 	private Label resourceLabel;
 
-	public HUDSystem(Skin skin) {
+	public GUISystem() {
 		this.stage = new Stage();
-		this.skin = skin;
+		this.skin = Assets.skin;
 
 		initGUI();
 

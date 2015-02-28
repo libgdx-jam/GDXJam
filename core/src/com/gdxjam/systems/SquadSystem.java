@@ -11,7 +11,6 @@ import com.badlogic.gdx.ai.fma.patterns.DefensiveCircleFormationPattern;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.limiters.LinearLimiter;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.gdxjam.ai.Squad;
@@ -21,7 +20,6 @@ import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.UnitComponent;
 import com.gdxjam.utils.Constants;
-import com.gdxjam.utils.EntityFactory;
 
 public class SquadSystem extends EntitySystem {
 
@@ -31,20 +29,17 @@ public class SquadSystem extends EntitySystem {
 
 	private int population;
 
-	private HUDSystem hudSystem;
-	private ResourceSystem resourceSystem;
+	private GUISystem guiSystem;
 	private PooledEngine engine;
 
-	public SquadSystem() {
+	public SquadSystem(GUISystem guiSystem) {
 		squads = new Array<Squad>(true, Constants.maxSquads);
-
+		this.guiSystem = guiSystem;
 	}
 
 	@Override
 	public void addedToEngine(Engine engine) {
 		super.addedToEngine(engine);
-		hudSystem = engine.getSystem(HUDSystem.class);
-		resourceSystem = engine.getSystem(ResourceSystem.class);
 		this.engine = (PooledEngine) engine;
 	}
 
@@ -52,14 +47,14 @@ public class SquadSystem extends EntitySystem {
 		int index = squads.size;
 		Squad squad = new Squad(position, index);
 		DefensiveCircleFormationPattern<Vector2> pattern = new DefensiveCircleFormationPattern<Vector2>(
-				Constants.squadRadius);
+				Constants.unitRadius);
 		FreeSlotAssignmentStrategy<Vector2> slotAssignmentStrategy = new FreeSlotAssignmentStrategy<Vector2>();
 
 		squad.formation = new Formation<Vector2>(squad.anchor, pattern,
 				slotAssignmentStrategy);
 
 		squads.add(squad);
-		hudSystem.addSquad(squad);
+		guiSystem.addSquad(squad);
 		return squad;
 	}
 
@@ -74,7 +69,7 @@ public class SquadSystem extends EntitySystem {
 
 		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steer,
 				squadMember.getTargetLocation())
-				.setLimiter(new LinearLimiter(3500, 8)).setTimeToTarget(0.1f)
+				.setLimiter(new LinearLimiter(3500, 10)).setTimeToTarget(0.1f)
 				.setArrivalTolerance(0.001f).setDecelerationRadius(3f);
 		behavior.setBehavior(arriveSB);
 
@@ -107,7 +102,7 @@ public class SquadSystem extends EntitySystem {
 
 	public boolean toggleSelected(Squad squad) {
 		squad.selected = !squad.selected;
-		hudSystem.setSelected(squad);
+		guiSystem.setSelected(squad);
 		return squad.selected;
 	}
 

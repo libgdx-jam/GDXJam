@@ -143,14 +143,22 @@ public class WorldGenerator {
 				float heightValue = heightMap[(int)(row * rowSpacing)][(int)(col * colSpacing)];
 				if (heightValue <= param.heightThreshold) {
 					Vector2 pos = new Vector2((row * rowSpacing)
-						+ (MathUtils.random(-param.asteroidScattering, param.asteroidScattering) * rowSpacing), (col * colSpacing)
-						+ (MathUtils.random(-param.asteroidScattering, param.asteroidScattering) * colSpacing));
+						+ (randomSign() * param.asteroidScaling) * rowSpacing, (col * colSpacing)
+						+ (randomSign() * param.asteroidScattering) * colSpacing);
 
-					EntityFactory.createAsteroid(pos, param.asteroidBaseRadius + MathUtils.random(0, param.asteroidScaling));
+					float radius = param.asteroidBaseRadius + rng.nextFloat() * param.asteroidScaling;
+					if(rng.nextFloat() <= param.asteroidExtraScalingChance){
+						radius += param.asteroidScaling * 2;
+					}
+					EntityFactory.createAsteroid(pos, radius);
 				}
 			}
 
 		}
+	}
+	
+	private float randomSign(){
+		return rng.nextBoolean() ? 1 : -1;
 	}
 
 	public static class WorldGeneratorParameter {
@@ -162,7 +170,8 @@ public class WorldGenerator {
 
 		public float asteroidDensity = 0.4f;
 		public float asteroidScattering = 0.25f;
-		public float asteroidScaling = 0.25f;
+		public float asteroidScaling = 0.4f;
+		public float asteroidExtraScalingChance = 0.02f;
 		public float asteroidBaseRadius = 0.25f;
 
 		public int initalSquads = 5;
