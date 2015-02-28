@@ -12,7 +12,7 @@ import com.gdxjam.GameManager;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
-import com.gdxjam.systems.HUDSystem;
+import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityFactory;
@@ -30,7 +30,7 @@ public class GameScreen extends AbstractScreen {
 		createWorld(256, 256);
 		
 		InputMultiplexer multiplexer = new InputMultiplexer();
-		multiplexer.addProcessor(engine.getSystem(HUDSystem.class).getStage());
+		multiplexer.addProcessor(engine.getSystem(GUISystem.class).getStage());
 		multiplexer.addProcessor(new DesktopInputProcessor(engine));
 		multiplexer.addProcessor(new GestureDetector(new DesktopGestureListener(engine)));
 		Gdx.input.setInputProcessor(multiplexer);

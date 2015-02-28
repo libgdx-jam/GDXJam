@@ -7,13 +7,12 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.RemovalComponent;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.EntityRenderSystem;
-import com.gdxjam.systems.HUDSystem;
+import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.HealthSystem;
 import com.gdxjam.systems.InputSystem;
 import com.gdxjam.systems.PhysicsSystem;
@@ -42,10 +41,10 @@ public class EntityManager extends PooledEngine implements Disposable {
 
 		addSystem(new HealthSystem());
 
-		addSystem(new HUDSystem(Assets.getManager().get(Assets.SKIN, Skin.class)));
+		GUISystem guiSystem = new GUISystem();
 
-		addSystem(new ResourceSystem());
-		addSystem(new SquadSystem());
+		addSystem(new ResourceSystem(guiSystem));
+		addSystem(new SquadSystem(guiSystem));
 
 		InputSystem input = new InputSystem();
 		addSystem(input);
@@ -53,6 +52,8 @@ public class EntityManager extends PooledEngine implements Disposable {
 
 		// Renderering happens last
 		addSystem(new EntityRenderSystem());
+		addSystem(guiSystem);
+		
 		return this;
 	}
 
