@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.gdxjam.Assets;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
+import com.gdxjam.components.ParalaxComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.StateMachineComponent;
@@ -80,11 +81,14 @@ public class EntityFactory {
 	}
 
 	public static Entity createBackgroundArt(Vector2 position, float width,
-			float height, TextureRegion region) {
-		Entity entity = buildEntity(position).sprite(region, width, height)
-				.addToEngine();
+			float height, TextureRegion region, int layer) {
+		Entity entity = buildEntity(position)
+			.sprite(region, width, height)
+			.getWithoutAdding();
+		entity.add(engine.createComponent(ParalaxComponent.class).init(position.x, position.y, width, height, layer));
 
 		// TODO add paralaxComponent to be processed by the paralaxSystem
+		engine.addEntity(entity);
 		return entity;
 	}
 
@@ -226,6 +230,7 @@ public class EntityFactory {
 			entity.add(spriteComp);
 			return this;
 		}
+		
 
 		public Entity addToEngine() {
 			engine.addEntity(entity);

@@ -26,10 +26,6 @@ public class Location2 implements Location<Vector2> {
 		this.position = position;
 		this.orientation = orientation;
 	}
-	
-	public void setPosition(Vector2 position){
-		this.position.set(position);
-	}
 
 	@Override
 	public Vector2 getPosition() {

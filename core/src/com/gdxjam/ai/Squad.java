@@ -41,7 +41,7 @@ public class Squad implements Telegraph{
 	}
 
 	public void setTarget(Vector2 target) {
-		this.anchor.setPosition(target);
+		this.anchor.getPosition().set(target);
 	}
 	
 	public boolean isSelected() {

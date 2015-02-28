@@ -6,7 +6,9 @@ public class Components {
 
 	public static final ComponentMapper<SpriteComponent> SPRITE = ComponentMapper
 			.getFor(SpriteComponent.class);
-
+	public static final ComponentMapper<ParalaxComponent> PARALAX = ComponentMapper
+		.getFor(ParalaxComponent.class);
+	
 	public static final ComponentMapper<HealthComponent> HEALTH = ComponentMapper
 			.getFor(HealthComponent.class);
 	public static final ComponentMapper<PhysicsComponent> PHYSICS = ComponentMapper
