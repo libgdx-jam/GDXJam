@@ -6,70 +6,70 @@ filter: Nearest,Nearest
 repeat: none
 asteroid
   rotate: false
-  xy: 1802, 1850
+  xy: 1632, 1246
   size: 172, 188
   orig: 172, 188
   offset: 0, 0
   index: 14
 asteroid
   rotate: false
-  xy: 1632, 1247
-  size: 169, 187
-  orig: 169, 187
-  offset: 0, 0
-  index: 15
-asteroid
-  rotate: false
-  xy: 1802, 1667
+  xy: 1632, 1063
   size: 172, 181
   orig: 172, 181
   offset: 0, 0
   index: 12
 asteroid
   rotate: false
-  xy: 1751, 1480
+  xy: 1588, 876
   size: 173, 185
   orig: 173, 185
   offset: 0, 0
   index: 13
 asteroid
   rotate: false
-  xy: 1632, 1072
+  xy: 1021, 727
   size: 171, 173
   orig: 171, 173
   offset: 0, 0
   index: 11
 asteroid
   rotate: false
-  xy: 1588, 885
+  xy: 1751, 1549
+  size: 169, 187
+  orig: 169, 187
+  offset: 0, 0
+  index: 15
+asteroid
+  rotate: false
+  xy: 862, 525
   size: 164, 185
   orig: 164, 185
   offset: 0, 0
   index: 16
 asteroid
   rotate: false
-  xy: 1803, 1297
+  xy: 1028, 544
   size: 160, 181
   orig: 160, 181
   offset: 0, 0
   index: 17
 asteroid
   rotate: false
-  xy: 1805, 1121
+  xy: 908, 349
   size: 162, 174
   orig: 162, 174
   offset: 0, 0
   index: 18
 asteroid
   rotate: false
-  xy: 1021, 738
+  xy: 908, 185
   size: 168, 162
   orig: 168, 162
   offset: 0, 0
   index: 10
 asteroid
   rotate: false
-  xy: 1805, 968
+  xy: 1072, 391
   size: 162, 151
   orig: 162, 151
   offset: 0, 0
@@ -83,67 +83,74 @@ asteroid
   index: 4
 asteroid
   rotate: false
-  xy: 906, 722
+  xy: 1751, 1443
   size: 97, 104
   orig: 97, 104
   offset: 0, 0
   index: 3
 asteroid
   rotate: false
-  xy: 1191, 795
+  xy: 906, 721
   size: 95, 105
   orig: 95, 105
   offset: 0, 0
   index: 5
 asteroid
   rotate: false
-  xy: 101, 7
+  xy: 1194, 799
   size: 96, 101
   orig: 96, 101
   offset: 0, 0
   index: 2
 asteroid
   rotate: false
-  xy: 199, 5
+  xy: 101, 5
   size: 93, 103
   orig: 93, 103
   offset: 0, 0
   index: 6
 asteroid
   rotate: false
-  xy: 294, 12
+  xy: 196, 12
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 asteroid
   rotate: false
-  xy: 392, 9
+  xy: 294, 9
   size: 91, 99
   orig: 91, 99
   offset: 0, 0
   index: 8
 asteroid
   rotate: false
-  xy: 485, 6
+  xy: 387, 6
   size: 90, 102
   orig: 90, 102
   offset: 0, 0
   index: 7
 asteroid
   rotate: false
-  xy: 1191, 703
+  xy: 479, 18
   size: 93, 90
   orig: 93, 90
   offset: 0, 0
   index: 0
 asteroid
   rotate: false
-  xy: 1926, 1582
+  xy: 1194, 714
   size: 90, 83
   orig: 90, 83
   offset: 0, 0
   index: 9
+enemy
+  rotate: false
+  xy: 1802, 1747
+  size: 173, 291
+  orig: 173, 291
+  offset: 0, 0
+  index: -1
 hotkey
   rotate: false
   xy: 1330, 1436
@@ -162,14 +169,14 @@ hotkeyleft
   index: -1
 hotkeyright
   rotate: false
-  xy: 1449, 1758
+  xy: 1977, 1990
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 middlehotkey
   rotate: false
-  xy: 1430, 1436
+  xy: 1190, 677
   size: 2, 48
   orig: 2, 48
   offset: 0, 0

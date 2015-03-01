@@ -1,6 +1,8 @@
 package com.gdxjam.ai.formation;
 
 import com.badlogic.gdx.ai.fma.FormationPattern;
+import com.badlogic.gdx.ai.fma.SlotAssignmentStrategy;
+import com.badlogic.gdx.ai.fma.SoftRoleSlotAssignmentStrategy.SlotCostProvider;
 import com.badlogic.gdx.ai.fma.patterns.DefensiveCircleFormationPattern;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -16,6 +18,7 @@ public class SquadFormationPattern {
 	
 	public static ObjectMap<PatternType, FormationPattern<Vector2>> patterns;
 	public static final PatternType defaultPattern = PatternType.Ring;
+	public static final SlotCostProvider<Vector2> costProvider = new DistanceSlotCostProvider();
 
 	public static void initPatterns(){
 		patterns = new ObjectMap<PatternType, FormationPattern<Vector2>>();

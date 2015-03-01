@@ -15,15 +15,17 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.gdxjam.Assets;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.FactionComponent;
+import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.ParalaxComponent;
 import com.gdxjam.components.PhysicsComponent;
+import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetFinderComponent;
-import com.gdxjam.components.UnitComponent;
 import com.gdxjam.systems.PhysicsSystem;
 
 /**
@@ -51,30 +53,36 @@ public class EntityFactory {
 		Entity entity = buildEntity(position)
 				.physicsBody(BodyType.StaticBody)
 				.circleCollider(mothershipRadius)
-				.sprite(Assets.spacecraft.outpost, mothershipRadius * 2,
-						mothershipRadius * 2).health(1000).addToEngine();
+				.sprite(Assets.spacecraft.outpost, mothershipRadius * 2, mothershipRadius * 2)
+				.health(1000)
+				.addToEngine();
 		return entity;
 	}
 
 	public static Entity createAsteroid(Vector2 position, float radius) {
 		Entity entity = buildEntity(position)
-				.physicsBody(BodyType.KinematicBody).circleCollider(radius)
+				.physicsBody(BodyType.KinematicBody)
+				.circleCollider(radius)
 				.health(50)
+				.resource(5)
 				.sprite(Assets.space.asteroids.random(), radius * 2, radius * 2)
 				.addToEngine();
 		return entity;
 	}
 
-	public static Entity createUnit(Vector2 position) {
-		Entity entity = buildEntity(position).physicsBody(BodyType.DynamicBody)
-				.circleCollider(unitRadius).steerable().health(100)
-				.sprite(Assets.spacecraft.ship, unitRadius * 2, unitRadius * 2)
+	public static Entity createUnit(Vector2 position, Faction faction) {
+		Entity entity = buildEntity(position)
+			   .physicsBody(BodyType.DynamicBody)
+				.circleCollider(unitRadius)
+				.damping(1, 0)
+				.steerable()
+				.health(100)
+				.faction(faction)
+				.sprite(faction == Faction.Player ? Assets.spacecraft.ship : Assets.spacecraft.enemy, unitRadius * 2, unitRadius * 2)
 				.getWithoutAdding();
 
 		entity.add(engine.createComponent(SteeringBehaviorComponent.class));
-		entity.add(engine.createComponent(StateMachineComponent.class).init(
-				entity));
-		entity.add(engine.createComponent(UnitComponent.class));
+		entity.add(engine.createComponent(StateMachineComponent.class).init(entity));
 
 		engine.addEntity(entity);
 		return entity;
@@ -129,6 +137,34 @@ public class EntityFactory {
 			PhysicsComponent physics = engine.createComponent(
 					PhysicsComponent.class).init(body);
 			entity.add(physics);
+			return this;
+		}
+		
+		public EntityBuilder damping(float angular, float linear){
+			if(Components.PHYSICS.has(entity)){
+				PhysicsComponent physics = Components.PHYSICS.get(entity);
+				physics.body.setAngularDamping(angular);
+				physics.body.setLinearDamping(linear);
+			} 
+			else{
+				Gdx.app.error(TAG, "entity is missing physics component!");
+			}
+			return this;
+		}
+		
+		public EntityBuilder resource(int amount){
+			ResourceComponent resourceComp = engine.createComponent(ResourceComponent.class);
+			resourceComp.amount = amount;
+			entity.add(resourceComp);
+			
+			return this;
+		}
+		
+		public EntityBuilder faction(Faction faction){
+			FactionComponent factionComp = engine.createComponent(FactionComponent.class);
+			factionComp.faction = faction;
+			
+			entity.add(factionComp);
 			return this;
 		}
 

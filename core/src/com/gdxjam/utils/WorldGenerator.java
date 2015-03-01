@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.GameManager;
 import com.gdxjam.ai.Squad;
+import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.systems.SquadSystem;
 
 /** @author Torin Wiebelt (Twiebs) Generates world bounds Generates the game world by creating an asteroid field using fBm applied
@@ -69,7 +70,7 @@ public class WorldGenerator {
 		int posY = (int)position.y;
 		for(int x = -1; x < 2; x++) {
 			for (int y = -1; y < 2; y++){
-				Entity entity = EntityFactory.createUnit(new Vector2(posX + x, posY + y));
+				Entity entity = EntityFactory.createUnit(new Vector2(posX + x, posY + y), Faction.Enemy);
 				GameManager.getEngine().getSystem(SquadSystem.class).addMember(entity, squad);
 			}
 		}
