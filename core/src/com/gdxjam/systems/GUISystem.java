@@ -15,7 +15,9 @@ import com.badlogic.gdx.utils.ObjectIntMap;
 import com.gdxjam.Assets;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.ui.HotkeyTable;
+import com.gdxjam.ui.SquadCommandTable;
 import com.gdxjam.ui.HotkeyTable.HotkeyTableStyle;
+import com.gdxjam.ui.SquadManagmentTable;
 import com.gdxjam.utils.Constants;
 
 public class GUISystem extends EntitySystem implements Disposable {
@@ -23,6 +25,9 @@ public class GUISystem extends EntitySystem implements Disposable {
 	private Stage stage;
 	private Skin skin;
 	private HotkeyTable hotkeyTable, actionTable;
+	private Table squadSidebar;
+	
+	private SquadManagmentTable squadManagment;
 	
 	private final ObjectIntMap<Squad> squadKeyMap = new ObjectIntMap<Squad>(Constants.maxSquads);
 	
@@ -72,6 +77,15 @@ public class GUISystem extends EntitySystem implements Disposable {
 		resourceTable.add(resourceLabel);
 		
 		
+
+		squadManagment = new SquadManagmentTable(skin);
+		
+		Table squadManagmentContainer = new Table();
+		squadManagmentContainer.setFillParent(true);
+		squadManagmentContainer.add(squadManagment).padTop(30);
+		squadManagmentContainer.left().top();
+		stage.addActor(squadManagmentContainer);
+		
 		Table topTable = new Table();
 		topTable.setFillParent(true);
 		topTable.top().right();
@@ -103,10 +117,13 @@ public class GUISystem extends EntitySystem implements Disposable {
 		int keycode = Keys.valueOf(strIndex);
 		hotkeyTable.addHotkey(keycode, strIndex);
 		squadKeyMap.put(squad, keycode);
+	
+		squadManagment.addSquad(squad);
 	}
 
 	public void setSelected(Squad squad) {
 		hotkeyTable.setChecked(squadKeyMap.get(squad, -1));
+		squadManagment.setSelected(squad.index, squad.isSelected());
 	}
 
 	public void resize(int screenWidth, int screenHeight) {
