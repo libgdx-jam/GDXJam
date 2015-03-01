@@ -12,14 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.gdxjam.ai.Squad;
 import com.gdxjam.ai.formation.SquadFormationPattern;
 import com.gdxjam.ai.formation.SquadFormationPattern.PatternType;
-import com.gdxjam.ai.states.TaticalState;
+import com.gdxjam.ai.states.TacticalState;
 
 public class SquadCommandTable extends Table{
 	
 	private final static Color selectedColor = new Color(1.0f, 0.8f, 0.75f, 0.85f);
 	private final static Color defaultColor = new Color(0.7f, 0.7f, 0.7f, 0.85f);
 	
-	private SelectBox<TaticalState> taticalSelect;
+	private SelectBox<TacticalState> tacticalSelect;
 	private SelectBox<PatternType> formationPatternSelect;
 	private final Squad squad;
 	private BitmapFontCache squadText;
@@ -33,8 +33,8 @@ public class SquadCommandTable extends Table{
 		squadText.setMultiLineText("Squad " + (squad.index + 1), 0, 0);
 		squadText.setColor(Color.WHITE);
 		
-		taticalSelect = new SelectBox<TaticalState>(skin);
-		taticalSelect.setItems(TaticalState.values());
+		tacticalSelect = new SelectBox<TacticalState>(skin);
+		tacticalSelect.setItems(TacticalState.values());
 		
 		formationPatternSelect = new SelectBox<PatternType>(skin);
 		formationPatternSelect.setItems(PatternType.values());
@@ -48,7 +48,7 @@ public class SquadCommandTable extends Table{
 			}
 		});
 		
-		add(taticalSelect).pad(5);
+		add(tacticalSelect).pad(5);
 		add(formationPatternSelect);
 	}
 	

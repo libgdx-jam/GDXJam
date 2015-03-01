@@ -64,7 +64,10 @@ public class SquadSystem extends EntitySystem {
 		SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
 
 		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steer, squadMember.getTargetLocation())
-			.setLimiter(new LinearLimiter(3500, 10)).setTimeToTarget(0.1f).setArrivalTolerance(0.001f).setDecelerationRadius(3f);
+			//.setLimiter(new LinearLimiter(100000, 10)) //
+			.setTimeToTarget(0.001f) //
+			.setArrivalTolerance(0.01f) //
+			.setDecelerationRadius(2f);
 		behavior.setBehavior(arriveSB);
 
 		squad.formation.addMember(squadMember);
