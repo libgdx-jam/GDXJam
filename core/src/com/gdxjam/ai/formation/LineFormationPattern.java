@@ -20,7 +20,9 @@ public class LineFormationPattern implements FormationPattern<Vector2> {
 
 	@Override
 	public Location<Vector2> calculateSlotLocation(Location<Vector2> outLocation, int slotNumber) {
-		outLocation.getPosition().set(slotNumber * (memberRadius + memberRadius), 0);
+		float offset = memberRadius * (numberOfSlots - 1);
+		outLocation.getPosition().set(slotNumber * (memberRadius + memberRadius) - offset, 0);
+		outLocation.setOrientation(0);
 		return outLocation;
 	}
 

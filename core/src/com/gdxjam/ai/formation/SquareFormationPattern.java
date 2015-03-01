@@ -25,7 +25,9 @@ public class SquareFormationPattern implements FormationPattern<Vector2>{
 		int x = slotNumber % columns;
 		int y = slotNumber / columns;
 		float memberDiameter = memberRadius + memberRadius;
-		outLocation.getPosition().set(x * memberDiameter, y * memberDiameter);
+		float offset = memberRadius * (columns - 1);
+		outLocation.getPosition().set(x * memberDiameter - offset, y * memberDiameter - offset);
+		outLocation.setOrientation(0);
 		return outLocation;
 	}
 
