@@ -14,7 +14,7 @@ import com.gdxjam.utils.Vector2Utils;
 public class SteerableComponent extends Component implements Steerable<Vector2>, Poolable {
 
 	private float maxLinearSpeed = 8f;
-	private float maxLinearAcceleration = 1000;
+	private float maxLinearAcceleration = 100000;
 
 	private float maxAngluarSpeed = 30;
 	private float maxAngluarAcceleration = 100;

@@ -1,6 +1,6 @@
 package com.gdxjam.ai.states;
 
-public enum TaticalState {
+public enum TacticalState {
 
 	Harvest,
 	Combat;
