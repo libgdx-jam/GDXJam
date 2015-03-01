@@ -8,6 +8,7 @@ public class SquareFormationPattern implements FormationPattern<Vector2>{
 
 	private int numberOfSlots;
 	private float memberRadius;
+	private int columns;
 	
 	public SquareFormationPattern (float memberRadius) {
 		this.memberRadius = memberRadius;
@@ -16,13 +17,15 @@ public class SquareFormationPattern implements FormationPattern<Vector2>{
 	@Override
 	public void setNumberOfSlots (int numberOfSlots) {
 		this.numberOfSlots = numberOfSlots;
+		this.columns = (int)Math.sqrt(numberOfSlots);
 	}
 
 	@Override
 	public Location<Vector2> calculateSlotLocation (Location<Vector2> outLocation, int slotNumber) {
-		int cols = (int)Math.sqrt(numberOfSlots);
-		int x = slotNumber % cols;
-		
+		int x = slotNumber % columns;
+		int y = slotNumber / columns;
+		float memberDiameter = memberRadius + memberRadius;
+		outLocation.getPosition().set(x * memberDiameter, y * memberDiameter);
 		return outLocation;
 	}
 
