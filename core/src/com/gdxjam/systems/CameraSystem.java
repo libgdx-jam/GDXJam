@@ -3,6 +3,7 @@ package com.gdxjam.systems;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -19,9 +20,15 @@ public class CameraSystem extends EntitySystem {
 	private Viewport viewport;
 	private Vector2 target;
 	boolean smooth = false;
+	
+	private float minZoom;
+	private float maxZoom;
+	
+	private float panScalar = 0.25f;
+	private float zoomScalar = 0.25f;
 
 	private Rectangle worldBounds;
-	private boolean dontExceedBounds = true;
+	private boolean clampToBounds = true;
 
 	public CameraSystem(float viewportWidth, float viewportHeight) {
 		camera = new OrthographicCamera(viewportWidth, viewportHeight);
@@ -35,6 +42,9 @@ public class CameraSystem extends EntitySystem {
 
 	public void setWorldBounds(float worldWidth, float worldHeight) {
 		worldBounds = new Rectangle(0, 0, worldWidth, worldHeight);
+		maxZoom = (1.0f / worldWidth) * camera.viewportWidth;
+		minZoom = worldWidth / camera.viewportWidth;
+		updateCameras();
 	}
 
 	public void addParalaxLayer(int layerIndex, float paralaxCoeffeciant) {
@@ -55,7 +65,6 @@ public class CameraSystem extends EntitySystem {
 			camera.position.add(camera.position.cpy().scl(-1)
 					.add(target.x, target.y, 0).scl(0.04f));
 		}
-		camera.update();
 	}
 
 	public OrthographicCamera getCamera() {
@@ -78,31 +87,49 @@ public class CameraSystem extends EntitySystem {
 
 	// Camera Controller Methods
 	public void zoom(float amount) {
+		amount *= (camera.zoom / maxZoom) * zoomScalar;
 		camera.zoom += amount;
+		clamp();
+		updateCameras();
+	}
+	
+	private void updateCameras(){
+		camera.update();
+		
 		for (Entry<ParalaxLayer> entry : paralaxLayers.entries()) {
 			float coeffeciant = entry.value.coeffeciant;
-			entry.value.getCamera().zoom += (amount * coeffeciant);
-			entry.value.getCamera().update();
+			float zoom = 1.0f + (camera.zoom * coeffeciant);
+			float x = ((camera.position.x / worldBounds.width) * camera.viewportWidth * coeffeciant) + (camera.viewportWidth * 0.5f);
+			float y = ((camera.position.y / worldBounds.height) * camera.viewportHeight * coeffeciant) + (camera.viewportHeight * 0.5f);
+			OrthographicCamera camera = entry.value.getCamera();
+			camera.position.set(x, y, 0);
+			camera.zoom = zoom;
+			camera.update();
+			}
+	}
+
+	private void clamp(){
+		if(clampToBounds){
+			camera.zoom = MathUtils.clamp(camera.zoom, maxZoom, minZoom);
+			
+			float xMin = (camera.viewportWidth * camera.zoom * 0.5f);
+			float xMax = worldBounds.width - xMin; 
+			float yMin = (camera.viewportHeight * camera.zoom * 0.5f);
+			float yMax = worldBounds.height - yMin;
+			
+			float x = MathUtils.clamp(camera.position.x, xMin, xMax);
+			float y = MathUtils.clamp(camera.position.y, yMin, yMax);
+			
+			camera.position.set(x, y, 0);
 		}
 	}
 
 	public void translate(float deltaX, float deltaY) {
-		Vector2 camPos = new Vector2(camera.position.x + deltaX,
-				camera.position.y + deltaY);
-		Rectangle camBounds = new Rectangle(camPos.x
-				- (camera.viewportWidth * camera.zoom * 0.5f), camPos.y
-				- (camera.viewportHeight * camera.zoom * 0.5f),
-				camera.viewportWidth * camera.zoom, camera.viewportHeight
-						* camera.zoom);
-		if (worldBounds.contains(camBounds)) {
-			camera.translate(deltaX, deltaY);
-			for (Entry<ParalaxLayer> entry : paralaxLayers.entries()) {
-				float coeffeciant = entry.value.coeffeciant;
-				entry.value.getCamera().translate(deltaX * coeffeciant,
-						deltaY * coeffeciant);
-				entry.value.getCamera().update();
-			}
-		}
+		deltaX *= (camera.zoom / maxZoom) * panScalar;
+		deltaY *= (camera.zoom / maxZoom) * panScalar;
+		camera.translate(deltaX, deltaY);
+		clamp();
+		updateCameras();
 	}
 
 	public void setTarget(Vector2 target) {
