@@ -144,6 +144,13 @@ asteroid
   orig: 90, 83
   offset: 0, 0
   index: 9
+bulletblue
+  rotate: false
+  xy: 1976, 1937
+  size: 67, 101
+  orig: 67, 101
+  offset: 0, 0
+  index: -1
 hotkey
   rotate: false
   xy: 1330, 1436
