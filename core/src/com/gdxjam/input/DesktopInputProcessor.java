@@ -93,15 +93,15 @@ public class DesktopInputProcessor implements InputProcessor {
 		/**
 		 * Squad action groups
 		 */
-		case Keybinds.ACTION0:
-			squadSystem.setState(UnitState.FORMATION);
-			return true;
-		case Keybinds.ACTION1:
-			squadSystem.setState(UnitState.COMBAT);
-			return true;
-		case Keybinds.ACTION2:
-			squadSystem.setState(UnitState.HARVEST);
-			return true;
+//		case Keybinds.ACTION0:
+//			squadSystem.setState(UnitState.FORMATION);
+//			return true;
+//		case Keybinds.ACTION1:
+//			squadSystem.setState(UnitState.COMBAT);
+//			return true;
+//		case Keybinds.ACTION2:
+//			squadSystem.setState(UnitState.HARVEST);
+//			return true;
 		case Keybinds.ACTION3:
 			return true;
 		case Keybinds.ACTION4:

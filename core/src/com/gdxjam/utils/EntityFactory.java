@@ -77,15 +77,26 @@ public class EntityFactory {
 				.circleCollider(unitRadius)
 				.damping(1, 0)
 				.steerable()
+				.steeringBehavior()
 				.health(100)
 				.faction(faction)
 				.sprite(faction == Faction.Player ? Assets.spacecraft.ship : Assets.spacecraft.enemy, unitRadius * 2, unitRadius * 2)
 				.getWithoutAdding();
 
-		entity.add(engine.createComponent(SteeringBehaviorComponent.class));
 		entity.add(engine.createComponent(StateMachineComponent.class).init(entity));
 
 		engine.addEntity(entity);
+		return entity;
+	}
+	
+	public static Entity createSquad(Vector2 position, Faction faction){
+		Entity entity = buildEntity(position)
+			.physicsBody(BodyType.DynamicBody)
+			.circleSensor(0.01f)
+			.steerable()
+			.faction(faction)
+			.steeringBehavior()
+			.addToEngine();
 		return entity;
 	}
 
@@ -96,7 +107,6 @@ public class EntityFactory {
 		entity.add(engine.createComponent(ParalaxComponent.class).init(
 				position.x, position.y, width, height, layer));
 
-		// TODO add paralaxComponent to be processed by the paralaxSystem
 		engine.addEntity(entity);
 		return entity;
 	}
@@ -153,6 +163,18 @@ public class EntityFactory {
 			return this;
 		}
 		
+		public EntityBuilder stateMachine(){
+			StateMachineComponent stateMachineComp = engine.createComponent(StateMachineComponent.class);
+			entity.add(stateMachineComp);
+			return this;
+		}
+		
+		public EntityBuilder steeringBehavior(){
+			SteeringBehaviorComponent behaviorComp = engine.createComponent(SteeringBehaviorComponent.class);
+			entity.add(behaviorComp);
+			return this;
+		}
+		
 		public EntityBuilder resource(int amount){
 			ResourceComponent resourceComp = engine.createComponent(ResourceComponent.class);
 			resourceComp.amount = amount;
@@ -190,6 +212,23 @@ public class EntityFactory {
 			}
 
 			physics.body.createFixture(shape, 1.0f);
+			return this;
+		}
+		
+		public EntityBuilder circleSensor(float radius) {
+			CircleShape shape = new CircleShape();
+			shape.setRadius(radius);
+			
+			PhysicsComponent physics = Components.PHYSICS.get(entity);
+			if (physics == null) {
+				physicsBody(DEFAULT_BODY);
+			}
+			
+			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.isSensor = true;
+			fixtureDef.shape = shape;
+
+			physics.body.createFixture(fixtureDef);
 			return this;
 		}
 

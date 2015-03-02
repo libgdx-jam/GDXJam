@@ -21,6 +21,7 @@ public class SquadSteerable implements Steerable<Vector2>{
 	private Vector2 maxLinearVelocity;
 	private Vector2 linearVelocity;
 	private float angularVelocity;
+	private boolean tagged = false;
 	
 	private Location2 location;
 
@@ -103,26 +104,22 @@ public class SquadSteerable implements Steerable<Vector2>{
 
 	@Override
 	public float getAngularVelocity () {
-		// TODO Auto-generated method stub
-		return 0;
+		return angularVelocity;
 	}
 
 	@Override
 	public float getBoundingRadius () {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public boolean isTagged () {
-		// TODO Auto-generated method stub
-		return false;
+		return tagged;
 	}
 
 	@Override
 	public void setTagged (boolean tagged) {
-		// TODO Auto-generated method stub
-		
+		this.tagged = tagged;
 	}
 
 }

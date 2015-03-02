@@ -20,6 +20,8 @@ public class Components {
 
 	public static final ComponentMapper<SquadMemberComponent> SQUAD_MEMBER = ComponentMapper
 			.getFor(SquadMemberComponent.class);
+	
+	public static final ComponentMapper<SquadComponent> SQUAD = ComponentMapper.getFor(SquadComponent.class);
 
 	// AI
 	public static final ComponentMapper<SteeringBehaviorComponent> STEERING_BEHAVIOR = ComponentMapper
