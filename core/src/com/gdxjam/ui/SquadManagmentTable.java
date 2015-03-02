@@ -22,7 +22,10 @@ public class SquadManagmentTable extends Table {
 		squadTables.put(squad.index, squadTable);
 		
 		add(squadTable).pad(2);
-		row();
+	}
+	
+	public void updateSquadTable(Squad squad){
+		squadTables.get(squad.index).update();
 	}
 
 	
