@@ -17,8 +17,8 @@ import com.gdxjam.utils.Constants;
 
 public class SquadCommandTable extends Table{
 	
-	private final static Color selectedColor = new Color(1.0f, 0.8f, 0.75f, 0.85f);
-	private final static Color defaultColor = new Color(0.7f, 0.7f, 0.7f, 0.85f);
+	private final static Color selectedColor = new Color(240.0f / 255.0f, 230.0f / 255.0f, 140.0f / 255.0f, 0.85f);
+	private final static Color defaultColor = new Color(0.66f, 0.66f, 0.66f, 0.85f);
 	
 	private SelectBox<UnitState> unitState;
 	private SelectBox<PatternType> formationPatternSelect;

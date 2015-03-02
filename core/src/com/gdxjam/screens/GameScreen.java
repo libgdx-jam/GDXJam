@@ -6,16 +6,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.gdxjam.Assets;
 import com.gdxjam.EntityManager;
 import com.gdxjam.GameManager;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.GUISystem;
-import com.gdxjam.systems.SquadSystem;
-import com.gdxjam.utils.Constants;
-import com.gdxjam.utils.EntityFactory;
 import com.gdxjam.utils.WorldGenerator;
 
 public class GameScreen extends AbstractScreen {
