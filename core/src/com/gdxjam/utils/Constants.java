@@ -4,8 +4,8 @@ public class Constants {
 
 	public static boolean pausedGUI = false;
 
-	// Time
 	public static final int maxSquads = 5;
+	public static final int maxSquadMembers = 20;
 
 	public static final float unitRadius = 0.5f;
 	public static float mothershipRadius = 4f;

@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.gdxjam.components.Components;
@@ -49,7 +50,7 @@ public class SteeringSystem extends IteratingSystem{
 		else {
 			// If we haven't got any velocity, then we can do nothing.
 			Vector2 linVel = body.getLinearVelocity();
-			if (!linVel.isZero(0.1f)) {
+			if (!linVel.isZero(MathUtils.FLOAT_ROUNDING_ERROR)) {
 				float newOrientation = steerable.vectorToAngle(linVel);
 				body.setAngularVelocity((newOrientation - steerable.getAngularVelocity()) * deltaTime); // this is superfluous if independentFacing is always true
 				body.setTransform(body.getPosition(), newOrientation);

@@ -13,7 +13,7 @@ public class Assets implements Disposable {
 
 	public static final String TAG = Assets.class.getSimpleName();
 
-	public static boolean rebuildAtlas = true;
+	public static boolean rebuildAtlas = false;
 	public static boolean drawDebugOutline = false;
 
 	public static AssetManager manager;
@@ -59,10 +59,12 @@ public class Assets implements Disposable {
 	public static class AssetSpacecraft {
 		public final AtlasRegion outpost;
 		public final AtlasRegion ship;
+		public final AtlasRegion enemy;
 
 		public AssetSpacecraft(TextureAtlas atlas) {
 			outpost = atlas.findRegion("outpost");
 			ship = atlas.findRegion("ship");
+			enemy = atlas.findRegion("enemy");
 		}
 	}
 
