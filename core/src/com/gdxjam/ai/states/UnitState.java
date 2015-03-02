@@ -63,7 +63,6 @@ public enum UnitState implements State<Entity> {
 //    		 behavior.setBehavior(arrive);
    	 }
    	 
-   	 @SuppressWarnings("unchecked")
 		public void update(Entity entity){
    		 UnitComponent unit = Components.UNIT.get(entity);
    		 
@@ -74,11 +73,10 @@ public enum UnitState implements State<Entity> {
       		 SteerableComponent steerable = Components.STEERABLE.get(entity);
       		 SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
 
-      		 Arrive arrive = (Arrive) behavior.getBehavior();
-      		 Vector2 distance = steerable.getBody().getPosition();
-      		 distance.sub((Vector2) arrive.getTarget().getPosition());
-      		 
-      		 if(distance.len2() < 1.5f){
+      		 Arrive<Vector2> arrive = (Arrive<Vector2>) behavior.getBehavior();
+      		 Vector2 targetPosition = arrive.getTarget().getPosition();
+
+      		 if(steerable.getPosition().dst2(targetPosition) < 1.5f){
       			 if(Components.HEALTH.has(unit.target)){
       				 HealthComponent health = Components.HEALTH.get(unit.target);
          			 health.value -= 1;

@@ -15,13 +15,13 @@ public class SteerableComponent extends Component implements Steerable<Vector2>,
 
 	private static final float MAX_LINEAR_SPEED = 8f;
 	private static final float MAX_LINEAR_ACCELERATION = 100000;
-	private static final float MAX_ANGULAR_SPEED = 30;
-	private static final float MAX_ANGULAR_AACCELERATION = 100;
+	private static final float MAX_ANGULAR_SPEED = 5;
+	private static final float MAX_ANGULAR_ACCELERATION = 100;
 
 	private float maxLinearSpeed = MAX_LINEAR_SPEED;
 	private float maxLinearAcceleration = MAX_LINEAR_ACCELERATION;
 	private float maxAngluarSpeed = MAX_ANGULAR_SPEED;
-	private float maxAngluarAcceleration = MAX_ANGULAR_AACCELERATION;
+	private float maxAngluarAcceleration = MAX_ANGULAR_ACCELERATION;
 	private boolean independentFacing = false;
 
 	private boolean tagged = false;
@@ -146,7 +146,7 @@ public class SteerableComponent extends Component implements Steerable<Vector2>,
 		maxLinearAcceleration = MAX_LINEAR_ACCELERATION;
 
 		maxAngluarSpeed = MAX_ANGULAR_SPEED;
-		maxAngluarAcceleration = MAX_ANGULAR_AACCELERATION;
+		maxAngluarAcceleration = MAX_ANGULAR_ACCELERATION;
 		independentFacing = false;
 
 		tagged = false;
