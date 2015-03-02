@@ -111,10 +111,14 @@ public class Assets implements Disposable {
 
 	public static class AssetBullets {
 		public final AtlasRegion blue;
+		public final AtlasRegion red;
+		public final AtlasRegion yellow;
 		public final Array<AtlasRegion> bullets;
 
 		public AssetBullets(TextureAtlas atlas) {
 			blue = atlas.findRegion("bulletblue");
+			red = atlas.findRegion("bulletred");
+			yellow = atlas.findRegion("bulletyellow");
 			bullets = atlas.findRegions("bullet");
 		}
 	}
