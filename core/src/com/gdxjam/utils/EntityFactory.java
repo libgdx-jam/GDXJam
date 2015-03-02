@@ -41,24 +41,24 @@ import com.gdxjam.systems.PhysicsSystem;
 
 public class EntityFactory {
 
-	private static final String TAG = "[" + EntityFactory.class.getSimpleName()
-			+ "]";
+	private static final String TAG = "[" + EntityFactory.class.getSimpleName() + "]";
 
 	private static PooledEngine engine;
 	private static PhysicsSystem physicsSystem;
-
-	private static float mothershipRadius = Constants.mothershipRadius;
-	private static float unitRadius = Constants.unitRadius;
+	private static EntityBuilder entityBuilder;
 
 	public static EntityBuilder buildEntity(Vector2 position) {
-		return new EntityBuilder(position);
+		if(entityBuilder == null){
+			entityBuilder = new EntityBuilder();
+		}
+		return entityBuilder.reset(position);
 	}
 
 	public static Entity createMothership(Vector2 position) {
 		Entity entity = buildEntity(position)
 				.physicsBody(BodyType.StaticBody)
-				.circleCollider(mothershipRadius)
-				.sprite(Assets.spacecraft.outpost, mothershipRadius * 2, mothershipRadius * 2)
+				.circleCollider(Constants.mothershipRadius)
+				.sprite(Assets.spacecraft.outpost, Constants.mothershipRadius * 2, Constants.mothershipRadius * 2)
 				.health(1000)
 				.addToEngine();
 		return entity;
@@ -78,13 +78,13 @@ public class EntityFactory {
 	public static Entity createUnit(Vector2 position, Faction faction) {
 		Entity entity = buildEntity(position)
 			   .physicsBody(BodyType.DynamicBody)
-				.circleCollider(unitRadius)
+				.circleCollider(Constants.unitRadius)
 				.damping(1, 0)
 				.steerable()
 				.steeringBehavior()
 				.health(100)
 				.faction(faction)
-				.sprite(faction == Faction.Player ? Assets.spacecraft.ship : Assets.spacecraft.enemy, unitRadius * 2, unitRadius * 2)
+				.sprite(faction == Faction.Player ? Assets.spacecraft.ship : Assets.spacecraft.enemy, Constants.unitRadius * 2, Constants.unitRadius * 2)
 				.getWithoutAdding();
 
 		entity.add(engine.createComponent(StateMachineComponent.class).init(entity));
@@ -168,9 +168,10 @@ public class EntityFactory {
 		public Vector2 position;
 		public Entity entity;
 
-		public EntityBuilder(Vector2 position) {
+		public EntityBuilder reset(Vector2 position){
 			this.position = position;
 			entity = engine.createEntity();
+			return this;
 		}
 
 		public EntityBuilder physicsBody(BodyType type) {
