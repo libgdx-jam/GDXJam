@@ -14,7 +14,8 @@ public class SquadFormationPattern {
 		Line,
 		Square,
 		Ring,
-		V;
+		V,
+		Wedge;
 	}
 	
 	public static ObjectMap<PatternType, FormationPattern<Vector2>> patterns;
@@ -27,6 +28,7 @@ public class SquadFormationPattern {
 		patterns.put(PatternType.Square, new SquareFormationPattern(Constants.unitRadius * 1.25f));
 		patterns.put(PatternType.Ring, new DefensiveCircleFormationPattern<Vector2>(Constants.unitRadius * 1.25f));
 		patterns.put(PatternType.V, new VFormationPattern(30 * MathUtils.degreesToRadians, Constants.unitRadius * 1.25f));
+		patterns.put(PatternType.Wedge, new WedgeFormationPattern(Constants.unitRadius * 1.25f));
 	}
 	
 }
