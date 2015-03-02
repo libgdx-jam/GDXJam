@@ -1,4 +1,3 @@
-
 package com.gdxjam;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -19,7 +18,7 @@ public class Assets implements Disposable {
 
 	public static AssetManager manager;
 
-	public static AssetManager getManager () {
+	public static AssetManager getManager() {
 		if (manager == null) {
 			manager = new AssetManager();
 		}
@@ -33,17 +32,19 @@ public class Assets implements Disposable {
 	public static AssetFonts fonts;
 	public static AssetSpace space;
 	public static AssetSpacecraft spacecraft;
+	public static AssetBullets bullets;
 	public static Skin skin;
 
-	public static void load () {
+	public static void load() {
 		getManager(); // Insure the manager exists
 		manager.load(TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
 		manager.load(SKIN, Skin.class);
 	}
 
-	public static void create () {
+	public static void create() {
 		TextureAtlas atlas = manager.get(TEXTURE_ATLAS_OBJECTS);
 		skin = manager.get(SKIN);
+		bullets = new AssetBullets(atlas);
 		hotkey = new AssetHotkey(atlas);
 		fonts = new AssetFonts();
 		space = new AssetSpace(atlas);
@@ -51,7 +52,7 @@ public class Assets implements Disposable {
 	}
 
 	@Override
-	public void dispose () {
+	public void dispose() {
 		manager.dispose();
 	}
 
@@ -59,9 +60,7 @@ public class Assets implements Disposable {
 		public final AtlasRegion outpost;
 		public final AtlasRegion ship;
 
-		// public final AtlasRegion ship;
-
-		public AssetSpacecraft (TextureAtlas atlas) {
+		public AssetSpacecraft(TextureAtlas atlas) {
 			outpost = atlas.findRegion("outpost");
 			ship = atlas.findRegion("ship");
 		}
@@ -73,7 +72,7 @@ public class Assets implements Disposable {
 		public final BitmapFont medium;
 		public final BitmapFont large;
 
-		public AssetFonts () {
+		public AssetFonts() {
 			small = skin.getFont("default-font");
 			medium = skin.getFont("default-font");
 			large = skin.getFont("default-font");
@@ -87,7 +86,7 @@ public class Assets implements Disposable {
 		public final Array<AtlasRegion> planets;
 		public final Array<AtlasRegion> asteroids;
 
-		public AssetSpace (TextureAtlas atlas) {
+		public AssetSpace(TextureAtlas atlas) {
 			background = atlas.findRegion("space");
 
 			planets = atlas.findRegions("planet");
@@ -101,7 +100,7 @@ public class Assets implements Disposable {
 		public AtlasRegion middle;
 		public AtlasRegion right;
 
-		public AssetHotkey (TextureAtlas atlas) {
+		public AssetHotkey(TextureAtlas atlas) {
 			left = atlas.findRegion("hotkeyleft");
 			button = atlas.createPatch("hotkey");
 			right = atlas.findRegion("hotkeyright");
@@ -110,4 +109,17 @@ public class Assets implements Disposable {
 		}
 	}
 
+	public static class AssetBullets {
+		public final AtlasRegion blue;
+		public final AtlasRegion red;
+		public final AtlasRegion yellow;
+		public final Array<AtlasRegion> bullets;
+
+		public AssetBullets(TextureAtlas atlas) {
+			blue = atlas.findRegion("bulletblue");
+			red = atlas.findRegion("bulletred");
+			yellow = atlas.findRegion("bulletyellow");
+			bullets = atlas.findRegions("bullet");
+		}
+	}
 }

@@ -132,18 +132,39 @@ asteroid
   index: 7
 asteroid
   rotate: false
-  xy: 1191, 703
+  xy: 1805, 876
   size: 93, 90
   orig: 93, 90
   offset: 0, 0
   index: 0
 asteroid
   rotate: false
-  xy: 1926, 1582
+  xy: 1900, 883
   size: 90, 83
   orig: 90, 83
   offset: 0, 0
   index: 9
+bulletblue
+  rotate: false
+  xy: 1754, 987
+  size: 49, 83
+  orig: 49, 83
+  offset: 0, 0
+  index: -1
+bulletred
+  rotate: false
+  xy: 1754, 902
+  size: 49, 83
+  orig: 49, 83
+  offset: 0, 0
+  index: -1
+bulletyellow
+  rotate: false
+  xy: 1976, 1955
+  size: 49, 83
+  orig: 49, 83
+  offset: 0, 0
+  index: -1
 hotkey
   rotate: false
   xy: 1330, 1436

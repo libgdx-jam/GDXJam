@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Array;
 import com.gdxjam.Assets;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
@@ -58,7 +59,8 @@ public class EntityFactory {
 
 	public static Entity createAsteroid(Vector2 position, float radius) {
 		Entity entity = buildEntity(position)
-				.physicsBody(BodyType.KinematicBody).circleCollider(radius)
+				.physicsBody(BodyType.KinematicBody)
+				.circleCollider(radius)
 				.health(50)
 				.sprite(Assets.space.asteroids.random(), radius * 2, radius * 2)
 				.addToEngine();
@@ -82,10 +84,10 @@ public class EntityFactory {
 
 	public static Entity createBackgroundArt(Vector2 position, float width,
 			float height, TextureRegion region, int layer) {
-		Entity entity = buildEntity(position)
-			.sprite(region, width, height)
-			.getWithoutAdding();
-		entity.add(engine.createComponent(ParalaxComponent.class).init(position.x, position.y, width, height, layer));
+		Entity entity = buildEntity(position).sprite(region, width, height)
+				.getWithoutAdding();
+		entity.add(engine.createComponent(ParalaxComponent.class).init(
+				position.x, position.y, width, height, layer));
 
 		// TODO add paralaxComponent to be processed by the paralaxSystem
 		engine.addEntity(entity);
@@ -230,7 +232,6 @@ public class EntityFactory {
 			entity.add(spriteComp);
 			return this;
 		}
-		
 
 		public Entity addToEngine() {
 			engine.addEntity(entity);
@@ -239,6 +240,36 @@ public class EntityFactory {
 
 		public Entity getWithoutAdding() {
 			return entity;
+		}
+
+	}
+
+	public static void createBackground() {
+		createBackground(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT,
+				10);
+	}
+
+	public static void createBackground(float width, float height, int planets) {
+		createBackgroundArt(new Vector2(0, 0), width, height,
+				Assets.space.background, 0);
+		Array<Entity> smallPlanets = new Array<Entity>();
+		float radius;
+		float maxRadius = 10;
+		for (int x = 0; x < planets; x++) {
+			radius = maxRadius * MathUtils.random();
+			Entity e = EntityFactory.createBackgroundArt(new Vector2(width
+					* MathUtils.random(), height * MathUtils.random()), radius,
+					radius, Assets.space.planets.random(),
+					(radius > maxRadius / 2) ? 1 : 2);
+			if (!(radius > maxRadius / 2)) {
+				smallPlanets.add(e);
+			} else {
+				engine.addEntity(e);
+			}
+		}
+
+		for (Entity e : smallPlanets) {
+			engine.addEntity(e);
 		}
 
 	}
