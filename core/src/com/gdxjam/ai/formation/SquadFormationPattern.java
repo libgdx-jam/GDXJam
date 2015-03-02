@@ -17,18 +17,20 @@ public class SquadFormationPattern {
 		V,
 		Wedge;
 	}
-	
+
+	private static float UNIT_RADIUS = Constants.unitRadius * 1.25f;
+
 	public static ObjectMap<PatternType, FormationPattern<Vector2>> patterns;
 	public static final PatternType defaultPattern = PatternType.Ring;
 	public static final SlotCostProvider<Vector2> costProvider = new DistanceSlotCostProvider();
 
 	public static void initPatterns(){
 		patterns = new ObjectMap<PatternType, FormationPattern<Vector2>>();
-		patterns.put(PatternType.Line, new LineFormationPattern(Constants.unitRadius * 1.25f));
-		patterns.put(PatternType.Square, new SquareFormationPattern(Constants.unitRadius * 1.25f));
-		patterns.put(PatternType.Ring, new DefensiveCircleFormationPattern<Vector2>(Constants.unitRadius * 1.25f));
-		patterns.put(PatternType.V, new VFormationPattern(30 * MathUtils.degreesToRadians, Constants.unitRadius * 1.25f));
-		patterns.put(PatternType.Wedge, new WedgeFormationPattern(Constants.unitRadius * 1.25f));
+		patterns.put(PatternType.Line, new LineFormationPattern(UNIT_RADIUS));
+		patterns.put(PatternType.Square, new SquareFormationPattern(UNIT_RADIUS));
+		patterns.put(PatternType.Ring, new DefensiveCircleFormationPattern<Vector2>(UNIT_RADIUS));
+		patterns.put(PatternType.V, new VFormationPattern(40 * MathUtils.degreesToRadians, UNIT_RADIUS));
+		patterns.put(PatternType.Wedge, new WedgeFormationPattern(UNIT_RADIUS));
 	}
 	
 }

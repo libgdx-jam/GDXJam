@@ -5,7 +5,11 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
+import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
+import com.badlogic.gdx.ai.steer.behaviors.LookWhereYouAreGoing;
+import com.badlogic.gdx.ai.steer.limiters.NullLimiter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -105,14 +109,30 @@ public class EntityFactory {
 		SteerableComponent steerable = engine.createComponent(SteerableComponent.class).init(Components.PHYSICS.get(entity).body);
 		SquadComponent squadComp = engine.createComponent(SquadComponent.class).init(steerable);
 		squadComp.targetLocation.getPosition().set(position);
+
+		// A good rule of thumb is to make the maximum speed of the formation
+		// around half that of the members.
+		steerable.setMaxLinearSpeed(SteerableComponent.MAX_LINEAR_SPEED / 2);
 		
 		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable)
 			.setTarget(squadComp.targetLocation)
 			.setTimeToTarget(0.001f)
-			.setDecelerationRadius(1.5f)
-			.setArrivalTolerance(0.1f);
+			.setDecelerationRadius(2f)
+			.setArrivalTolerance(0.001f);
+		SteeringBehavior<Vector2> sb = arriveSB;
+		if (steerable.isIndependentFacing()) {
+			LookWhereYouAreGoing<Vector2> lookWhereYouAreGoingSB = new LookWhereYouAreGoing<Vector2>(steerable) //
+				.setTimeToTarget(0.1f) //
+				.setAlignTolerance(0.001f) //
+				.setDecelerationRadius(MathUtils.PI);
+			BlendedSteering<Vector2> blendedSteering = new BlendedSteering<Vector2>(steerable) //
+				.setLimiter(NullLimiter.NEUTRAL_LIMITER) //
+				.add(arriveSB, 1f) //
+				.add(lookWhereYouAreGoingSB, 1f);
+			sb = blendedSteering;
+		}
 		
-		Components.STEERING_BEHAVIOR.get(entity).setBehavior(arriveSB);
+		Components.STEERING_BEHAVIOR.get(entity).setBehavior(sb);
 
 		entity.add(squadComp);
 		entity.add(steerable);
