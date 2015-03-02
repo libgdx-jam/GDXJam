@@ -5,15 +5,13 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
-import com.badlogic.gdx.ai.steer.behaviors.RaycastObstacleAvoidance;
-import com.badlogic.gdx.ai.steer.utils.RayConfiguration;
-import com.badlogic.gdx.ai.utils.Ray;
+import com.badlogic.gdx.ai.steer.behaviors.ReachOrientation;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
-import com.gdxjam.utils.Constants;
 
 public enum UnitState implements State<Entity> {
 
@@ -30,6 +28,11 @@ public enum UnitState implements State<Entity> {
 				.setTimeToTarget(0.001f)
 				.setArrivalTolerance(0.01f)
 				.setDecelerationRadius(2f);
+
+			ReachOrientation<Vector2> reachOrientationSB = new ReachOrientation<Vector2>(steerable, squadMember.getTargetLocation()) //
+				.setTimeToTarget(0.001f) //
+				.setAlignTolerance(0.001f) //
+				.setDecelerationRadius(MathUtils.PI);
 			
 //			RaycastObstacleAvoidance<Vector2> raycastSB = new RaycastObstacleAvoidance<Vector2>(steerable)
 //				.setRayConfiguration(new RayConfiguration<Vector2>() {
@@ -45,6 +48,8 @@ public enum UnitState implements State<Entity> {
 			BlendedSteering<Vector2> blendSB = new BlendedSteering<Vector2>(steerable);
 //			blendSB.add(raycastSB, 1000);
 			blendSB.add(arriveSB, 1.0f);
+			if (steerable.isIndependentFacing())
+				blendSB.add(reachOrientationSB, 1.0f);
 			behavior.setBehavior(blendSB);
 		}
 		
