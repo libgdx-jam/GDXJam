@@ -10,6 +10,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Disposable;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.FactionComponent;
+import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.RemovalComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.systems.CameraSystem;
@@ -40,7 +42,9 @@ public class EntityManager extends PooledEngine implements Disposable {
 			
 			@Override
 			public void entityAdded (Entity entity) {
-				getSystem(GUISystem.class).addSquad(Components.SQUAD.get(entity));
+				FactionComponent factionComp = Components.FACTION.get(entity);
+				if(factionComp.faction == Faction.Player)
+					getSystem(GUISystem.class).addSquad(Components.SQUAD.get(entity));
 			}
 		});
 	}
@@ -76,7 +80,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 	@Override
 	public void update (float deltaTime) {
 		super.update(deltaTime);
-//		getSystem(PhysicsSystem.class).drawDebug();
+		getSystem(PhysicsSystem.class).drawDebug();
 		for (Entity entity : getEntitiesFor(Family.all(RemovalComponent.class).get())) {
 			removeEntity(entity);
 		}

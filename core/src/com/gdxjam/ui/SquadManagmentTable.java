@@ -17,15 +17,15 @@ public class SquadManagmentTable extends Table {
 
 	}
 
-	public void addSquad (SquadComponent squad) {
-		SquadCommandTable squadTable = new SquadCommandTable(squad, skin);
-		squadTables.put(squad.index, squadTable);
+	public void addSquad (SquadComponent squad, int index) {
+		SquadCommandTable squadTable = new SquadCommandTable(squad, index, skin);
+		squadTables.put(index, squadTable);
 		
 		add(squadTable).pad(2);
 	}
 	
-	public void updateSquadTable(SquadComponent squad){
-		squadTables.get(squad.index).update();
+	public void updateSquadTable(int index){
+		squadTables.get(index).update();
 	}
 
 	
