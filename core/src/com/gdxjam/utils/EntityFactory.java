@@ -13,9 +13,11 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape.Type;
 import com.gdxjam.Assets;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
@@ -116,6 +118,18 @@ public class EntityFactory {
 		entity.add(squadComp);
 		entity.add(steerable);
 		
+		engine.addEntity(entity);
+		return entity;
+	}
+	
+	public static Entity createBoundry(Vector2 start, Vector2 end){
+		Entity entity = buildEntity(new Vector2(0, 0))
+			.physicsBody(BodyType.StaticBody)
+			.getWithoutAdding();
+		EdgeShape edge = new EdgeShape();
+		edge.set(start, end);
+		
+		Components.PHYSICS.get(entity).body.createFixture(edge, 1.0f);
 		engine.addEntity(entity);
 		return entity;
 	}
