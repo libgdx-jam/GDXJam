@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.gdxjam.ai.Squad;
 import com.gdxjam.ai.formation.SquadFormationPattern;
 import com.gdxjam.ai.formation.SquadFormationPattern.PatternType;
 import com.gdxjam.ai.states.UnitState;
+import com.gdxjam.components.SquadComponent;
 import com.gdxjam.utils.Constants;
 
 public class SquadCommandTable extends Table{
@@ -22,11 +22,11 @@ public class SquadCommandTable extends Table{
 	
 	private SelectBox<UnitState> unitState;
 	private SelectBox<PatternType> formationPatternSelect;
-	private final Squad squad;
+	private final SquadComponent squad;
 	private BitmapFontCache squadText;
 	
 
-	public SquadCommandTable(final Squad squad, Skin skin){
+	public SquadCommandTable(final SquadComponent squad, Skin skin){
 		this.squad = squad;
 		setBackground(skin.getDrawable("default-window"));
 		setColor(defaultColor);
@@ -42,7 +42,7 @@ public class SquadCommandTable extends Table{
 			
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
-				squad.setMemberState(unitState.getSelected());
+				squad.setState(unitState.getSelected());
 			}
 		});
 		

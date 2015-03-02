@@ -4,7 +4,7 @@ package com.gdxjam.ui;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.IntMap;
-import com.gdxjam.ai.Squad;
+import com.gdxjam.components.SquadComponent;
 
 public class SquadManagmentTable extends Table {
 
@@ -17,14 +17,14 @@ public class SquadManagmentTable extends Table {
 
 	}
 
-	public void addSquad (Squad squad) {
+	public void addSquad (SquadComponent squad) {
 		SquadCommandTable squadTable = new SquadCommandTable(squad, skin);
 		squadTables.put(squad.index, squadTable);
 		
 		add(squadTable).pad(2);
 	}
 	
-	public void updateSquadTable(Squad squad){
+	public void updateSquadTable(SquadComponent squad){
 		squadTables.get(squad.index).update();
 	}
 
