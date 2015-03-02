@@ -109,6 +109,10 @@ public class EntityFactory {
 		SteerableComponent steerable = engine.createComponent(SteerableComponent.class).init(Components.PHYSICS.get(entity).body);
 		SquadComponent squadComp = engine.createComponent(SquadComponent.class).init(steerable);
 		squadComp.targetLocation.getPosition().set(position);
+
+		// A good rule of thumb is to make the maximum speed of the formation
+		// around half that of the members.
+		steerable.setMaxLinearSpeed(SteerableComponent.MAX_LINEAR_SPEED / 2);
 		
 		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable)
 			.setTarget(squadComp.targetLocation)

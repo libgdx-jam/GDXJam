@@ -33,8 +33,8 @@ public class VFormationPattern implements FormationPattern<Vector2> {
 
 	public void setAngle(float angle) {
 		this.angle = angle;
-		Vector2Utils.angleToVector(leftBorder, angle);
-		Vector2Utils.angleToVector(rightBorder, -angle);
+		Vector2Utils.angleToVector(leftBorder, angle).scl(-1);
+		Vector2Utils.angleToVector(rightBorder, -angle).scl(-1);
 	}
 
 	@Override
