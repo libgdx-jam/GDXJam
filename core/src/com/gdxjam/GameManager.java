@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.gdxjam.screens.AbstractScreen;
 import com.gdxjam.utils.EntityFactory;
+import com.gdxjam.utils.EntityUtils;
 
 public class GameManager {
 	private static final String TAG = "[" + GameManager.class.getSimpleName() + "]";
@@ -26,6 +27,7 @@ public class GameManager {
 		
 		engine = new EntityManager();
 		EntityFactory.setEngine(engine);
+		EntityUtils.setEngine(engine);
 		return engine;
 	}
 	

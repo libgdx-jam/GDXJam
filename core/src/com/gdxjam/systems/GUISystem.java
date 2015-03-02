@@ -8,11 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.ObjectIntMap;
 import com.gdxjam.Assets;
-import com.gdxjam.ai.Squad;
+import com.gdxjam.components.SquadComponent;
 import com.gdxjam.ui.SquadManagmentTable;
-import com.gdxjam.utils.Constants;
 
 public class GUISystem extends EntitySystem implements Disposable {
 
@@ -21,9 +19,6 @@ public class GUISystem extends EntitySystem implements Disposable {
 	private Table squadSidebar;
 	
 	private SquadManagmentTable squadManagment;
-	
-	private final ObjectIntMap<Squad> squadKeyMap = new ObjectIntMap<Squad>(Constants.maxSquads);
-	
 	private Label resourceLabel;
 
 	public GUISystem() {
@@ -65,19 +60,18 @@ public class GUISystem extends EntitySystem implements Disposable {
 		super.addedToEngine(engine);
 	}
 	
-	public void addSquad(Squad squad) {
+	public void addSquad(SquadComponent squad) {
 		String strIndex = String.valueOf(squad.index + 1);
 		int keycode = Keys.valueOf(strIndex);
-		squadKeyMap.put(squad, keycode);
 	
 		squadManagment.addSquad(squad);
 	}
 	
-	public void updateSquad(Squad squad){
+	public void updateSquad(SquadComponent squad){
 		squadManagment.updateSquadTable(squad);
 	}
 
-	public void setSelected(Squad squad) {
+	public void setSelected(SquadComponent squad) {
 		squadManagment.setSelected(squad.index, squad.isSelected());
 	}
 
