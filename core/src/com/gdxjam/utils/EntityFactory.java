@@ -16,7 +16,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.utils.Array;
 import com.gdxjam.Assets;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
@@ -108,9 +107,9 @@ public class EntityFactory {
 		
 		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable)
 			.setTarget(squadComp.targetLocation)
-			.setTimeToTarget(0.01f)
+			.setTimeToTarget(0.001f)
 			.setDecelerationRadius(1.5f)
-			.setArrivalTolerance(0.5f);
+			.setArrivalTolerance(0.1f);
 		
 		Components.STEERING_BEHAVIOR.get(entity).setBehavior(arriveSB);
 
@@ -125,6 +124,7 @@ public class EntityFactory {
 			float height, TextureRegion region, int layer) {
 		Entity entity = buildEntity(position).sprite(region, width, height)
 				.getWithoutAdding();
+		
 		entity.add(engine.createComponent(ParalaxComponent.class).init(
 				position.x, position.y, width, height, layer));
 
@@ -339,33 +339,4 @@ public class EntityFactory {
 
 	}
 
-	public static void createBackground() {
-		createBackground(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT,
-				10);
-	}
-
-	public static void createBackground(float width, float height, int planets) {
-		createBackgroundArt(new Vector2(0, 0), width, height,
-				Assets.space.background, 0);
-		Array<Entity> smallPlanets = new Array<Entity>();
-		float radius;
-		float maxRadius = 10;
-		for (int x = 0; x < planets; x++) {
-			radius = maxRadius * MathUtils.random();
-			Entity e = EntityFactory.createBackgroundArt(new Vector2(width
-					* MathUtils.random(), height * MathUtils.random()), radius,
-					radius, Assets.space.planets.random(),
-					(radius > maxRadius / 2) ? 1 : 2);
-			if (!(radius > maxRadius / 2)) {
-				smallPlanets.add(e);
-			} else {
-				engine.addEntity(e);
-			}
-		}
-
-		for (Entity e : smallPlanets) {
-			engine.addEntity(e);
-		}
-
-	}
 }

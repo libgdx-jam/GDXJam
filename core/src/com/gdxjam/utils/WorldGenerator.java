@@ -6,6 +6,7 @@ import java.util.Random;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.gdxjam.Assets;
 import com.gdxjam.components.FactionComponent.Faction;
 
 /** @author Torin Wiebelt (Twiebs) Generates world bounds Generates the game world by creating an asteroid field using fBm applied
@@ -27,7 +28,7 @@ public class WorldGenerator {
 
 	public WorldGenerator (int width, int height, long seed, WorldGeneratorParameter param) {
 		this.width = width;
-		this.height = height;
+		this.height = height + 1;	//Plus one hides missing band at the top of the world
 		radius = width * 0.5f;
 		noise = new OpenSimplexNoise(seed);
 		rng = new Random(seed);
@@ -37,6 +38,9 @@ public class WorldGenerator {
 	public void generate () {
 		createWorldBounds();
 		generateAsteroidField();
+		if(param.generateBackground){
+			createBackground();
+		}
 		populateWorld();
 	}
 
@@ -58,6 +62,18 @@ public class WorldGenerator {
 			Vector2 angleVec = new Vector2(distance, 0.0f).setAngle(initalAngle + seperationAngle * i);
 			Vector2 position = center.cpy().add(angleVec);
 			createSquad(position);
+		}
+	}
+	
+	public void createBackground(){
+		EntityFactory.createBackgroundArt(new Vector2(0, 0), Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Assets.space.background, 0);
+		
+		int planetCount = (int) param.numberOfPlanets.random(rng.nextFloat());
+		for(int i = 0; i < planetCount; i++){
+			float radius = param.planetRadius.random(rng.nextFloat());
+			int index = (int) (Assets.space.planets.size * rng.nextFloat());
+			EntityFactory.createBackgroundArt(new Vector2(Constants.VIEWPORT_WIDTH * rng.nextFloat(), Constants.VIEWPORT_HEIGHT * rng.nextFloat()), radius, radius,
+				Assets.space.planets.get(index), 1);
 		}
 	}
 	
@@ -140,13 +156,14 @@ public class WorldGenerator {
 			for (int col = 0; col < totalCols; col++) {
 				float heightValue = heightMap[(int)(row * rowSpacing)][(int)(col * colSpacing)];
 				if (heightValue <= param.heightThreshold) {
+					
 					Vector2 pos = new Vector2((row * rowSpacing)
-						+ (randomSign() * param.asteroidScaling) * rowSpacing, (col * colSpacing)
+						+ (randomSign() * param.asteroidScattering) * rowSpacing, (col * colSpacing)
 						+ (randomSign() * param.asteroidScattering) * colSpacing);
 
-					float radius = param.asteroidBaseRadius + rng.nextFloat() * param.asteroidScaling;
+					float radius = param.asteroidRadius.random(rng.nextFloat());
 					if(rng.nextFloat() <= param.asteroidExtraScalingChance){
-						radius += param.asteroidScaling * 2;
+						radius += param.asteroidRadius.max * 2;
 					}
 					EntityFactory.createAsteroid(pos, radius);
 				}
@@ -167,13 +184,17 @@ public class WorldGenerator {
 		public float heightThreshold = -0.7f;
 
 		public float asteroidDensity = 0.4f;
+		public Range asteroidRadius = new Range(0.25f, 0.65f);
 		public float asteroidScattering = 0.25f;
-		public float asteroidScaling = 0.4f;
 		public float asteroidExtraScalingChance = 0.02f;
-		public float asteroidBaseRadius = 0.25f;
 
 		public int initalSquads = 5;
 		public int squadMembers = 9;
+		
+		public Range numberOfPlanets = new Range(1, 1);
+		public Range planetRadius = new Range(4, 10);
+		
+		public boolean generateBackground = true;
 	}
 
 }

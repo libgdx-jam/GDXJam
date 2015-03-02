@@ -45,14 +45,6 @@ public class GameScreen extends AbstractScreen {
 		
 		engine.getSystem(CameraSystem.class).getCamera().position.set(width * 0.5f, height * 0.5f, 0);
 		engine.getSystem(CameraSystem.class).setWorldBounds(width, height);
-		
-		//Assets positions are defined as relative to the viewport
-		
-		EntityFactory.createBackgroundArt(new Vector2(0, 0), Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, Assets.space.background, 0);
-	EntityFactory.createBackgroundArt(new Vector2(Constants.VIEWPORT_WIDTH / 4, Constants.VIEWPORT_HEIGHT / 4), 6, 6,
-			Assets.space.planets.random(), 1);
-//	EntityFactory.createBackgroundArt(new Vector2(20, 20), 10, 10,
-//			Assets.space.largePlanetRed);
 	}
 
 	@Override
