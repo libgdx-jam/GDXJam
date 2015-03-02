@@ -45,7 +45,10 @@ public class WorldGenerator {
 	}
 
 	public void createWorldBounds () {
-		// TODO
+		EntityFactory.createBoundry(new Vector2(0, 0), new Vector2(0, height));
+		EntityFactory.createBoundry(new Vector2(0, height), new Vector2(width, height));
+		EntityFactory.createBoundry(new Vector2(width, height), new Vector2(width, 0));
+		EntityFactory.createBoundry(new Vector2(width, 0), new Vector2(0, 0));
 	}
 
 	public void populateWorld () {
