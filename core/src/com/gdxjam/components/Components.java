@@ -22,8 +22,6 @@ public class Components {
 			.getFor(SquadMemberComponent.class);
 
 	// AI
-	public static final ComponentMapper<UnitComponent> UNIT = ComponentMapper
-			.getFor(UnitComponent.class);
 	public static final ComponentMapper<SteeringBehaviorComponent> STEERING_BEHAVIOR = ComponentMapper
 			.getFor(SteeringBehaviorComponent.class);
 	public static final ComponentMapper<SteerableComponent> STEERABLE = ComponentMapper

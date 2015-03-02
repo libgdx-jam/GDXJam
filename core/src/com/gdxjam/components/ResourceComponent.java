@@ -1,12 +1,16 @@
 package com.gdxjam.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.utils.Pool.Poolable;
 
-/**
- * Created by SCAW on 17/02/2015.
- */
-public abstract class ResourceComponent extends Component {
+public class ResourceComponent extends Component implements Poolable{
 
-    public int amount; 
+    public int amount;
 
+	@Override
+	public void reset () {
+		amount = 0;
+	} 
+    
+ 
 }

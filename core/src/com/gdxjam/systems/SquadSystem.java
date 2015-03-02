@@ -5,22 +5,15 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.ai.fma.FormationPattern;
 import com.badlogic.gdx.ai.fma.FreeSlotAssignmentStrategy;
-import com.badlogic.gdx.ai.fma.patterns.DefensiveCircleFormationPattern;
 import com.badlogic.gdx.ai.fsm.State;
-import com.badlogic.gdx.ai.steer.behaviors.Arrive;
-import com.badlogic.gdx.ai.steer.limiters.LinearLimiter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectMap;
 import com.gdxjam.ai.Squad;
-import com.gdxjam.ai.formation.LineFormationPattern;
 import com.gdxjam.ai.formation.SquadFormationPattern;
+import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadMemberComponent;
-import com.gdxjam.components.SteerableComponent;
-import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.utils.Constants;
 
 public class SquadSystem extends EntitySystem {
@@ -59,18 +52,10 @@ public class SquadSystem extends EntitySystem {
 	public void addMember (Entity entity, Squad squad) {
 		SquadMemberComponent squadMember = engine.createComponent(SquadMemberComponent.class);
 		entity.add(squadMember);
-
-		SteerableComponent steer = Components.STEERABLE.get(entity);
-		SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
-
-		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steer, squadMember.getTargetLocation())
-			//.setLimiter(new LinearLimiter(100000, 10)) //
-			.setTimeToTarget(0.001f) //
-			.setArrivalTolerance(0.01f) //
-			.setDecelerationRadius(2f);
-		behavior.setBehavior(arriveSB);
-
-		squad.formation.addMember(squadMember);
+		Components.STATE_MACHINE.get(entity).stateMachine.changeState(UnitState.FORMATION);
+		
+		squad.addMember(entity);
+		guiSystem.updateSquad(squad);
 	}
 
 	public void setTarget (Vector2 target) {

@@ -8,9 +8,7 @@ public class DistanceSlotCostProvider implements SlotCostProvider<Vector2> {
 
 	@Override
 	public float getCost(FormationMember<Vector2> member, int slotNumber) {
-		boolean isCorrectSlot = slotNumber % 2 == 0;
-		float cost = isCorrectSlot ? 0f : 10000f * 2;
-		return cost + 1;
+		return 0;
 	}
 
 }

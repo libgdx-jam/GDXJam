@@ -4,93 +4,87 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
+import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
+import com.badlogic.gdx.ai.steer.behaviors.RaycastObstacleAvoidance;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.components.Components;
-import com.gdxjam.components.HealthComponent;
+import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
-import com.gdxjam.components.UnitComponent;
+import com.gdxjam.utils.Constants;
 
-
-/**
- * Created by SCAW on 16/02/2015.
- */
 public enum UnitState implements State<Entity> {
-	
-	IDLE(){
 
-	},
-	
-	MOVE(){
+	FORMATION (){
+		@Override
 		public void enter (Entity entity) {
 			super.enter(entity);
-			SteerableComponent steerable = Components.STEERABLE.get(entity);
-			SteeringBehaviorComponent behaviorComp = Components.STEERING_BEHAVIOR.get(entity);
 			
-//			Seek<Vector2> seek = new Seek<Vector2>(steerable);
-//			seek.setTarget(target);
-//			
-//			BlendedSteering<Vector2> behavior = new BlendedSteering<Vector2>(steerable);
-//			behavior.add(seek, 1.0f);
-//			
-//			behaviorComp.setBehavior(behavior);
+			SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
+			SteerableComponent steerable = Components.STEERABLE.get(entity);
+			SquadMemberComponent squadMember = Components.SQUAD_MEMBER.get(entity);
+
+			Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable, squadMember.getTargetLocation())
+				.setTimeToTarget(0.001f)
+				.setArrivalTolerance(0.01f)
+				.setDecelerationRadius(2f);
+			
+			RaycastObstacleAvoidance<Vector2> raycastSB = new RaycastObstacleAvoidance<Vector2>(steerable)
+				.setDistanceFromBoundary(Constants.unitRadius * 4);
+			
+			BlendedSteering<Vector2> blendSB = new BlendedSteering<Vector2>(steerable);
+			blendSB.add(raycastSB, 1000);
+			blendSB.add(arriveSB, 0.1f);
+			behavior.setBehavior(arriveSB);
 		}
+		
 	},
-
-    FIGHT(){
-        //TODO Behaviout tree
-    },
-
-    COLLECT_RESOURCES(){
-       //TODO Behaviour Tree
-   	 
-   	 /**
-   	  * Gather resource test
-   	  */
+	
+    HARVEST(){
    	 @Override
    	 public void enter(Entity entity){
 //      	 //Test code
-//      	 UnitComponent unit = Components.UNIT.get(entity);
 //   		 ImmutableArray<Entity> entities = GameManager.getEngine().getEntitiesFor(Family.all(ResourceComponent.class).get());
 //    		 Entity resource = entities.first();
-//    		 unit.target = resource;
 //    		 
-//    		 Arrive<Vector2> arrive = new Arrive<Vector2>(Components.STEERABLE.get(entity));
-//    		 arrive.setTarget(new SteerableTarget(Components.STEERABLE.get(resource).getBody().getPosition(), 1.0f));
-//    		 arrive.setTimeToTarget(0.01f).setArrivalTolerance(0.002f).setDecelerationRadius(2f);
+//    		 Arrive<Vector2> arrive = new Arrive<Vector2>(Components.STEERABLE.get(entity))
+//    			 .setTarget((Location<Vector2>)Components.STEERABLE.get(resource).getBody().getPosition())
+//    			 .setTimeToTarget(0.01f)
+//    			 .setArrivalTolerance(0.002f)
+//    			 .setDecelerationRadius(2f);
 //    		 
 //    		 SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
 //    		 behavior.setBehavior(arrive);
    	 }
    	 
 		public void update(Entity entity){
-   		 UnitComponent unit = Components.UNIT.get(entity);
-   		 
-   		 if(unit.target == null){
-   			 Components.STATE_MACHINE.get(entity).stateMachine.changeState(IDLE);
-   		 }
-   		 else{
-      		 SteerableComponent steerable = Components.STEERABLE.get(entity);
-      		 SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
-
-      		 Arrive<Vector2> arrive = (Arrive<Vector2>) behavior.getBehavior();
-      		 Vector2 targetPosition = arrive.getTarget().getPosition();
-
-      		 if(steerable.getPosition().dst2(targetPosition) < 1.5f){
-      			 if(Components.HEALTH.has(unit.target)){
-      				 HealthComponent health = Components.HEALTH.get(unit.target);
-         			 health.value -= 1;
-         			 if(health.value <= 0){
-         				 unit.target = null;
-         			 }
-      			 }
-      			
-      		 }
-   		 }
-   		 
-   		 
-   	 }
+//      		 SteerableComponent steerable = Components.STEERABLE.get(entity);
+//      		 SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
+//
+//      		 Arrive<Vector2> arrive = (Arrive<Vector2>) behavior.getBehavior();
+//      		 Vector2 targetPosition = arrive.getTarget().getPosition();
+//
+//      		 if(steerable.getPosition().dst2(targetPosition) < 1.5f){
+//      			 if(Components.HEALTH.has(unit.target)){
+//      				 HealthComponent health = Components.HEALTH.get(unit.target);
+//         			 health.value -= 1;
+//         			 if(health.value <= 0){
+//         				 unit.target = null;
+//         			 }
+//      			 }
+//      			
+//      		 }
+//   		 }
+//   		 
+//   		 
+//   	 }
 	
+    }
+	},
+    
+    
+    COMBAT(){
+   	 
     };
 
 
