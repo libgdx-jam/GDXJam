@@ -23,16 +23,18 @@ public class SquadCommandTable extends Table{
 	private SelectBox<UnitState> unitState;
 	private SelectBox<PatternType> formationPatternSelect;
 	private final SquadComponent squad;
+	private final int index;
 	private BitmapFontCache squadText;
 	
 
-	public SquadCommandTable(final SquadComponent squad, Skin skin){
+	public SquadCommandTable(final SquadComponent squad, int index, Skin skin){
 		this.squad = squad;
+		this.index = index;
 		setBackground(skin.getDrawable("default-window"));
 		setColor(defaultColor);
 
 		squadText = new BitmapFontCache(skin.getFont("default-font"));
-		squadText.setMultiLineText("Squad " + (squad.index + 1), 0, 0);
+		squadText.setMultiLineText("Squad " + (index + 1), 0, 0);
 		squadText.setColor(Color.WHITE);
 
 		unitState = new SelectBox<UnitState>(skin);
@@ -64,7 +66,7 @@ public class SquadCommandTable extends Table{
 	}
 	
 	public void update(){
-		squadText.setMultiLineText("Squad " + (squad.index + 1) + "   (" + squad.members.size + " / " + Constants.maxSquadMembers + ")", 0, 0);
+		squadText.setMultiLineText("Squad " + (index + 1) + "   (" + squad.members.size + " / " + Constants.maxSquadMembers + ")", 0, 0);
 	}
 	
 	public void setSelected(boolean selected){

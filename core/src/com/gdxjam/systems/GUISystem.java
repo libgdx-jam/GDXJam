@@ -2,21 +2,25 @@ package com.gdxjam.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.IntMap;
+import com.badlogic.gdx.utils.IntMap.Entry;
 import com.gdxjam.Assets;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.ui.SquadManagmentTable;
+import com.gdxjam.utils.Constants;
 
 public class GUISystem extends EntitySystem implements Disposable {
 
 	private Stage stage;
 	private Skin skin;
 	private Table squadSidebar;
+	
+	private IntMap<SquadComponent> squads = new IntMap<SquadComponent>();
 	
 	private SquadManagmentTable squadManagment;
 	private Label resourceLabel;
@@ -61,18 +65,41 @@ public class GUISystem extends EntitySystem implements Disposable {
 	}
 	
 	public void addSquad(SquadComponent squad) {
-		String strIndex = String.valueOf(squad.index + 1);
-		int keycode = Keys.valueOf(strIndex);
-	
-		squadManagment.addSquad(squad);
+		for(int i = 0; i < Constants.maxSquads; i++){
+			boolean valid = true;
+			if(squads.containsKey(i)){
+				if(squads.get(i) != null){
+					valid = false;
+				}
+			}
+			if(valid){
+				squads.put(i, squad);
+				squadManagment.addSquad(squad, i);
+				break;
+			}
+		}
+
 	}
 	
 	public void updateSquad(SquadComponent squad){
-		squadManagment.updateSquadTable(squad);
+		for(Entry<SquadComponent> entry : squads){
+			if(entry.value == squad){
+				squadManagment.updateSquadTable(entry.key);
+			}
+		}
 	}
 
-	public void setSelected(SquadComponent squad) {
-		squadManagment.setSelected(squad.index, squad.isSelected());
+	public void setSelected(int index, boolean selected) {
+		if(squads.containsKey(index)){
+			squads.get(index).selected = selected;
+			squadManagment.setSelected(index, squads.get(index).isSelected());
+		}
+	}
+	
+	public void setAllSelected(boolean selected){
+		for(Entry<SquadComponent> entry : squads){
+			setSelected(entry.key, selected);
+		}
 	}
 
 	public void resize(int screenWidth, int screenHeight) {

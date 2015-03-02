@@ -18,8 +18,7 @@ public class SquadComponent extends Component{
 	public Formation<Vector2> formation;
 	public Location2 targetLocation;
 	public State<Entity> state = UnitState.FORMATION;
-	
-	public int index = 0;
+
 	public boolean selected = false;
 	
 	public SquadComponent(){
@@ -27,8 +26,7 @@ public class SquadComponent extends Component{
 		targetLocation = new Location2();
 	}
 	
-	public SquadComponent init(int index, Steerable<Vector2> steerable){
-		this.index = index;
+	public SquadComponent init(Steerable<Vector2> steerable){
 		formation = new Formation<Vector2>(steerable, SquadFormationPattern.patterns.get(SquadFormationPattern.defaultPattern));
 		return this;
 	}

@@ -17,7 +17,6 @@ import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape.Type;
 import com.gdxjam.Assets;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
@@ -104,7 +103,7 @@ public class EntityFactory {
 		
 		ImmutableArray<Entity> squads = engine.getEntitiesFor(Family.all(SquadComponent.class).get());
 		SteerableComponent steerable = engine.createComponent(SteerableComponent.class).init(Components.PHYSICS.get(entity).body);
-		SquadComponent squadComp = engine.createComponent(SquadComponent.class).init(squads.size(), steerable);
+		SquadComponent squadComp = engine.createComponent(SquadComponent.class).init(steerable);
 		squadComp.targetLocation.getPosition().set(position);
 		
 		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable)

@@ -6,10 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.GameManager;
 import com.gdxjam.screens.SelectorScreen;
 import com.gdxjam.systems.CameraSystem;
+import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityUtils;
@@ -18,10 +18,12 @@ public class DesktopInputProcessor implements InputProcessor {
 
 	private SquadSystem squadSystem;
 	private CameraSystem cameraSystem;
+	private GUISystem guiSystem;
 
 	public DesktopInputProcessor(PooledEngine engine) {
 		this.cameraSystem = engine.getSystem(CameraSystem.class);
 		this.squadSystem = engine.getSystem(SquadSystem.class);
+		this.guiSystem = engine.getSystem(GUISystem.class);
 	}
 
 	@Override
@@ -71,24 +73,46 @@ public class DesktopInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		switch (keycode) {
+
 		/**
 		 * Squad Hotkeys
 		 */
+		
+		boolean mod = true;
+		boolean select = true;
+		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)){
+			select = true;
+		} else if(Gdx.input.isKeyPressed(Keys.ALT_LEFT)){
+			select = false;
+		} else{
+			mod = false;
+		}
+		
+		switch (keycode) {
 		case Keybinds.SQUAD0:
-			EntityUtils.toggleSelectedSquad(0);
+			if(!mod)
+				guiSystem.setAllSelected(false);
+			guiSystem.setSelected(0, select);
 			return true;
 		case Keybinds.SQUAD1:
-			EntityUtils.toggleSelectedSquad(1);
+			if(!mod)
+				guiSystem.setAllSelected(false);
+			guiSystem.setSelected(1, select);
 			return true;
 		case Keybinds.SQUAD2:
-			EntityUtils.toggleSelectedSquad(2);
+			if(!mod)
+				guiSystem.setAllSelected(false);
+			guiSystem.setSelected(2, select);
 			return true;
 		case Keybinds.SQUAD3:
-			EntityUtils.toggleSelectedSquad(3);
+			if(!mod)
+				guiSystem.setAllSelected(false);
+			guiSystem.setSelected(3, select);
 			return true;
 		case Keybinds.SQUAD4:
-			EntityUtils.toggleSelectedSquad(4);
+			if(!mod)
+				guiSystem.setAllSelected(false);
+			guiSystem.setSelected(4, select);
 			return true;
 
 		/**
@@ -104,6 +128,7 @@ public class DesktopInputProcessor implements InputProcessor {
 //			squadSystem.setState(UnitState.HARVEST);
 //			return true;
 		case Keybinds.ACTION3:
+			
 			return true;
 		case Keybinds.ACTION4:
 			return true;
