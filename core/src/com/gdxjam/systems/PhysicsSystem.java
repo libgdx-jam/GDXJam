@@ -15,7 +15,7 @@ public class PhysicsSystem extends EntitySystem implements Disposable {
 	private static final float TIME_STEP = 1.0f / 60.f;
 	private static final int VELOCITY_ITERATIONS = 8;
 	private static final int POSITION_ITERATIONS = 8;
-	public static boolean debug = false;
+	public static boolean debug = true;
 
 	private World world;
 	private Box2DDebugRenderer renderer;
@@ -37,9 +37,6 @@ public class PhysicsSystem extends EntitySystem implements Disposable {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
-		if (debug) {
-			drawDebug();
-		}
 	}
 
 	public Body createBody(BodyDef def) {

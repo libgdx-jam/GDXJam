@@ -6,12 +6,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.GameManager;
-import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.screens.SelectorScreen;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.utils.Constants;
+import com.gdxjam.utils.EntityUtils;
 
 public class DesktopInputProcessor implements InputProcessor {
 
@@ -38,8 +39,8 @@ public class DesktopInputProcessor implements InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (button == Buttons.LEFT) {
-			squadSystem.setTarget(cameraSystem.screenToWorldCords(screenX,
-					screenY));
+			EntityUtils.setSelectedSquadTarget(cameraSystem.screenToWorldCords(screenX,
+				screenY));
 			return true;
 		}
 		return false;
@@ -75,33 +76,33 @@ public class DesktopInputProcessor implements InputProcessor {
 		 * Squad Hotkeys
 		 */
 		case Keybinds.SQUAD0:
-			squadSystem.toggleSelected(0);
+			EntityUtils.toggleSelectedSquad(0);
 			return true;
 		case Keybinds.SQUAD1:
-			squadSystem.toggleSelected(1);
+			EntityUtils.toggleSelectedSquad(1);
 			return true;
 		case Keybinds.SQUAD2:
-			squadSystem.toggleSelected(2);
+			EntityUtils.toggleSelectedSquad(2);
 			return true;
 		case Keybinds.SQUAD3:
-			squadSystem.toggleSelected(3);
+			EntityUtils.toggleSelectedSquad(3);
 			return true;
 		case Keybinds.SQUAD4:
-			squadSystem.toggleSelected(4);
+			EntityUtils.toggleSelectedSquad(4);
 			return true;
 
 		/**
 		 * Squad action groups
 		 */
-		case Keybinds.ACTION0:
-			squadSystem.setState(UnitState.FORMATION);
-			return true;
-		case Keybinds.ACTION1:
-			squadSystem.setState(UnitState.COMBAT);
-			return true;
-		case Keybinds.ACTION2:
-			squadSystem.setState(UnitState.HARVEST);
-			return true;
+//		case Keybinds.ACTION0:
+//			squadSystem.setState(UnitState.FORMATION);
+//			return true;
+//		case Keybinds.ACTION1:
+//			squadSystem.setState(UnitState.COMBAT);
+//			return true;
+//		case Keybinds.ACTION2:
+//			squadSystem.setState(UnitState.HARVEST);
+//			return true;
 		case Keybinds.ACTION3:
 			return true;
 		case Keybinds.ACTION4:

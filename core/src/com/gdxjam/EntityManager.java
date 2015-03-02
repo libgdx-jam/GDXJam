@@ -2,6 +2,7 @@
 package com.gdxjam;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Disposable;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.RemovalComponent;
+import com.gdxjam.components.SquadComponent;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GUISystem;
@@ -27,6 +29,20 @@ public class EntityManager extends PooledEngine implements Disposable {
 
 	public EntityManager () {
 		initSystems();
+		
+		addEntityListener(Family.all(SquadComponent.class).get(), new EntityListener() {
+			
+			@Override
+			public void entityRemoved (Entity entity) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void entityAdded (Entity entity) {
+				getSystem(GUISystem.class).addSquad(Components.SQUAD.get(entity));
+			}
+		});
 	}
 
 	private EntityManager initSystems () {
@@ -60,7 +76,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 	@Override
 	public void update (float deltaTime) {
 		super.update(deltaTime);
-
+		getSystem(PhysicsSystem.class).drawDebug();
 		for (Entity entity : getEntitiesFor(Family.all(RemovalComponent.class).get())) {
 			removeEntity(entity);
 		}

@@ -1,8 +1,11 @@
 package com.gdxjam.utils;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -23,6 +26,7 @@ import com.gdxjam.components.ParalaxComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SpriteComponent;
+import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
@@ -77,14 +81,42 @@ public class EntityFactory {
 				.circleCollider(unitRadius)
 				.damping(1, 0)
 				.steerable()
+				.steeringBehavior()
 				.health(100)
 				.faction(faction)
 				.sprite(faction == Faction.Player ? Assets.spacecraft.ship : Assets.spacecraft.enemy, unitRadius * 2, unitRadius * 2)
 				.getWithoutAdding();
 
-		entity.add(engine.createComponent(SteeringBehaviorComponent.class));
 		entity.add(engine.createComponent(StateMachineComponent.class).init(entity));
 
+		engine.addEntity(entity);
+		return entity;
+	}
+	
+	public static Entity createSquad(Vector2 position, Faction faction){
+		Entity entity = buildEntity(position)
+			.physicsBody(BodyType.DynamicBody)
+			.circleSensor(0.1f)
+			.faction(faction)
+			.steeringBehavior()
+			.getWithoutAdding();
+		
+		ImmutableArray<Entity> squads = engine.getEntitiesFor(Family.all(SquadComponent.class).get());
+		SteerableComponent steerable = engine.createComponent(SteerableComponent.class).init(Components.PHYSICS.get(entity).body);
+		SquadComponent squadComp = engine.createComponent(SquadComponent.class).init(squads.size(), steerable);
+		squadComp.targetLocation.getPosition().set(position);
+		
+		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable)
+			.setTarget(squadComp.targetLocation)
+			.setTimeToTarget(0.01f)
+			.setDecelerationRadius(1.5f)
+			.setArrivalTolerance(0.5f);
+		
+		Components.STEERING_BEHAVIOR.get(entity).setBehavior(arriveSB);
+
+		entity.add(squadComp);
+		entity.add(steerable);
+		
 		engine.addEntity(entity);
 		return entity;
 	}
@@ -96,7 +128,6 @@ public class EntityFactory {
 		entity.add(engine.createComponent(ParalaxComponent.class).init(
 				position.x, position.y, width, height, layer));
 
-		// TODO add paralaxComponent to be processed by the paralaxSystem
 		engine.addEntity(entity);
 		return entity;
 	}
@@ -153,6 +184,18 @@ public class EntityFactory {
 			return this;
 		}
 		
+		public EntityBuilder stateMachine(){
+			StateMachineComponent stateMachineComp = engine.createComponent(StateMachineComponent.class);
+			entity.add(stateMachineComp);
+			return this;
+		}
+		
+		public EntityBuilder steeringBehavior(){
+			SteeringBehaviorComponent behaviorComp = engine.createComponent(SteeringBehaviorComponent.class);
+			entity.add(behaviorComp);
+			return this;
+		}
+		
 		public EntityBuilder resource(int amount){
 			ResourceComponent resourceComp = engine.createComponent(ResourceComponent.class);
 			resourceComp.amount = amount;
@@ -190,6 +233,23 @@ public class EntityFactory {
 			}
 
 			physics.body.createFixture(shape, 1.0f);
+			return this;
+		}
+		
+		public EntityBuilder circleSensor(float radius) {
+			CircleShape shape = new CircleShape();
+			shape.setRadius(radius);
+			
+			PhysicsComponent physics = Components.PHYSICS.get(entity);
+			if (physics == null) {
+				physicsBody(DEFAULT_BODY);
+			}
+			
+			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.isSensor = true;
+			fixtureDef.shape = shape;
+
+			physics.body.createFixture(fixtureDef);
 			return this;
 		}
 
