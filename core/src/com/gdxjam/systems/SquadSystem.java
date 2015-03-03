@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.gdxjam.ai.formation.SquadFormationPattern;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadComponent;
 
@@ -15,8 +14,6 @@ public class SquadSystem extends IteratingSystem {
 
 	public SquadSystem (GUISystem guiSystem) {
 		super(Family.all(SquadComponent.class).get());
-		
-		SquadFormationPattern.initPatterns();
 	}
 	
 

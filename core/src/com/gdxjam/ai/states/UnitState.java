@@ -11,6 +11,7 @@ import com.badlogic.gdx.ai.steer.behaviors.ReachOrientation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
@@ -103,6 +104,26 @@ public enum UnitState implements State<Entity> {
     }
 	},
     
+	COMBAT_ACTIVE(){
+		@Override
+		public void enter (Entity entity) {
+			super.enter(entity);
+		}
+		
+		@Override
+		public void update (Entity entity) {
+			super.update(entity);
+			SquadMemberComponent squadMemberComp = Components.SQUAD_MEMBER.get(entity);
+			TargetComponent squadTargetComp = Components.TARGET.get(squadMemberComp.squad);
+			if(squadTargetComp.target != null){
+				SquadComponent enemySquadComp = Components.SQUAD.get(squadTargetComp.target);
+				TargetComponent targetComp = Components.TARGET.get(entity);
+				targetComp.target = enemySquadComp.members.first();
+			}
+		}
+		
+		
+	},
     
     ATTACK_TARGET(){
    	 @Override
@@ -116,9 +137,9 @@ public enum UnitState implements State<Entity> {
    		if(targetComp.target != null){
 	   		Face<Vector2> faceSB = new Face<Vector2>(steerable)
 	   			.setTarget(Components.STEERABLE.get(targetComp.target))
-	   			.setAlignTolerance(0.01f)
-	   			.setDecelerationRadius(0.21f)
-	   			.setTimeToTarget(0.001f);
+	   			.setAlignTolerance(0.0001f)
+	   			.setDecelerationRadius(2f)
+	   			.setTimeToTarget(0.00001f);
 	   		
 				Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable, squadMember.getTargetLocation())
 					.setTimeToTarget(0.001f)

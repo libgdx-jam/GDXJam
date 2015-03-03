@@ -1,5 +1,5 @@
 
-package com.gdxjam;
+package com.gdxjam.ecs;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
@@ -11,9 +11,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Disposable;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
+import com.gdxjam.components.PhysicsComponent;
+import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.RemovalComponent;
 import com.gdxjam.components.SquadComponent;
+import com.gdxjam.systems.BehaviorTreeSystem;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GUISystem;
@@ -47,6 +50,9 @@ public class EntityManager extends PooledEngine implements Disposable {
 					getSystem(GUISystem.class).addSquad(entity);
 			}
 		});
+		
+		addEntityListener(Family.all(SquadMemberComponent.class).get(), new UnitEntityListener(this));
+		addEntityListener(Family.all(PhysicsComponent.class).get(), new PhysicsEntityListener(getSystem(PhysicsSystem.class)));
 	}
 
 	private EntityManager initSystems () {
@@ -58,6 +64,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 		// AI
 		addSystem(new SteeringSystem());
 		addSystem(new StateMachineSystem());
+		addSystem(new BehaviorTreeSystem());
 
 		addSystem(new HealthSystem());
 
@@ -81,21 +88,11 @@ public class EntityManager extends PooledEngine implements Disposable {
 	public void update (float deltaTime) {
 		super.update(deltaTime);
 		getSystem(PhysicsSystem.class).drawDebug();
-		for (Entity entity : getEntitiesFor(Family.all(RemovalComponent.class).get())) {
-			removeEntity(entity);
-		}
+//		for (Entity entity : getEntitiesFor(Family.all(RemovalComponent.class).get())) {
+//			removeEntity(entity);
+//		}
 	}
-
-	@Override
-	protected void removeEntityInternal (Entity entity) {
-		if (Components.PHYSICS.has(entity)) {
-			Body body = Components.PHYSICS.get(entity).body;
-			getSystem(PhysicsSystem.class).destroyBody(body);
-		}
-
-		super.removeEntityInternal(entity);
-	}
-
+	
 	@Override
 	public void dispose () {
 		Gdx.app.log(TAG, "disposing instance");

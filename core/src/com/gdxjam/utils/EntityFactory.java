@@ -22,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.gdxjam.Assets;
+import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.FactionComponent.Faction;
@@ -32,6 +33,7 @@ import com.gdxjam.components.ProjectileComponent;
 import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.SquadComponent;
+import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
@@ -82,7 +84,8 @@ public class EntityFactory {
 				.addToEngine();
 		return entity;
 	}
-
+	
+	@Deprecated
 	public static Entity createUnit(Vector2 position, Faction faction) {
 		Entity entity = buildEntity(position)
 			   .physicsBody(BodyType.DynamicBody)
@@ -101,6 +104,44 @@ public class EntityFactory {
 
 		entity.add(engine.createComponent(StateMachineComponent.class).init(entity));
 
+		engine.addEntity(entity);
+		return entity;
+	}
+	
+	public static Entity createUnit(Entity squad){
+		Vector2 squadPos = Components.STEERABLE.get(squad).getPosition();
+		Vector2 position = new Vector2(128, 128);	//TODO dependant on world size
+		float angle = squadPos.angleRad(position);
+		position.add(MathUtils.cos(angle) + (Constants.unitRadius * 2), MathUtils.sin(angle) + (Constants.unitRadius * 2));
+		return createUnit(position, squad);
+	}
+	
+	public static Entity createUnit(Vector2 position, Entity squad) {
+		SquadComponent squadComp = Components.SQUAD.get(squad);
+		FactionComponent squadFactionComp = Components.FACTION.get(squad);
+		
+		Entity entity = buildEntity(position)
+			   .physicsBody(BodyType.DynamicBody)
+				.circleCollider(Constants.unitRadius, 1.0f)
+				.damping(1, 0)
+				.steerable()
+				.steeringBehavior()
+				.health(100)
+				.faction(squadFactionComp.faction)
+				.target()
+				.weapon(20, 1.0f)
+				.sprite(squadFactionComp.faction == Faction.Player ? Assets.spacecraft.ship : Assets.spacecraft.enemy, Constants.unitRadius * 2, Constants.unitRadius * 2)
+				.getWithoutAdding();
+		
+		SquadMemberComponent squadMemberComp = engine.createComponent(SquadMemberComponent.class).init(squad);
+		entity.add(squadMemberComp);
+		squadComp.addMember(entity);
+		
+		Components.STEERABLE.get(entity).setIndependentFacing(true);
+		StateMachineComponent stateMachineComponent = engine.createComponent(StateMachineComponent.class).init(entity);
+		stateMachineComponent.stateMachine.changeState(UnitState.FORMATION);	//TODO set state based on squad state
+		entity.add(stateMachineComponent);
+		
 		engine.addEntity(entity);
 		return entity;
 	}
