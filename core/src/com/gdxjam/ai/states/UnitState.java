@@ -104,22 +104,24 @@ public enum UnitState implements State<Entity> {
     }
 	},
     
-	COMBAT_ACTIVE(){
+	FIND_TARGET(){
 		@Override
 		public void enter (Entity entity) {
 			super.enter(entity);
-		}
-		
-		@Override
-		public void update (Entity entity) {
-			super.update(entity);
 			SquadMemberComponent squadMemberComp = Components.SQUAD_MEMBER.get(entity);
 			TargetComponent squadTargetComp = Components.TARGET.get(squadMemberComp.squad);
 			if(squadTargetComp.target != null){
 				SquadComponent enemySquadComp = Components.SQUAD.get(squadTargetComp.target);
 				TargetComponent targetComp = Components.TARGET.get(entity);
 				targetComp.target = enemySquadComp.members.first();
+				Components.STATE_MACHINE.get(entity).stateMachine.changeState(ATTACK_TARGET);
 			}
+		}
+		
+		@Override
+		public void update (Entity entity) {
+			super.update(entity);
+			Components.STATE_MACHINE.get(entity).stateMachine.changeState(FORMATION);
 		}
 		
 		
@@ -151,6 +153,8 @@ public enum UnitState implements State<Entity> {
 				blendSB.add(faceSB, 1.0f);
 				
 				behaviorComp.setBehavior(blendSB);
+   		} else{
+				Components.STATE_MACHINE.get(entity).stateMachine.changeState(FIND_TARGET);
    		}
    		
    	}
@@ -178,6 +182,9 @@ public enum UnitState implements State<Entity> {
 	      		EntityFactory.createProjectile(position, velocity, Components.FACTION.get(entity).faction, 20);
 	      		weaponComp.cooldown += weaponComp.attackSpeed;
 	   		}
+   		}
+   		else{
+   			Components.STATE_MACHINE.get(entity).stateMachine.changeState(FIND_TARGET);
    		}
    		
    		weaponComp.cooldown -= Gdx.graphics.getDeltaTime();

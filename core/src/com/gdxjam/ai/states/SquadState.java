@@ -29,21 +29,23 @@ public enum SquadState implements State<Entity>{
 			if(targetComp.target == null){
 				FactionComponent factionComp = Components.FACTION.get(entity);
 				Entity enemySquad  = EntityUtils.findSquadWithoutFaction(factionComp.faction);
-				targetComp.target = enemySquad;
-				
-				SquadComponent enemySquadComp = Components.SQUAD.get(enemySquad);
-				SquadComponent squadComp = Components.SQUAD.get(entity);
-				for(int i = 0; i < squadComp.members.size; i++){
-					int targetIndex = squadComp.members.size % enemySquadComp.members.size;
-					Entity member = squadComp.members.get(i);
+				if(enemySquad != null){
+					targetComp.target = enemySquad;
 					
-					TargetComponent memberTargetComp = Components.TARGET.get(member);
-					memberTargetComp.target = enemySquadComp.members.get(targetIndex);
-					
-					StateMachineComponent stateComp = Components.STATE_MACHINE.get(member);
-					stateComp.stateMachine.changeState(UnitState.ATTACK_TARGET);
+					SquadComponent enemySquadComp = Components.SQUAD.get(enemySquad);
+					SquadComponent squadComp = Components.SQUAD.get(entity);
+					for(int i = 0; i < squadComp.members.size; i++){
+						int targetIndex = squadComp.members.size % enemySquadComp.members.size;
+						Entity member = squadComp.members.get(i);
+						
+						TargetComponent memberTargetComp = Components.TARGET.get(member);
+						memberTargetComp.target = enemySquadComp.members.get(targetIndex);
+						
+						StateMachineComponent stateComp = Components.STATE_MACHINE.get(member);
+						stateComp.stateMachine.changeState(UnitState.ATTACK_TARGET);
+					}
+	
 				}
-
 			}
 		}
 		

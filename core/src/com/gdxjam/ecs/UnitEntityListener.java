@@ -7,6 +7,7 @@ import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.systems.GUISystem;
+import com.gdxjam.utils.EntityUtils;
 
 public class UnitEntityListener implements EntityListener{
 
@@ -30,11 +31,15 @@ public class UnitEntityListener implements EntityListener{
 		SquadComponent squadComp = Components.SQUAD.get(squadMemberComp.squad);
 		squadComp.removeMember(entity);
 		
+		EntityUtils.clearTarget(entity);
+		
 		if(squadComp.members.size == 0){
 			engine.removeEntity(squadMemberComp.squad);
 		}
 		
 	}
+	
+
 
 	
 	

@@ -12,6 +12,7 @@ import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.StateMachineComponent;
+import com.gdxjam.components.TargetComponent;
 import com.gdxjam.systems.GUISystem;
 
 public class EntityUtils {
@@ -26,6 +27,17 @@ public class EntityUtils {
 	
 	public static void removeEntity(Entity entity){
 		engine.removeEntity(entity);
+	}
+	
+	public static void clearTarget(Entity entity){
+		ImmutableArray<Entity> entities = engine.getEntitiesFor(Family.all(TargetComponent.class).get());
+		for(Entity e : entities){
+			TargetComponent targetComp = Components.TARGET.get(e);
+			if(targetComp.target == entity){
+				targetComp.target = null;
+			}
+			
+		}
 	}
 	
 	public static Entity findSquadWithoutFaction(Faction faction){

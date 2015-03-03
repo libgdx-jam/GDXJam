@@ -1,16 +1,11 @@
 
 package com.gdxjam.ecs;
 
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
-import com.gdxjam.components.Components;
-import com.gdxjam.components.FactionComponent;
-import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
@@ -33,22 +28,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 	public EntityManager () {
 		initSystems();
 		
-		addEntityListener(Family.all(SquadComponent.class).get(), new EntityListener() {
-			
-			@Override
-			public void entityRemoved (Entity entity) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void entityAdded (Entity entity) {
-				FactionComponent factionComp = Components.FACTION.get(entity);
-				if(factionComp.faction == Faction.Player)
-					getSystem(GUISystem.class).addSquad(entity);
-			}
-		});
-		
+		addEntityListener(Family.all(SquadComponent.class).get(), new SquadEntityListener(getSystem(GUISystem.class)));
 		addEntityListener(Family.all(SquadMemberComponent.class).get(), new UnitEntityListener(this));
 		addEntityListener(Family.all(PhysicsComponent.class).get(), new PhysicsEntityListener(getSystem(PhysicsSystem.class)));
 	}
