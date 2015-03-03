@@ -158,15 +158,16 @@ public class EntityFactory {
 		SquadComponent squadComp = engine.createComponent(SquadComponent.class).init(steerable);
 		squadComp.targetLocation.getPosition().set(position);
 
-		// A good rule of thumb is to make the maximum speed of the formation
-		// around half that of the members.
+		// A good rule of thumb is to make the maximum speed of the formation around
+		// half that of the members. We also give the anchor point far less acceleration.
 		steerable.setMaxLinearSpeed(SteerableComponent.MAX_LINEAR_SPEED / 2);
+		steerable.setMaxLinearAcceleration(SteerableComponent.MAX_LINEAR_ACCELERATION / 10);
 		
 		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable)
 			.setTarget(squadComp.targetLocation)
 			.setTimeToTarget(0.001f)
 			.setDecelerationRadius(2f)
-			.setArrivalTolerance(0.001f);
+			.setArrivalTolerance(0.0001f);
 		SteeringBehavior<Vector2> sb = arriveSB;
 		
 		
