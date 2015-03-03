@@ -6,175 +6,182 @@ filter: Nearest,Nearest
 repeat: none
 asteroid
   rotate: false
-  xy: 1802, 1858
-  size: 172, 188
-  orig: 172, 188
-  offset: 0, 0
-  index: 14
-asteroid
-  rotate: false
-  xy: 1632, 1255
-  size: 169, 187
-  orig: 169, 187
-  offset: 0, 0
-  index: 15
-asteroid
-  rotate: false
-  xy: 1802, 1675
-  size: 172, 181
-  orig: 172, 181
-  offset: 0, 0
-  index: 12
-asteroid
-  rotate: false
-  xy: 1751, 1488
-  size: 173, 185
-  orig: 173, 185
-  offset: 0, 0
-  index: 13
-asteroid
-  rotate: false
-  xy: 1632, 1080
-  size: 171, 173
-  orig: 171, 173
-  offset: 0, 0
-  index: 11
-asteroid
-  rotate: false
-  xy: 1588, 893
-  size: 164, 185
-  orig: 164, 185
-  offset: 0, 0
-  index: 16
-asteroid
-  rotate: false
-  xy: 1803, 1305
-  size: 160, 181
-  orig: 160, 181
-  offset: 0, 0
-  index: 17
-asteroid
-  rotate: false
-  xy: 1805, 1129
-  size: 162, 174
-  orig: 162, 174
-  offset: 0, 0
-  index: 18
-asteroid
-  rotate: false
-  xy: 1021, 746
-  size: 168, 162
-  orig: 168, 162
-  offset: 0, 0
-  index: 10
-asteroid
-  rotate: false
-  xy: 1805, 976
+  xy: 204, 5
   size: 162, 151
   orig: 162, 151
   offset: 0, 0
   index: 19
 asteroid
   rotate: false
-  xy: 204, 10
+  xy: 1500, 1254
+  size: 172, 188
+  orig: 172, 188
+  offset: 0, 0
+  index: 14
+asteroid
+  rotate: false
+  xy: 1674, 1257
+  size: 173, 185
+  orig: 173, 185
+  offset: 0, 0
+  index: 13
+asteroid
+  rotate: false
+  xy: 1849, 1255
+  size: 169, 187
+  orig: 169, 187
+  offset: 0, 0
+  index: 15
+asteroid
+  rotate: false
+  xy: 908, 914
   size: 97, 106
   orig: 97, 106
   offset: 0, 0
   index: 4
 asteroid
   rotate: false
-  xy: 906, 730
+  xy: 368, 52
   size: 97, 104
   orig: 97, 104
   offset: 0, 0
   index: 3
 asteroid
   rotate: false
-  xy: 1191, 803
+  xy: 1932, 1755
   size: 95, 105
   orig: 95, 105
   offset: 0, 0
   index: 5
 asteroid
   rotate: false
-  xy: 303, 15
+  xy: 467, 55
   size: 96, 101
   orig: 96, 101
   offset: 0, 0
   index: 2
 asteroid
   rotate: false
-  xy: 401, 13
+  xy: 1932, 1650
   size: 93, 103
   orig: 93, 103
   offset: 0, 0
   index: 6
 asteroid
   rotate: false
-  xy: 496, 20
+  xy: 565, 60
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 asteroid
   rotate: false
-  xy: 1805, 884
-  size: 93, 90
-  orig: 93, 90
-  offset: 0, 0
-  index: 0
-asteroid
-  rotate: false
-  xy: 1900, 872
+  xy: 1932, 1546
   size: 90, 102
   orig: 90, 102
   offset: 0, 0
   index: 7
 asteroid
   rotate: false
-  xy: 1926, 1574
+  xy: 1932, 1445
   size: 91, 99
   orig: 91, 99
   offset: 0, 0
   index: 8
 asteroid
   rotate: false
-  xy: 1926, 1489
+  xy: 1632, 1067
+  size: 164, 185
+  orig: 164, 185
+  offset: 0, 0
+  index: 16
+asteroid
+  rotate: false
+  xy: 1632, 903
+  size: 168, 162
+  orig: 168, 162
+  offset: 0, 0
+  index: 10
+asteroid
+  rotate: false
+  xy: 1631, 720
+  size: 172, 181
+  orig: 172, 181
+  offset: 0, 0
+  index: 12
+asteroid
+  rotate: false
+  xy: 1798, 1080
+  size: 171, 173
+  orig: 171, 173
+  offset: 0, 0
+  index: 11
+asteroid
+  rotate: false
+  xy: 1802, 904
+  size: 162, 174
+  orig: 162, 174
+  offset: 0, 0
+  index: 18
+asteroid
+  rotate: false
+  xy: 1805, 721
+  size: 160, 181
+  orig: 160, 181
+  offset: 0, 0
+  index: 17
+asteroid
+  rotate: false
+  xy: 663, 66
+  size: 93, 90
+  orig: 93, 90
+  offset: 0, 0
+  index: 0
+asteroid
+  rotate: false
+  xy: 1631, 635
   size: 90, 83
   orig: 90, 83
   offset: 0, 0
   index: 9
 bulletblue
   rotate: false
-  xy: 1754, 995
+  xy: 758, 73
   size: 49, 83
   orig: 49, 83
   offset: 0, 0
   index: -1
 bulletred
   rotate: false
-  xy: 1754, 910
+  xy: 1723, 635
   size: 49, 83
   orig: 49, 83
   offset: 0, 0
   index: -1
 bulletyellow
   rotate: false
-  xy: 1976, 1963
+  xy: 809, 73
   size: 49, 83
   orig: 49, 83
   offset: 0, 0
   index: -1
 enemy
   rotate: false
-  xy: 2, 2
+  xy: 2, 42
   size: 200, 114
   orig: 200, 114
   offset: 0, 0
   index: -1
+enemymothership
+  rotate: false
+  xy: 2, 158
+  size: 904, 862
+  orig: 904, 862
+  offset: 0, 0
+  index: -1
 hotkey
   rotate: false
-  xy: 1330, 1444
+  xy: 368, 2
   size: 48, 48
   split: 14, 16, 14, 16
   pad: 13, 16, 15, 13
@@ -183,133 +190,133 @@ hotkey
   index: -1
 hotkeyleft
   rotate: false
-  xy: 1380, 1444
+  xy: 418, 2
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 hotkeyright
   rotate: false
-  xy: 1449, 1766
+  xy: 1512, 24
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 middlehotkey
   rotate: false
-  xy: 1430, 1444
+  xy: 1007, 972
   size: 2, 48
   orig: 2, 48
   offset: 0, 0
   index: -1
 outpost
   rotate: false
-  xy: 2, 420
+  xy: 1028, 1446
   size: 600, 600
   orig: 600, 600
   offset: 0, 0
   index: -1
 planet
   rotate: false
-  xy: 2, 118
+  xy: 1630, 1746
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 0
 planet
   rotate: false
-  xy: 604, 720
+  xy: 1630, 1444
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 1
 planet
   rotate: false
-  xy: 1028, 1514
+  xy: 1028, 912
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 2
 planet
   rotate: false
-  xy: 1028, 1212
+  xy: 908, 610
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 3
 planet
   rotate: false
-  xy: 304, 118
+  xy: 908, 308
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 4
 planet
   rotate: false
-  xy: 1500, 1746
+  xy: 1330, 912
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 5
 planet
   rotate: false
-  xy: 604, 462
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: 10
-planet
-  rotate: false
-  xy: 606, 160
+  xy: 1210, 610
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 6
 planet
   rotate: false
-  xy: 1028, 910
+  xy: 1210, 308
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 7
 planet
   rotate: false
-  xy: 1449, 1444
+  xy: 908, 6
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 8
 planet
   rotate: false
-  xy: 1330, 1142
+  xy: 1210, 6
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 9
 planet
   rotate: false
-  xy: 1330, 884
+  xy: 1512, 332
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 10
+planet
+  rotate: false
+  xy: 1512, 74
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 11
 ship
   rotate: false
-  xy: 1028, 1816
+  xy: 1028, 1214
   size: 470, 230
   orig: 470, 230
   offset: 0, 0
   index: -1
 ship1
   rotate: false
-  xy: 906, 836
+  xy: 1932, 1862
   size: 113, 184
   orig: 113, 184
   offset: 0, 0
   index: -1
 ship2
   rotate: false
-  xy: 1330, 1494
+  xy: 1512, 590
   size: 117, 320
   orig: 117, 320
   offset: 0, 0

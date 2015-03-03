@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.FactionComponent.Faction;
+import com.gdxjam.components.RemovalComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.StateMachineComponent;
@@ -21,6 +22,21 @@ public class EntityUtils {
 	public static void setEngine(PooledEngine engine){
 		EntityUtils.engine = engine;
 		EntityUtils.guiSystem = engine.getSystem(GUISystem.class);
+	}
+	
+	public static void removeEntity(Entity entity){
+		entity.add(engine.createComponent(RemovalComponent.class));
+	}
+	
+	public static Entity findSquadWithoutFaction(Faction faction){
+		ImmutableArray<Entity> squads = engine.getEntitiesFor(Family.all(SquadComponent.class, FactionComponent.class).get());
+		for(Entity entity : squads){
+			FactionComponent factionComp = Components.FACTION.get(entity);
+			if(factionComp.faction != faction){
+				return entity;
+			}
+		}
+		return null;
 	}
 	
 	public static void addToSquad(Entity entity, Entity squad){

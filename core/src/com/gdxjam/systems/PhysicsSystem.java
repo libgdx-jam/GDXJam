@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
+import com.gdxjam.GameContactListener;
 
 public class PhysicsSystem extends EntitySystem implements Disposable {
 
@@ -23,6 +24,7 @@ public class PhysicsSystem extends EntitySystem implements Disposable {
 
 	public PhysicsSystem() {
 		world = new World(new Vector2(0, 0), true);
+		world.setContactListener(new GameContactListener());
 	}
 
 	@Override

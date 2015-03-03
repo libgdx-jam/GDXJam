@@ -1,6 +1,7 @@
 package com.gdxjam.ai.states;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
@@ -12,6 +13,10 @@ import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
+import com.gdxjam.components.TargetComponent;
+import com.gdxjam.components.WeaponComponent;
+import com.gdxjam.utils.Constants;
+import com.gdxjam.utils.EntityFactory;
 
 public enum UnitState implements State<Entity> {
 
@@ -98,8 +103,39 @@ public enum UnitState implements State<Entity> {
 	},
     
     
-    COMBAT(){
+    ATTACK_TARGET(){
+   	 @Override
+   	public void enter (Entity entity) {
+   		super.enter(entity);
+   	}
    	 
+   	 @Override
+   	public void update (Entity entity) {
+   		super.update(entity);
+   		WeaponComponent weaponComp = Components.WEAPON.get(entity);
+   		TargetComponent targetComp = Components.TARGET.get(entity);
+   		if(targetComp.target != null){
+   		
+
+	   		if(weaponComp.cooldown <= 0){
+	      		SteerableComponent steerable = Components.STEERABLE.get(entity);
+	      		
+	      		float angle = steerable.getOrientation();
+	      		float unitDiameter = Constants.unitRadius * 2;
+	      		
+	      		Vector2 position = new Vector2();
+	      		position.set(steerable.getPosition());
+	      		position.add(unitDiameter * MathUtils.cos(angle), unitDiameter * MathUtils.sin(angle));
+	      		
+	      		Vector2 velocity = new Vector2(20, 0).setAngle(angle * MathUtils.radDeg);
+	      		
+	      		EntityFactory.createProjectile(position, velocity, Components.FACTION.get(entity).faction, 20);
+	      		weaponComp.cooldown += weaponComp.attackSpeed;
+	   		}
+   		}
+   		
+   		weaponComp.cooldown -= Gdx.graphics.getDeltaTime();
+   	}
     };
 
 
@@ -122,6 +158,7 @@ public enum UnitState implements State<Entity> {
 
     @Override
     public boolean onMessage(Entity entity, Telegram telegram) {
+//   	 
 //        switch (telegram.message){
 //            case Messages.REGROUP_ORDER:
 //                if(!Components.STATE_MACHINE.get(entity).stateMachine.isInState(REGROUP))
