@@ -6,7 +6,9 @@ public class FactionComponent extends Component{
 	
 	public enum Faction{
 		Player,
+		Neutral,
 		Enemy;
+		
 	}
 	
 	public Faction faction;
