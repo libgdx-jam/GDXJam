@@ -16,7 +16,7 @@ public class SteerableComponent extends Component implements Steerable<Vector2>,
 	public static final float MAX_LINEAR_SPEED = 15f;
 	public static final float MAX_LINEAR_ACCELERATION = 100000;
 	public static final float MAX_ANGULAR_SPEED = 15;
-	public static final float MAX_ANGULAR_ACCELERATION = 40;
+	public static final float MAX_ANGULAR_ACCELERATION = 300;
 
 	private float maxLinearSpeed = MAX_LINEAR_SPEED;
 	private float maxLinearAcceleration = MAX_LINEAR_ACCELERATION;

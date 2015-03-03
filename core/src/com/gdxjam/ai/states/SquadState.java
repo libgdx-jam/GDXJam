@@ -6,10 +6,15 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.SquadComponent;
+import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.TargetComponent;
 import com.gdxjam.utils.EntityUtils;
 
 public enum SquadState implements State<Entity>{
+	
+	MOVE () {
+
+	},
 	
 	COMBAT(){
 		@Override
@@ -34,6 +39,9 @@ public enum SquadState implements State<Entity>{
 					
 					TargetComponent memberTargetComp = Components.TARGET.get(member);
 					memberTargetComp.target = enemySquadComp.members.get(targetIndex);
+					
+					StateMachineComponent stateComp = Components.STATE_MACHINE.get(member);
+					stateComp.stateMachine.changeState(UnitState.ATTACK_TARGET);
 				}
 
 			}

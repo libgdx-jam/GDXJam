@@ -96,6 +96,8 @@ public class EntityFactory {
 				.weapon(20, 1.0f)
 				.sprite(faction == Faction.Player ? Assets.spacecraft.ship : Assets.spacecraft.enemy, Constants.unitRadius * 2, Constants.unitRadius * 2)
 				.getWithoutAdding();
+		
+		Components.STEERABLE.get(entity).setIndependentFacing(true);
 
 		entity.add(engine.createComponent(StateMachineComponent.class).init(entity));
 

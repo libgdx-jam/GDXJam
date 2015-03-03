@@ -1,5 +1,6 @@
 package com.gdxjam.ui;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
@@ -12,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.gdxjam.ai.formation.SquadFormationPattern;
 import com.gdxjam.ai.formation.SquadFormationPattern.PatternType;
 import com.gdxjam.ai.states.SquadState;
-import com.gdxjam.ai.states.UnitState;
+import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.utils.Constants;
 
@@ -23,12 +24,12 @@ public class SquadCommandTable extends Table{
 	
 	private SelectBox<SquadState> squadState;
 	private SelectBox<PatternType> formationPatternSelect;
-	private final SquadComponent squad;
+	private final Entity squad;
 	private final int index;
 	private BitmapFontCache squadText;
 	
 
-	public SquadCommandTable(final SquadComponent squad, int index, Skin skin){
+	public SquadCommandTable(final Entity squad, int index, Skin skin){
 		this.squad = squad;
 		this.index = index;
 		setBackground(skin.getDrawable("default-window"));
@@ -45,7 +46,7 @@ public class SquadCommandTable extends Table{
 			
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
-				squad.setState(squadState.getSelected());
+				Components.STATE_MACHINE.get(squad).stateMachine.changeState(squadState.getSelected());
 			}
 		});
 		
@@ -56,8 +57,7 @@ public class SquadCommandTable extends Table{
 			
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
-				squad.setFormationPattern(formationPatternSelect.getSelected());
-				
+				Components.SQUAD.get(squad).setFormationPattern(formationPatternSelect.getSelected());
 			}
 		});
 		
@@ -67,7 +67,8 @@ public class SquadCommandTable extends Table{
 	}
 	
 	public void update(){
-		squadText.setMultiLineText("Squad " + (index + 1) + "   (" + squad.members.size + " / " + Constants.maxSquadMembers + ")", 0, 0);
+		SquadComponent squadComp = Components.SQUAD.get(squad);
+		squadText.setMultiLineText("Squad " + (index + 1) + "   (" + squadComp.members.size + " / " + Constants.maxSquadMembers + ")", 0, 0);
 	}
 	
 	public void setSelected(boolean selected){

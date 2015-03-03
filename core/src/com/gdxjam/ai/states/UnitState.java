@@ -6,6 +6,7 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
+import com.badlogic.gdx.ai.steer.behaviors.Face;
 import com.badlogic.gdx.ai.steer.behaviors.ReachOrientation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -107,6 +108,30 @@ public enum UnitState implements State<Entity> {
    	 @Override
    	public void enter (Entity entity) {
    		super.enter(entity);
+   		SteerableComponent steerable = Components.STEERABLE.get(entity);
+   		TargetComponent targetComp = Components.TARGET.get(entity);
+   		SteeringBehaviorComponent behaviorComp = Components.STEERING_BEHAVIOR.get(entity);
+			SquadMemberComponent squadMember = Components.SQUAD_MEMBER.get(entity);
+			
+   		if(targetComp.target != null){
+	   		Face<Vector2> faceSB = new Face<Vector2>(steerable)
+	   			.setTarget(Components.STEERABLE.get(targetComp.target))
+	   			.setAlignTolerance(0.01f)
+	   			.setDecelerationRadius(0.21f)
+	   			.setTimeToTarget(0.001f);
+	   		
+				Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable, squadMember.getTargetLocation())
+					.setTimeToTarget(0.001f)
+					.setArrivalTolerance(0.01f)
+					.setDecelerationRadius(2f);
+				
+				BlendedSteering<Vector2> blendSB = new BlendedSteering<Vector2>(steerable);
+				blendSB.add(arriveSB, 1.0f);
+				blendSB.add(faceSB, 1.0f);
+				
+				behaviorComp.setBehavior(blendSB);
+   		}
+   		
    	}
    	 
    	 @Override

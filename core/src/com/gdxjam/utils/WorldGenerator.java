@@ -74,6 +74,7 @@ public class WorldGenerator {
 			createSquad(position, Faction.Player);
 		}
 
+		
 		createSquad(center.cpy().add(16, 16), Faction.Enemy);
 	}
 
