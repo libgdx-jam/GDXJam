@@ -9,6 +9,8 @@ public class Components {
 	public static final ComponentMapper<ParalaxComponent> PARALAX = ComponentMapper
 		.getFor(ParalaxComponent.class);
 	
+	public static final ComponentMapper<BehaviorTreeComponent> BTREE = ComponentMapper.getFor(BehaviorTreeComponent.class);
+	
 	public static final ComponentMapper<ProjectileComponent> PROJECTILE = ComponentMapper.getFor(ProjectileComponent.class);
 	
 	public static final ComponentMapper<TargetComponent> TARGET = ComponentMapper.getFor(TargetComponent.class);

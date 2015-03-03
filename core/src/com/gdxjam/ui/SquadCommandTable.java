@@ -9,13 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.gdxjam.ai.formation.SquadFormationPattern;
-import com.gdxjam.ai.formation.SquadFormationPattern.PatternType;
 import com.gdxjam.ai.states.SquadState;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadComponent;
+import com.gdxjam.components.SquadComponent.PatternType;
 import com.gdxjam.utils.Constants;
+import com.gdxjam.utils.EntityFactory;
 
 public class SquadCommandTable extends Table{
 	
@@ -52,7 +53,7 @@ public class SquadCommandTable extends Table{
 		
 		formationPatternSelect = new SelectBox<PatternType>(skin);
 		formationPatternSelect.setItems(PatternType.values());
-		formationPatternSelect.setSelected(SquadFormationPattern.defaultPattern);
+		formationPatternSelect.setSelected(SquadComponent.DEFAULT_PATTERN);
 		formationPatternSelect.addListener(new ChangeListener() {
 			
 			@Override
@@ -61,9 +62,19 @@ public class SquadCommandTable extends Table{
 			}
 		});
 		
+		TextButton addMemberButton = new TextButton(" + ", skin);
+		addMemberButton.addListener(new ChangeListener(){
+			@Override
+			public void changed (ChangeEvent event, Actor actor) {
+				EntityFactory.createUnit(squad);
+			}
+		});
+		
 		add(squadState).pad(5);
 		row();
 		add(formationPatternSelect);
+		row();
+		add(addMemberButton);
 	}
 	
 	public void update(){

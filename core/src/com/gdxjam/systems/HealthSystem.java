@@ -8,7 +8,6 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
-import com.gdxjam.components.RemovalComponent;
 
 public class HealthSystem extends IteratingSystem{
 	
@@ -29,7 +28,8 @@ public class HealthSystem extends IteratingSystem{
 		HealthComponent health = Components.HEALTH.get(entity);
 	
 		if(health.value <= health.min){
-			entity.add(engine.createComponent(RemovalComponent.class));
+//			entity.add(engine.createComponent(RemovalComponent.class));
+			engine.removeEntity(entity);
 			return;
 		}
 			

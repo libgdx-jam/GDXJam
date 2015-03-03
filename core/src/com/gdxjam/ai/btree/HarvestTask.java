@@ -1,4 +1,4 @@
-package com.gdxjam.ai.task;
+package com.gdxjam.ai.btree;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.btree.LeafTask;

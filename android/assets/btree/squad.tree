@@ -1,0 +1,9 @@
+import hasTarget?:"com.gdxjam.ai.btree.task.HasTargetCondition"
+
+sequence
+	selector
+		hasTarget? checkSquad:false
+		selector
+			hasTarget? checkSquad:True
+			#findTarget
+#	attackTarget

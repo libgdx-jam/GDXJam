@@ -13,9 +13,9 @@ import com.gdxjam.GameContactListener;
 
 public class PhysicsSystem extends EntitySystem implements Disposable {
 
-	private static final float TIME_STEP = 1.0f / 60.f;
-	private static final int VELOCITY_ITERATIONS = 8;
-	private static final int POSITION_ITERATIONS = 8;
+	public static final float TIME_STEP = 1.0f / 60.f;
+	public static final int VELOCITY_ITERATIONS = 8;
+	public static final int POSITION_ITERATIONS = 8;
 	public static boolean debug = true;
 
 	private World world;

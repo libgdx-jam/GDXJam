@@ -100,8 +100,7 @@ public class WorldGenerator {
 		int posY = (int)position.y;
 		for(int x = -1; x < 2; x++) {
 			for (int y = -1; y < 2; y++){
-				Entity entity = EntityFactory.createUnit(new Vector2(posX + x, posY + y), faction);
-				EntityUtils.addToSquad(entity, squad);
+				EntityFactory.createUnit(new Vector2(posX + x, posY + y), squad);
 			}
 		}
 	}

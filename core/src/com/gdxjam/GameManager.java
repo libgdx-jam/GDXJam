@@ -3,6 +3,7 @@ package com.gdxjam;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.gdxjam.ecs.EntityManager;
 import com.gdxjam.screens.AbstractScreen;
 import com.gdxjam.utils.EntityFactory;
 import com.gdxjam.utils.EntityUtils;
@@ -18,6 +19,7 @@ public class GameManager {
 		GameManager.game = game;
 		Gdx.app.setLogLevel(LOG_LEVEL);
 	}
+	
 	
 	public static EntityManager initEngine(){
 		if(engine != null){

@@ -18,6 +18,11 @@ public class SquadMemberComponent extends Component implements
 	public SquadMemberComponent() {
 		targetLocation = new Location2(new Vector2(0, 0));
 	}
+	
+	public SquadMemberComponent init(Entity squad){
+		this.squad = squad;
+		return this;
+	}
 
 	@Override
 	public Location<Vector2> getTargetLocation() {

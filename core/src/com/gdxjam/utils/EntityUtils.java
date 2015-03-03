@@ -9,7 +9,6 @@ import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.FactionComponent.Faction;
-import com.gdxjam.components.RemovalComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.StateMachineComponent;
@@ -26,7 +25,7 @@ public class EntityUtils {
 	}
 	
 	public static void removeEntity(Entity entity){
-		entity.add(engine.createComponent(RemovalComponent.class));
+		engine.removeEntity(entity);
 	}
 	
 	public static Entity findSquadWithoutFaction(Faction faction){
@@ -40,6 +39,7 @@ public class EntityUtils {
 		return null;
 	}
 	
+	@Deprecated
 	public static void addToSquad(Entity entity, Entity squad){
 		FactionComponent entityFactionComp = Components.FACTION.get(entity);
 		FactionComponent squadFactionComp = Components.FACTION.get(entity);
@@ -47,11 +47,12 @@ public class EntityUtils {
 		if(entityFactionComp.faction == squadFactionComp.faction){
 			SquadComponent squadComp = Components.SQUAD.get(squad);
 			
-			entity.add(engine.createComponent(SquadMemberComponent.class));
+			entity.add(engine.createComponent(SquadMemberComponent.class).init(squad));
 			
 			StateMachineComponent stateMachineComp = Components.STATE_MACHINE.get(entity);
 			stateMachineComp.stateMachine.changeState(UnitState.FORMATION);	//TODO set state based on squad state
 			squadComp.addMember(entity);
+			
 			if(squadFactionComp.faction == Faction.Player)
 				guiSystem.updateSquad(squad);
 		}
