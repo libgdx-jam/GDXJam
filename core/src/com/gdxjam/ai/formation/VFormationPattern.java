@@ -2,6 +2,7 @@ package com.gdxjam.ai.formation;
 
 import com.badlogic.gdx.ai.fma.FormationPattern;
 import com.badlogic.gdx.ai.utils.Location;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.utils.Vector2Utils;
 
@@ -33,8 +34,8 @@ public class VFormationPattern implements FormationPattern<Vector2> {
 
 	public void setAngle(float angle) {
 		this.angle = angle;
-		Vector2Utils.angleToVector(leftBorder, angle).scl(-1);
-		Vector2Utils.angleToVector(rightBorder, -angle).scl(-1);
+		Vector2Utils.angleToVector(leftBorder, angle + 90 * MathUtils.degreesToRadians);
+		Vector2Utils.angleToVector(rightBorder, -angle + 90 * MathUtils.degreesToRadians);
 	}
 
 	@Override

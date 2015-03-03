@@ -24,7 +24,7 @@ public class WedgeFormationPattern implements FormationPattern<Vector2> {
 		int row = calculateRow(slotNumber);
 		float col = calculateColumn(slotNumber, row);
 		float memberDiameter = memberRadius + memberRadius;
-		outLocation.getPosition().set(col * memberDiameter, row * memberDiameter);
+		outLocation.getPosition().set(-row * memberDiameter, -col * memberDiameter);
 		outLocation.setOrientation(0);
 		return outLocation;
 	}
