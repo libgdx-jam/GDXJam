@@ -12,8 +12,8 @@ public class VFormationPattern implements FormationPattern<Vector2> {
 	private float memberRadius;
 	private float angle;
 
-	private Vector2 leftBorder = new Vector2();
-	private Vector2 rightBorder = new Vector2();
+	private Vector2 side1 = new Vector2();
+	private Vector2 side2 = new Vector2();
 
 	public VFormationPattern(float angle, float memberRadius) {
 		this.memberRadius = memberRadius;
@@ -34,8 +34,8 @@ public class VFormationPattern implements FormationPattern<Vector2> {
 
 	public void setAngle(float angle) {
 		this.angle = angle;
-		Vector2Utils.angleToVector(leftBorder, angle + 90 * MathUtils.degreesToRadians);
-		Vector2Utils.angleToVector(rightBorder, -angle + 90 * MathUtils.degreesToRadians);
+		Vector2Utils.angleToVector(side1, angle / 2 + 90 * MathUtils.degreesToRadians);
+		Vector2Utils.angleToVector(side2, -angle / 2 + 90 * MathUtils.degreesToRadians);
 	}
 
 	@Override
@@ -51,9 +51,9 @@ public class VFormationPattern implements FormationPattern<Vector2> {
 	@Override
 	public Location<Vector2> calculateSlotLocation(
 			Location<Vector2> outLocation, int slotNumber) {
-		Vector2 border = ((slotNumber + 1) % 2) == 0 ? leftBorder : rightBorder;
+		Vector2 side = ((slotNumber + 1) % 2) == 0 ? side1 : side2;
 		float radius = ((slotNumber + 1) / 2) * (memberRadius + memberRadius);
-		outLocation.getPosition().set(border).scl(radius);
+		outLocation.getPosition().set(side).scl(radius);
 		outLocation.setOrientation(0);
 		return outLocation;
 	}

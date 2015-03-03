@@ -31,7 +31,7 @@ public class SquadFormationPattern {
 		patterns.put(PatternType.Column, new ColumnFormationPattern(UNIT_RADIUS));
 		patterns.put(PatternType.Square, new SquareFormationPattern(UNIT_RADIUS));
 		patterns.put(PatternType.Ring, new DefensiveCircleFormationPattern<Vector2>(UNIT_RADIUS));
-		patterns.put(PatternType.V, new VFormationPattern(30 * MathUtils.degreesToRadians, UNIT_RADIUS));
+		patterns.put(PatternType.V, new VFormationPattern(60 * MathUtils.degreesToRadians, UNIT_RADIUS));
 		patterns.put(PatternType.Wedge, new WedgeFormationPattern(UNIT_RADIUS));
 	}
 	
