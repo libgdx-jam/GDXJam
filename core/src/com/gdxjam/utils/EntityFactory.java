@@ -28,13 +28,16 @@ import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.ParalaxComponent;
 import com.gdxjam.components.PhysicsComponent;
+import com.gdxjam.components.ProjectileComponent;
 import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
+import com.gdxjam.components.TargetComponent;
 import com.gdxjam.components.TargetFinderComponent;
+import com.gdxjam.components.WeaponComponent;
 import com.gdxjam.systems.PhysicsSystem;
 
 /**
@@ -60,9 +63,10 @@ public class EntityFactory {
 
 	public static Entity createMothership(Vector2 position) {
 		Entity entity = buildEntity(position)
-				.physicsBody(BodyType.StaticBody)
-				.circleCollider(Constants.mothershipRadius)
+				.physicsBody(BodyType.DynamicBody)
+				.circleCollider(Constants.mothershipRadius, 1.0f)
 				.sprite(Assets.spacecraft.outpost, Constants.mothershipRadius * 2, Constants.mothershipRadius * 2)
+				.faction(Faction.Player)
 				.health(1000)
 				.addToEngine();
 		return entity;
@@ -70,10 +74,10 @@ public class EntityFactory {
 
 	public static Entity createAsteroid(Vector2 position, float radius) {
 		Entity entity = buildEntity(position)
-				.physicsBody(BodyType.KinematicBody)
-				.circleCollider(radius)
-				.health(50)
+				.physicsBody(BodyType.DynamicBody)
+				.circleCollider(radius, 50.0f)
 				.resource(5)
+				.faction(Faction.Neutral)
 				.sprite(Assets.space.asteroids.random(), radius * 2, radius * 2)
 				.addToEngine();
 		return entity;
@@ -82,14 +86,18 @@ public class EntityFactory {
 	public static Entity createUnit(Vector2 position, Faction faction) {
 		Entity entity = buildEntity(position)
 			   .physicsBody(BodyType.DynamicBody)
-				.circleCollider(Constants.unitRadius)
+				.circleCollider(Constants.unitRadius, 1.0f)
 				.damping(1, 0)
 				.steerable()
 				.steeringBehavior()
 				.health(100)
 				.faction(faction)
+				.target()
+				.weapon(20, 1.0f)
 				.sprite(faction == Faction.Player ? Assets.spacecraft.ship : Assets.spacecraft.enemy, Constants.unitRadius * 2, Constants.unitRadius * 2)
 				.getWithoutAdding();
+		
+		Components.STEERABLE.get(entity).setIndependentFacing(true);
 
 		entity.add(engine.createComponent(StateMachineComponent.class).init(entity));
 
@@ -102,10 +110,11 @@ public class EntityFactory {
 			.physicsBody(BodyType.DynamicBody)
 			.circleSensor(0.1f)
 			.faction(faction)
+			.target()
 			.steeringBehavior()
+			.stateMachine()
 			.getWithoutAdding();
-		
-		ImmutableArray<Entity> squads = engine.getEntitiesFor(Family.all(SquadComponent.class).get());
+	
 		SteerableComponent steerable = engine.createComponent(SteerableComponent.class).init(Components.PHYSICS.get(entity).body);
 		SquadComponent squadComp = engine.createComponent(SquadComponent.class).init(steerable);
 		squadComp.targetLocation.getPosition().set(position);
@@ -120,6 +129,8 @@ public class EntityFactory {
 			.setDecelerationRadius(2f)
 			.setArrivalTolerance(0.001f);
 		SteeringBehavior<Vector2> sb = arriveSB;
+		
+		
 		if (steerable.isIndependentFacing()) {
 			LookWhereYouAreGoing<Vector2> lookWhereYouAreGoingSB = new LookWhereYouAreGoing<Vector2>(steerable) //
 				.setTimeToTarget(0.1f) //
@@ -136,6 +147,26 @@ public class EntityFactory {
 
 		entity.add(squadComp);
 		entity.add(steerable);
+		
+		engine.addEntity(entity);
+		return entity;
+	}
+	
+	public static Entity createProjectile(Vector2 position, Vector2 velocity, Faction faction, int damage){
+		Entity entity = buildEntity(position)
+			.physicsBody(BodyType.KinematicBody)
+			.circleSensor(Constants.projectileRadius)
+			.faction(faction)
+			.sprite(Assets.bullets.yellow, Constants.projectileRadius * 2, Constants.projectileRadius * 2)
+			.getWithoutAdding();
+		
+		ProjectileComponent projectileComp = engine.createComponent(ProjectileComponent.class).init(damage);
+		entity.add(projectileComp);
+		
+		PhysicsComponent physicsComp= Components.PHYSICS.get(entity);
+		physicsComp.body.setBullet(true);
+		physicsComp.body.setLinearVelocity(velocity);
+		physicsComp.body.setTransform(position, velocity.angle());
 		
 		engine.addEntity(entity);
 		return entity;
@@ -199,6 +230,7 @@ public class EntityFactory {
 			def.type = type;
 			def.position.set(position);
 			Body body = physicsSystem.createBody(def);
+			body.setUserData(entity);
 
 			PhysicsComponent physics = engine.createComponent(
 					PhysicsComponent.class).init(body);
@@ -219,7 +251,7 @@ public class EntityFactory {
 		}
 		
 		public EntityBuilder stateMachine(){
-			StateMachineComponent stateMachineComp = engine.createComponent(StateMachineComponent.class);
+			StateMachineComponent stateMachineComp = engine.createComponent(StateMachineComponent.class).init(entity);
 			entity.add(stateMachineComp);
 			return this;
 		}
@@ -235,6 +267,16 @@ public class EntityFactory {
 			resourceComp.amount = amount;
 			entity.add(resourceComp);
 			
+			return this;
+		}
+		
+		public EntityBuilder target(){
+			entity.add(engine.createComponent(TargetComponent.class));
+			return this;
+		}
+		
+		public EntityBuilder weapon(int damage, float attackSpeed){
+			entity.add(engine.createComponent(WeaponComponent.class).init(damage, attackSpeed));
 			return this;
 		}
 		
@@ -258,7 +300,7 @@ public class EntityFactory {
 			return this;
 		}
 
-		public EntityBuilder circleCollider(float radius) {
+		public EntityBuilder circleCollider(float radius, float density) {
 			CircleShape shape = new CircleShape();
 			shape.setRadius(radius);
 			PhysicsComponent physics = Components.PHYSICS.get(entity);
@@ -266,7 +308,7 @@ public class EntityFactory {
 				physicsBody(DEFAULT_BODY);
 			}
 
-			physics.body.createFixture(shape, 1.0f);
+			physics.body.createFixture(shape, density);
 			return this;
 		}
 		

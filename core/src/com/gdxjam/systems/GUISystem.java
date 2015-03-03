@@ -1,6 +1,7 @@
 package com.gdxjam.systems;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.IntMap.Entry;
 import com.gdxjam.Assets;
+import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.ui.SquadManagmentTable;
 import com.gdxjam.utils.Constants;
@@ -20,7 +22,7 @@ public class GUISystem extends EntitySystem implements Disposable {
 	private Skin skin;
 	private Table squadSidebar;
 	
-	private IntMap<SquadComponent> squads = new IntMap<SquadComponent>();
+	private IntMap<Entity> squads = new IntMap<Entity>();
 	
 	private SquadManagmentTable squadManagment;
 	private Label resourceLabel;
@@ -64,7 +66,7 @@ public class GUISystem extends EntitySystem implements Disposable {
 		super.addedToEngine(engine);
 	}
 	
-	public void addSquad(SquadComponent squad) {
+	public void addSquad(Entity squad) {
 		for(int i = 0; i < Constants.maxSquads; i++){
 			boolean valid = true;
 			if(squads.containsKey(i)){
@@ -81,8 +83,8 @@ public class GUISystem extends EntitySystem implements Disposable {
 
 	}
 	
-	public void updateSquad(SquadComponent squad){
-		for(Entry<SquadComponent> entry : squads){
+	public void updateSquad(Entity squad){
+		for(Entry<Entity> entry : squads){
 			if(entry.value == squad){
 				squadManagment.updateSquadTable(entry.key);
 			}
@@ -91,13 +93,15 @@ public class GUISystem extends EntitySystem implements Disposable {
 
 	public void setSelected(int index, boolean selected) {
 		if(squads.containsKey(index)){
-			squads.get(index).selected = selected;
-			squadManagment.setSelected(index, squads.get(index).isSelected());
+			Entity squad = squads.get(index);
+			SquadComponent squadComp = Components.SQUAD.get(squad);
+			squadComp.selected = selected;
+			squadManagment.setSelected(index, squadComp.isSelected());
 		}
 	}
 	
 	public void setAllSelected(boolean selected){
-		for(Entry<SquadComponent> entry : squads){
+		for(Entry<Entity> entry : squads){
 			setSelected(entry.key, selected);
 		}
 	}

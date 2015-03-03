@@ -44,7 +44,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 			public void entityAdded (Entity entity) {
 				FactionComponent factionComp = Components.FACTION.get(entity);
 				if(factionComp.faction == Faction.Player)
-					getSystem(GUISystem.class).addSquad(Components.SQUAD.get(entity));
+					getSystem(GUISystem.class).addSquad(entity);
 			}
 		});
 	}

@@ -3,12 +3,14 @@ package com.gdxjam.ai.task;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
+import com.gdxjam.components.Components;
+import com.gdxjam.components.SquadMemberComponent;
 
-public class HarvestTask extends LeafTask<Entity>{
+public class FindTargetInSquadTask extends LeafTask<Entity>{
 
 	@Override
 	public void run (Entity entity) {
-		
+		SquadMemberComponent squadMemberComp = Components.SQUAD_MEMBER.get(entity);
 	}
 
 	@Override

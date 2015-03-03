@@ -71,9 +71,10 @@ public class WorldGenerator {
 			Vector2 angleVec = new Vector2(distance, 0.0f).setAngle(initalAngle
 					+ seperationAngle * i);
 			Vector2 position = center.cpy().add(angleVec);
-			createSquad(position);
+			createSquad(position, Faction.Player);
 		}
 
+		
 		createSquad(center.cpy().add(16, 16), Faction.Enemy);
 	}
 
@@ -93,27 +94,13 @@ public class WorldGenerator {
 		}
 	}
 
-	public void createSquad(Vector2 position) {
-		Entity squad = EntityFactory.createSquad(position, Faction.Player);
-		int posX = (int) position.x;
-		int posY = (int) position.y;
-		for (int x = -1; x < 2; x++) {
-			for (int y = -1; y < 2; y++) {
-				Entity entity = EntityFactory.createUnit(new Vector2(posX + x,
-						posY + y), Faction.Player);
-				EntityUtils.addToSquad(entity, squad);
-			}
-		}
-	}
-
-	public void createSquad(Vector2 position, Faction faction) {
+	public void createSquad(Vector2 position, Faction faction){
 		Entity squad = EntityFactory.createSquad(position, faction);
-		int posX = (int) position.x;
-		int posY = (int) position.y;
-		for (int x = -1; x < 2; x++) {
-			for (int y = -1; y < 2; y++) {
-				Entity entity = EntityFactory.createUnit(new Vector2(posX + x,
-						posY + y), faction);
+		int posX = (int)position.x;
+		int posY = (int)position.y;
+		for(int x = -1; x < 2; x++) {
+			for (int y = -1; y < 2; y++){
+				Entity entity = EntityFactory.createUnit(new Vector2(posX + x, posY + y), faction);
 				EntityUtils.addToSquad(entity, squad);
 			}
 		}

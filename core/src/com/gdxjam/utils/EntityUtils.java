@@ -5,9 +5,11 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
+import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.FactionComponent.Faction;
+import com.gdxjam.components.RemovalComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.StateMachineComponent;
@@ -23,19 +25,35 @@ public class EntityUtils {
 		EntityUtils.guiSystem = engine.getSystem(GUISystem.class);
 	}
 	
+	public static void removeEntity(Entity entity){
+		entity.add(engine.createComponent(RemovalComponent.class));
+	}
+	
+	public static Entity findSquadWithoutFaction(Faction faction){
+		ImmutableArray<Entity> squads = engine.getEntitiesFor(Family.all(SquadComponent.class, FactionComponent.class).get());
+		for(Entity entity : squads){
+			FactionComponent factionComp = Components.FACTION.get(entity);
+			if(factionComp.faction != faction){
+				return entity;
+			}
+		}
+		return null;
+	}
+	
 	public static void addToSquad(Entity entity, Entity squad){
 		FactionComponent entityFactionComp = Components.FACTION.get(entity);
 		FactionComponent squadFactionComp = Components.FACTION.get(entity);
+		
 		if(entityFactionComp.faction == squadFactionComp.faction){
 			SquadComponent squadComp = Components.SQUAD.get(squad);
 			
 			entity.add(engine.createComponent(SquadMemberComponent.class));
 			
 			StateMachineComponent stateMachineComp = Components.STATE_MACHINE.get(entity);
-			stateMachineComp.stateMachine.changeState(squadComp.state);
+			stateMachineComp.stateMachine.changeState(UnitState.FORMATION);	//TODO set state based on squad state
 			squadComp.addMember(entity);
 			if(squadFactionComp.faction == Faction.Player)
-				guiSystem.updateSquad(squadComp);
+				guiSystem.updateSquad(squad);
 		}
 	}
 	

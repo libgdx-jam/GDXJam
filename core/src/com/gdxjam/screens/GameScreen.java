@@ -8,6 +8,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.EntityManager;
 import com.gdxjam.GameManager;
+import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
@@ -48,6 +49,10 @@ public class GameScreen extends AbstractScreen {
 		engine.getSystem(CameraSystem.class).getCamera().position.set(
 				width * 0.5f, height * 0.5f, 0);
 		engine.getSystem(CameraSystem.class).setWorldBounds(width, height);
+		
+	}
+	
+	public void createTestEnemies(){
 	}
 
 	@Override

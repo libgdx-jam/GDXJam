@@ -1,10 +1,10 @@
 
 package com.gdxjam.ui;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.IntMap;
-import com.gdxjam.components.SquadComponent;
 
 public class SquadManagmentTable extends Table {
 
@@ -17,7 +17,7 @@ public class SquadManagmentTable extends Table {
 
 	}
 
-	public void addSquad (SquadComponent squad, int index) {
+	public void addSquad (Entity squad, int index) {
 		SquadCommandTable squadTable = new SquadCommandTable(squad, index, skin);
 		squadTables.put(index, squadTable);
 		
