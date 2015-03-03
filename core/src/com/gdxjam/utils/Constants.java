@@ -2,7 +2,7 @@ package com.gdxjam.utils;
 
 public class Constants {
 
-	public static boolean pausedGUI = false;
+	public static boolean isPaused = false;
 
 	public static final int maxSquads = 5;
 	public static final int maxSquadMembers = 20;

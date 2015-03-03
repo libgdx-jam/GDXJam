@@ -12,23 +12,29 @@ import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.GUISystem;
+import com.gdxjam.systems.PauseOverlay;
+import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.WorldGenerator;
 
 public class GameScreen extends AbstractScreen {
 
 	private EntityManager engine;
+	private PauseOverlay pauseOverlay;
+	private InputMultiplexer multiplexer;
 
 	@Override
 	public void show() {
 		super.show();
-
 		engine = GameManager.initEngine();
 		createWorld(256, 256);
-		
-		InputMultiplexer multiplexer = new InputMultiplexer();
+		pauseOverlay = new PauseOverlay();
+
+		multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(engine.getSystem(GUISystem.class).getStage());
 		multiplexer.addProcessor(new DesktopInputProcessor(engine));
-		multiplexer.addProcessor(new GestureDetector(new DesktopGestureListener(engine)));
+		multiplexer.addProcessor(new GestureDetector(
+				new DesktopGestureListener(engine)));
+		multiplexer.addProcessor(pauseOverlay.getStage());
 		Gdx.input.setInputProcessor(multiplexer);
 
 	}
@@ -38,16 +44,44 @@ public class GameScreen extends AbstractScreen {
 		Vector2 center = new Vector2(width * 0.5f, height * 0.5f);
 		WorldGenerator generator = new WorldGenerator(width, height, seed);
 		generator.generate();
-		
-		engine.getSystem(CameraSystem.class).getCamera().position.set(width * 0.5f, height * 0.5f, 0);
+
+		engine.getSystem(CameraSystem.class).getCamera().position.set(
+				width * 0.5f, height * 0.5f, 0);
 		engine.getSystem(CameraSystem.class).setWorldBounds(width, height);
 	}
 
 	@Override
 	public void render(float delta) {
 		super.render(delta);
+		if (!Constants.isPaused) {
+			engine.update(delta);
+			Gdx.input.setInputProcessor(multiplexer);
+		} else {
+			pauseOverlay.render(delta);
+			Gdx.input.setInputProcessor(pauseOverlay.getStage());
+		}
+	}
 
-		engine.update(delta);
+	@Override
+	public void dispose() {
+		super.dispose();
+		pauseOverlay.dispose();
+
+	}
+
+	@Override
+	public void pause() {
+		super.pause();
+	}
+
+	@Override
+	public void resume() {
+		super.resume();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
 	}
 
 }

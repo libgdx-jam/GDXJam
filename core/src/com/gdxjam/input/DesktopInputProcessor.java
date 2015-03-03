@@ -134,7 +134,7 @@ public class DesktopInputProcessor implements InputProcessor {
 			return true;
 
 		case Keys.SPACE:
-			Constants.pausedGUI = !Constants.pausedGUI;
+			Constants.isPaused = !Constants.isPaused;
 			return true;
 		case Keys.F12:
 			if(Gdx.app.getType() == ApplicationType.Desktop){

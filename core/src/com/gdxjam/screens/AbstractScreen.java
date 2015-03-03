@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.GL20;
 
 public abstract class AbstractScreen implements Screen {
 
+	public boolean paused = false;
+
 	@Override
 	public void show() {
 
