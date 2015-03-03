@@ -1,5 +1,6 @@
 package com.gdxjam;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -70,14 +71,10 @@ public class Assets implements Disposable {
 
 	public static class AssetFonts {
 
-		public final BitmapFont small;
-		public final BitmapFont medium;
-		public final BitmapFont large;
+		public final BitmapFont font;
 
 		public AssetFonts() {
-			small = skin.getFont("default-font");
-			medium = skin.getFont("default-font");
-			large = skin.getFont("default-font");
+			font = new BitmapFont(Gdx.files.internal("fonts/space.fnt"));
 		}
 
 	}

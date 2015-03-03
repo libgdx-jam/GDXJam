@@ -50,7 +50,7 @@ public class SelectorScreen extends AbstractScreen {
 		style.up = draw;
 		style.down = draw.tint(Color.DARK_GRAY);
 		style.checked = draw;
-		style.font = Assets.fonts.medium;
+		style.font = Assets.fonts.font;
 
 		TextButton btn = new TextButton(screen.getClass().getSimpleName(),
 				style);

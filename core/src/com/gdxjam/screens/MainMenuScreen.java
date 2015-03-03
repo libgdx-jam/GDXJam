@@ -53,7 +53,7 @@ public class MainMenuScreen extends AbstractScreen {
 		style.up = draw;
 		style.down = draw.tint(Color.DARK_GRAY);
 		style.checked = draw;
-		style.font = Assets.fonts.medium;
+		style.font = Assets.fonts.font;
 
 		TextButton btn = new TextButton("Exit", style);
 		btn.addListener(new ClickListener() {
@@ -74,7 +74,7 @@ public class MainMenuScreen extends AbstractScreen {
 		style.up = draw;
 		style.down = draw.tint(Color.DARK_GRAY);
 		style.checked = draw;
-		style.font = Assets.fonts.medium;
+		style.font = Assets.fonts.font;
 
 		TextButton btn = new TextButton(title, style);
 		btn.addListener(new ClickListener() {
