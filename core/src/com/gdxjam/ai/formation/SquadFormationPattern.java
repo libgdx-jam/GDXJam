@@ -12,6 +12,7 @@ public class SquadFormationPattern {
 	
 	public enum PatternType {
 		Line,
+		Column,
 		Square,
 		Ring,
 		V,
@@ -27,9 +28,10 @@ public class SquadFormationPattern {
 	public static void initPatterns(){
 		patterns = new ObjectMap<PatternType, FormationPattern<Vector2>>();
 		patterns.put(PatternType.Line, new LineFormationPattern(UNIT_RADIUS));
+		patterns.put(PatternType.Column, new ColumnFormationPattern(UNIT_RADIUS));
 		patterns.put(PatternType.Square, new SquareFormationPattern(UNIT_RADIUS));
 		patterns.put(PatternType.Ring, new DefensiveCircleFormationPattern<Vector2>(UNIT_RADIUS));
-		patterns.put(PatternType.V, new VFormationPattern(40 * MathUtils.degreesToRadians, UNIT_RADIUS));
+		patterns.put(PatternType.V, new VFormationPattern(30 * MathUtils.degreesToRadians, UNIT_RADIUS));
 		patterns.put(PatternType.Wedge, new WedgeFormationPattern(UNIT_RADIUS));
 	}
 	

@@ -22,8 +22,8 @@ public class SquareFormationPattern implements FormationPattern<Vector2>{
 
 	@Override
 	public Location<Vector2> calculateSlotLocation (Location<Vector2> outLocation, int slotNumber) {
-		int x = slotNumber % columns;
-		int y = slotNumber / columns;
+		int x = slotNumber / columns;
+		int y = slotNumber % columns;
 		float memberDiameter = memberRadius + memberRadius;
 		float offset = memberRadius * (columns - 1);
 		outLocation.getPosition().set(x * memberDiameter - offset, y * memberDiameter - offset);
