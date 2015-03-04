@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fma.FormationMember;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.gdxjam.utils.Location2;
 
@@ -12,6 +13,7 @@ public class SquadMemberComponent extends Component implements
 		FormationMember<Vector2>, Poolable {
 
 	public Entity squad;
+	public Body body;
 	
 	public Location2 targetLocation = new Location2();
 
@@ -19,8 +21,9 @@ public class SquadMemberComponent extends Component implements
 		targetLocation = new Location2(new Vector2(0, 0));
 	}
 	
-	public SquadMemberComponent init(Entity squad){
+	public SquadMemberComponent init(Entity squad, Body body){
 		this.squad = squad;
+		this.body = body;
 		return this;
 	}
 

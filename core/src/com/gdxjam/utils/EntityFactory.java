@@ -131,7 +131,8 @@ public class EntityFactory {
 				.sprite(squadFactionComp.faction == Faction.Player ? Assets.spacecraft.ship : Assets.spacecraft.enemy, Constants.unitRadius * 2, Constants.unitRadius * 2)
 				.getWithoutAdding();
 		
-		SquadMemberComponent squadMemberComp = engine.createComponent(SquadMemberComponent.class).init(squad);
+		PhysicsComponent physicsComp = Components.PHYSICS.get(entity);
+		SquadMemberComponent squadMemberComp = engine.createComponent(SquadMemberComponent.class).init(squad, physicsComp.body);
 		entity.add(squadMemberComp);
 		squadComp.addMember(entity);
 		

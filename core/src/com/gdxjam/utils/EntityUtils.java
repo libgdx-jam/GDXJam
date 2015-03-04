@@ -51,24 +51,24 @@ public class EntityUtils {
 		return null;
 	}
 	
-	@Deprecated
-	public static void addToSquad(Entity entity, Entity squad){
-		FactionComponent entityFactionComp = Components.FACTION.get(entity);
-		FactionComponent squadFactionComp = Components.FACTION.get(entity);
-		
-		if(entityFactionComp.faction == squadFactionComp.faction){
-			SquadComponent squadComp = Components.SQUAD.get(squad);
-			
-			entity.add(engine.createComponent(SquadMemberComponent.class).init(squad));
-			
-			StateMachineComponent stateMachineComp = Components.STATE_MACHINE.get(entity);
-			stateMachineComp.stateMachine.changeState(UnitState.FORMATION);	//TODO set state based on squad state
-			squadComp.addMember(entity);
-			
-			if(squadFactionComp.faction == Faction.Player)
-				guiSystem.updateSquad(squad);
-		}
-	}
+//	@Deprecated
+//	public static void addToSquad(Entity entity, Entity squad){
+//		FactionComponent entityFactionComp = Components.FACTION.get(entity);
+//		FactionComponent squadFactionComp = Components.FACTION.get(entity);
+//		
+//		if(entityFactionComp.faction == squadFactionComp.faction){
+//			SquadComponent squadComp = Components.SQUAD.get(squad);
+//			
+//			entity.add(engine.createComponent(SquadMemberComponent.class).init(squad));
+//			
+//			StateMachineComponent stateMachineComp = Components.STATE_MACHINE.get(entity);
+//			stateMachineComp.stateMachine.changeState(UnitState.FORMATION);	//TODO set state based on squad state
+//			squadComp.addMember(entity);
+//			
+//			if(squadFactionComp.faction == Faction.Player)
+//				guiSystem.updateSquad(squad);
+//		}
+//	}
 	
 	public static void setSelectedSquadTarget(Vector2 target){
 		ImmutableArray<Entity> squads = engine.getEntitiesFor(Family.all(SquadComponent.class).get());

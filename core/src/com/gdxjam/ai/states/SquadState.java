@@ -12,7 +12,7 @@ import com.gdxjam.utils.EntityUtils;
 
 public enum SquadState implements State<Entity>{
 	
-	MOVE () {
+	HARVEST () {
 
 	},
 	
