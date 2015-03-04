@@ -27,7 +27,7 @@ public class SplashScreen extends AbstractScreen {
 		logo = new Texture(Gdx.files.internal("logo.png"));
 		gamelogo = new Texture(Gdx.files.internal("gamelogospin.png"));
 		outpostLogo = new Texture(Gdx.files.internal("outpostgamelogo.png"));
-		outpostLogo.setFilter(TextureFilter.Linear, TextureFilter.Nearest);
+		outpostLogo.setFilter(TextureFilter.Nearest, TextureFilter.Linear);
 
 		stage = new Stage();
 		table = new Table();
@@ -67,12 +67,12 @@ public class SplashScreen extends AbstractScreen {
 
 		default:
 		case RELEASE:
-			if (alpha >= 1) {
-				if (Assets.getManager().update()) {
-					Assets.create();
-					GameManager.setScreen(new MainMenuScreen());
-				}
-			}
+			// if (alpha >= 1) {
+			// if (Assets.getManager().update()) {
+			// Assets.create();
+			// GameManager.setScreen(new MainMenuScreen());
+			// }
+			// }
 			break;
 
 		case DEV:
