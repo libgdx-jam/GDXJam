@@ -49,10 +49,10 @@ public class GameScreen extends AbstractScreen {
 		engine.getSystem(CameraSystem.class).getCamera().position.set(
 				width * 0.5f, height * 0.5f, 0);
 		engine.getSystem(CameraSystem.class).setWorldBounds(width, height);
-		
+
 	}
-	
-	public void createTestEnemies(){
+
+	public void createTestEnemies() {
 	}
 
 	@Override
@@ -87,6 +87,8 @@ public class GameScreen extends AbstractScreen {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
+		pauseOverlay.resize(width, height);
+		engine.getSystem(GUISystem.class).resize(width, height);
 	}
 
 }
