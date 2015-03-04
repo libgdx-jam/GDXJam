@@ -71,11 +71,11 @@ public class WorldGenerator {
 			Vector2 angleVec = new Vector2(distance, 0.0f).setAngle(initalAngle
 					+ seperationAngle * i);
 			Vector2 position = center.cpy().add(angleVec);
-			createSquad(position, Faction.Player);
+			createSquad(position, Constants.playerFaction);
 		}
 
 		
-		createSquad(center.cpy().add(16, 16), Faction.Enemy);
+		createSquad(center.cpy().add(16, 16), Constants.enemyFaction);
 	}
 
 	public void createBackground() {

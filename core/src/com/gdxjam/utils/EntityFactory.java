@@ -67,9 +67,9 @@ public class EntityFactory {
 		Entity entity = buildEntity(position)
 				.physicsBody(BodyType.DynamicBody)
 				.circleCollider(Constants.mothershipRadius, 1.0f)
-				.sprite(Assets.spacecraft.outpost,
+				.sprite(Assets.spacecraft.motherships.get(Constants.playerFaction.ordinal()),
 						Constants.mothershipRadius * 2,
-						Constants.mothershipRadius * 2).faction(Faction.Player)
+						Constants.mothershipRadius * 2).faction(Constants.playerFaction)
 				.health(1000).addToEngine();
 		return entity;
 	}
@@ -79,7 +79,7 @@ public class EntityFactory {
 				.physicsBody(BodyType.DynamicBody)
 				.circleCollider(radius, 50.0f)
 				.resource(5)
-				.faction(Faction.Neutral)
+				.faction(Faction.NONE)
 				.sprite(Assets.space.asteroids.random(), radius * 2, radius * 2)
 				.addToEngine();
 		return entity;
@@ -97,8 +97,7 @@ public class EntityFactory {
 				.faction(faction)
 				.target()
 				.weapon(20, 1.0f)
-				.sprite(faction == Faction.Player ? Assets.spacecraft.ship
-						: Assets.spacecraft.enemy, Constants.unitRadius * 2,
+				.sprite(Assets.spacecraft.ships.get(faction.ordinal()), Constants.unitRadius * 2,
 						Constants.unitRadius * 2).getWithoutAdding();
 
 		Components.STEERABLE.get(entity).setIndependentFacing(true);
@@ -122,7 +121,7 @@ public class EntityFactory {
 
 	public static Entity createUnit(Vector2 position, Entity squad) {
 		SquadComponent squadComp = Components.SQUAD.get(squad);
-		FactionComponent squadFactionComp = Components.FACTION.get(squad);
+		Faction faction = Components.FACTION.get(squad).faction;
 
 		Entity entity = buildEntity(position)
 				.physicsBody(BodyType.DynamicBody)
@@ -131,11 +130,10 @@ public class EntityFactory {
 				.steerable()
 				.steeringBehavior()
 				.health(100)
-				.faction(squadFactionComp.faction)
+				.faction(faction)
 				.target()
 				.weapon(20, 1.0f)
-				.sprite(squadFactionComp.faction == Faction.Player ? Assets.spacecraft.ship
-						: Assets.spacecraft.enemy, Constants.unitRadius * 2,
+				.sprite(Assets.spacecraft.ships.get(faction.ordinal()), Constants.unitRadius * 2,
 						Constants.unitRadius * 2) //
 				.addParticle()//
 				.getWithoutAdding();

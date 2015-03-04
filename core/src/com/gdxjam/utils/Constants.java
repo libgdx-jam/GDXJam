@@ -1,5 +1,7 @@
 package com.gdxjam.utils;
 
+import com.gdxjam.components.FactionComponent.Faction;
+
 public class Constants {
 
 	public static enum BUILD {
@@ -26,5 +28,8 @@ public class Constants {
 	// Supports the 16:9 ratio
 	public static final float VIEWPORT_WIDTH = 64;
 	public static final float VIEWPORT_HEIGHT = 36;
+	
+	public static Faction playerFaction = Faction.FACTION0;	//Move this somewhere better / might not be constant
+	public static Faction enemyFaction = Faction.FACTION1;	//same deal
 
 }
