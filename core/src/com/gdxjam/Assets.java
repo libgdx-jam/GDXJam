@@ -63,14 +63,12 @@ public class Assets implements Disposable {
 	}
 
 	public static class AssetSpacecraft {
-		public final AtlasRegion outpost;
-		public final AtlasRegion ship;
-		public final AtlasRegion enemy;
+		public final Array<AtlasRegion> motherships;
+		public final Array<AtlasRegion> ships;
 
 		public AssetSpacecraft(TextureAtlas atlas) {
-			outpost = atlas.findRegion("outpost");
-			ship = atlas.findRegion("ship");
-			enemy = atlas.findRegion("enemy");
+			motherships = atlas.findRegions("mothership");
+			ships = atlas.findRegions("ship");
 		}
 	}
 

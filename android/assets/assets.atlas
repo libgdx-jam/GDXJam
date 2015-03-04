@@ -6,7 +6,7 @@ filter: Nearest,Nearest
 repeat: none
 asteroid
   rotate: false
-  xy: 204, 5
+  xy: 536, 5
   size: 162, 151
   orig: 162, 151
   offset: 0, 0
@@ -41,7 +41,7 @@ asteroid
   index: 4
 asteroid
   rotate: false
-  xy: 368, 52
+  xy: 700, 52
   size: 97, 104
   orig: 97, 104
   offset: 0, 0
@@ -55,7 +55,7 @@ asteroid
   index: 5
 asteroid
   rotate: false
-  xy: 467, 55
+  xy: 799, 55
   size: 96, 101
   orig: 96, 101
   offset: 0, 0
@@ -67,13 +67,6 @@ asteroid
   orig: 93, 103
   offset: 0, 0
   index: 6
-asteroid
-  rotate: false
-  xy: 565, 60
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: 1
 asteroid
   rotate: false
   xy: 1932, 1546
@@ -132,56 +125,49 @@ asteroid
   index: 17
 asteroid
   rotate: false
-  xy: 663, 66
+  xy: 1631, 622
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 1
+asteroid
+  rotate: false
+  xy: 2, 7
   size: 93, 90
   orig: 93, 90
   offset: 0, 0
   index: 0
 asteroid
   rotate: false
-  xy: 1631, 635
+  xy: 97, 14
   size: 90, 83
   orig: 90, 83
   offset: 0, 0
   index: 9
 bulletblue
   rotate: false
-  xy: 758, 73
+  xy: 1729, 635
   size: 49, 83
   orig: 49, 83
   offset: 0, 0
   index: -1
 bulletred
   rotate: false
-  xy: 1723, 635
+  xy: 189, 14
   size: 49, 83
   orig: 49, 83
   offset: 0, 0
   index: -1
 bulletyellow
   rotate: false
-  xy: 809, 73
+  xy: 240, 14
   size: 49, 83
   orig: 49, 83
   offset: 0, 0
   index: -1
-enemy
-  rotate: false
-  xy: 2, 42
-  size: 200, 114
-  orig: 200, 114
-  offset: 0, 0
-  index: -1
-enemymothership
-  rotate: false
-  xy: 2, 158
-  size: 904, 862
-  orig: 904, 862
-  offset: 0, 0
-  index: -1
 hotkey
   rotate: false
-  xy: 368, 2
+  xy: 700, 2
   size: 48, 48
   split: 14, 16, 14, 16
   pad: 13, 16, 15, 13
@@ -190,7 +176,7 @@ hotkey
   index: -1
 hotkeyleft
   rotate: false
-  xy: 418, 2
+  xy: 750, 2
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
@@ -202,6 +188,13 @@ hotkeyright
   orig: 48, 48
   offset: 0, 0
   index: -1
+logo
+  rotate: false
+  xy: 2, 99
+  size: 330, 57
+  orig: 330, 57
+  offset: 0, 0
+  index: -1
 middlehotkey
   rotate: false
   xy: 1007, 972
@@ -209,13 +202,20 @@ middlehotkey
   orig: 2, 48
   offset: 0, 0
   index: -1
-outpost
+mothership
+  rotate: false
+  xy: 2, 158
+  size: 904, 862
+  orig: 904, 862
+  offset: 0, 0
+  index: 1
+mothership
   rotate: false
   xy: 1028, 1446
   size: 600, 600
   orig: 600, 600
   offset: 0, 0
-  index: -1
+  index: 0
 planet
   rotate: false
   xy: 1630, 1746
@@ -306,7 +306,14 @@ ship
   size: 470, 230
   orig: 470, 230
   offset: 0, 0
-  index: -1
+  index: 0
+ship
+  rotate: false
+  xy: 334, 42
+  size: 200, 114
+  orig: 200, 114
+  offset: 0, 0
+  index: 1
 ship1
   rotate: false
   xy: 1932, 1862
