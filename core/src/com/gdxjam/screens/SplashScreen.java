@@ -67,12 +67,12 @@ public class SplashScreen extends AbstractScreen {
 
 		default:
 		case RELEASE:
-			// if (alpha >= 1) {
-			// if (Assets.getManager().update()) {
-			// Assets.create();
-			// GameManager.setScreen(new MainMenuScreen());
-			// }
-			// }
+			if (alpha >= 1) {
+				if (Assets.getManager().update()) {
+					Assets.create();
+					GameManager.setScreen(new MainMenuScreen());
+				}
+			}
 			break;
 
 		case DEV:
