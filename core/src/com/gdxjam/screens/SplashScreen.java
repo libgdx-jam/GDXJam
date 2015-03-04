@@ -31,7 +31,7 @@ public class SplashScreen extends AbstractScreen {
 			if (alpha >= 1) {
 				if (Assets.getManager().update()) {
 					Assets.create();
-					GameManager.setScreen(new SelectorScreen());
+					GameManager.setScreen(new MainMenuScreen());
 				}
 			}
 			break;
@@ -41,7 +41,7 @@ public class SplashScreen extends AbstractScreen {
 			alpha = 1;
 			if (Assets.getManager().update()) {
 				Assets.create();
-				GameManager.setScreen(new SelectorScreen());
+				GameManager.setScreen(new MainMenuScreen());
 			}
 			break;
 		}
