@@ -2,11 +2,17 @@ package com.gdxjam.utils;
 
 public class Constants {
 
+	public static enum BUILD {
+		DEV, RELEASE;
+	}
+
+	public static final BUILD build = BUILD.DEV;
+
 	public static boolean isPaused = false;
 
 	public static final int maxSquads = 5;
 	public static final int maxSquadMembers = 20;
-	
+
 	public static final boolean friendlyFire = false;
 
 	public static final float unitRadius = 0.5f;
@@ -20,4 +26,5 @@ public class Constants {
 	// Supports the 16:9 ratio
 	public static final float VIEWPORT_WIDTH = 64;
 	public static final float VIEWPORT_HEIGHT = 36;
+
 }
