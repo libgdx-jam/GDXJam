@@ -65,6 +65,7 @@ public class SplashScreen extends AbstractScreen {
 
 		switch (Constants.build) {
 
+		default:
 		case RELEASE:
 			if (alpha >= 1) {
 				if (Assets.getManager().update()) {
@@ -74,7 +75,6 @@ public class SplashScreen extends AbstractScreen {
 			}
 			break;
 
-		default:
 		case DEV:
 			alpha = 1;
 			if (Assets.getManager().update()) {
