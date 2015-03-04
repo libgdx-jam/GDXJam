@@ -1,5 +1,6 @@
 package com.gdxjam.base.desktop;
 
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
@@ -8,8 +9,6 @@ import com.gdxjam.Assets;
 import com.gdxjam.Main;
 
 public class DesktopLauncher {
-
-
 
 	public static void main(String[] arg) {
 
@@ -29,6 +28,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 1280;
 		config.height = 720;
+		config.addIcon("icon.png", FileType.Internal);
 
 		new LwjglApplication(new Main(), config);
 
