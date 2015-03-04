@@ -6,7 +6,7 @@ public class Constants {
 		DEV, RELEASE;
 	}
 
-	public static final BUILD build = BUILD.DEV;
+	public static final BUILD build = BUILD.RELEASE;
 
 	public static boolean isPaused = false;
 

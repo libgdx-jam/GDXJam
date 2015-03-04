@@ -2,22 +2,60 @@ package com.gdxjam.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.gdxjam.Assets;
 import com.gdxjam.GameManager;
 import com.gdxjam.utils.Constants;
 
 public class SplashScreen extends AbstractScreen {
 
-	SpriteBatch batch;
 	Texture logo;
+	Texture gamelogo, outpostLogo;
 	float alpha = 0;
+
+	Stage stage;
+	Table table;
 
 	@Override
 	public void show() {
 		super.show();
-		batch = new SpriteBatch();
 		logo = new Texture(Gdx.files.internal("logo.png"));
+		gamelogo = new Texture(Gdx.files.internal("gamelogospin.png"));
+		outpostLogo = new Texture(Gdx.files.internal("outpostgamelogo.png"));
+		outpostLogo.setFilter(TextureFilter.Linear, TextureFilter.Nearest);
+
+		stage = new Stage();
+		table = new Table();
+		table.setFillParent(true);
+		// table.debug();
+
+		Image outpost = new Image(outpostLogo);
+		outpost.setOrigin(outpost.getWidth() / 2, outpost.getHeight() / 2);
+		outpost.addAction(new Fade());
+		outpost.addAction(new Action() {
+			@Override
+			public boolean act(float delta) {
+				getActor().rotateBy(-5f * delta);
+				return false;
+			}
+		});
+
+		Image rion = new Image(gamelogo);
+		rion.addAction(new Fade());
+		Image gdxjam = new Image(logo);
+		gdxjam.addAction(new Fade());
+
+		// Add everything to stage
+		table.add(outpost);
+		table.add(rion);
+		table.row();
+		table.add(gdxjam).colspan(2);
+		stage.addActor(table);
 		Assets.load();
 	}
 
@@ -52,11 +90,28 @@ public class SplashScreen extends AbstractScreen {
 		else
 			alpha += 0.25f * delta;
 
-		batch.begin();
-		batch.setColor(1, 1, 1, alpha);
-		batch.draw(logo, (Gdx.graphics.getWidth() / 2) - (logo.getWidth() / 2),
-				(Gdx.graphics.getHeight() / 2) - (logo.getHeight() / 2));
-		batch.end();
+		stage.act();
+		stage.draw();
+
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		stage.dispose();
+		logo.dispose();
+		gamelogo.dispose();
+		outpostLogo.dispose();
+	}
+
+	public class Fade extends Action {
+
+		@Override
+		public boolean act(float delta) {
+			getActor().setColor(1, 1, 1, alpha);
+			return false;
+		}
+
 	}
 
 }
