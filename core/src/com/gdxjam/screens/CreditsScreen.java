@@ -1,6 +1,6 @@
 package com.gdxjam.screens;
 
-public class OptionsScreen extends AbstractScreen {
+public class CreditsScreen extends AbstractScreen {
 
 	@Override
 	public void show() {

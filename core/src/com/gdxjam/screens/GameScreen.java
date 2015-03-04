@@ -7,7 +7,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.GameManager;
-import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.ecs.EntityManager;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
@@ -25,7 +24,6 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		super.show();
 		engine = GameManager.initEngine();
 		createWorld(256, 256);
 		pauseOverlay = new PauseOverlay();
@@ -69,26 +67,28 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void dispose() {
-		super.dispose();
 		pauseOverlay.dispose();
 
 	}
 
 	@Override
 	public void pause() {
-		super.pause();
 	}
 
 	@Override
 	public void resume() {
-		super.resume();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		super.resize(width, height);
 		pauseOverlay.resize(width, height);
 		engine.getSystem(GUISystem.class).resize(width, height);
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -22,7 +22,6 @@ public class MainMenuScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		super.show();
 		stage = new Stage();
 		table = new Table();
 		table.setFillParent(true);
@@ -102,25 +101,28 @@ public class MainMenuScreen extends AbstractScreen {
 		stage.act();
 	}
 
-	// @Override
-	// public void newGame() {
-	// GameManager.setScreen(new NewGameScreen());
-	// }
-	//
-	// @Override
-	// public void loadGame() {
-	// GameManager.setScreen(new LoadGameScreen());
-	// }
-	//
-	// @Override
-	// public void options() {
-	// GameManager.setScreen(new OptionsScreen());
-	// }
-	//
-	// @Override
-	// public void exit() {
-	// Gdx.app.exit();
-	//
-	// }
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+
+	}
 
 }

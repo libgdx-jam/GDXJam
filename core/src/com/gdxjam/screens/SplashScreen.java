@@ -23,7 +23,6 @@ public class SplashScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		super.show();
 		logo = new Texture(Gdx.files.internal("logo.png"));
 		gamelogo = new Texture(Gdx.files.internal("gamelogospin.png"));
 		outpostLogo = new Texture(Gdx.files.internal("outpostgamelogo.png"));
@@ -97,7 +96,6 @@ public class SplashScreen extends AbstractScreen {
 
 	@Override
 	public void dispose() {
-		super.dispose();
 		stage.dispose();
 		logo.dispose();
 		gamelogo.dispose();
@@ -111,6 +109,30 @@ public class SplashScreen extends AbstractScreen {
 			getActor().setColor(1, 1, 1, alpha);
 			return false;
 		}
+
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
 
 	}
 

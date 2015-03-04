@@ -10,9 +10,7 @@ public abstract class AbstractScreen implements Screen {
 	public boolean paused = false;
 
 	@Override
-	public void show() {
-
-	}
+	public abstract void show();
 
 	@Override
 	public void render(float delta) {
@@ -21,29 +19,18 @@ public abstract class AbstractScreen implements Screen {
 	}
 
 	@Override
-	public void resize(int width, int height) {
-	}
+	public abstract void resize(int width, int height);
 
 	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void pause();
 
 	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void resume();
 
 	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void hide();
 
 	@Override
-	public void dispose() {
-	}
+	public abstract void dispose();
 
 }
