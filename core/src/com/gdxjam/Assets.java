@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -34,6 +37,7 @@ public class Assets implements Disposable {
 	public static AssetSpace space;
 	public static AssetSpacecraft spacecraft;
 	public static AssetBullets bullets;
+	public static AssetParticles particles;
 	public static Skin skin;
 
 	public static void load() {
@@ -50,6 +54,7 @@ public class Assets implements Disposable {
 		fonts = new AssetFonts();
 		space = new AssetSpace(atlas);
 		spacecraft = new AssetSpacecraft(atlas);
+		particles = new AssetParticles();
 	}
 
 	@Override
@@ -66,6 +71,25 @@ public class Assets implements Disposable {
 			outpost = atlas.findRegion("outpost");
 			ship = atlas.findRegion("ship");
 			enemy = atlas.findRegion("enemy");
+		}
+	}
+
+	public static class AssetParticles {
+		ParticleEffectPool effectPool;
+		public Array<ParticleEffect> effects;
+
+		public AssetParticles() {
+			effects = new Array<ParticleEffect>();
+			ParticleEffect effect = new ParticleEffect();
+			effect.load(Gdx.files.internal("particles/fire.p"),
+					Gdx.files.internal(""));
+			effectPool = new ParticleEffectPool(effect, 0, 99);
+		}
+
+		public PooledEffect getEffect() {
+			PooledEffect effect = effectPool.obtain();
+			effects.add(effect);
+			return effect;
 		}
 	}
 

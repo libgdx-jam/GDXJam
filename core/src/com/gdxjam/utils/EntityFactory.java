@@ -26,6 +26,7 @@ import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.ParalaxComponent;
+import com.gdxjam.components.ParticleComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.ProjectileComponent;
 import com.gdxjam.components.ResourceComponent;
@@ -48,14 +49,15 @@ import com.gdxjam.systems.PhysicsSystem;
 
 public class EntityFactory {
 
-	private static final String TAG = "[" + EntityFactory.class.getSimpleName() + "]";
+	private static final String TAG = "[" + EntityFactory.class.getSimpleName()
+			+ "]";
 
 	private static PooledEngine engine;
 	private static PhysicsSystem physicsSystem;
 	private static EntityBuilder entityBuilder;
 
 	public static EntityBuilder buildEntity(Vector2 position) {
-		if(entityBuilder == null){
+		if (entityBuilder == null) {
 			entityBuilder = new EntityBuilder();
 		}
 		return entityBuilder.reset(position);
@@ -65,10 +67,10 @@ public class EntityFactory {
 		Entity entity = buildEntity(position)
 				.physicsBody(BodyType.DynamicBody)
 				.circleCollider(Constants.mothershipRadius, 1.0f)
-				.sprite(Assets.spacecraft.outpost, Constants.mothershipRadius * 2, Constants.mothershipRadius * 2)
-				.faction(Faction.Player)
-				.health(1000)
-				.addToEngine();
+				.sprite(Assets.spacecraft.outpost,
+						Constants.mothershipRadius * 2,
+						Constants.mothershipRadius * 2).faction(Faction.Player)
+				.health(1000).addToEngine();
 		return entity;
 	}
 
@@ -82,11 +84,11 @@ public class EntityFactory {
 				.addToEngine();
 		return entity;
 	}
-	
+
 	@Deprecated
 	public static Entity createUnit(Vector2 position, Faction faction) {
 		Entity entity = buildEntity(position)
-			   .physicsBody(BodyType.DynamicBody)
+				.physicsBody(BodyType.DynamicBody)
 				.circleCollider(Constants.unitRadius, 1.0f)
 				.damping(1, 0)
 				.steerable()
@@ -95,31 +97,35 @@ public class EntityFactory {
 				.faction(faction)
 				.target()
 				.weapon(20, 1.0f)
-				.sprite(faction == Faction.Player ? Assets.spacecraft.ship : Assets.spacecraft.enemy, Constants.unitRadius * 2, Constants.unitRadius * 2)
-				.getWithoutAdding();
-		
+				.sprite(faction == Faction.Player ? Assets.spacecraft.ship
+						: Assets.spacecraft.enemy, Constants.unitRadius * 2,
+						Constants.unitRadius * 2).getWithoutAdding();
+
 		Components.STEERABLE.get(entity).setIndependentFacing(true);
 
-		entity.add(engine.createComponent(StateMachineComponent.class).init(entity));
+		entity.add(engine.createComponent(StateMachineComponent.class).init(
+				entity));
 
 		engine.addEntity(entity);
 		return entity;
 	}
-	
-	public static Entity createUnit(Entity squad){
+
+	public static Entity createUnit(Entity squad) {
 		Vector2 squadPos = Components.STEERABLE.get(squad).getPosition();
-		Vector2 position = new Vector2(128, 128);	//TODO dependant on world size
+		Vector2 position = new Vector2(128, 128); // TODO dependant on world
+													// size
 		float angle = squadPos.angleRad(position);
-		position.add(MathUtils.cos(angle) + (Constants.unitRadius * 2), MathUtils.sin(angle) + (Constants.unitRadius * 2));
+		position.add(MathUtils.cos(angle) + (Constants.unitRadius * 2),
+				MathUtils.sin(angle) + (Constants.unitRadius * 2));
 		return createUnit(position, squad);
 	}
-	
+
 	public static Entity createUnit(Vector2 position, Entity squad) {
 		SquadComponent squadComp = Components.SQUAD.get(squad);
 		FactionComponent squadFactionComp = Components.FACTION.get(squad);
-		
+
 		Entity entity = buildEntity(position)
-			   .physicsBody(BodyType.DynamicBody)
+				.physicsBody(BodyType.DynamicBody)
 				.circleCollider(Constants.unitRadius, 1.0f)
 				.damping(1, 0)
 				.steerable()
@@ -128,98 +134,110 @@ public class EntityFactory {
 				.faction(squadFactionComp.faction)
 				.target()
 				.weapon(20, 1.0f)
-				.sprite(squadFactionComp.faction == Faction.Player ? Assets.spacecraft.ship : Assets.spacecraft.enemy, Constants.unitRadius * 2, Constants.unitRadius * 2)
+				.sprite(squadFactionComp.faction == Faction.Player ? Assets.spacecraft.ship
+						: Assets.spacecraft.enemy, Constants.unitRadius * 2,
+						Constants.unitRadius * 2) //
+				.addParticle()//
 				.getWithoutAdding();
-		
+
 		PhysicsComponent physicsComp = Components.PHYSICS.get(entity);
-		SquadMemberComponent squadMemberComp = engine.createComponent(SquadMemberComponent.class).init(squad, physicsComp.body);
+		SquadMemberComponent squadMemberComp = engine.createComponent(
+				SquadMemberComponent.class).init(squad, physicsComp.body);
 		entity.add(squadMemberComp);
 		squadComp.addMember(entity);
-		
+
 		Components.STEERABLE.get(entity).setIndependentFacing(true);
-		StateMachineComponent stateMachineComponent = engine.createComponent(StateMachineComponent.class).init(entity);
-		stateMachineComponent.stateMachine.changeState(UnitState.FORMATION);	//TODO set state based on squad state
+		StateMachineComponent stateMachineComponent = engine.createComponent(
+				StateMachineComponent.class).init(entity);
+		stateMachineComponent.stateMachine.changeState(UnitState.FORMATION); // TODO
+																				// set
+																				// state
+																				// based
+																				// on
+																				// squad
+																				// state
 		entity.add(stateMachineComponent);
-		
+
 		engine.addEntity(entity);
 		return entity;
 	}
-	
-	public static Entity createSquad(Vector2 position, Faction faction){
-		Entity entity = buildEntity(position)
-			.physicsBody(BodyType.DynamicBody)
-			.circleSensor(0.1f)
-			.faction(faction)
-			.target()
-			.steeringBehavior()
-			.stateMachine()
-			.getWithoutAdding();
-	
-		SteerableComponent steerable = engine.createComponent(SteerableComponent.class).init(Components.PHYSICS.get(entity).body);
-		SquadComponent squadComp = engine.createComponent(SquadComponent.class).init(steerable);
+
+	public static Entity createSquad(Vector2 position, Faction faction) {
+		Entity entity = buildEntity(position).physicsBody(BodyType.DynamicBody)
+				.circleSensor(0.1f).faction(faction).target()
+				.steeringBehavior().stateMachine().getWithoutAdding();
+
+		SteerableComponent steerable = engine.createComponent(
+				SteerableComponent.class).init(
+				Components.PHYSICS.get(entity).body);
+		SquadComponent squadComp = engine.createComponent(SquadComponent.class)
+				.init(steerable);
 		squadComp.targetLocation.getPosition().set(position);
 
-		// A good rule of thumb is to make the maximum speed of the formation around
-		// half that of the members. We also give the anchor point far less acceleration.
+		// A good rule of thumb is to make the maximum speed of the formation
+		// around
+		// half that of the members. We also give the anchor point far less
+		// acceleration.
 		steerable.setMaxLinearSpeed(SteerableComponent.MAX_LINEAR_SPEED / 2);
-		steerable.setMaxLinearAcceleration(SteerableComponent.MAX_LINEAR_ACCELERATION / 10);
-		
+		steerable
+				.setMaxLinearAcceleration(SteerableComponent.MAX_LINEAR_ACCELERATION / 10);
+
 		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable)
-			.setTarget(squadComp.targetLocation)
-			.setTimeToTarget(0.001f)
-			.setDecelerationRadius(2f)
-			.setArrivalTolerance(0.0001f);
+				.setTarget(squadComp.targetLocation).setTimeToTarget(0.001f)
+				.setDecelerationRadius(2f).setArrivalTolerance(0.0001f);
 		SteeringBehavior<Vector2> sb = arriveSB;
-		
-		
+
 		if (steerable.isIndependentFacing()) {
-			LookWhereYouAreGoing<Vector2> lookWhereYouAreGoingSB = new LookWhereYouAreGoing<Vector2>(steerable) //
-				.setTimeToTarget(0.1f) //
-				.setAlignTolerance(0.001f) //
-				.setDecelerationRadius(MathUtils.PI);
-			BlendedSteering<Vector2> blendedSteering = new BlendedSteering<Vector2>(steerable) //
-				.setLimiter(NullLimiter.NEUTRAL_LIMITER) //
-				.add(arriveSB, 1f) //
-				.add(lookWhereYouAreGoingSB, 1f);
+			LookWhereYouAreGoing<Vector2> lookWhereYouAreGoingSB = new LookWhereYouAreGoing<Vector2>(
+					steerable) //
+					.setTimeToTarget(0.1f) //
+					.setAlignTolerance(0.001f) //
+					.setDecelerationRadius(MathUtils.PI);
+			BlendedSteering<Vector2> blendedSteering = new BlendedSteering<Vector2>(
+					steerable) //
+					.setLimiter(NullLimiter.NEUTRAL_LIMITER) //
+					.add(arriveSB, 1f) //
+					.add(lookWhereYouAreGoingSB, 1f);
 			sb = blendedSteering;
 		}
-		
+
 		Components.STEERING_BEHAVIOR.get(entity).setBehavior(sb);
 
 		entity.add(squadComp);
 		entity.add(steerable);
-		
+
 		engine.addEntity(entity);
 		return entity;
 	}
-	
-	public static Entity createProjectile(Vector2 position, Vector2 velocity, Faction faction, int damage){
+
+	public static Entity createProjectile(Vector2 position, Vector2 velocity,
+			Faction faction, int damage) {
 		Entity entity = buildEntity(position)
-			.physicsBody(BodyType.KinematicBody)
-			.circleSensor(Constants.projectileRadius)
-			.faction(faction)
-			.sprite(Assets.bullets.yellow, Constants.projectileRadius * 2, Constants.projectileRadius * 2)
-			.getWithoutAdding();
-		
-		ProjectileComponent projectileComp = engine.createComponent(ProjectileComponent.class).init(damage);
+				.physicsBody(BodyType.KinematicBody)
+				.circleSensor(Constants.projectileRadius)
+				.faction(faction)
+				.sprite(Assets.bullets.yellow, Constants.projectileRadius * 2,
+						Constants.projectileRadius * 2).getWithoutAdding();
+
+		ProjectileComponent projectileComp = engine.createComponent(
+				ProjectileComponent.class).init(damage);
 		entity.add(projectileComp);
-		
-		PhysicsComponent physicsComp= Components.PHYSICS.get(entity);
+
+		PhysicsComponent physicsComp = Components.PHYSICS.get(entity);
 		physicsComp.body.setBullet(true);
 		physicsComp.body.setLinearVelocity(velocity);
 		physicsComp.body.setTransform(position, velocity.angle());
-		
+
 		engine.addEntity(entity);
 		return entity;
 	}
-	
-	public static Entity createBoundry(Vector2 start, Vector2 end){
-		Entity entity = buildEntity(new Vector2(0, 0))
-			.physicsBody(BodyType.StaticBody)
-			.getWithoutAdding();
+
+	public static Entity createBoundry(Vector2 start, Vector2 end) {
+		Entity entity = buildEntity(new Vector2(0, 0)).physicsBody(
+				BodyType.StaticBody).getWithoutAdding();
 		EdgeShape edge = new EdgeShape();
 		edge.set(start, end);
-		
+
 		Components.PHYSICS.get(entity).body.createFixture(edge, 1.0f);
 		engine.addEntity(entity);
 		return entity;
@@ -229,7 +247,7 @@ public class EntityFactory {
 			float height, TextureRegion region, int layer) {
 		Entity entity = buildEntity(position).sprite(region, width, height)
 				.getWithoutAdding();
-		
+
 		entity.add(engine.createComponent(ParalaxComponent.class).init(
 				position.x, position.y, width, height, layer));
 
@@ -260,10 +278,21 @@ public class EntityFactory {
 		public Vector2 position;
 		public Entity entity;
 
-		public EntityBuilder reset(Vector2 position){
+		public EntityBuilder reset(Vector2 position) {
 			this.position = position;
 			entity = engine.createEntity();
 			return this;
+		}
+
+		public EntityBuilder addParticle() {
+
+			ParticleComponent p = engine.createComponent(
+					ParticleComponent.class).init(Assets.particles.getEffect());
+			p.setPosition(position.x, position.y);
+			entity.add(p);
+
+			return this;
+
 		}
 
 		public EntityBuilder physicsBody(BodyType type) {
@@ -278,53 +307,57 @@ public class EntityFactory {
 			entity.add(physics);
 			return this;
 		}
-		
-		public EntityBuilder damping(float angular, float linear){
-			if(Components.PHYSICS.has(entity)){
+
+		public EntityBuilder damping(float angular, float linear) {
+			if (Components.PHYSICS.has(entity)) {
 				PhysicsComponent physics = Components.PHYSICS.get(entity);
 				physics.body.setAngularDamping(angular);
 				physics.body.setLinearDamping(linear);
-			} 
-			else{
+			} else {
 				Gdx.app.error(TAG, "entity is missing physics component!");
 			}
 			return this;
 		}
-		
-		public EntityBuilder stateMachine(){
-			StateMachineComponent stateMachineComp = engine.createComponent(StateMachineComponent.class).init(entity);
+
+		public EntityBuilder stateMachine() {
+			StateMachineComponent stateMachineComp = engine.createComponent(
+					StateMachineComponent.class).init(entity);
 			entity.add(stateMachineComp);
 			return this;
 		}
-		
-		public EntityBuilder steeringBehavior(){
-			SteeringBehaviorComponent behaviorComp = engine.createComponent(SteeringBehaviorComponent.class);
+
+		public EntityBuilder steeringBehavior() {
+			SteeringBehaviorComponent behaviorComp = engine
+					.createComponent(SteeringBehaviorComponent.class);
 			entity.add(behaviorComp);
 			return this;
 		}
-		
-		public EntityBuilder resource(int amount){
-			ResourceComponent resourceComp = engine.createComponent(ResourceComponent.class);
+
+		public EntityBuilder resource(int amount) {
+			ResourceComponent resourceComp = engine
+					.createComponent(ResourceComponent.class);
 			resourceComp.amount = amount;
 			entity.add(resourceComp);
-			
+
 			return this;
 		}
-		
-		public EntityBuilder target(){
+
+		public EntityBuilder target() {
 			entity.add(engine.createComponent(TargetComponent.class));
 			return this;
 		}
-		
-		public EntityBuilder weapon(int damage, float attackSpeed){
-			entity.add(engine.createComponent(WeaponComponent.class).init(damage, attackSpeed));
+
+		public EntityBuilder weapon(int damage, float attackSpeed) {
+			entity.add(engine.createComponent(WeaponComponent.class).init(
+					damage, attackSpeed));
 			return this;
 		}
-		
-		public EntityBuilder faction(Faction faction){
-			FactionComponent factionComp = engine.createComponent(FactionComponent.class);
+
+		public EntityBuilder faction(Faction faction) {
+			FactionComponent factionComp = engine
+					.createComponent(FactionComponent.class);
 			factionComp.faction = faction;
-			
+
 			entity.add(factionComp);
 			return this;
 		}
@@ -352,16 +385,16 @@ public class EntityFactory {
 			physics.body.createFixture(shape, density);
 			return this;
 		}
-		
+
 		public EntityBuilder circleSensor(float radius) {
 			CircleShape shape = new CircleShape();
 			shape.setRadius(radius);
-			
+
 			PhysicsComponent physics = Components.PHYSICS.get(entity);
 			if (physics == null) {
 				physicsBody(DEFAULT_BODY);
 			}
-			
+
 			FixtureDef fixtureDef = new FixtureDef();
 			fixtureDef.isSensor = true;
 			fixtureDef.shape = shape;

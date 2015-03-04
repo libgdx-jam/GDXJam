@@ -6,17 +6,23 @@ public class Components {
 
 	public static final ComponentMapper<SpriteComponent> SPRITE = ComponentMapper
 			.getFor(SpriteComponent.class);
+	public static final ComponentMapper<ParticleComponent> PARTICLE = ComponentMapper
+			.getFor(ParticleComponent.class);
 	public static final ComponentMapper<ParalaxComponent> PARALAX = ComponentMapper
-		.getFor(ParalaxComponent.class);
-	
-	public static final ComponentMapper<BehaviorTreeComponent> BTREE = ComponentMapper.getFor(BehaviorTreeComponent.class);
-	
-	public static final ComponentMapper<ProjectileComponent> PROJECTILE = ComponentMapper.getFor(ProjectileComponent.class);
-	
-	public static final ComponentMapper<TargetComponent> TARGET = ComponentMapper.getFor(TargetComponent.class);
-	
-	public static final ComponentMapper<WeaponComponent> WEAPON = ComponentMapper.getFor(WeaponComponent.class);
-	
+			.getFor(ParalaxComponent.class);
+
+	public static final ComponentMapper<BehaviorTreeComponent> BTREE = ComponentMapper
+			.getFor(BehaviorTreeComponent.class);
+
+	public static final ComponentMapper<ProjectileComponent> PROJECTILE = ComponentMapper
+			.getFor(ProjectileComponent.class);
+
+	public static final ComponentMapper<TargetComponent> TARGET = ComponentMapper
+			.getFor(TargetComponent.class);
+
+	public static final ComponentMapper<WeaponComponent> WEAPON = ComponentMapper
+			.getFor(WeaponComponent.class);
+
 	public static final ComponentMapper<HealthComponent> HEALTH = ComponentMapper
 			.getFor(HealthComponent.class);
 	public static final ComponentMapper<PhysicsComponent> PHYSICS = ComponentMapper
@@ -28,8 +34,9 @@ public class Components {
 
 	public static final ComponentMapper<SquadMemberComponent> SQUAD_MEMBER = ComponentMapper
 			.getFor(SquadMemberComponent.class);
-	
-	public static final ComponentMapper<SquadComponent> SQUAD = ComponentMapper.getFor(SquadComponent.class);
+
+	public static final ComponentMapper<SquadComponent> SQUAD = ComponentMapper
+			.getFor(SquadComponent.class);
 
 	// AI
 	public static final ComponentMapper<SteeringBehaviorComponent> STEERING_BEHAVIOR = ComponentMapper

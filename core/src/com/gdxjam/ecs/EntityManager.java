@@ -1,4 +1,3 @@
-
 package com.gdxjam.ecs;
 
 import com.badlogic.ashley.core.EntitySystem;
@@ -15,6 +14,7 @@ import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.HealthSystem;
 import com.gdxjam.systems.InputSystem;
+import com.gdxjam.systems.ParticleSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
@@ -25,16 +25,20 @@ import com.gdxjam.utils.Constants;
 public class EntityManager extends PooledEngine implements Disposable {
 	private static String TAG = "[" + EntityManager.class.getSimpleName() + "]";
 
-	public EntityManager () {
+	public EntityManager() {
 		initSystems();
-		
-		addEntityListener(Family.all(SquadComponent.class).get(), new SquadEntityListener(getSystem(GUISystem.class)));
-		addEntityListener(Family.all(SquadMemberComponent.class).get(), new UnitEntityListener(this));
-		addEntityListener(Family.all(PhysicsComponent.class).get(), new PhysicsEntityListener(getSystem(PhysicsSystem.class)));
+
+		addEntityListener(Family.all(SquadComponent.class).get(),
+				new SquadEntityListener(getSystem(GUISystem.class)));
+		addEntityListener(Family.all(SquadMemberComponent.class).get(),
+				new UnitEntityListener(this));
+		addEntityListener(Family.all(PhysicsComponent.class).get(),
+				new PhysicsEntityListener(getSystem(PhysicsSystem.class)));
 	}
 
-	private EntityManager initSystems () {
-		CameraSystem cameraSystem = new CameraSystem(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
+	private EntityManager initSystems() {
+		CameraSystem cameraSystem = new CameraSystem(Constants.VIEWPORT_WIDTH,
+				Constants.VIEWPORT_HEIGHT);
 		addSystem(cameraSystem);
 
 		addSystem(new PhysicsSystem());
@@ -55,30 +59,32 @@ public class EntityManager extends PooledEngine implements Disposable {
 		addSystem(input);
 		Gdx.input.setInputProcessor(input.getMultiplexer());
 
-		// Renderering happens last
+		// Rendering happens last
 		addSystem(new EntityRenderSystem());
+		addSystem(new ParticleSystem());
 		addSystem(guiSystem);
-		
+
 		return this;
 	}
 
 	@Override
-	public void update (float deltaTime) {
+	public void update(float deltaTime) {
 		super.update(deltaTime);
 		getSystem(PhysicsSystem.class).drawDebug();
-//		for (Entity entity : getEntitiesFor(Family.all(RemovalComponent.class).get())) {
-//			removeEntity(entity);
-//		}
+		// for (Entity entity :
+		// getEntitiesFor(Family.all(RemovalComponent.class).get())) {
+		// removeEntity(entity);
+		// }
 	}
-	
+
 	@Override
-	public void dispose () {
+	public void dispose() {
 		Gdx.app.log(TAG, "disposing instance");
 		removeAllEntities();
 		clearPools();
 		for (EntitySystem system : getSystems()) {
 			if (system instanceof Disposable) {
-				((Disposable)system).dispose();
+				((Disposable) system).dispose();
 			}
 			system = null;
 			removeSystem(system);
