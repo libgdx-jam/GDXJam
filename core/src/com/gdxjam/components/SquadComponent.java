@@ -4,13 +4,15 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fma.Formation;
 import com.badlogic.gdx.ai.fma.FormationPattern;
-import com.badlogic.gdx.ai.fma.patterns.DefensiveCircleFormationPattern;
+import com.badlogic.gdx.ai.fma.SoftRoleSlotAssignmentStrategy;
+import com.badlogic.gdx.ai.fma.patterns.OffensiveCircleFormationPattern;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.gdxjam.ai.formation.ColumnFormationPattern;
+import com.gdxjam.ai.formation.DistanceSlotCostProvider;
 import com.gdxjam.ai.formation.LineFormationPattern;
 import com.gdxjam.ai.formation.SquareFormationPattern;
 import com.gdxjam.ai.formation.VFormationPattern;
@@ -46,7 +48,8 @@ public class SquadComponent extends Component{
 	}
 	
 	public SquadComponent init(Steerable<Vector2> steerable){
-		formation = new Formation<Vector2>(steerable, getFormationPattern(DEFAULT_PATTERN));
+		SoftRoleSlotAssignmentStrategy<Vector2> slotAssignmentStrategy = new SoftRoleSlotAssignmentStrategy<Vector2>(new DistanceSlotCostProvider());
+		formation = new Formation<Vector2>(steerable, getFormationPattern(DEFAULT_PATTERN), slotAssignmentStrategy);
 		return this;
 	}
 	
@@ -54,7 +57,7 @@ public class SquadComponent extends Component{
 	public void addMember(Entity entity){
 		members.add(entity);
 		formation.addMember(Components.SQUAD_MEMBER.get(entity));
-		formation.updateSlotAssignments();
+//		formation.updateSlotAssignments();
 	}
 	
 	public void removeMember(Entity entity){
@@ -86,7 +89,7 @@ public class SquadComponent extends Component{
 			return new SquareFormationPattern(Constants.unitRadius + PATTERN_SPACING);
 		default:
 		case Ring:
-			return new DefensiveCircleFormationPattern<Vector2>(Constants.unitRadius + PATTERN_SPACING);
+			return new OffensiveCircleFormationPattern<Vector2>(Constants.unitRadius + PATTERN_SPACING);
 		case V:
 			return new VFormationPattern(60 * MathUtils.degreesToRadians, Constants.unitRadius + PATTERN_SPACING);
 		case Wedge:
