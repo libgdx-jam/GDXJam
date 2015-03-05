@@ -33,6 +33,7 @@ public class MainMenuScreen extends AbstractScreen {
 		add("Load Game", new LoadGameScreen());
 		add("Settings", new OptionsScreen());
 		add("Credits", new CreditsScreen());
+		add("Game Over", new GameOverScreen());
 		addExit();
 
 		stage.addActor(table);
