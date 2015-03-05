@@ -48,6 +48,9 @@ public class GameContactListener implements ContactListener {
 	}
 
 	public void processProjectile (Entity projectile, Entity target) {
+		//If what we hit is also a projectile do nothing
+		if(Components.PROJECTILE.has(target)) return;
+			
 		if (Components.HEALTH.has(target)) {
 			if(!Constants.friendlyFire){
 				FactionComponent projectileFactionComp = Components.FACTION.get(projectile);

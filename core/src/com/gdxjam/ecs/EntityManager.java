@@ -14,7 +14,6 @@ import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.HealthSystem;
 import com.gdxjam.systems.InputSystem;
-import com.gdxjam.systems.ParticleSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;

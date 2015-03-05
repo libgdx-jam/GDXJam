@@ -65,47 +65,24 @@ public class EntityFactory {
 
 	public static Entity createMothership(Vector2 position) {
 		Entity entity = buildEntity(position)
-				.physicsBody(BodyType.DynamicBody)
+				.physicsBody(BodyType.StaticBody)
 				.circleCollider(Constants.mothershipRadius, 1.0f)
 				.sprite(Assets.spacecraft.motherships.get(Constants.playerFaction.ordinal()),
 						Constants.mothershipRadius * 2,
-						Constants.mothershipRadius * 2).faction(Constants.playerFaction)
+						Constants.mothershipRadius * 2)
+				.faction(Constants.playerFaction)
 				.health(1000).addToEngine();
 		return entity;
 	}
 
 	public static Entity createAsteroid(Vector2 position, float radius) {
 		Entity entity = buildEntity(position)
-				.physicsBody(BodyType.DynamicBody)
+				.physicsBody(BodyType.StaticBody)
 				.circleCollider(radius, 50.0f)
 				.resource(5)
 				.faction(Faction.NONE)
 				.sprite(Assets.space.asteroids.random(), radius * 2, radius * 2)
 				.addToEngine();
-		return entity;
-	}
-
-	@Deprecated
-	public static Entity createUnit(Vector2 position, Faction faction) {
-		Entity entity = buildEntity(position)
-				.physicsBody(BodyType.DynamicBody)
-				.circleCollider(Constants.unitRadius, 1.0f)
-				.damping(1, 0)
-				.steerable()
-				.steeringBehavior()
-				.health(100)
-				.faction(faction)
-				.target()
-				.weapon(20, 1.0f)
-				.sprite(Assets.spacecraft.ships.get(faction.ordinal()), Constants.unitRadius * 2,
-						Constants.unitRadius * 2).getWithoutAdding();
-
-		Components.STEERABLE.get(entity).setIndependentFacing(true);
-
-		entity.add(engine.createComponent(StateMachineComponent.class).init(
-				entity));
-
-		engine.addEntity(entity);
 		return entity;
 	}
 
@@ -211,7 +188,7 @@ public class EntityFactory {
 	public static Entity createProjectile(Vector2 position, Vector2 velocity,
 			Faction faction, int damage) {
 		Entity entity = buildEntity(position)
-				.physicsBody(BodyType.KinematicBody)
+				.physicsBody(BodyType.DynamicBody)
 				.circleSensor(Constants.projectileRadius)
 				.faction(faction)
 				.sprite(Assets.bullets.yellow, Constants.projectileRadius * 2,
