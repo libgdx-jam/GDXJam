@@ -176,8 +176,10 @@ public class EntityFactory {
 			sb = blendedSteering;
 		}
 
+		
+		Components.STATE_MACHINE.get(entity).stateMachine.changeState(SquadComponent.DEFAULT_STATE);
 		Components.STEERING_BEHAVIOR.get(entity).setBehavior(sb);
-
+		
 		entity.add(squadComp);
 		entity.add(steerable);
 

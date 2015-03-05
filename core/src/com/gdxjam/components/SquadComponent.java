@@ -17,6 +17,7 @@ import com.gdxjam.ai.formation.LineFormationPattern;
 import com.gdxjam.ai.formation.SquareFormationPattern;
 import com.gdxjam.ai.formation.VFormationPattern;
 import com.gdxjam.ai.formation.WedgeFormationPattern;
+import com.gdxjam.ai.states.SquadState;
 import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Location2;
@@ -34,6 +35,7 @@ public class SquadComponent extends Component{
 	
 	public static final float PATTERN_SPACING = Constants.unitRadius * 0.25f;
 	public static final PatternType DEFAULT_PATTERN = PatternType.V;
+	public static final SquadState DEFAULT_STATE = SquadState.COMBAT;
 	
 	public Array<Entity> members;
 	public Formation<Vector2> formation;

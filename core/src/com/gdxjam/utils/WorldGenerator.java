@@ -5,8 +5,11 @@ import java.util.Random;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.gdxjam.Assets;
 import com.gdxjam.components.FactionComponent.Faction;
+import com.gdxjam.systems.SquadSpawnerSystem;
 
 /**
  * @author Torin Wiebelt (Twiebs) Generates world bounds Generates the game
@@ -46,6 +49,7 @@ public class WorldGenerator {
 			createBackground();
 		}
 		populateWorld();
+		generateSpawners();
 	}
 
 	public void createWorldBounds() {
@@ -73,9 +77,11 @@ public class WorldGenerator {
 			Vector2 position = center.cpy().add(angleVec);
 			createSquad(position, Constants.playerFaction);
 		}
-
-		
-		createSquad(center.cpy().add(16, 16), Constants.enemyFaction);
+	}
+	
+	public void generateSpawners(){
+		//createSpawner(new Vector2(138, 138), Constants.enemyFaction);
+		SquadSpawnerSystem.initalizeSpawns();
 	}
 
 	public void createBackground() {
