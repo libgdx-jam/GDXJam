@@ -7,6 +7,7 @@ public class FactionComponent extends Component {
 	public enum Faction {
 		FACTION0("The Player (sometimes?)"),
 		FACTION1("The enemy (sometimes!)"),
+		FACTION2("Orange Dudes"),
 		NONE("Neutral");
 		
 		public String name;
