@@ -42,7 +42,7 @@ public class SquadCommandTable extends Table{
 
 		squadState = new SelectBox<SquadState>(skin);
 		squadState.setItems(SquadState.values());
-		
+		squadState.setSelected(SquadComponent.DEFAULT_STATE);
 		squadState.addListener(new ChangeListener() {
 			
 			@Override

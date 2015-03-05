@@ -169,18 +169,21 @@ public enum UnitState implements State<Entity> {
 
 	   		if(weaponComp.cooldown <= 0){
 	      		SteerableComponent steerable = Components.STEERABLE.get(entity);
+	      		SteerableComponent targetSteerable = Components.STEERABLE.get(targetComp.target);
 	      		
 	      		float angle = steerable.getOrientation();
-	      		float unitDiameter = Constants.unitRadius * 2;
-	      		
-	      		Vector2 position = new Vector2();
-	      		position.set(steerable.getPosition());
-	      		position.add(unitDiameter * MathUtils.cos(angle), unitDiameter * MathUtils.sin(angle));
-	      		
-	      		Vector2 velocity = new Vector2(20, 0).setAngle(angle * MathUtils.radDeg);
-	      		
-	      		EntityFactory.createProjectile(position, velocity, Components.FACTION.get(entity).faction, 20);
-	      		weaponComp.cooldown += weaponComp.attackSpeed;
+	      		if(MathUtils.isEqual(angle, targetSteerable.getOrientation(), MathUtils.PI / 32));{
+		      		float unitDiameter = Constants.unitRadius * 2;
+		      		
+		      		Vector2 position = new Vector2();
+		      		position.set(steerable.getPosition());
+		      		position.add(unitDiameter * MathUtils.cos(angle), unitDiameter * MathUtils.sin(angle));
+		      		
+		      		Vector2 velocity = new Vector2(45, 0).setAngle(angle * MathUtils.radDeg);
+		      		
+		      		EntityFactory.createProjectile(position, velocity, Components.FACTION.get(entity).faction, 20);
+		      		weaponComp.cooldown += weaponComp.attackSpeed;
+	      		}
 	   		}
    		}
    		else{
