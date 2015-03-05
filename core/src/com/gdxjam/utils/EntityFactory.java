@@ -191,7 +191,7 @@ public class EntityFactory {
 				.physicsBody(BodyType.DynamicBody)
 				.circleSensor(Constants.projectileRadius)
 				.faction(faction)
-				.sprite(Assets.bullets.yellow, Constants.projectileRadius * 2,
+				.sprite(Assets.projectile.projectiles.get(faction.ordinal()), Constants.projectileRadius * 2,
 						Constants.projectileRadius * 2).getWithoutAdding();
 
 		ProjectileComponent projectileComp = engine.createComponent(

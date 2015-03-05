@@ -36,7 +36,7 @@ public class Assets implements Disposable {
 	public static AssetFonts fonts;
 	public static AssetSpace space;
 	public static AssetSpacecraft spacecraft;
-	public static AssetBullets bullets;
+	public static AssetProjectile projectile;
 	public static AssetParticles particles;
 	public static Skin skin;
 
@@ -49,7 +49,7 @@ public class Assets implements Disposable {
 	public static void create() {
 		TextureAtlas atlas = manager.get(TEXTURE_ATLAS_OBJECTS);
 		skin = manager.get(SKIN);
-		bullets = new AssetBullets(atlas);
+		projectile = new AssetProjectile(atlas);
 		hotkey = new AssetHotkey(atlas);
 		fonts = new AssetFonts();
 		space = new AssetSpace(atlas);
@@ -130,17 +130,11 @@ public class Assets implements Disposable {
 		}
 	}
 
-	public static class AssetBullets {
-		public final AtlasRegion blue;
-		public final AtlasRegion red;
-		public final AtlasRegion yellow;
-		public final Array<AtlasRegion> bullets;
+	public static class AssetProjectile {
+		public final Array<AtlasRegion> projectiles;
 
-		public AssetBullets(TextureAtlas atlas) {
-			blue = atlas.findRegion("bulletblue");
-			red = atlas.findRegion("bulletred");
-			yellow = atlas.findRegion("bulletyellow");
-			bullets = atlas.findRegions("bullet");
+		public AssetProjectile(TextureAtlas atlas) {
+			projectiles = atlas.findRegions("projectile");
 		}
 	}
 }
