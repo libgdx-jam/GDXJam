@@ -50,8 +50,7 @@ public class NewGameScreen extends AbstractScreen {
 		label.setFontScale(2);
 		label.setAlignment(Align.top);
 
-		ImageButton faction0 = newImageButton(Assets.spacecraft.motherships
-				.get(0));
+		ImageButton faction0 = newImageButton(Assets.spacecraft.ships.get(0));
 		faction0.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -61,8 +60,7 @@ public class NewGameScreen extends AbstractScreen {
 			}
 		});
 
-		ImageButton faction1 = newImageButton(Assets.spacecraft.motherships
-				.get(1));
+		ImageButton faction1 = newImageButton(Assets.spacecraft.ships.get(1));
 		faction1.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -71,8 +69,7 @@ public class NewGameScreen extends AbstractScreen {
 			}
 		});
 
-		ImageButton faction2 = newImageButton(Assets.spacecraft.motherships
-				.get(2));
+		ImageButton faction2 = newImageButton(Assets.spacecraft.ships.get(2));
 		faction2.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
