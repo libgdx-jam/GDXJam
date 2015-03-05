@@ -30,10 +30,9 @@ public class GameOverScreen extends AbstractScreen {
 		stage = new Stage();
 		Table table = new Table();
 		table.setFillParent(true);
-		table.debug();
 		table.align(Align.center);
 
-		LabelStyle labelStyle = new LabelStyle(Assets.fonts.font, Color.WHITE);
+		LabelStyle labelStyle = new LabelStyle(Assets.fonts.font, Color.RED);
 		gameOver = new Label("GAME OVER", labelStyle);
 
 		NinePatchDrawable draw = new NinePatchDrawable(Assets.hotkey.button);

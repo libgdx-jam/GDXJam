@@ -41,7 +41,6 @@ public class NewGameScreen extends AbstractScreen {
 		size = WorldSize.MEDIUM;
 		stage = new Stage();
 		table = new Table();
-		table.debug();
 		table.setFillParent(true);
 		table.defaults().pad(10);
 		LabelStyle labelStyle = new LabelStyle(Assets.fonts.font, new Color(1,
