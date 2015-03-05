@@ -29,7 +29,7 @@ public class Constants {
 	public static final float VIEWPORT_WIDTH = 64;
 	public static final float VIEWPORT_HEIGHT = 36;
 	
-	public static Faction playerFaction = Faction.FACTION0;	//Move this somewhere better / might not be constant
+	public static Faction playerFaction = Faction.FACTION2;	//Move this somewhere better / might not be constant
 	public static Faction enemyFaction = Faction.FACTION1;	//same deal
 
 }

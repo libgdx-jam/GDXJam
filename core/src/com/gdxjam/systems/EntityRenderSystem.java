@@ -7,11 +7,16 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.ParalaxComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.SpriteComponent;
@@ -19,10 +24,14 @@ import com.gdxjam.components.SpriteComponent;
 public class EntityRenderSystem extends SortedIteratingSystem implements Disposable {
 	private static final String TAG = "[" + EntityRenderSystem.class.getSimpleName() + "]";
 	private static final int spriteRotationOffset = -0;
+	private static final float healthBarHeight = 0.15f;
 
 	private SpriteBatch batch;
+	private ShapeRenderer shapeRenderer;
 	private CameraSystem cameraSystem;
 	private int currentLayer = -10;
+	
+	
 	
 	public EntityRenderSystem () {
 		super(Family.all(SpriteComponent.class).get(), new Comparator<Entity>() {
@@ -43,6 +52,7 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 		});
 
 		batch = new SpriteBatch();
+		shapeRenderer = new ShapeRenderer();
 	}
 
 	@Override
@@ -56,13 +66,16 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 		currentLayer = 0;
 		batch.setProjectionMatrix(cameraSystem.getParalaxCamera(currentLayer).combined);
 		batch.begin();
+		shapeRenderer.setProjectionMatrix(cameraSystem.getCamera().combined);
+		shapeRenderer.begin(ShapeType.Filled);
 		super.update(deltaTime);
 		batch.end();
+		shapeRenderer.end();
 	}
 
 	@Override
 	protected void processEntity (Entity entity, float deltaTime) {
-		SpriteComponent spriteComp = Components.SPRITE.get(entity);
+		Sprite sprite = Components.SPRITE.get(entity).sprite;
 
 		if (Components.PARALAX.has(entity)) {
 			ParalaxComponent paralaxComp = Components.PARALAX.get(entity);
@@ -78,12 +91,25 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 			if (Components.PHYSICS.has(entity)) {
 				PhysicsComponent physics = Components.PHYSICS.get(entity);
 				Vector2 pos = physics.body.getPosition();
-				spriteComp.sprite.setCenter(pos.x, pos.y);
-				spriteComp.sprite.setRotation((MathUtils.radiansToDegrees * physics.body.getAngle()) + spriteRotationOffset);
+				sprite.setCenter(pos.x, pos.y);
+				sprite.setRotation((MathUtils.radiansToDegrees * physics.body.getAngle()) + spriteRotationOffset);
 			}
 		}
 
-		spriteComp.sprite.draw(batch);
+		sprite.draw(batch);
+		
+		//NOTE: If an entity has health but no sprite this will not get drawn
+		if(Components.HEALTH.has(entity)){
+			HealthComponent healthComp = Components.HEALTH.get(entity);
+			if(healthComp.value < healthComp.max){
+				float percent = (float)healthComp.value / (float)healthComp.max;
+				shapeRenderer.setColor(Color.RED);
+				shapeRenderer.rect(sprite.getX(), sprite.getY() + sprite.getHeight(), sprite.getWidth(), healthBarHeight);
+				shapeRenderer.setColor(Color.GREEN);
+				shapeRenderer.rect(sprite.getX(), sprite.getY() + sprite.getHeight(), sprite.getWidth() * percent, healthBarHeight);
+			}
+		}
+		
 	}
 
 	@Override
