@@ -31,7 +31,7 @@ public class MainMenuScreen extends AbstractScreen {
 		add("New Game", new NewGameScreen());
 		add("GameScreen", new GameScreen());
 		add("Load Game", new LoadGameScreen());
-		add("Settings", new OptionsScreen());
+		add("Settings", new SettingsScreen());
 		add("Credits", new CreditsScreen());
 		addExit();
 
