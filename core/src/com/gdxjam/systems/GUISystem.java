@@ -83,6 +83,18 @@ public class GUISystem extends EntitySystem implements Disposable {
 
 	}
 	
+	public void removeSquad(Entity squad){
+		for(Entry<Entity> entry : squads){
+			if(entry.value == squad){
+				squads.remove(entry.key);
+				squadManagment.removeSquad(squad, entry.key);
+				return;
+			}
+		}
+		
+
+	}
+	
 	public void updateSquad(Entity squad){
 		for(Entry<Entity> entry : squads){
 			if(entry.value == squad){

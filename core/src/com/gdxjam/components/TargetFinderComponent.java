@@ -8,22 +8,33 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 public class TargetFinderComponent extends Component implements Poolable {
 
 	public Array<Entity> resources = new Array<Entity>();
-	public Array<Entity> enemies = new Array<Entity>();
+	public Array<Entity> squads = new Array<Entity>();
 
-	public void addResource(Entity entity) {
-		if (!resources.contains(entity, true)) {
-			resources.add(entity);
+	public void resource(Entity entity, boolean remove) {
+		if(remove){
+			resources.removeValue(entity, true);
+		}
+		else{
+			if (!resources.contains(entity, true)) {
+				resources.add(entity);
+			}
 		}
 	}
 
-	public void addEnemy(Entity entity) {
-		enemies.add(entity);
+	public void squad(Entity entity, boolean remove) {
+		if(remove){
+			squads.removeValue(entity, true);
+		}
+		else{
+			if(!squads.contains(entity, true))
+				squads.add(entity);
+		}
 	}
 
 	@Override
 	public void reset() {
-		resources = new Array<Entity>();
-		enemies = new Array<Entity>();
+		resources.clear();
+		squads.clear();
 	}
 
 }

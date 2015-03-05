@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityFactory;
 
@@ -22,23 +23,23 @@ public class SquadSpawnerSystem extends EntitySystem{
 			
 			@Override
 			public void run () {
-				SquadSpawnerSystem.spawnSquad();
+				spawnPosition.set(MathUtils.random(100, 140), MathUtils.random(100, 140));
+				SquadSpawnerSystem.spawnSquad(spawnPosition, Constants.enemyFaction, 9);
 			}
 		};
 		
-		Timer.schedule(task, 2.0f, 2.0f);
+		Timer.schedule(task, 5.0f, 10.0f);
 	}
 	
-	public static void spawnSquad(){
-		spawnPosition.set(MathUtils.random(100, 140), MathUtils.random(100, 140));
-		
-		Entity squad = EntityFactory.createSquad(spawnPosition, Constants.enemyFaction);
-		int posX = (int)spawnPosition.x;
-		int posY = (int)spawnPosition.y;
-		for(int x = -1; x < 2; x++) {
-			for (int y = -1; y < 2; y++){
-				EntityFactory.createUnit(new Vector2(posX + x, posY + y), squad);
-			}
+	public static void spawnSquad(Vector2 position, Faction faction, int members){
+		Entity squad = EntityFactory.createSquad(position, faction);
+		int columns = (int)Math.sqrt(members);
+		int posX = (int)position.x;
+		int posY = (int)position.y;
+		for(int i = 0; i < members; i++) {
+			int x = i / columns;
+			int y = i % columns;
+			EntityFactory.createUnit(new Vector2(posX + x, posY + y), squad);
 		}
 	}
 	

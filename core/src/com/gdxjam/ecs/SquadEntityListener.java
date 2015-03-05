@@ -26,6 +26,8 @@ public class SquadEntityListener implements EntityListener{
 	@Override
 	public void entityRemoved (Entity entity) {
 		EntityUtils.clearTarget(entity);
+		if(Components.FACTION.get(entity).faction == Constants.playerFaction)
+			guiSystem.removeSquad(entity);
 		
 	}
 

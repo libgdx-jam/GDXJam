@@ -108,12 +108,19 @@ public enum UnitState implements State<Entity> {
 		@Override
 		public void enter (Entity entity) {
 			super.enter(entity);
+			//get target components from the unit and the squad
 			SquadMemberComponent squadMemberComp = Components.SQUAD_MEMBER.get(entity);
 			TargetComponent squadTargetComp = Components.TARGET.get(squadMemberComp.squad);
+			
+			//if the squad has a target
 			if(squadTargetComp.target != null){
+				//get the enemy squad and get our targetComponent
 				SquadComponent enemySquadComp = Components.SQUAD.get(squadTargetComp.target);
 				TargetComponent targetComp = Components.TARGET.get(entity);
-				targetComp.target = enemySquadComp.members.first();
+				
+				//Set our target to a random member in the enemy squad
+				targetComp.target = enemySquadComp.members.random();
+				//Start attacking our target
 				Components.STATE_MACHINE.get(entity).stateMachine.changeState(ATTACK_TARGET);
 			}
 		}
@@ -121,7 +128,7 @@ public enum UnitState implements State<Entity> {
 		@Override
 		public void update (Entity entity) {
 			super.update(entity);
-			Components.STATE_MACHINE.get(entity).stateMachine.changeState(FORMATION);
+			enter(entity);
 		}
 		
 		
@@ -162,24 +169,30 @@ public enum UnitState implements State<Entity> {
    	 @Override
    	public void update (Entity entity) {
    		super.update(entity);
+   		//Get our target and our weapon
    		WeaponComponent weaponComp = Components.WEAPON.get(entity);
    		TargetComponent targetComp = Components.TARGET.get(entity);
-   		if(targetComp.target != null){
    		
-
+   		//Make sure we have somthing to attack
+   		if(targetComp.target != null){
+   			//If our weapon is off cooldown
 	   		if(weaponComp.cooldown <= 0){
 	      		SteerableComponent steerable = Components.STEERABLE.get(entity);
 	      		SteerableComponent targetSteerable = Components.STEERABLE.get(targetComp.target);
 	      		
-	      		float angle = steerable.getOrientation();
-	      		if(MathUtils.isEqual(angle, targetSteerable.getOrientation(), MathUtils.PI / 32));{
+	      		//Get the angle between our target and us
+	      		float angle = steerable.getPosition().angleRad(targetSteerable.getPosition());
+	      		float orientation = steerable.getOrientation();
+	      		
+	      		//If were facing the angle between us
+	      		if(MathUtils.isEqual(orientation, angle, 0.001f));{
 		      		float unitDiameter = Constants.unitRadius * 2;
 		      		
 		      		Vector2 position = new Vector2();
 		      		position.set(steerable.getPosition());
-		      		position.add(unitDiameter * MathUtils.cos(angle), unitDiameter * MathUtils.sin(angle));
+		      		position.add(unitDiameter * MathUtils.cos(orientation), unitDiameter * MathUtils.sin(orientation));
 		      		
-		      		Vector2 velocity = new Vector2(45, 0).setAngle(angle * MathUtils.radDeg);
+		      		Vector2 velocity = new Vector2(45, 0).setAngle(orientation * MathUtils.radDeg);
 		      		
 		      		EntityFactory.createProjectile(position, velocity, Components.FACTION.get(entity).faction, 20);
 		      		weaponComp.cooldown += weaponComp.attackSpeed;

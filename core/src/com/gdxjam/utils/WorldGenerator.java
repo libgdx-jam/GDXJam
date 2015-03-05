@@ -2,13 +2,9 @@ package com.gdxjam.utils;
 
 import java.util.Random;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 import com.gdxjam.Assets;
-import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.systems.SquadSpawnerSystem;
 
 /**
@@ -75,7 +71,7 @@ public class WorldGenerator {
 			Vector2 angleVec = new Vector2(distance, 0.0f).setAngle(initalAngle
 					+ seperationAngle * i);
 			Vector2 position = center.cpy().add(angleVec);
-			createSquad(position, Constants.playerFaction);
+			SquadSpawnerSystem.spawnSquad(position, Constants.playerFaction, param.squadMembers);
 		}
 	}
 	
@@ -100,16 +96,6 @@ public class WorldGenerator {
 		}
 	}
 
-	public void createSquad(Vector2 position, Faction faction){
-		Entity squad = EntityFactory.createSquad(position, faction);
-		int posX = (int)position.x;
-		int posY = (int)position.y;
-		for(int x = -1; x < 2; x++) {
-			for (int y = -1; y < 2; y++){
-				EntityFactory.createUnit(new Vector2(posX + x, posY + y), squad);
-			}
-		}
-	}
 
 	public void generateAsteroidField() {
 		float[][] heightMap = generateHeightMap();

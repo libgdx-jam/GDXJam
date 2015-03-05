@@ -10,11 +10,14 @@ import com.gdxjam.GameManager;
 import com.gdxjam.ecs.EntityManager;
 import com.gdxjam.input.DesktopGestureListener;
 import com.gdxjam.input.DesktopInputProcessor;
+import com.gdxjam.input.DeveloperInputProcessor;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.PauseOverlay;
 import com.gdxjam.utils.Constants;
+import com.gdxjam.utils.Constants.BUILD;
 import com.gdxjam.utils.WorldGenerator;
+import com.gdxjam.utils.WorldGenerator.WorldGeneratorParameter;
 
 public class GameScreen extends AbstractScreen {
 
@@ -34,14 +37,21 @@ public class GameScreen extends AbstractScreen {
 		multiplexer.addProcessor(new GestureDetector(
 				new DesktopGestureListener(engine)));
 		multiplexer.addProcessor(pauseOverlay.getStage());
+		
+		if(Constants.build == BUILD.DEV){
+			multiplexer.addProcessor(new DeveloperInputProcessor());
+		}
+		
 		Gdx.input.setInputProcessor(multiplexer);
 
 	}
 
 	public void createWorld(int width, int height) {
 		long seed = new Random().nextLong();
-		Vector2 center = new Vector2(width * 0.5f, height * 0.5f);
-		WorldGenerator generator = new WorldGenerator(width, height, seed);
+		WorldGeneratorParameter param = new WorldGeneratorParameter();
+		param.initalSquads = 3;
+		param.squadMembers = 5;
+		WorldGenerator generator = new WorldGenerator(width, height, seed, param);
 		generator.generate();
 
 		engine.getSystem(CameraSystem.class).getCamera().position.set(
@@ -50,8 +60,6 @@ public class GameScreen extends AbstractScreen {
 
 	}
 
-	public void createTestEnemies() {
-	}
 
 	@Override
 	public void render(float delta) {

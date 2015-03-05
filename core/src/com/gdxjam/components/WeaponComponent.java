@@ -18,8 +18,7 @@ public class WeaponComponent extends Component implements Poolable{
 	
 	@Override
 	public void reset () {
-		// TODO Auto-generated method stub
-		
+		cooldown = 0.0f;
 	}
 
 }

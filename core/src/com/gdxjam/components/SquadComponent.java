@@ -11,6 +11,7 @@ import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool.Poolable;
 import com.gdxjam.ai.formation.ColumnFormationPattern;
 import com.gdxjam.ai.formation.DistanceSlotCostProvider;
 import com.gdxjam.ai.formation.LineFormationPattern;
@@ -22,7 +23,7 @@ import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Location2;
 
-public class SquadComponent extends Component{
+public class SquadComponent extends Component implements Poolable{
 	
 	public enum PatternType {
 		Line,
@@ -111,5 +112,11 @@ public class SquadComponent extends Component{
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
+
+	@Override
+	public void reset () {
+		selected = false;
+	}
+	
 
 }
