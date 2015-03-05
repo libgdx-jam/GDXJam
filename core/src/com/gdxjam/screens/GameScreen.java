@@ -22,6 +22,9 @@ public class GameScreen extends AbstractScreen {
 	private PauseOverlay pauseOverlay;
 	private InputMultiplexer multiplexer;
 
+	public GameScreen() {
+	}
+
 	@Override
 	public void show() {
 		engine = GameManager.initEngine();
