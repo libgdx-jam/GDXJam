@@ -8,6 +8,10 @@ public class Constants {
 		DEV, RELEASE;
 	}
 
+	public static enum WorldSize {
+		SMALL, MEDIUM, LARGE, CUSTOM;
+	}
+
 	public static final BUILD build = BUILD.DEV;
 
 	public static boolean isPaused = false;
@@ -30,6 +34,7 @@ public class Constants {
 	public static final float VIEWPORT_WIDTH = 64;
 	public static final float VIEWPORT_HEIGHT = 36;
 
+	public static WorldSize worldSize = WorldSize.MEDIUM;
 	public static Faction playerFaction = Faction.FACTION1;
 	public static Faction enemyFaction = Faction.FACTION0;
 
