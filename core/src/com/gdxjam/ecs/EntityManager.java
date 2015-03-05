@@ -10,6 +10,7 @@ import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.systems.BehaviorTreeSystem;
 import com.gdxjam.systems.CameraSystem;
+import com.gdxjam.systems.DecaySystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.HealthSystem;
@@ -53,6 +54,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 
 		addSystem(new ResourceSystem(guiSystem));
 		addSystem(new SquadSystem(guiSystem));
+		//addSystem(new DecaySystem());
 
 		InputSystem input = new InputSystem();
 		addSystem(input);
@@ -69,7 +71,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		getSystem(PhysicsSystem.class).drawDebug();
+//		getSystem(PhysicsSystem.class).drawDebug();
 		// for (Entity entity :
 		// getEntitiesFor(Family.all(RemovalComponent.class).get())) {
 		// removeEntity(entity);

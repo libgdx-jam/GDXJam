@@ -24,6 +24,13 @@ public class SquadManagmentTable extends Table {
 		add(squadTable).pad(2);
 	}
 	
+	public void removeSquad(Entity squad, int index){
+		SquadCommandTable table = squadTables.get(index);
+		table.remove();
+		
+		squadTables.remove(index);
+	}
+	
 	public void updateSquadTable(int index){
 		squadTables.get(index).update();
 	}

@@ -10,29 +10,40 @@ import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.ProjectileComponent;
+import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityUtils;
 
 public class GameContactListener implements ContactListener {
+	
+	private static final String TAG = GameContactListener.class.getSimpleName();
 
 	@Override
 	public void beginContact (Contact contact) {
 		Entity entityA = (Entity)contact.getFixtureA().getBody().getUserData();
 		Entity entityB = (Entity)contact.getFixtureB().getBody().getUserData();
 
-		if (Components.PROJECTILE.has(entityA)) {
+		if (Components.PROJECTILE.has(entityA)) 
 			processProjectile(entityA, entityB);
-		}
-		if (Components.PROJECTILE.has(entityB)) {
+		if (Components.PROJECTILE.has(entityB)) 
 			processProjectile(entityB, entityA);
-		}
 		
+		if(Components.SQUAD.has(entityA))
+			processTargetFinder(entityA, entityB, false);
+		if(Components.SQUAD.has(entityB))
+			processTargetFinder(entityB, entityA, false);
+	
 	}
 
 	@Override
 	public void endContact (Contact contact) {
-		// TODO Auto-generated method stub
+		Entity entityA = (Entity)contact.getFixtureA().getBody().getUserData();
+		Entity entityB = (Entity)contact.getFixtureB().getBody().getUserData();
 
+		if(Components.SQUAD.has(entityA))
+			processTargetFinder(entityA, entityB, true);
+		if(Components.SQUAD.has(entityB))
+			processTargetFinder(entityB, entityA, true);
 	}
 
 	@Override
@@ -46,11 +57,20 @@ public class GameContactListener implements ContactListener {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public void processTargetFinder(Entity squad, Entity target, boolean contactEnd){
+		//Break if the two entites are allies
+		if(EntityUtils.isSameFaction(squad, target)) return;
+		
+		TargetFinderComponent targetFinder = Components.TARGET_FINDER.get(squad);
+		if(Components.SQUAD.has(target)){
+			targetFinder.squad(target, contactEnd);
+		} else if (Components.RESOURCE.has(target)){
+			targetFinder.resource(target, contactEnd);
+		}
+	}
 
 	public void processProjectile (Entity projectile, Entity target) {
-		//If what we hit is also a projectile do nothing
-		if(Components.PROJECTILE.has(target)) return;
-			
 		if (Components.HEALTH.has(target)) {
 			if(!Constants.friendlyFire){
 				FactionComponent projectileFactionComp = Components.FACTION.get(projectile);
@@ -59,8 +79,7 @@ public class GameContactListener implements ContactListener {
 					return;
 			}
 			
-			if(Components.SQUAD.has(target))
-				return;
+
 			
 			ProjectileComponent projectileComp = Components.PROJECTILE.get(projectile);
 			HealthComponent healthComp = Components.HEALTH.get(target);

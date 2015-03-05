@@ -16,12 +16,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Array;
 import com.gdxjam.Assets;
 import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.DecayComponent;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.HealthComponent;
@@ -39,7 +42,9 @@ import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
 import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.components.WeaponComponent;
+import com.gdxjam.ecs.EntityCategory;
 import com.gdxjam.systems.PhysicsSystem;
+import com.gdxjam.utils.EntityFactory.PhysicsBuilder.FixtureBuilder;
 
 /**
  * 
@@ -55,6 +60,8 @@ public class EntityFactory {
 	private static PooledEngine engine;
 	private static PhysicsSystem physicsSystem;
 	private static EntityBuilder entityBuilder;
+	private static PhysicsBuilder physicsBuilder = new PhysicsBuilder();
+	private static FixtureBuilder fixtureBuilder = new FixtureBuilder();
 
 	public static EntityBuilder buildEntity(Vector2 position) {
 		if (entityBuilder == null) {
@@ -62,6 +69,7 @@ public class EntityFactory {
 		}
 		return entityBuilder.reset(position);
 	}
+	
 
 	public static Entity createMothership(Vector2 position) {
 		Entity entity = buildEntity(position)
@@ -111,8 +119,7 @@ public class EntityFactory {
 				.target()
 				.weapon(20, 1.0f)
 				.sprite(Assets.spacecraft.ships.get(faction.ordinal()), Constants.unitRadius * 2,
-						Constants.unitRadius * 2) //
-				.addParticle()//
+						Constants.unitRadius * 2)
 				.getWithoutAdding();
 
 		PhysicsComponent physicsComp = Components.PHYSICS.get(entity);
@@ -139,7 +146,8 @@ public class EntityFactory {
 
 	public static Entity createSquad(Vector2 position, Faction faction) {
 		Entity entity = buildEntity(position).physicsBody(BodyType.DynamicBody)
-				.circleSensor(0.1f).faction(faction).target()
+				.circleSensor(30.0f).faction(faction).target()
+				.filter(EntityCategory.SQUAD, 0, EntityCategory.SQUAD | EntityCategory.RESOURCE)
 				.steeringBehavior().stateMachine().getWithoutAdding();
 
 		SteerableComponent steerable = engine.createComponent(
@@ -176,7 +184,7 @@ public class EntityFactory {
 			sb = blendedSteering;
 		}
 
-		
+		entity.add(engine.createComponent(TargetFinderComponent.class));
 		Components.STATE_MACHINE.get(entity).stateMachine.changeState(SquadComponent.DEFAULT_STATE);
 		Components.STEERING_BEHAVIOR.get(entity).setBehavior(sb);
 		
@@ -192,6 +200,7 @@ public class EntityFactory {
 		Entity entity = buildEntity(position)
 				.physicsBody(BodyType.DynamicBody)
 				.circleSensor(Constants.projectileRadius)
+				.filter(EntityCategory.PROJECTILE, 0, EntityCategory.UNIT | EntityCategory.RESOURCE)
 				.faction(faction)
 				.sprite(Assets.projectile.projectiles.get(faction.ordinal()), Constants.projectileRadius * 2,
 						Constants.projectileRadius * 2).getWithoutAdding();
@@ -199,6 +208,8 @@ public class EntityFactory {
 		ProjectileComponent projectileComp = engine.createComponent(
 				ProjectileComponent.class).init(damage);
 		entity.add(projectileComp);
+		
+		entity.add(engine.createComponent(DecayComponent.class).init(Constants.projectileDecayTime));
 
 		PhysicsComponent physicsComp = Components.PHYSICS.get(entity);
 		physicsComp.body.setBullet(true);
@@ -251,7 +262,7 @@ public class EntityFactory {
 
 	public static class EntityBuilder {
 		private static final BodyType DEFAULT_BODY = BodyType.DynamicBody;
-
+		
 		public Vector2 position;
 		public Entity entity;
 
@@ -261,7 +272,7 @@ public class EntityFactory {
 			return this;
 		}
 
-		public EntityBuilder addParticle() {
+		public EntityBuilder particle() {
 
 			ParticleComponent p = engine.createComponent(
 					ParticleComponent.class).init(Assets.particles.getEffect());
@@ -270,6 +281,10 @@ public class EntityFactory {
 
 			return this;
 
+		}
+		
+		public PhysicsBuilder buildPhysics(BodyType type){
+			return physicsBuilder.reset(type, position, entity);
 		}
 
 		public EntityBuilder physicsBody(BodyType type) {
@@ -316,6 +331,19 @@ public class EntityFactory {
 			resourceComp.amount = amount;
 			entity.add(resourceComp);
 
+			return this;
+		}
+		
+		public EntityBuilder filter(int categoryBits, int groupIndex, int maskBits){
+			entity.flags = categoryBits;
+			
+			Filter filter = new Filter();
+			filter.categoryBits = (short) categoryBits;
+			filter.groupIndex = (short)groupIndex;
+			filter.maskBits =(short) maskBits;
+			
+			//TODO make EntityBuilder filter beter
+			Components.PHYSICS.get(entity).body.getFixtureList().get(0).setFilterData(filter);
 			return this;
 		}
 
@@ -464,6 +492,52 @@ public class EntityFactory {
 			return entity;
 		}
 
+	}
+	
+	public static class PhysicsBuilder{
+		private Body body;
+		
+		public PhysicsBuilder reset(BodyType type, Vector2 position, Entity entity){
+			BodyDef def = new BodyDef();
+			def.type = type;
+			def.position.set(position);
+			body = physicsSystem.createBody(def);
+			body.setUserData(entity);
+			return this;
+		}
+		
+		public FixtureBuilder addFixture(){
+			return fixtureBuilder.reset(body);
+		}
+		
+		public EntityBuilder getBody(){
+			return entityBuilder;
+		}
+		
+		public static class FixtureBuilder{
+			private Body body;
+			private FixtureDef def = new FixtureDef();
+			
+			public FixtureBuilder reset(Body body){
+				this.body = body;
+				def = new FixtureDef();
+				return this;
+			}
+			
+			public FixtureBuilder circle(float radius){
+				CircleShape circle = new CircleShape();
+				circle.setRadius(radius);
+				def.shape = circle;
+				return this;
+			}
+			
+			public PhysicsBuilder create(){
+				body.createFixture(def);
+				return physicsBuilder;
+			}
+			
+		}
+		
 	}
 
 }
