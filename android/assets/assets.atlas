@@ -123,27 +123,6 @@ asteroid
   orig: 90, 83
   offset: 0, 0
   index: 9
-bulletblue
-  rotate: false
-  xy: 97, 12
-  size: 49, 83
-  orig: 49, 83
-  offset: 0, 0
-  index: -1
-bulletred
-  rotate: false
-  xy: 1932, 1178
-  size: 49, 83
-  orig: 49, 83
-  offset: 0, 0
-  index: -1
-bulletyellow
-  rotate: false
-  xy: 148, 12
-  size: 49, 83
-  orig: 49, 83
-  offset: 0, 0
-  index: -1
 hotkey
   rotate: false
   xy: 908, 862
@@ -258,6 +237,27 @@ planet
   orig: 300, 300
   offset: 0, 0
   index: 5
+projectile
+  rotate: false
+  xy: 97, 12
+  size: 49, 83
+  orig: 49, 83
+  offset: 0, 0
+  index: 0
+projectile
+  rotate: false
+  xy: 1932, 1178
+  size: 49, 83
+  orig: 49, 83
+  offset: 0, 0
+  index: 1
+projectile
+  rotate: false
+  xy: 148, 12
+  size: 49, 83
+  orig: 49, 83
+  offset: 0, 0
+  index: 2
 ship
   rotate: false
   xy: 908, 492
