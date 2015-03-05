@@ -5,25 +5,22 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 import com.gdxjam.Assets;
 import com.gdxjam.GameManager;
 
 public class GameOverScreen extends AbstractScreen {
 
-	float alpha;
+	float alpha = 0;
 	Stage stage;
-	Label gameOver;
 
 	@Override
 	public void show() {
@@ -33,7 +30,7 @@ public class GameOverScreen extends AbstractScreen {
 		table.align(Align.center);
 
 		LabelStyle labelStyle = new LabelStyle(Assets.fonts.font, Color.RED);
-		gameOver = new Label("GAME OVER", labelStyle);
+		Label gameOver = new Label("GAME OVER", labelStyle);
 
 		NinePatchDrawable draw = new NinePatchDrawable(Assets.hotkey.button);
 

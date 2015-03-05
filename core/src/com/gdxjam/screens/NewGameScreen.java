@@ -50,7 +50,8 @@ public class NewGameScreen extends AbstractScreen {
 		label.setFontScale(2);
 		label.setAlignment(Align.top);
 
-		ImageButton faction0 = newImageButton(Assets.spacecraft.ships.get(0));
+		ImageButton faction0 = newImageButton(Assets.spacecraft.motherships
+				.get(0));
 		faction0.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -60,7 +61,8 @@ public class NewGameScreen extends AbstractScreen {
 			}
 		});
 
-		ImageButton faction1 = newImageButton(Assets.spacecraft.ships.get(1));
+		ImageButton faction1 = newImageButton(Assets.spacecraft.motherships
+				.get(1));
 		faction1.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -69,7 +71,8 @@ public class NewGameScreen extends AbstractScreen {
 			}
 		});
 
-		ImageButton faction2 = newImageButton(Assets.spacecraft.ships.get(2));
+		ImageButton faction2 = newImageButton(Assets.spacecraft.motherships
+				.get(2));
 		faction2.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -88,11 +91,6 @@ public class NewGameScreen extends AbstractScreen {
 		textStyle.down = draw.tint(Color.DARK_GRAY);
 		textStyle.checked = draw;
 		textStyle.font = Assets.fonts.font;
-
-		SelectBoxStyle selectBoxStyle = new SelectBoxStyle();
-		selectBoxStyle.font = Assets.fonts.font;
-		selectBoxStyle.background = draw;
-		selectBoxStyle.scrollStyle = new ScrollPaneStyle();
 
 		final SelectBox<String> worldSize = new SelectBox<String>(Assets.skin);
 		worldSize.addListener(new ChangeListener() {
@@ -136,7 +134,7 @@ public class NewGameScreen extends AbstractScreen {
 		});
 
 		table.align(Align.top).add(label).colspan(3);
-		table.row().maxWidth(Gdx.graphics.getWidth() / 3 - 30);
+		table.row();
 
 		table.add(faction0);
 		table.add(faction1);
