@@ -28,7 +28,8 @@ public class MainMenuScreen extends AbstractScreen {
 		table.defaults().width(Gdx.graphics.getWidth() / 2).pad(20);
 
 		addTitle();
-		add("New Game", new GameScreen());
+		add("New Game", new NewGameScreen());
+		add("GameScreen", new GameScreen());
 		add("Load Game", new LoadGameScreen());
 		add("Settings", new OptionsScreen());
 		add("Credits", new CreditsScreen());
