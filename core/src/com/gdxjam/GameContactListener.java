@@ -60,20 +60,23 @@ public class GameContactListener implements ContactListener {
 
 	}
 	
+
 	public void processTargetFinder(Entity squad, Entity target, boolean contactEnd){
-		//Break if the two entites are allies
+		//return if the two entities are allies
 		if(EntityUtils.isSameFaction(squad, target)) return;
 		
 		TargetFinderComponent targetFinder = Components.TARGET_FINDER.get(squad);
 		if(Components.SQUAD.has(target)){
 			targetFinder.squad(target, contactEnd);
+			//Sends a message to the squad that a new target has been identified.
+			MessageManager.getInstance().dispatchMessage(null, Components.STATE_MACHINE.get(squad), Messages.foundEnemy);
 		} else if (Components.RESOURCE.has(target)){
 			targetFinder.resource(target, contactEnd);
+			//Sends a message to the squad that a new resource has been identified.
+			MessageManager.getInstance().dispatchMessage(null, Components.STATE_MACHINE.get(squad), Messages.foundResource);
 		}
-		
-		//Sends a message to the squad that a new target has been identified.
-		MessageManager.getInstance().dispatchMessage(null, Components.STATE_MACHINE.get(squad), Messages.foundTarget);
 	}
+	
 
 	public void processProjectile (Entity projectile, Entity target) {
 		if (Components.HEALTH.has(target)) {

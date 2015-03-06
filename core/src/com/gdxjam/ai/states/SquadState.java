@@ -11,7 +11,9 @@ import com.gdxjam.components.TargetFinderComponent;
 
 public enum SquadState implements State<Entity>{
 	
-	HARVEST () {
+	
+	HARVEST_ENGAGE(){
+		
 		@Override
 		public void enter (Entity entity) {
 			super.enter(entity);
@@ -20,6 +22,31 @@ public enum SquadState implements State<Entity>{
 				Components.STATE_MACHINE.get(member).stateMachine.changeState(UnitState.HARVEST);
 			}
 		}
+		
+	},
+	
+	HARVEST_IDLE() {
+		
+		@Override
+		public void enter (Entity entity) {
+			super.enter(entity);
+			TargetFinderComponent targetFinder = Components.TARGET_FINDER.get(entity);
+			
+			//If we have targets available we don't need to be idle
+			if(targetFinder.resources.size > 0){
+				Components.STATE_MACHINE.get(entity).stateMachine.changeState(HARVEST_ENGAGE);
+			}
+		}
+		
+		@Override
+		public boolean onMessage (Entity entity, Telegram telegram) {
+			if(telegram.message == Messages.foundResource){
+				Components.STATE_MACHINE.get(entity).stateMachine.changeState(HARVEST_ENGAGE);
+				return true;
+			}
+			return false;
+		}
+		
 	},
 	
 	COMBAT_ENGAGE(){
@@ -69,7 +96,7 @@ public enum SquadState implements State<Entity>{
 		
 		@Override
 		public boolean onMessage (Entity entity, Telegram telegram) {
-			if(telegram.message == Messages.foundTarget){
+			if(telegram.message == Messages.foundEnemy){
 				Components.STATE_MACHINE.get(entity).stateMachine.changeState(COMBAT_ENGAGE);
 				return true;
 			}
