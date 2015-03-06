@@ -16,9 +16,11 @@ import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
+import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.components.WeaponComponent;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityFactory;
+import com.gdxjam.utils.Location2;
 
 public enum UnitState implements State<Entity> {
 
@@ -65,18 +67,22 @@ public enum UnitState implements State<Entity> {
     HARVEST(){
    	 @Override
    	 public void enter(Entity entity){
-//      	 //Test code
-//   		 ImmutableArray<Entity> entities = GameManager.getEngine().getEntitiesFor(Family.all(ResourceComponent.class).get());
-//    		 Entity resource = entities.first();
-//    		 
-//    		 Arrive<Vector2> arrive = new Arrive<Vector2>(Components.STEERABLE.get(entity))
-//    			 .setTarget((Location<Vector2>)Components.STEERABLE.get(resource).getBody().getPosition())
-//    			 .setTimeToTarget(0.01f)
-//    			 .setArrivalTolerance(0.002f)
-//    			 .setDecelerationRadius(2f);
-//    		 
-//    		 SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
-//    		 behavior.setBehavior(arrive);
+    		//Get squad relavant component s
+  			SquadMemberComponent squadMemberComp = Components.SQUAD_MEMBER.get(entity);
+  			SquadComponent squadComp = Components.SQUAD.get(squadMemberComp.squad);
+  			TargetFinderComponent targetFinder = Components.TARGET_FINDER.get(squadMemberComp.squad);
+  			
+  			Entity resource = targetFinder.resources.random();
+  			Location2 resourceTarget = new Location2(Components.PHYSICS.get(resource).body.getPosition());
+  			
+     		 Arrive<Vector2> arrive = new Arrive<Vector2>(Components.STEERABLE.get(entity))
+     			 .setTarget(resourceTarget)
+     			 .setTimeToTarget(0.01f)
+     			 .setArrivalTolerance(0.002f)
+     			 .setDecelerationRadius(2f);
+     		 
+     		 SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
+     		 behavior.setBehavior(arrive);
    	 }
    	 
 		public void update(Entity entity){
@@ -121,7 +127,7 @@ public enum UnitState implements State<Entity> {
 				//Set our target to a random member in the enemy squad
 				targetComp.target = enemySquadComp.members.random();
 				//Start attacking our target
-				Components.STATE_MACHINE.get(entity).stateMachine.changeState(ATTACK_TARGET);
+				Components.FSM.get(entity).changeState(ATTACK_TARGET);
 			}
 		}
 		
@@ -161,7 +167,7 @@ public enum UnitState implements State<Entity> {
 				
 				behaviorComp.setBehavior(blendSB);
    		} else{
-				Components.STATE_MACHINE.get(entity).stateMachine.changeState(FIND_TARGET);
+				Components.FSM.get(entity).changeState(FIND_TARGET);
    		}
    		
    	}
@@ -200,7 +206,7 @@ public enum UnitState implements State<Entity> {
 	   		}
    		}
    		else{
-   			Components.STATE_MACHINE.get(entity).stateMachine.changeState(FIND_TARGET);
+   			Components.FSM.get(entity).changeState(FIND_TARGET);
    		}
    		
    		weaponComp.cooldown -= Gdx.graphics.getDeltaTime();

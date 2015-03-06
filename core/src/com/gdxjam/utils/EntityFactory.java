@@ -24,6 +24,7 @@ import com.gdxjam.Assets;
 import com.gdxjam.ai.states.UnitState;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.DecayComponent;
+import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.HealthComponent;
@@ -36,7 +37,6 @@ import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
-import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
@@ -128,15 +128,10 @@ public class EntityFactory {
 		squadComp.addMember(entity);
 
 		Components.STEERABLE.get(entity).setIndependentFacing(true);
-		StateMachineComponent stateMachineComponent = engine.createComponent(
-				StateMachineComponent.class).init(entity);
-		stateMachineComponent.stateMachine.changeState(UnitState.FORMATION); // TODO
-																				// set
-																				// state
-																				// based
-																				// on
-																				// squad
-																				// state
+		FSMComponent stateMachineComponent = engine.createComponent(
+				FSMComponent.class).init(entity);
+		stateMachineComponent.changeState(UnitState.FORMATION);
+
 		entity.add(stateMachineComponent);
 
 		engine.addEntity(entity);
@@ -188,8 +183,9 @@ public class EntityFactory {
 		}
 
 		entity.add(engine.createComponent(TargetFinderComponent.class));
-		Components.STATE_MACHINE.get(entity).stateMachine
-				.changeState(SquadComponent.DEFAULT_STATE);
+
+		Components.FSM.get(entity).changeState(SquadComponent.DEFAULT_STATE);
+
 		Components.STEERING_BEHAVIOR.get(entity).setBehavior(sb);
 
 		entity.add(squadComp);
@@ -324,8 +320,8 @@ public class EntityFactory {
 		}
 
 		public EntityBuilder stateMachine() {
-			StateMachineComponent stateMachineComp = engine.createComponent(
-					StateMachineComponent.class).init(entity);
+			FSMComponent stateMachineComp = engine.createComponent(
+					FSMComponent.class).init(entity);
 			entity.add(stateMachineComp);
 			return this;
 		}
