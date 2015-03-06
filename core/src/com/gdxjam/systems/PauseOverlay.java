@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.gdxjam.Assets;
+import com.gdxjam.GameManager;
+import com.gdxjam.screens.MainMenuScreen;
 import com.gdxjam.utils.Constants;
 
 public class PauseOverlay {
@@ -41,7 +44,9 @@ public class PauseOverlay {
 	}
 
 	private void addTitle() {
-		Label title = new Label(Constants.GAME_TITLE, Assets.skin);
+		LabelStyle labelStyle = new LabelStyle(Assets.fonts.font, new Color(1,
+				1, 1, 1));
+		Label title = new Label(Constants.GAME_TITLE, labelStyle);
 		title.setAlignment(Align.center);
 		table.add(title);
 		table.row();
@@ -82,7 +87,7 @@ public class PauseOverlay {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
-				Gdx.app.exit();
+				GameManager.setScreen(new MainMenuScreen());
 			}
 		});
 		table.add(btn);

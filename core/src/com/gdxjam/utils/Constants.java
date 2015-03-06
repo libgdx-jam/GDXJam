@@ -28,7 +28,7 @@ public class Constants {
 
 	public static final float PIXEL_PER_METER = 32;
 
-	public static final CharSequence GAME_TITLE = "Title Goes Here";
+	public static final CharSequence GAME_TITLE = "Orion";
 
 	// Supports the 16:9 ratio
 	public static final float VIEWPORT_WIDTH = 64;
