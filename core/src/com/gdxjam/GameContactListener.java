@@ -2,10 +2,12 @@
 package com.gdxjam;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.gdxjam.ai.states.Messages;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.HealthComponent;
@@ -68,6 +70,9 @@ public class GameContactListener implements ContactListener {
 		} else if (Components.RESOURCE.has(target)){
 			targetFinder.resource(target, contactEnd);
 		}
+		
+		//Sends a message to the squad that a new target has been identified.
+		MessageManager.getInstance().dispatchMessage(null, Components.STATE_MACHINE.get(squad), Messages.foundTarget);
 	}
 
 	public void processProjectile (Entity projectile, Entity target) {
