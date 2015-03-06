@@ -1,4 +1,4 @@
-#LibGdx Community Game Jam
+![alt text](https://www.dropbox.com/s/w9lyh7fihi4sqsl/logoblack.png?raw=1 "Logo Title Text 1")
 ####Hello and welcome, make yourself comfortable. If you need to be brought up to speed check out the links below: 
 [Libgdx](http://libgdx.badlogicgames.com/features.htm) | [Trello](https://trello.com/gdxjam) | [Original Post](http://www.badlogicgames.com/forum/viewtopic.php?f=11&t=18181) | [GDX-ai](https://github.com/libgdx/gdx-ai/wiki)
 
