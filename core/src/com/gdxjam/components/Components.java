@@ -17,6 +17,7 @@ public class Components {
 	public static final ComponentMapper<TargetFinderComponent> TARGET_FINDER = ComponentMapper.getFor(TargetFinderComponent.class);
 	public static final ComponentMapper<WeaponComponent> WEAPON = ComponentMapper.getFor(WeaponComponent.class);
 	public static final ComponentMapper<HealthComponent> HEALTH = ComponentMapper.getFor(HealthComponent.class);
+	public static final ComponentMapper<MothershipComponent> MOTHERSHIP = ComponentMapper.getFor(MothershipComponent.class);
 
 	public static final ComponentMapper<PhysicsComponent> PHYSICS = ComponentMapper.getFor(PhysicsComponent.class);
 	public static final ComponentMapper<FactionComponent> FACTION = ComponentMapper.getFor(FactionComponent.class);
@@ -30,7 +31,6 @@ public class Components {
 	public static final ComponentMapper<SteeringBehaviorComponent> STEERING_BEHAVIOR = ComponentMapper
 		.getFor(SteeringBehaviorComponent.class);
 	public static final ComponentMapper<SteerableComponent> STEERABLE = ComponentMapper.getFor(SteerableComponent.class);
-
-	public static final ComponentMapper<StateMachineComponent> STATE_MACHINE = ComponentMapper.getFor(StateMachineComponent.class);
-	public static final ComponentMapper<MothershipComponent> MOTHERSHIP = ComponentMapper.getFor(MothershipComponent.class);
+	public static final ComponentMapper<FSMComponent> FSM = ComponentMapper.getFor(FSMComponent.class);
+	
 }

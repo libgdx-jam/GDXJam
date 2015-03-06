@@ -36,7 +36,7 @@ public class SquadComponent extends Component implements Poolable{
 	
 	public static final float PATTERN_SPACING = Constants.unitRadius * 0.25f;
 	public static final PatternType DEFAULT_PATTERN = PatternType.V;
-	public static final SquadState DEFAULT_STATE = SquadState.COMBAT;
+	public static final SquadState DEFAULT_STATE = SquadState.COMBAT_IDLE;
 	
 	public Array<Entity> members;
 	public Formation<Vector2> formation;
@@ -70,7 +70,7 @@ public class SquadComponent extends Component implements Poolable{
 	public void setState(State<Entity> state){
 		this.state = state;
 		for(Entity entity : members){
-			Components.STATE_MACHINE.get(entity).stateMachine.changeState(state);
+			Components.FSM.get(entity).changeState(state);
 		}
 	}
 	

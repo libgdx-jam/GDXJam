@@ -2,10 +2,12 @@
 package com.gdxjam;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.gdxjam.ai.states.Messages;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.HealthComponent;
@@ -58,17 +60,23 @@ public class GameContactListener implements ContactListener {
 
 	}
 	
+
 	public void processTargetFinder(Entity squad, Entity target, boolean contactEnd){
-		//Break if the two entites are allies
+		//return if the two entities are allies
 		if(EntityUtils.isSameFaction(squad, target)) return;
 		
 		TargetFinderComponent targetFinder = Components.TARGET_FINDER.get(squad);
 		if(Components.SQUAD.has(target)){
 			targetFinder.squad(target, contactEnd);
+			//Sends a message to the squad that a new target has been identified.
+			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.foundEnemy);
 		} else if (Components.RESOURCE.has(target)){
 			targetFinder.resource(target, contactEnd);
+			//Sends a message to the squad that a new resource has been identified.
+			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.foundResource);
 		}
 	}
+	
 
 	public void processProjectile (Entity projectile, Entity target) {
 		if (Components.HEALTH.has(target)) {
