@@ -6,35 +6,42 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
+import com.gdxjam.GameManager;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
+import com.gdxjam.screens.GameOverScreen;
 
-public class HealthSystem extends IteratingSystem{
-	
+public class HealthSystem extends IteratingSystem {
+
 	private PooledEngine engine;
-	
-	public HealthSystem () {
+
+	public HealthSystem() {
 		super(Family.all(HealthComponent.class).get());
 	}
-	
+
 	@Override
-	public void addedToEngine (Engine engine) {
+	public void addedToEngine(Engine engine) {
 		super.addedToEngine(engine);
-		this.engine = (PooledEngine)engine;
+		this.engine = (PooledEngine) engine;
 	}
-	
+
 	@Override
-	protected void processEntity (Entity entity, float deltaTime) {
+	protected void processEntity(Entity entity, float deltaTime) {
 		HealthComponent health = Components.HEALTH.get(entity);
-	
-		if(health.value <= health.min){
-//			entity.add(engine.createComponent(RemovalComponent.class));
+
+		if (health.value <= health.min) {
+			// entity.add(engine.createComponent(RemovalComponent.class));
+
+			if (Components.MOTHERSHIP.has(entity)) {
+				GameManager.setScreen(new GameOverScreen());
+			}
+
 			engine.removeEntity(entity);
 			return;
 		}
-			
+
 		health.value = MathUtils.clamp(health.value, health.min, health.max);
-		
+
 	}
 
 }
