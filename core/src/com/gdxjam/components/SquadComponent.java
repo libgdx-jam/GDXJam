@@ -60,13 +60,11 @@ public class SquadComponent extends Component implements Poolable{
 	public void addMember(Entity entity){
 		members.add(entity);
 		formation.addMember(Components.SQUAD_MEMBER.get(entity));
-//		formation.updateSlotAssignments();
 	}
 	
 	public void removeMember(Entity entity){
 		members.removeValue(entity, true);
 		formation.removeMember(Components.SQUAD_MEMBER.get(entity));
-		//formation.updateSlotAssignments();
 	}
 	
 	public void setState(State<Entity> state){
@@ -78,8 +76,7 @@ public class SquadComponent extends Component implements Poolable{
 	
 	public void setFormationPattern(PatternType pattern){
 		FormationPattern<Vector2> formationPattern = getFormationPattern(pattern);
-		formation.setPattern(formationPattern);
-		formation.updateSlotAssignments();
+		formation.changePattern(formationPattern);
 	}
 	
 	public FormationPattern<Vector2> getFormationPattern(PatternType pattern){

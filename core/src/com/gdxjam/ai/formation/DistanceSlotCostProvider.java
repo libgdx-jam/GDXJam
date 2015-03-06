@@ -14,7 +14,7 @@ public class DistanceSlotCostProvider implements SlotCostProvider<Vector2> {
 		SquadMemberComponent squadMemberComp = (SquadMemberComponent) member;
 		SquadComponent squadComp = Components.SQUAD.get(squadMemberComp.squad);
 		
-		Vector2 targetPosition = squadComp.formation.getSlot(slotNumber).member.getTargetLocation().getPosition();
+		Vector2 targetPosition = squadComp.formation.getSlotAssignmentAt(slotNumber).member.getTargetLocation().getPosition();
 
 		// The cost is the square distance between current position and target position
 		return squadMemberComp.body.getPosition().dst2(targetPosition);
