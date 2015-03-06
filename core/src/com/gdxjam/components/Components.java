@@ -31,5 +31,5 @@ public class Components {
 		.getFor(SteeringBehaviorComponent.class);
 	public static final ComponentMapper<SteerableComponent> STEERABLE = ComponentMapper.getFor(SteerableComponent.class);
 
-	public static final ComponentMapper<StateMachineComponent> STATE_MACHINE = ComponentMapper.getFor(StateMachineComponent.class);
+	public static final ComponentMapper<FSMComponent> FSM = ComponentMapper.getFor(FSMComponent.class);
 }

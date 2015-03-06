@@ -70,7 +70,7 @@ public class SquadComponent extends Component implements Poolable{
 	public void setState(State<Entity> state){
 		this.state = state;
 		for(Entity entity : members){
-			Components.STATE_MACHINE.get(entity).stateMachine.changeState(state);
+			Components.FSM.get(entity).changeState(state);
 		}
 	}
 	

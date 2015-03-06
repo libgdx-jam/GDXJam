@@ -47,7 +47,7 @@ public class SquadCommandTable extends Table{
 			
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
-				Components.STATE_MACHINE.get(squad).stateMachine.changeState(squadState.getSelected());
+				Components.FSM.get(squad).changeState(squadState.getSelected());
 			}
 		});
 		

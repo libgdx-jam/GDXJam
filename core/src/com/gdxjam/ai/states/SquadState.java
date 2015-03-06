@@ -4,8 +4,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.SquadComponent;
-import com.gdxjam.components.StateMachineComponent;
 import com.gdxjam.components.TargetComponent;
 import com.gdxjam.components.TargetFinderComponent;
 
@@ -19,7 +19,7 @@ public enum SquadState implements State<Entity>{
 			super.enter(entity);
 			SquadComponent squadComp = Components.SQUAD.get(entity);
 			for(Entity member : squadComp.members){
-				Components.STATE_MACHINE.get(member).stateMachine.changeState(UnitState.HARVEST);
+				Components.FSM.get(member).changeState(UnitState.HARVEST);
 			}
 		}
 		
@@ -34,14 +34,14 @@ public enum SquadState implements State<Entity>{
 			
 			//If we have targets available we don't need to be idle
 			if(targetFinder.resources.size > 0){
-				Components.STATE_MACHINE.get(entity).stateMachine.changeState(HARVEST_ENGAGE);
+				Components.FSM.get(entity).changeState(HARVEST_ENGAGE);
 			}
 		}
 		
 		@Override
 		public boolean onMessage (Entity entity, Telegram telegram) {
 			if(telegram.message == Messages.foundResource){
-				Components.STATE_MACHINE.get(entity).stateMachine.changeState(HARVEST_ENGAGE);
+				Components.FSM.get(entity).changeState(HARVEST_ENGAGE);
 				return true;
 			}
 			return false;
@@ -65,8 +65,7 @@ public enum SquadState implements State<Entity>{
 //				TargetComponent memberTargetComp = Components.TARGET.get(member);
 //				memberTargetComp.target = enemySquadComp.members.get(targetIndex);
 //				
-				StateMachineComponent stateComp = Components.STATE_MACHINE.get(member);
-				stateComp.stateMachine.changeState(UnitState.FIND_TARGET);
+				Components.FSM.get(member).changeState(UnitState.FIND_TARGET);
 			}
 		}
 		
@@ -76,7 +75,7 @@ public enum SquadState implements State<Entity>{
 			//Make sure we still have a target
 			//If we don't go back to idle
 			if(Components.TARGET.get(entity).target == null)
-				Components.STATE_MACHINE.get(entity).stateMachine.changeState(COMBAT_IDLE);
+				Components.FSM.get(entity).changeState(COMBAT_IDLE);
 		}
 		
 		
@@ -90,14 +89,14 @@ public enum SquadState implements State<Entity>{
 			
 			//If we have targets available we don't need to be idle
 			if(targetFinder.squads.size > 0){
-				Components.STATE_MACHINE.get(entity).stateMachine.changeState(COMBAT_ENGAGE);
+				Components.FSM.get(entity).changeState(COMBAT_ENGAGE);
 			}
 		}
 		
 		@Override
 		public boolean onMessage (Entity entity, Telegram telegram) {
 			if(telegram.message == Messages.foundEnemy){
-				Components.STATE_MACHINE.get(entity).stateMachine.changeState(COMBAT_ENGAGE);
+				Components.FSM.get(entity).changeState(COMBAT_ENGAGE);
 				return true;
 			}
 			return false;
