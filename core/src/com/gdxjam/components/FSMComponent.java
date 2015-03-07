@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
+import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 
@@ -23,6 +24,10 @@ public class FSMComponent extends Component implements Telegraph {
 	
 	public void changeState(State<Entity> state){
 		stateMachine.changeState(state);
+	}
+	
+	public StateMachine<Entity> getStateMachine(){
+		return stateMachine;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.gdxjam.ui;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
@@ -11,7 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.gdxjam.ai.states.SquadState;
+import com.gdxjam.ai.state.SquadState;
+import com.gdxjam.ai.state.SquadTatics;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadComponent.PatternType;
@@ -23,7 +25,7 @@ public class SquadCommandTable extends Table{
 	private final static Color selectedColor = new Color(240.0f / 255.0f, 230.0f / 255.0f, 140.0f / 255.0f, 0.85f);
 	private final static Color defaultColor = new Color(0.66f, 0.66f, 0.66f, 0.85f);
 	
-	private SelectBox<SquadState> squadState;
+	private SelectBox<SquadTatics> tatics;
 	private SelectBox<PatternType> formationPatternSelect;
 	private final Entity squad;
 	private final int index;
@@ -40,14 +42,24 @@ public class SquadCommandTable extends Table{
 		squadText.setMultiLineText("Squad " + (index + 1), 0, 0);
 		squadText.setColor(Color.WHITE);
 
-		squadState = new SelectBox<SquadState>(skin);
-		squadState.setItems(SquadState.values());
-		squadState.setSelected(SquadComponent.DEFAULT_STATE);
-		squadState.addListener(new ChangeListener() {
+		tatics = new SelectBox<SquadTatics>(skin);
+		tatics.setItems(SquadTatics.values());
+		tatics.setSelected(SquadTatics.COMBAT);
+		tatics.addListener(new ChangeListener() {
 			
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
-				Components.FSM.get(squad).changeState(squadState.getSelected());
+				State<Entity> state;
+				switch(tatics.getSelected()){
+				default:
+				case HARVEST:
+					state = SquadState.HARVEST_IDLE;
+					break;
+				case COMBAT:
+					state = SquadState.COMBAT_IDLE;
+					break;
+				}
+				Components.FSM.get(squad).changeState(state);
 			}
 		});
 		
@@ -70,7 +82,7 @@ public class SquadCommandTable extends Table{
 			}
 		});
 		
-		add(squadState).pad(5);
+		add(tatics).pad(5);
 		row();
 		add(formationPatternSelect);
 		row();

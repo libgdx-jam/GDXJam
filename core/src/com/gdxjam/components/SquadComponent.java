@@ -18,8 +18,8 @@ import com.gdxjam.ai.formation.LineFormationPattern;
 import com.gdxjam.ai.formation.SquareFormationPattern;
 import com.gdxjam.ai.formation.VFormationPattern;
 import com.gdxjam.ai.formation.WedgeFormationPattern;
-import com.gdxjam.ai.states.SquadState;
-import com.gdxjam.ai.states.UnitState;
+import com.gdxjam.ai.state.SquadState;
+import com.gdxjam.ai.state.UnitState;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Location2;
 

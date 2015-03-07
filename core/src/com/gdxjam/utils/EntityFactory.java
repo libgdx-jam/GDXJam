@@ -21,7 +21,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.gdxjam.Assets;
-import com.gdxjam.ai.states.UnitState;
+import com.gdxjam.ai.state.UnitState;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.DecayComponent;
 import com.gdxjam.components.FSMComponent;
@@ -86,7 +86,10 @@ public class EntityFactory {
 		Entity entity = buildEntity(position)
 				.physicsBody(BodyType.StaticBody)
 				.circleCollider(radius, 50.0f)
-				.resource(5)
+				.filter(EntityCategory.RESOURCE, 0, EntityCategory.PROJECTILE |
+				 EntityCategory.SQUAD | EntityCategory.UNIT)
+				.resource((int)(Constants.baseAsteroidResourceAmt * radius))
+				.steerable(radius)
 				.faction(Faction.NONE)
 				.sprite(Assets.space.asteroids.random(), radius * 2, radius * 2)
 				.addToEngine();
@@ -111,7 +114,7 @@ public class EntityFactory {
 				.physicsBody(BodyType.DynamicBody)
 				.circleCollider(Constants.unitRadius, 1.0f)
 				.damping(1, 0)
-				.steerable()
+				.steerable(Constants.unitRadius)
 				.steeringBehavior()
 				.health(100)
 				.faction(faction)
@@ -130,9 +133,10 @@ public class EntityFactory {
 		Components.STEERABLE.get(entity).setIndependentFacing(true);
 		FSMComponent stateMachineComponent = engine.createComponent(
 				FSMComponent.class).init(entity);
+		entity.add(stateMachineComponent);
 		stateMachineComponent.changeState(UnitState.FORMATION);
 
-		entity.add(stateMachineComponent);
+
 
 		engine.addEntity(entity);
 		return entity;
@@ -150,7 +154,7 @@ public class EntityFactory {
 
 		SteerableComponent steerable = engine.createComponent(
 				SteerableComponent.class).init(
-				Components.PHYSICS.get(entity).body);
+				Components.PHYSICS.get(entity).body, 30.0f);
 		SquadComponent squadComp = engine.createComponent(SquadComponent.class)
 				.init(steerable);
 		squadComp.targetLocation.getPosition().set(position);
@@ -335,8 +339,7 @@ public class EntityFactory {
 
 		public EntityBuilder resource(int amount) {
 			ResourceComponent resourceComp = engine
-					.createComponent(ResourceComponent.class);
-			resourceComp.amount = amount;
+					.createComponent(ResourceComponent.class).init(amount);
 			entity.add(resourceComp);
 
 			return this;
@@ -377,14 +380,14 @@ public class EntityFactory {
 			return this;
 		}
 
-		public EntityBuilder steerable() {
+		public EntityBuilder steerable(float radius) {
 			PhysicsComponent physics = Components.PHYSICS.get(entity);
 			if (physics == null) {
 				Gdx.app.error(TAG, "cannot create a steerable without physics!");
 				return this;
 			}
 			SteerableComponent steerable = engine.createComponent(
-					SteerableComponent.class).init(physics.body);
+					SteerableComponent.class).init(physics.body, radius);
 			entity.add(steerable);
 			return this;
 		}
