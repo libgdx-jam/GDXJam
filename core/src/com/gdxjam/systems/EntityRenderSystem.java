@@ -22,6 +22,7 @@ import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.ParalaxComponent;
 import com.gdxjam.components.PhysicsComponent;
+import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SpriteComponent;
 
 public class EntityRenderSystem extends SortedIteratingSystem implements Disposable {
@@ -135,6 +136,22 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 				shapeRenderer.rect(sprite.getX(), sprite.getY() + sprite.getHeight(), sprite.getWidth() * percent, healthBarHeight);
 			}
 		}
+		
+		
+		//Resource status
+		
+		if(Components.RESOURCE.has(entity)){
+			ResourceComponent resourceComp = Components.RESOURCE.get(entity);
+			if(resourceComp.value < resourceComp.capactiy.max){
+				float percent = (float)resourceComp.value / (float)resourceComp.capactiy.max;
+				shapeRenderer.setColor(Color.ORANGE);
+				shapeRenderer.rect(sprite.getX(), sprite.getY() + sprite.getHeight(), sprite.getWidth(), healthBarHeight);
+				shapeRenderer.setColor(Color.BLUE);
+				shapeRenderer.rect(sprite.getX(), sprite.getY() + sprite.getHeight(), sprite.getWidth() * percent, healthBarHeight);
+			}
+		}
+		
+		
 		}
 	}
 

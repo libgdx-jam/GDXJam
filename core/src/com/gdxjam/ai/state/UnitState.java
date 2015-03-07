@@ -1,16 +1,21 @@
-package com.gdxjam.ai.states;
+package com.gdxjam.ai.state;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
+import com.badlogic.gdx.ai.steer.behaviors.CollisionAvoidance;
 import com.badlogic.gdx.ai.steer.behaviors.Face;
 import com.badlogic.gdx.ai.steer.behaviors.ReachOrientation;
+import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.FSMComponent;
+import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.SteerableComponent;
@@ -19,8 +24,8 @@ import com.gdxjam.components.TargetComponent;
 import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.components.WeaponComponent;
 import com.gdxjam.utils.Constants;
+import com.gdxjam.utils.Constants.BUILD;
 import com.gdxjam.utils.EntityFactory;
-import com.gdxjam.utils.Location2;
 
 public enum UnitState implements State<Entity> {
 
@@ -64,50 +69,97 @@ public enum UnitState implements State<Entity> {
 		
 	},
 	
+	HARVEST_RETURN(){
+		
+	},
+	
+	FIND_RESOURCE(){
+		
+		@Override
+		public void enter (Entity entity) {
+			super.enter(entity);
+			//get target components from the unit and the squad
+  			Entity squad = Components.SQUAD_MEMBER.get(entity).squad;
+  			
+			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.requestTarget, entity);
+			
+			
+			if(Components.TARGET.get(entity) != null){
+				Components.FSM.get(entity).changeState(HARVEST);
+			} else {
+				Components.FSM.get(entity).changeState(FORMATION);
+			}
+		}
+		
+		
+	},
+	
     HARVEST(){
    	 @Override
    	 public void enter(Entity entity){
-    		//Get squad relavant component s
-  			SquadMemberComponent squadMemberComp = Components.SQUAD_MEMBER.get(entity);
-  			SquadComponent squadComp = Components.SQUAD.get(squadMemberComp.squad);
-  			TargetFinderComponent targetFinder = Components.TARGET_FINDER.get(squadMemberComp.squad);
-  			
-  			Entity resource = targetFinder.resources.random();
-  			Location2 resourceTarget = new Location2(Components.PHYSICS.get(resource).body.getPosition());
-  			
-     		 Arrive<Vector2> arrive = new Arrive<Vector2>(Components.STEERABLE.get(entity))
-     			 .setTarget(resourceTarget)
-     			 .setTimeToTarget(0.01f)
-     			 .setArrivalTolerance(0.002f)
-     			 .setDecelerationRadius(2f);
-     		 
-     		 SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
-     		 behavior.setBehavior(arrive);
+   		super.enter(entity);
+   		
+			Entity target = Components.TARGET.get(entity).target;
+			SteerableComponent steerable = Components.STEERABLE.get(entity);
+			SteerableComponent targetSteerable = Components.STEERABLE.get(target);
+			
+			Entity squad = Components.SQUAD_MEMBER.get(entity).squad;
+			TargetFinderComponent targetFinderComp = Components.TARGET_FINDER.get(squad);
+			RadiusProximity<Vector2> radiusProximity = new RadiusProximity<Vector2>(steerable, targetFinderComp.resourceAgents, 0.1f);
+			
+			
+			Arrive<Vector2> arrive = new Arrive<Vector2>(steerable)
+				 .setTarget(targetSteerable)
+				 .setTimeToTarget(0.01f)
+				 .setArrivalTolerance(0.001f)
+				 .setDecelerationRadius(4f);
+			 
+			Face<Vector2> faceSB = new Face<Vector2>(steerable)
+				 .setTarget(targetSteerable)
+				 .setAlignTolerance(0.001f)
+				 .setTimeToTarget(0.001f)
+				 .setDecelerationRadius(2.0f);
+			 
+			CollisionAvoidance<Vector2> collisionAvoidanceSB = new CollisionAvoidance<Vector2>(steerable, radiusProximity);
+			 
+			BlendedSteering<Vector2> blendSB = new BlendedSteering<Vector2>(steerable);
+			blendSB.add(arrive, 0.2f);
+			blendSB.add(faceSB, 1.0f);
+			blendSB.add(collisionAvoidanceSB, 1000.0f);
+			 
+			SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
+			behavior.setBehavior(blendSB);
    	 }
    	 
 		public void update(Entity entity){
-//      		 SteerableComponent steerable = Components.STEERABLE.get(entity);
-//      		 SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
-//
-//      		 Arrive<Vector2> arrive = (Arrive<Vector2>) behavior.getBehavior();
-//      		 Vector2 targetPosition = arrive.getTarget().getPosition();
-//
-//      		 if(steerable.getPosition().dst2(targetPosition) < 1.5f){
-//      			 if(Components.HEALTH.has(unit.target)){
-//      				 HealthComponent health = Components.HEALTH.get(unit.target);
-//         			 health.value -= 1;
-//         			 if(health.value <= 0){
-//         				 unit.target = null;
-//         			 }
-//      			 }
-//      			
-//      		 }
-//   		 }
-//   		 
-//   		 
-//   	 }
-	
-    }
+			super.update(entity);
+			Entity target = Components.TARGET.get(entity).target;
+			if(target == null) return;
+			
+			SteerableComponent steerable = Components.STEERABLE.get(entity);
+			SteerableComponent targetSteerable = Components.STEERABLE.get(target);
+			
+			if(targetSteerable == null) return;
+			
+			if(targetSteerable.getPosition().dst2(steerable.getPosition()) <= targetSteerable.getBoundingRadius() + Constants.unitRadius * 2.0f){
+				ResourceComponent targetResourceComp = Components.RESOURCE.get(target);
+				targetResourceComp.value -= Constants.resourceCollectionSpeed;
+			}
+   	 }
+		
+		@Override
+		public boolean onMessage (Entity entity, Telegram telegram) {
+			if(telegram.message == Messages.targetDestroyed){
+				Entity squad = Components.SQUAD_MEMBER.get(entity).squad;
+				FSMComponent squadFSM = Components.FSM.get(squad);
+				MessageManager.getInstance().dispatchMessage(null, squadFSM, Messages.targetDestroyed, telegram.extraInfo);
+				
+				
+				Components.FSM.get(entity).changeState(FIND_RESOURCE);
+				return true;
+			}
+			return false;
+		}
 	},
     
 	FIND_TARGET(){
@@ -127,7 +179,7 @@ public enum UnitState implements State<Entity> {
 				//Set our target to a random member in the enemy squad
 				targetComp.target = enemySquadComp.members.random();
 				//Start attacking our target
-				Components.FSM.get(entity).changeState(ATTACK_TARGET);
+				Components.FSM.get(entity).changeState(COMBAT_ENGAGE);
 			}
 		}
 		
@@ -140,7 +192,7 @@ public enum UnitState implements State<Entity> {
 		
 	},
     
-    ATTACK_TARGET(){
+    COMBAT_ENGAGE(){
    	 @Override
    	public void enter (Entity entity) {
    		super.enter(entity);
@@ -214,10 +266,15 @@ public enum UnitState implements State<Entity> {
     };
 
 
-
+ 	private static final String TAG = UnitState.class.getSimpleName();
+    
     @Override
     public void enter(Entity entity) {
-
+ 		if(Constants.build == BUILD.DEV){
+ 			FSMComponent fsm = Components.FSM.get(entity);
+			State<Entity> state = Components.FSM.get(entity).getStateMachine().getCurrentState();
+			Gdx.app.debug(TAG, "Entered: " + state.toString());
+		}
     }
 
     @Override
@@ -233,16 +290,14 @@ public enum UnitState implements State<Entity> {
 
     @Override
     public boolean onMessage(Entity entity, Telegram telegram) {
-//   	 
-//        switch (telegram.message){
-//            case Messages.REGROUP_ORDER:
-//                if(!Components.STATE_MACHINE.get(entity).stateMachine.isInState(REGROUP))
-//                    Components.STATE_MACHINE.get(entity).stateMachine.changeState(REGROUP);
-//                break;
-//            case Messages.RESOUCES_ORDER:
-//                Components.STATE_MACHINE.get(entity).stateMachine.changeState(COLLECT_RESOURCES);
-//        }
 
-        return false;
+   	 switch(telegram.message){
+   	 case Messages.order:
+   		 State<Entity> state = (State<Entity>) telegram.extraInfo;
+   		 Components.FSM.get(entity).changeState(state);
+   		 return true;
+   	default:
+   		return false;
+   	 }
     }
 }

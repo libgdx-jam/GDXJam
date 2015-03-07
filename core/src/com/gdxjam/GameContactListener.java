@@ -1,13 +1,16 @@
 
 package com.gdxjam;
 
+import java.util.Comparator;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.gdxjam.ai.states.Messages;
+import com.gdxjam.ai.state.Messages;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.HealthComponent;
@@ -72,9 +75,30 @@ public class GameContactListener implements ContactListener {
 			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.foundEnemy);
 		} else if (Components.RESOURCE.has(target)){
 			targetFinder.resource(target, contactEnd);
+			sortResources(targetFinder, squad);
 			//Sends a message to the squad that a new resource has been identified.
 			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.foundResource);
 		}
+	}
+	
+	public void sortResources(TargetFinderComponent targetFinder, final Entity squad){
+		
+		//TODO Move this somehwere better
+		targetFinder.resources.sort(new Comparator<Entity>() {
+			
+			@Override
+			public int compare (Entity e1, Entity e2) {
+				Vector2 squadPos = Components.PHYSICS.get(squad).body.getPosition();
+				Vector2 pos1 = Components.PHYSICS.get(e1).body.getPosition();
+				Vector2 pos2 = Components.PHYSICS.get(e2).body.getPosition();
+				
+				float dist1 = squadPos.dst2(pos1);
+				float dist2 = squadPos.dst2(pos2);
+				
+				return dist1 > dist2 ? 1 : -1;
+			}
+			
+		});
 	}
 	
 

@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
 import com.gdxjam.components.PhysicsComponent;
+import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.systems.BehaviorTreeSystem;
@@ -34,6 +35,8 @@ public class EntityManager extends PooledEngine implements Disposable {
 				new UnitEntityListener(this));
 		addEntityListener(Family.all(PhysicsComponent.class).get(),
 				new PhysicsEntityListener(getSystem(PhysicsSystem.class)));
+		
+		addEntityListener(Family.all(ResourceComponent.class).get(), new ResourceEntityListener());
 	}
 
 	private EntityManager initSystems() {
@@ -71,11 +74,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-//		getSystem(PhysicsSystem.class).drawDebug();
-		// for (Entity entity :
-		// getEntitiesFor(Family.all(RemovalComponent.class).get())) {
-		// removeEntity(entity);
-		// }
+		getSystem(PhysicsSystem.class).drawDebug();
 	}
 
 	@Override

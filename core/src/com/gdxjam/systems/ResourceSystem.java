@@ -1,15 +1,21 @@
 package com.gdxjam.systems;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.systems.IteratingSystem;
+import com.gdxjam.components.Components;
+import com.gdxjam.components.ResourceComponent;
+import com.gdxjam.utils.EntityUtils;
 
-public class ResourceSystem extends EntitySystem{
+public class ResourceSystem extends IteratingSystem{
 	
 	public int population = 0;
 	public int resources = 500;
 	private GUISystem guiSystem;
 	
 	public ResourceSystem(GUISystem guiSystem){
+		super(Family.all(ResourceComponent.class).get());
 		this.guiSystem = guiSystem;
 	}
 	
@@ -28,12 +34,17 @@ public class ResourceSystem extends EntitySystem{
 	@Override
 	public void update (float deltaTime) {
 		super.update(deltaTime);
+
+	}
+
+	@Override
+	protected void processEntity (Entity entity, float deltaTime) {
+		ResourceComponent resourceComp = Components.RESOURCE.get(entity);
 		
-//		if(world.food >= foodThreshold){
-//			EntityFactory.createUnit(new Vector2(MathUtils.random(0, 64), MathUtils.random(0, 36)));
-//			world.food = 0;
-//		}
-		
+		if(resourceComp.value < resourceComp.capactiy.min){
+			modifyResource((int)resourceComp.capactiy.max);
+			EntityUtils.removeEntity(entity);
+		}
 		
 	}
 

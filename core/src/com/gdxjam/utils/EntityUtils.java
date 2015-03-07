@@ -5,8 +5,11 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.math.Vector2;
+import com.gdxjam.ai.state.Messages;
 import com.gdxjam.components.Components;
+import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.SquadComponent;
@@ -52,6 +55,11 @@ public class EntityUtils {
 			TargetComponent targetComp = Components.TARGET.get(e);
 			if(targetComp.target == entity){
 				targetComp.target = null;
+				
+				if(Components.FSM.has(e)){
+					FSMComponent fsm = Components.FSM.get(e);
+					MessageManager.getInstance().dispatchMessage(null, fsm, Messages.targetDestroyed, entity);
+				}
 			}
 			
 		}
@@ -67,25 +75,6 @@ public class EntityUtils {
 		}
 		return null;
 	}
-	
-//	@Deprecated
-//	public static void addToSquad(Entity entity, Entity squad){
-//		FactionComponent entityFactionComp = Components.FACTION.get(entity);
-//		FactionComponent squadFactionComp = Components.FACTION.get(entity);
-//		
-//		if(entityFactionComp.faction == squadFactionComp.faction){
-//			SquadComponent squadComp = Components.SQUAD.get(squad);
-//			
-//			entity.add(engine.createComponent(SquadMemberComponent.class).init(squad));
-//			
-//			StateMachineComponent stateMachineComp = Components.STATE_MACHINE.get(entity);
-//			stateMachineComp.stateMachine.changeState(UnitState.FORMATION);	//TODO set state based on squad state
-//			squadComp.addMember(entity);
-//			
-//			if(squadFactionComp.faction == Faction.Player)
-//				guiSystem.updateSquad(squad);
-//		}
-//	}
 	
 	public static void setSelectedSquadTarget(Vector2 target){
 		ImmutableArray<Entity> squads = engine.getEntitiesFor(Family.all(SquadComponent.class).get());

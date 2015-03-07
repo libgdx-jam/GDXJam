@@ -7,7 +7,6 @@ import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Pool.Poolable;
-import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Location2;
 import com.gdxjam.utils.Vector2Utils;
 
@@ -22,6 +21,7 @@ public class SteerableComponent extends Component implements Steerable<Vector2>,
 	private float maxLinearAcceleration = MAX_LINEAR_ACCELERATION;
 	private float maxAngluarSpeed = MAX_ANGULAR_SPEED;
 	private float maxAngluarAcceleration = MAX_ANGULAR_ACCELERATION;
+	private float boundingRadius;
 	private boolean independentFacing = false;
 
 	private boolean tagged = false;
@@ -32,8 +32,9 @@ public class SteerableComponent extends Component implements Steerable<Vector2>,
 		return body;
 	}
 
-	public SteerableComponent init (Body body) {
+	public SteerableComponent init (Body body, float radius) {
 		this.body = body;
+		this.boundingRadius = radius;
 		return this;
 	}
 
@@ -104,7 +105,7 @@ public class SteerableComponent extends Component implements Steerable<Vector2>,
 
 	@Override
 	public float getBoundingRadius () {
-		return Constants.unitRadius;
+		return boundingRadius;
 	}
 
 	@Override

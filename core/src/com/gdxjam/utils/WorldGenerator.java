@@ -77,7 +77,7 @@ public class WorldGenerator {
 	
 	public void generateSpawners(){
 		//createSpawner(new Vector2(138, 138), Constants.enemyFaction);
-		SquadSpawnerSystem.initalizeSpawns();
+		//SquadSpawnerSystem.initalizeSpawns();
 	}
 
 	public void createBackground() {
