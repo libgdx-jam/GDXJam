@@ -40,11 +40,11 @@ public class GameScreen extends AbstractScreen {
 		multiplexer.addProcessor(new GestureDetector(
 				new DesktopGestureListener(engine)));
 		multiplexer.addProcessor(pauseOverlay.getStage());
-		
-		if(Constants.build == BUILD.DEV){
+
+		if (Constants.build == BUILD.DEV) {
 			multiplexer.addProcessor(new DeveloperInputProcessor());
 		}
-		
+
 		Gdx.input.setInputProcessor(multiplexer);
 
 	}
@@ -54,7 +54,8 @@ public class GameScreen extends AbstractScreen {
 		WorldGeneratorParameter param = new WorldGeneratorParameter();
 		param.initalSquads = 3;
 		param.squadMembers = 5;
-		WorldGenerator generator = new WorldGenerator(width, height, seed, param);
+		WorldGenerator generator = new WorldGenerator(width, height, seed,
+				param);
 		generator.generate();
 
 		engine.getSystem(CameraSystem.class).getCamera().position.set(
@@ -62,7 +63,6 @@ public class GameScreen extends AbstractScreen {
 		engine.getSystem(CameraSystem.class).setWorldBounds(width, height);
 
 	}
-
 
 	@Override
 	public void render(float delta) {
@@ -98,8 +98,7 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-
+		Constants.isPaused = false;
 	}
 
 }
