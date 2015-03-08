@@ -40,15 +40,4 @@ public class Constants {
 	public static Faction playerFaction = Faction.FACTION1;
 	public static Faction enemyFaction = Faction.FACTION0;
 
-	public static final String FACTION0_NAME = "Republic";
-	public static final String FACTION1_NAME = "Alien";
-	public static final String FACTION2_NAME = "Industrialist";
-
-	public static final String FACTION0_DESC = FACTION0_NAME
-			+ "\nThis is a test so you know";
-	public static final String FACTION1_DESC = FACTION1_NAME
-			+ "\nSo just ignore this for now";
-	public static final String FACTION2_DESC = FACTION2_NAME
-			+ "\nBut I think its working so you know.";
-
 }

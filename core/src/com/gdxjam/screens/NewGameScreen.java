@@ -1,3 +1,4 @@
+
 package com.gdxjam.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -32,53 +33,35 @@ public class NewGameScreen extends AbstractScreen {
 	Stage stage;
 	Table table;
 	Label description;
+	Label name;
 	Faction selected;
 	WorldSize size;
 
 	@Override
-	public void show() {
+	public void show () {
 		selected = Faction.FACTION0;
 		size = WorldSize.MEDIUM;
 		stage = new Stage();
 		table = new Table();
 		table.setFillParent(true);
 		table.defaults().pad(10);
-		LabelStyle labelStyle = new LabelStyle(Assets.fonts.font, new Color(1,
-				1, 1, 1));
+		LabelStyle labelStyle = new LabelStyle(Assets.fonts.font, new Color(1, 1, 1, 1));
 
 		Label label = new Label("Choose Your Faction", labelStyle);
 		label.setFontScale(2);
 		label.setAlignment(Align.top);
 
-		ImageButton faction0 = newImageButton(Assets.spacecraft.ships.get(0));
-		faction0.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				super.clicked(event, x, y);
-				showFaction(Faction.FACTION0);
+		/** Moved descriptions into the faction enum with the names already there. Removes need to hardcode any faction related
+		 * elements. Creation of new factions should be as simple as draging 3 new asset files into the folder and creating an entry
+		 * in the faction enum for them */
 
-			}
-		});
+		Table factionTable = new Table();
+		for (int i = 0; i < Faction.values().length - 1; i++) { // Length - 1 to ingore the neutral faction
+			factionTable.add(createFactionButton(Faction.values()[i]));
+		}
 
-		ImageButton faction1 = newImageButton(Assets.spacecraft.ships.get(1));
-		faction1.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				super.clicked(event, x, y);
-				showFaction(Faction.FACTION1);
-			}
-		});
-
-		ImageButton faction2 = newImageButton(Assets.spacecraft.ships.get(2));
-		faction2.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				super.clicked(event, x, y);
-				showFaction(Faction.FACTION2);
-			}
-		});
-
-		description = new Label("DERP DERP DERP", labelStyle);
+		name = new Label("Faction Name", labelStyle);
+		description = new Label("Faction Description", labelStyle);
 		description.setAlignment(Align.center);
 
 		NinePatchDrawable draw = new NinePatchDrawable(Assets.hotkey.button);
@@ -93,7 +76,7 @@ public class NewGameScreen extends AbstractScreen {
 		worldSize.addListener(new ChangeListener() {
 
 			@Override
-			public void changed(ChangeEvent event, Actor actor) {
+			public void changed (ChangeEvent event, Actor actor) {
 				System.out.println(worldSize.getSelected());
 
 				if (worldSize.getSelected().equalsIgnoreCase("small")) {
@@ -113,7 +96,7 @@ public class NewGameScreen extends AbstractScreen {
 		TextButton start = new TextButton("Start", textStyle);
 		start.addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void clicked (InputEvent event, float x, float y) {
 				// TODO Auto-generated method stub
 				super.clicked(event, x, y);
 				start(selected);
@@ -123,7 +106,7 @@ public class NewGameScreen extends AbstractScreen {
 		TextButton back = new TextButton("Back", textStyle);
 		back.addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void clicked (InputEvent event, float x, float y) {
 				// TODO Auto-generated method stub
 				super.clicked(event, x, y);
 				GameManager.setScreen(new MainMenuScreen());
@@ -132,10 +115,9 @@ public class NewGameScreen extends AbstractScreen {
 
 		table.align(Align.top).add(label).colspan(3);
 		table.row();
-
-		table.add(faction0);
-		table.add(faction1);
-		table.add(faction2);
+		table.add(factionTable).colspan(3);
+		table.row();
+		table.add(name).colspan(3);
 		table.row();
 		table.add(description).colspan(3);
 		table.row();
@@ -148,41 +130,43 @@ public class NewGameScreen extends AbstractScreen {
 
 	}
 
-	public void showFaction(Faction faction) {
-		switch (faction) {
-		default:
-		case FACTION0:
-			description.setText(Constants.FACTION0_DESC);
-			selected = Faction.FACTION0;
-			break;
-		case FACTION1:
-			description.setText(Constants.FACTION1_DESC);
-			selected = Faction.FACTION1;
-			break;
-		case FACTION2:
-			description.setText(Constants.FACTION2_DESC);
-			selected = Faction.FACTION2;
-			break;
-		}
+	// Creates the faction buttons using the faction enum. Removes need to hard code the buttons
+
+	public ImageButton createFactionButton (final Faction faction) {
+		ImageButton button = newImageButton(Assets.spacecraft.ships.get(faction.ordinal()));
+		button.addListener(new ClickListener() {
+			@Override
+			public void clicked (InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+				showFaction(faction);
+			}
+		});
+		return button;
 	}
 
-	public ImageButton newImageButton(TextureRegion region) {
+	// Now uses the parameters in the faction enum rather than constants
+	public void showFaction (Faction faction) {
+		name.setText(faction.name);
+		description.setText(faction.description);
+	}
+
+	public ImageButton newImageButton (TextureRegion region) {
 		TextureRegionDrawable drawable = new TextureRegionDrawable(region);
 		return new ImageButton(drawable);
 	}
 
-	public void start(Faction faction) {
+	public void start (Faction faction) {
 		Constants.playerFaction = faction;
 		GameManager.setScreen(new GameScreen());
 	}
 
 	@Override
-	public void resize(int width, int height) {
+	public void resize (int width, int height) {
 		stage.getViewport().update(width, height);
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render (float delta) {
 		super.render(delta);
 		stage.act();
 		stage.draw();
@@ -190,19 +174,19 @@ public class NewGameScreen extends AbstractScreen {
 	}
 
 	@Override
-	public void pause() {
+	public void pause () {
 	}
 
 	@Override
-	public void resume() {
+	public void resume () {
 	}
 
 	@Override
-	public void hide() {
+	public void hide () {
 	}
 
 	@Override
-	public void dispose() {
+	public void dispose () {
 		stage.dispose();
 	}
 
