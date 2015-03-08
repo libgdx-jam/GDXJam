@@ -16,7 +16,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.ResourceComponent;
-import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
@@ -48,41 +47,27 @@ public enum UnitState implements State<Entity> {
 				.setAlignTolerance(0.001f) //
 				.setDecelerationRadius(MathUtils.PI);
 			
-//			RaycastObstacleAvoidance<Vector2> raycastSB = new RaycastObstacleAvoidance<Vector2>(steerable)
-//				.setRayConfiguration(new RayConfiguration<Vector2>() {
-//					
-//					@Override
-//					public Ray<Vector2>[] updateRays () {
-//						// TODO Auto-generated method stub
-//						return null;
-//					}
-//				})
-//				.setDistanceFromBoundary(Constants.unitRadius * 4);
 			
 			BlendedSteering<Vector2> blendSB = new BlendedSteering<Vector2>(steerable);
-//			blendSB.add(raycastSB, 1000);
 			blendSB.add(arriveSB, 1.0f);
 			if (steerable.isIndependentFacing())
 				blendSB.add(reachOrientationSB, 1.0f);
 			behavior.setBehavior(blendSB);
 		}
-		
 	},
 	
 	HARVEST_RETURN(){
 		
 	},
 	
-	FIND_RESOURCE(){
+	HARVEST_IDLE(){
 		
 		@Override
 		public void enter (Entity entity) {
 			super.enter(entity);
-			//get target components from the unit and the squad
   			Entity squad = Components.SQUAD_MEMBER.get(entity).squad;
   			
 			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.requestTarget, entity);
-			
 			
 			if(Components.TARGET.get(entity) != null){
 				Components.FSM.get(entity).changeState(HARVEST);
@@ -90,8 +75,6 @@ public enum UnitState implements State<Entity> {
 				Components.FSM.get(entity).changeState(FORMATION);
 			}
 		}
-		
-		
 	},
 	
     HARVEST(){
@@ -155,44 +138,31 @@ public enum UnitState implements State<Entity> {
 				MessageManager.getInstance().dispatchMessage(null, squadFSM, Messages.targetDestroyed, telegram.extraInfo);
 				
 				
-				Components.FSM.get(entity).changeState(FIND_RESOURCE);
+				Components.FSM.get(entity).changeState(HARVEST_IDLE);
 				return true;
 			}
 			return false;
 		}
 	},
     
-	FIND_TARGET(){
+	COMBAT_IDLE(){
 		@Override
 		public void enter (Entity entity) {
 			super.enter(entity);
-			//get target components from the unit and the squad
-			SquadMemberComponent squadMemberComp = Components.SQUAD_MEMBER.get(entity);
-			TargetComponent squadTargetComp = Components.TARGET.get(squadMemberComp.squad);
+  			Entity squad = Components.SQUAD_MEMBER.get(entity).squad;
+  			
+			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.requestTarget, entity);
 			
-			//if the squad has a target
-			if(squadTargetComp.target != null){
-				//get the enemy squad and get our targetComponent
-				SquadComponent enemySquadComp = Components.SQUAD.get(squadTargetComp.target);
-				TargetComponent targetComp = Components.TARGET.get(entity);
-				
-				//Set our target to a random member in the enemy squad
-				targetComp.target = enemySquadComp.members.random();
-				//Start attacking our target
-				Components.FSM.get(entity).changeState(COMBAT_ENGAGE);
+			if(Components.TARGET.get(entity).getTarget() != null){
+				Components.FSM.get(entity).changeState(COMBAT);
+			} else {
+				Components.FSM.get(entity).changeState(FORMATION);
 			}
 		}
 		
-		@Override
-		public void update (Entity entity) {
-			super.update(entity);
-			enter(entity);
-		}
-		
-		
 	},
     
-    COMBAT_ENGAGE(){
+    COMBAT(){
    	 @Override
    	public void enter (Entity entity) {
    		super.enter(entity);
@@ -201,28 +171,23 @@ public enum UnitState implements State<Entity> {
    		SteeringBehaviorComponent behaviorComp = Components.STEERING_BEHAVIOR.get(entity);
 			SquadMemberComponent squadMember = Components.SQUAD_MEMBER.get(entity);
 			
-   		if(targetComp.target != null){
-	   		Face<Vector2> faceSB = new Face<Vector2>(steerable)
-	   			.setTarget(Components.STEERABLE.get(targetComp.target))
-	   			.setAlignTolerance(0.0001f)
-	   			.setDecelerationRadius(2f)
-	   			.setTimeToTarget(0.00001f);
-	   		
-				Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable, squadMember.getTargetLocation())
-					.setTimeToTarget(0.001f)
-					.setArrivalTolerance(0.01f)
-					.setDecelerationRadius(2f);
-				
-				BlendedSteering<Vector2> blendSB = new BlendedSteering<Vector2>(steerable);
-				blendSB.add(arriveSB, 1.0f);
-				blendSB.add(faceSB, 1.0f);
-				
-				behaviorComp.setBehavior(blendSB);
-   		} else{
-				Components.FSM.get(entity).changeState(FIND_TARGET);
-   		}
+   		Face<Vector2> faceSB = new Face<Vector2>(steerable)
+   			.setTarget(Components.STEERABLE.get(targetComp.getTarget()))
+   			.setAlignTolerance(0.0001f)
+   			.setDecelerationRadius(2f)
+   			.setTimeToTarget(0.00001f);
    		
-   	}
+			Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable, squadMember.getTargetLocation())
+				.setTimeToTarget(0.001f)
+				.setArrivalTolerance(0.01f)
+				.setDecelerationRadius(2f);
+			
+			BlendedSteering<Vector2> blendSB = new BlendedSteering<Vector2>(steerable);
+			blendSB.add(arriveSB, 1.0f);
+			blendSB.add(faceSB, 1.0f);
+			
+			behaviorComp.setBehavior(blendSB);
+   	} 
    	 
    	 @Override
    	public void update (Entity entity) {
@@ -231,38 +196,48 @@ public enum UnitState implements State<Entity> {
    		WeaponComponent weaponComp = Components.WEAPON.get(entity);
    		TargetComponent targetComp = Components.TARGET.get(entity);
    		
-   		//Make sure we have somthing to attack
-   		if(targetComp.target != null){
-   			//If our weapon is off cooldown
-	   		if(weaponComp.cooldown <= 0){
-	      		SteerableComponent steerable = Components.STEERABLE.get(entity);
-	      		SteerableComponent targetSteerable = Components.STEERABLE.get(targetComp.target);
+			//If our weapon is off cooldown
+   		if(weaponComp.cooldown <= 0){
+      		SteerableComponent steerable = Components.STEERABLE.get(entity);
+      		SteerableComponent targetSteerable = Components.STEERABLE.get(targetComp.target);
+      		
+      		//Get the angle between our target and us
+      		float angle = steerable.getPosition().angleRad(targetSteerable.getPosition());
+      		float orientation = steerable.getOrientation();
+      		
+      		//If were facing the angle between us
+      		if(MathUtils.isEqual(orientation, angle, 0.001f));{
+	      		float unitDiameter = Constants.unitRadius * 2;
 	      		
-	      		//Get the angle between our target and us
-	      		float angle = steerable.getPosition().angleRad(targetSteerable.getPosition());
-	      		float orientation = steerable.getOrientation();
+	      		Vector2 position = new Vector2();
+	      		position.set(steerable.getPosition());
+	      		position.add(unitDiameter * MathUtils.cos(orientation), unitDiameter * MathUtils.sin(orientation));
 	      		
-	      		//If were facing the angle between us
-	      		if(MathUtils.isEqual(orientation, angle, 0.001f));{
-		      		float unitDiameter = Constants.unitRadius * 2;
-		      		
-		      		Vector2 position = new Vector2();
-		      		position.set(steerable.getPosition());
-		      		position.add(unitDiameter * MathUtils.cos(orientation), unitDiameter * MathUtils.sin(orientation));
-		      		
-		      		Vector2 velocity = new Vector2(45, 0).setAngle(orientation * MathUtils.radDeg);
-		      		
-		      		EntityFactory.createProjectile(position, velocity, Components.FACTION.get(entity).faction, 20);
-		      		weaponComp.cooldown += weaponComp.attackSpeed;
-	      		}
-	   		}
-   		}
-   		else{
-   			Components.FSM.get(entity).changeState(FIND_TARGET);
+	      		Vector2 velocity = new Vector2(45, 0).setAngle(orientation * MathUtils.radDeg);
+	      		
+	      		EntityFactory.createProjectile(position, velocity, Components.FACTION.get(entity).faction, 20);
+	      		weaponComp.cooldown += weaponComp.attackSpeed;
+      		}
    		}
    		
    		weaponComp.cooldown -= Gdx.graphics.getDeltaTime();
    	}
+   	 
+   	 
+ 		@Override
+ 		public boolean onMessage (Entity entity, Telegram telegram) {
+ 			if(telegram.message == Messages.targetDestroyed){
+ 				Entity squad = Components.SQUAD_MEMBER.get(entity).squad;
+ 				FSMComponent squadFSM = Components.FSM.get(squad);
+ 				MessageManager.getInstance().dispatchMessage(null, squadFSM, Messages.targetDestroyed, telegram.extraInfo);
+ 				
+ 				Components.FSM.get(entity).changeState(COMBAT_IDLE);
+ 				return true;
+ 			}
+ 			return false;
+ 		}
+   	 
+   	 
     };
 
 
