@@ -9,6 +9,8 @@ import com.gdxjam.systems.SquadSpawnerSystem;
 
 public class DeveloperTools {
 	
+	public static boolean ingoreResources = true;
+	
 	public static void spawnEnemyAtCursor(){
 		PooledEngine engine = GameManager.getEngine();
 		Vector2 pos = engine.getSystem(CameraSystem.class).screenToWorldCords(Gdx.input.getX(), Gdx.input.getY());

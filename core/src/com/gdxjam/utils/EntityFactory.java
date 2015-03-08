@@ -158,6 +158,7 @@ public class EntityFactory {
 		SquadComponent squadComp = engine.createComponent(SquadComponent.class)
 				.init(steerable);
 		squadComp.targetLocation.getPosition().set(position);
+		entity.add(squadComp);
 
 		// A good rule of thumb is to make the maximum speed of the formation
 		// around
@@ -192,7 +193,7 @@ public class EntityFactory {
 
 		Components.STEERING_BEHAVIOR.get(entity).setBehavior(sb);
 
-		entity.add(squadComp);
+
 		entity.add(steerable);
 
 		engine.addEntity(entity);
