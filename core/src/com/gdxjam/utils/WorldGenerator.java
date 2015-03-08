@@ -22,10 +22,8 @@ public class WorldGenerator {
 	private int height;
 	private float radius;
 	private WorldGeneratorParameter param;
-	
+
 	private Array<Polygon> worldSpokes;
-	private Array<Vector2> spawnPoints;
-	
 
 	public WorldGenerator (int width, int height, long seed) {
 		this(width, height, seed, new WorldGeneratorParameter());
@@ -42,7 +40,7 @@ public class WorldGenerator {
 	}
 
 	public void generate () {
-		//createWorldBounds();
+		// createWorldBounds();
 		generateAsteroidField();
 		if (param.generateBackground) {
 			createBackground();
@@ -76,7 +74,7 @@ public class WorldGenerator {
 	}
 
 	public void generateSpawners () {
-		 SquadSpawnerSystem.initalizeSpawns();
+		SquadSpawnerSystem.initalizeSpawns();
 	}
 
 	public void createBackground () {
@@ -110,47 +108,50 @@ public class WorldGenerator {
 
 		return heightMap;
 	}
-	
-	private void generateSpokes(){
+
+	/** Generates spokes emanating from the center */
+
+	private void generateSpokes () {
 		worldSpokes = new Array<Polygon>();
-		spawnPoints = new Array<Vector2>();
-		
-		int spokeCount = 5;
-		float spokeWidth = 25;
-		float spokeScattering = 25;
+
+		// Initial reference angle to offset the spokes from
 		float referencenAngle = rng.nextFloat() * 360.0f;
-		
-		float spokeOffset = (MathUtils.PI2 / spokeCount) * MathUtils.radDeg;
-		
-		for(int i = 0; i < spokeCount; i++){
+		float spokeOffset = (MathUtils.PI2 / param.spokeCount) * MathUtils.radDeg;
+
+		// Determine the length of the spokes
+		float halfWidth = (width * 0.5f);
+		float halfHeight = (height * 0.5f);
+		float length = (float)Math.sqrt(halfWidth * halfWidth + halfHeight * halfHeight);
+
+		// Create the spokes using polygon shapes
+		for (int i = 0; i < param.spokeCount; i++) {
+			// Calculate the angle the spoke will be set to
 			float angle = referencenAngle + (spokeOffset * i);
-			angle += randomSign() * (rng.nextFloat() * spokeScattering);
-			
-			float x = (width * 0.5f);
-			float y = (height * 0.5f);
-			
-			float length = (float)Math.sqrt(x*x + y*y);
-			
+			angle += randomSign() * (rng.nextFloat() * param.spokeScattering);
+
+			// Set the vertices of the polygon as a rectangle with a height of spokeWidth and a width of the length
 			float[] verticies = new float[8];
 			verticies[0] = 0;
-			verticies[1] = -spokeWidth * 0.5f;
+			verticies[1] = -param.spokeWidth * 0.5f;
 			verticies[2] = length;
-			verticies[3] = -spokeWidth * 0.5f;
+			verticies[3] = -param.spokeWidth * 0.5f;
 			verticies[4] = length;
-			verticies[5] = spokeWidth * 0.5f;
+			verticies[5] = param.spokeWidth * 0.5f;
 			verticies[6] = 0;
-			verticies[7] = spokeWidth * 0.5f;
-			
+			verticies[7] = param.spokeWidth * 0.5f;
+
+			// Create the polygon shape
 			Polygon polygon = new Polygon();
 			polygon.setVertices(verticies);
-			polygon.setPosition(width * 0.5f, height * 0.5f);
+			polygon.setPosition(halfWidth, halfHeight);
 			polygon.setRotation(angle);
-			
+
+			// Create a spawn point at the end of the spoke
 			Vector2 spawnPoint = new Vector2(length, 0);
 			spawnPoint.setAngle(angle);
-			spawnPoint.add(width * 0.5f, height * 0.5f);
+			spawnPoint.add(halfWidth, halfHeight);
 			SquadSpawnerSystem.addSpawnPoint(spawnPoint);
-			
+
 			worldSpokes.add(polygon);
 		}
 	}
@@ -179,13 +180,12 @@ public class WorldGenerator {
 		float distanceScalar = (distanceToCenter / radius);
 
 		total -= distanceScalar;
-		
-		
-		//Futher more if the array of spokes is not null factor those in as well
-		if(worldSpokes != null){
-			for(Polygon polygon : worldSpokes){
-				if(polygon.contains(x, y)){
-					total += 1;	//Lower it down 
+
+		// Futher more if the array of spokes is not null factor those in as well
+		if (worldSpokes != null) {
+			for (Polygon polygon : worldSpokes) {
+				if (polygon.contains(x, y)) {
+					total += 1; // Lower it down
 				}
 			}
 		}
@@ -241,6 +241,10 @@ public class WorldGenerator {
 		public float frequency = 1.0f / 64.0f;
 		public float gain = 1.0f / lacunarity;
 		public float heightThreshold = -0.7f;
+
+		public int spokeCount = 5;
+		public float spokeWidth = 25;
+		public float spokeScattering = 30;
 
 		public float asteroidDensity = 0.4f;
 		public Range asteroidRadius = new Range(0.25f, 0.65f);
