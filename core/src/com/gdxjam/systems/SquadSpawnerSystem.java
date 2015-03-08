@@ -2,20 +2,25 @@ package com.gdxjam.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityFactory;
 
 public class SquadSpawnerSystem extends EntitySystem{
 	
-	private static Vector2 spawnPosition = new Vector2();
+	public static Array<Vector2> spawnPoints = new Array<Vector2>();
 	
 	public SquadSpawnerSystem () {
 
+	}
+	
+	public static void addSpawnPoint(Vector2 spawnPoint){
+		spawnPoints.add(spawnPoint);
 	}
 	
 	public static void initalizeSpawns(){
@@ -23,8 +28,7 @@ public class SquadSpawnerSystem extends EntitySystem{
 			
 			@Override
 			public void run () {
-				spawnPosition.set(MathUtils.random(100, 140), MathUtils.random(100, 140));
-				SquadSpawnerSystem.spawnSquad(spawnPosition, Constants.enemyFaction, 9);
+				SquadSpawnerSystem.spawnSquad(spawnPoints.random(), Constants.enemyFaction, 3);
 			}
 		};
 		
@@ -40,6 +44,10 @@ public class SquadSpawnerSystem extends EntitySystem{
 			int x = i / columns;
 			int y = i % columns;
 			EntityFactory.createUnit(new Vector2(posX + x, posY + y), squad);
+		}
+		
+		if(faction != Constants.playerFaction){
+			Components.SQUAD.get(squad).setTarget(new Vector2(128, 128)); 	//TODO make dynamic
 		}
 	}
 	
