@@ -50,7 +50,6 @@ public class SettingsScreen extends AbstractScreen {
 				Gdx.app.log("UITest", "slider: " + volumeSlider.getValue());
 
 				volumeLabel.setText("Volume: " + volumeSlider.getValue());
-				prefs.putFloat("volume", volumeSlider.getValue());
 			}
 		});
 
@@ -68,6 +67,7 @@ public class SettingsScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
 				prefs.flush();
+				Assets.music.setVolume(volumeSlider.getValue());
 				GameManager.setScreen(new MainMenuScreen());
 			}
 		});

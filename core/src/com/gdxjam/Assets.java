@@ -1,7 +1,10 @@
 package com.gdxjam;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Music.OnCompletionListener;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -9,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -31,6 +35,8 @@ public class Assets implements Disposable {
 
 	public static final String TEXTURE_ATLAS_OBJECTS = "assets.atlas";
 	public static final String SKIN = "skin/uiskin.json";
+
+	public static MusicManager music;
 
 	public static AssetHotkey hotkey;
 	public static AssetFonts fonts;
@@ -55,6 +61,7 @@ public class Assets implements Disposable {
 		space = new AssetSpace(atlas);
 		spacecraft = new AssetSpacecraft(atlas);
 		particles = new AssetParticles();
+		music = new MusicManager();
 	}
 
 	@Override
@@ -136,5 +143,63 @@ public class Assets implements Disposable {
 		public AssetProjectile(TextureAtlas atlas) {
 			projectiles = atlas.findRegions("projectile");
 		}
+	}
+
+	public static class MusicManager {
+		private float volume = -1;
+		private Preferences options;
+
+		public Music music;
+
+		Array<String> songs = new Array<String>(10);
+
+		public MusicManager() {
+			init();
+		}
+
+		public void init() {
+			options = Gdx.app.getPreferences("Orion-options");
+			songs.addAll("menu.mp3", "stars.mp3");
+			// songs.addAll("shipadded.wav");
+			music = Gdx.audio.newMusic(Gdx.files.internal("music/"
+					+ songs.random()));
+		}
+
+		public float getVolume() {
+			return volume > -1 ? volume : Gdx.app.getPreferences("options")
+					.getFloat("volume", 20);
+		}
+
+		public void setVolume(float volume) {
+			volume = MathUtils.clamp(volume, 0, 1);
+			options.putFloat("volume", volume);
+			options.flush();
+		}
+
+		public void play() {
+			if (!music.isPlaying())
+				music.play();
+		}
+
+		public void update() {
+			if (!music.isPlaying()) {
+				music = Gdx.audio.newMusic(Gdx.files.internal("music/"
+						+ songs.random()));
+				music.play();
+			}
+		}
+
+		public void stop() {
+			music.stop();
+		}
+
+		public void dispose() {
+			music.dispose();
+		}
+
+		public void pause() {
+			music.pause();
+		}
+
 	}
 }

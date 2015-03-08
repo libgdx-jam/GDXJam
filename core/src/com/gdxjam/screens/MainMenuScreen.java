@@ -1,6 +1,7 @@
 package com.gdxjam.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -36,6 +37,8 @@ public class MainMenuScreen extends AbstractScreen {
 		addExit();
 
 		stage.addActor(table);
+
+		Assets.music.play();
 
 		Gdx.input.setInputProcessor(stage);
 	}
@@ -98,7 +101,7 @@ public class MainMenuScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-
+		Assets.music.update();
 		stage.draw();
 		stage.act();
 	}
@@ -123,8 +126,6 @@ public class MainMenuScreen extends AbstractScreen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-
 	}
 
 }
