@@ -45,6 +45,7 @@ import com.gdxjam.components.WeaponComponent;
 import com.gdxjam.ecs.EntityCategory;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.utils.EntityFactory.PhysicsBuilder.FixtureBuilder;
+import com.sun.nio.file.ExtendedWatchEventModifier;
 
 /**
  * 
@@ -231,8 +232,12 @@ public class EntityFactory {
 	public static Entity createBoundry(Vector2 start, Vector2 end) {
 		Entity entity = buildEntity(new Vector2(0, 0)).physicsBody(
 				BodyType.StaticBody).getWithoutAdding();
+		
+		FixtureDef def = new FixtureDef();
 		EdgeShape edge = new EdgeShape();
 		edge.set(start, end);
+		def.shape = edge;
+		def.filter.categoryBits = EntityCategory.WALL;
 
 		Components.PHYSICS.get(entity).body.createFixture(edge, 1.0f);
 		engine.addEntity(entity);

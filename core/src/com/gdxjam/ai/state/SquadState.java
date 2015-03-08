@@ -124,6 +124,8 @@ public enum SquadState implements State<Entity> {
 				if(enemySquad != null){
 					SquadComponent enemySquadComp = Components.SQUAD.get(enemySquad);
 					if(enemySquadComp.members.size == 0){
+						targetFinderComp.squads.removeValue(enemySquad, true);
+						
 						if(targetFinderComp.squads.size == 0){
 							Components.FSM.get(entity).changeState(COMBAT_IDLE);
 							return true;
@@ -150,9 +152,15 @@ public enum SquadState implements State<Entity> {
 				Gdx.app.error(TAG, "Target Destroyed!");
 				Entity enemyUnit = (Entity)telegram.extraInfo;
 				Entity squad = Components.SQUAD_MEMBER.get(enemyUnit).squad;
+				SquadComponent squadComp = Components.SQUAD.get(squad);
 				
-				if(Components.SQUAD.get(squad).members.size <= 0){
+				if(squadComp.members.size == 0){
 					targetFinderComp.squads.removeValue(squad, true);
+					if(targetFinderComp.squads.size == 0){
+						Components.FSM.get(entity).changeState(COMBAT_IDLE);
+					} else{
+						Components.TARGET.get(entity).setTarget(targetFinderComp.squads.random());
+					}
 				}
 				
 				return true;
