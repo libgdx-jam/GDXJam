@@ -24,7 +24,7 @@ public class HasTargetCondition extends LeafTask<Entity> {
 
 		if (Components.TARGET.has(findTarget)) {
 			TargetComponent targetComp = Components.TARGET.get(findTarget);
-			if (targetComp.target != null) {
+			if (targetComp.getTarget() != null) {
 				validTarget = true;
 			}
 		}

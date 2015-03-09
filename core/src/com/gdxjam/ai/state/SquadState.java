@@ -8,23 +8,24 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.SquadComponent;
-import com.gdxjam.components.TargetComponent;
 import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Constants.BUILD;
 
 public enum SquadState implements State<Entity> {
 
-	HARVEST_ENGAGE() {
+	HARVEST() {
 
 		@Override
 		public void enter (Entity entity) {
 			super.enter(entity);
+			
+			//Tell our squad members that they should be ready to harvest
 			SquadComponent squadComp = Components.SQUAD.get(entity);
-
 			for (Entity member : squadComp.members) {
 				Components.FSM.get(member).changeState(UnitState.HARVEST_IDLE);
 			}
+			
 		}
 
 		@Override
@@ -34,19 +35,13 @@ public enum SquadState implements State<Entity> {
 			switch (telegram.message) {
 
 			case Messages.requestTarget:
-				//We no longer have anything to do
-				if(targetFinderComp.resources.size == 0){
-					Components.FSM.get(entity).changeState(HARVEST_IDLE);
-				}
-				
 				Entity unit = (Entity)telegram.extraInfo;
 				SquadComponent squadComp = Components.SQUAD.get(entity);
 				int index = squadComp.members.indexOf(unit, true);
 
+				//Get a target and set it
 				Entity target = targetFinderComp.resources.get(index % targetFinderComp.resources.size);
-				
-				TargetComponent targetComp = Components.TARGET.get(unit);
-				targetComp.target = target;
+				Components.TARGET.get(unit).setTarget(target);
 				return true;
 				
 			case Messages.targetDestroyed:
@@ -54,6 +49,12 @@ public enum SquadState implements State<Entity> {
 				Entity resource = (Entity)telegram.extraInfo;
 				targetFinderComp.resourceAgents.removeValue(Components.STEERABLE.get(resource), true);
 				targetFinderComp.resources.removeValue(resource, true);
+				
+				//We no longer have anything to do
+				if(targetFinderComp.resources.size == 0){
+					Components.FSM.get(entity).changeState(HARVEST_IDLE);
+				}
+				
 				return true;
 
 			default:
@@ -71,36 +72,42 @@ public enum SquadState implements State<Entity> {
 			TargetFinderComponent targetFinder = Components.TARGET_FINDER.get(entity);
 
 			// If we have targets available we don't need to be idle
-			if (targetFinder.resources.size > 0) {
-				Components.FSM.get(entity).changeState(HARVEST_ENGAGE);
-			} else{	//Our units should follow formation
+			if (targetFinder.resources.size > 0)
+				Components.FSM.get(entity).changeState(HARVEST);
+			else{	//Our units should follow formation
 				SquadComponent squadComp = Components.SQUAD.get(entity);
 				
+				// TODO is this unnecessary?
 				for(Entity unit : squadComp.members){
 					FSMComponent unitFSM = Components.FSM.get(unit);
 					if(!unitFSM.getStateMachine().isInState(UnitState.FORMATION))
 						unitFSM.changeState(UnitState.FORMATION);
 				}
+				
 			}
 		}
 
 		@Override
 		public boolean onMessage (Entity entity, Telegram telegram) {
-			if (telegram.message == Messages.foundResource) {
-				Components.FSM.get(entity).changeState(HARVEST_ENGAGE);
+			switch(telegram.message){
+			
+			case Messages.foundResource:
+				Components.FSM.get(entity).changeState(HARVEST);
 				return true;
+				
+			default:
+				return false;
 			}
-			return false;
 		}
 	},
 	
 	
 
-	COMBAT_ENGAGE() {
+	COMBAT() {
+		
 		@Override
 		public void enter (Entity entity) {
-			// When we enter this state we allready have a a target
-			Entity target = Components.TARGET.get(entity).target;
+			super.enter(entity);
 			SquadComponent squadComp = Components.SQUAD.get(entity);
 
 			//Our units are now in a combat state and will query us for targets
@@ -121,7 +128,7 @@ public enum SquadState implements State<Entity> {
 				Entity enemySquad = Components.TARGET.get(entity).getTarget();
 
 				
-				if(enemySquad != null){
+				if(enemySquad != null){	//This should be pointless
 					SquadComponent enemySquadComp = Components.SQUAD.get(enemySquad);
 					if(enemySquadComp.members.size == 0){
 						targetFinderComp.squads.removeValue(enemySquad, true);
@@ -170,14 +177,6 @@ public enum SquadState implements State<Entity> {
 			}
 		}
 
-		@Override
-		public void update (Entity entity) {
-			super.update(entity);
-			// Make sure we still have a target
-			// If we don't go back to idle
-			if (Components.TARGET.get(entity).target == null) Components.FSM.get(entity).changeState(COMBAT_IDLE);
-		}
-
 	},
 
 	COMBAT_IDLE() {
@@ -189,35 +188,35 @@ public enum SquadState implements State<Entity> {
 
 			// If we have targets available we don't need to be idle
 			if (targetFinder.squads.size > 0) {
-				TargetComponent targetComp = Components.TARGET.get(entity);
-				targetComp.target = targetFinder.squads.random();
-				Components.FSM.get(entity).changeState(COMBAT_ENGAGE);
+				Components.TARGET.get(entity).setTarget(targetFinder.squads.random());
+				Components.FSM.get(entity).changeState(COMBAT);
 			} else {	//Otherwise our units now just follow the formation if they are not already
 				SquadComponent squadComp = Components.SQUAD.get(entity);
 				
-				for(Entity unit : squadComp.members){
-					FSMComponent unitFSM = Components.FSM.get(unit);
-					if(!unitFSM.getStateMachine().isInState(UnitState.FORMATION))
-						unitFSM.changeState(UnitState.FORMATION);
-				}
+				//TODO: we should not need any of this
+//				for(Entity unit : squadComp.members){
+//					FSMComponent unitFSM = Components.FSM.get(unit);
+//					if(!unitFSM.getStateMachine().isInState(UnitState.FORMATION))
+//						unitFSM.changeState(UnitState.FORMATION);
+//				}
 				
 			}
 		}
 		
-		public void getTarget(Entity entity){
-			TargetFinderComponent targetFinder = Components.TARGET_FINDER.get(entity);
-			TargetComponent targetComp = Components.TARGET.get(entity);
-			targetComp.target = targetFinder.squads.random();
-		}
-
 		@Override
 		public boolean onMessage (Entity entity, Telegram telegram) {
-			if (telegram.message == Messages.foundEnemy) {
-				getTarget(entity);
-				Components.FSM.get(entity).changeState(COMBAT_ENGAGE);
+			switch(telegram.message){
+			
+			case Messages.foundEnemy:
+				Gdx.app.debug(TAG, "Found enemy!");
+				TargetFinderComponent targetFinder = Components.TARGET_FINDER.get(entity);
+				Components.TARGET.get(entity).setTarget(targetFinder.squads.random());
+				Components.FSM.get(entity).changeState(COMBAT);
 				return true;
+			
+			default:
+				return false;
 			}
-			return false;
 		}
 
 	};
@@ -227,8 +226,10 @@ public enum SquadState implements State<Entity> {
 	@Override
 	public void enter (Entity entity) {
 		if (Constants.build == BUILD.DEV) {
-			State<Entity> state = Components.FSM.get(entity).getStateMachine().getCurrentState();
-			Gdx.app.debug(TAG, "Entered: " + state.toString());
+			if(Components.FACTION.get(entity).faction == Constants.playerFaction){
+				State<Entity> state = Components.FSM.get(entity).getStateMachine().getCurrentState();
+				Gdx.app.debug(TAG, "Entered: " + state.toString());
+			}
 		}
 
 	}

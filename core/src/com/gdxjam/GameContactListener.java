@@ -72,12 +72,14 @@ public class GameContactListener implements ContactListener {
 		if(Components.SQUAD.has(target)){
 			targetFinder.squad(target, contactEnd);
 			//Sends a message to the squad that a new target has been identified.
-			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.foundEnemy);
+			if(!contactEnd)	//if this is a beging contact 
+				MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.foundEnemy);
 		} else if (Components.RESOURCE.has(target)){
 			targetFinder.resource(target, contactEnd);
 			sortResources(targetFinder, squad);
 			//Sends a message to the squad that a new resource has been identified.
-			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.foundResource);
+			if(!contactEnd)	//if this is when the contact begins
+				MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.foundResource);
 		}
 	}
 	

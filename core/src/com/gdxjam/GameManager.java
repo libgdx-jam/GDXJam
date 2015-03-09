@@ -49,7 +49,6 @@ public class GameManager {
 	}
 	
 	/**
-	 * @author Twiebs
 	 * This shouldn't be used.  Anything that needs the engine should be in a system.
 	 * It will be used for prototyping purposes for now.
 	 * @return The games entity manager
@@ -62,6 +61,7 @@ public class GameManager {
 	
 	public static void exit(){
 		disposeEngine();
+		game.getScreen().dispose();
 		Gdx.app.exit();
 	}
 

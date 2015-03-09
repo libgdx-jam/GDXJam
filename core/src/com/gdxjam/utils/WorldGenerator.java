@@ -46,7 +46,7 @@ public class WorldGenerator {
 			createBackground();
 		}
 		populateWorld();
-		generateSpawners();
+		//generateSpawners();
 	}
 
 	public void createWorldBounds () {

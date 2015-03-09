@@ -30,7 +30,6 @@ public class HealthSystem extends IteratingSystem {
 		HealthComponent health = Components.HEALTH.get(entity);
 
 		if (health.value <= health.min) {
-			// entity.add(engine.createComponent(RemovalComponent.class));
 
 			if (Components.MOTHERSHIP.has(entity)) {
 				GameManager.setScreen(new GameOverScreen());
