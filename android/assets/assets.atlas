@@ -83,11 +83,74 @@ asteroid
   index: 14
 asteroid
   rotate: false
-  xy: 1869, 407
-  size: 168, 162
-  orig: 168, 162
+  xy: 1378, 194
+  size: 169, 187
+  orig: 169, 187
   offset: 0, 0
-  index: 10
+  index: 15
+asteroid
+  rotate: false
+  xy: 1807, 82
+  size: 173, 185
+  orig: 173, 185
+  offset: 0, 0
+  index: 13
+asteroid
+  rotate: false
+  xy: 1854, 373
+  size: 172, 181
+  orig: 172, 181
+  offset: 0, 0
+  index: 12
+asteroid
+  rotate: false
+  xy: 1359, 7
+  size: 164, 185
+  orig: 164, 185
+  offset: 0, 0
+  index: 16
+formation
+  rotate: false
+  xy: 1982, 625
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+formation
+  rotate: false
+  xy: 1982, 591
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+formation
+  rotate: false
+  xy: 1932, 590
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+formation
+  rotate: false
+  xy: 1966, 557
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+formation
+  rotate: false
+  xy: 1932, 556
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+formation
+  rotate: false
+  xy: 2000, 557
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
 hotkey
   rotate: false
   xy: 1983, 709
@@ -183,32 +246,25 @@ planet
   index: 4
 planet
   rotate: false
-  xy: 1378, 81
+  xy: 1552, 269
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 5
 planet
   rotate: false
-  xy: 1680, 101
-  size: 300, 300
-  orig: 300, 300
-  offset: 0, 0
-  index: 6
-planet
-  rotate: false
-  xy: 784, 39
-  size: 300, 300
-  orig: 300, 300
-  offset: 0, 0
-  index: 7
-planet
-  rotate: false
-  xy: 1086, 83
+  xy: 1549, 11
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 10
+planet
+  rotate: false
+  xy: 1101, 83
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 11
 projectile
   rotate: false
   xy: 1932, 759
@@ -246,7 +302,7 @@ ship
   index: 0
 ship
   rotate: false
-  xy: 1552, 403
+  xy: 784, 26
   size: 315, 166
   orig: 315, 166
   offset: 0, 0
@@ -281,77 +337,63 @@ repeat: none
 asteroid
   rotate: false
   xy: 2, 2
-  size: 173, 185
-  orig: 173, 185
-  offset: 0, 0
-  index: 13
-asteroid
-  rotate: false
-  xy: 864, 302
-  size: 169, 187
-  orig: 169, 187
-  offset: 0, 0
-  index: 15
-asteroid
-  rotate: false
-  xy: 177, 6
-  size: 172, 181
-  orig: 172, 181
-  offset: 0, 0
-  index: 12
-asteroid
-  rotate: false
-  xy: 1035, 304
-  size: 164, 185
-  orig: 164, 185
-  offset: 0, 0
-  index: 16
-asteroid
-  rotate: false
-  xy: 351, 14
   size: 171, 173
   orig: 171, 173
   offset: 0, 0
   index: 11
 asteroid
   rotate: false
-  xy: 1201, 308
+  xy: 1210, 296
   size: 160, 181
   orig: 160, 181
   offset: 0, 0
   index: 17
 asteroid
   rotate: false
-  xy: 1363, 315
+  xy: 1372, 303
   size: 162, 174
   orig: 162, 174
   offset: 0, 0
   index: 18
 asteroid
   rotate: false
-  xy: 1527, 338
+  xy: 175, 13
+  size: 168, 162
+  orig: 168, 162
+  offset: 0, 0
+  index: 10
+asteroid
+  rotate: false
+  xy: 1536, 326
   size: 162, 151
   orig: 162, 151
   offset: 0, 0
   index: 19
 planet
   rotate: false
-  xy: 2, 189
+  xy: 2, 177
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: 6
+planet
+  rotate: false
+  xy: 304, 177
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: 7
+planet
+  rotate: false
+  xy: 606, 177
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 8
 planet
   rotate: false
-  xy: 304, 189
+  xy: 908, 177
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: 9
-planet
-  rotate: false
-  xy: 606, 233
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: 11

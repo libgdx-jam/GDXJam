@@ -64,7 +64,7 @@ public class WaveSystem extends EntitySystem{
 	
 	private void initalizeNextWave(){
 		WaveParam wave = new WaveParam();
-		wave.delay = MathUtils.random(60, 120);
+		wave.delay = MathUtils.random(120, 180);
 		wave.squadCount = MathUtils.random(3, 6);
 		
 		nextWave = wave;

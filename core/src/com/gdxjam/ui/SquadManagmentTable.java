@@ -9,23 +9,23 @@ import com.badlogic.gdx.utils.IntMap;
 public class SquadManagmentTable extends Table {
 
 	private final Skin skin;
-	private IntMap<SquadCommandTable> squadTables;
+	private IntMap<SquadCommandCard> squadTables;
 
 	public SquadManagmentTable (Skin skin) {
 		this.skin = skin;
-		squadTables = new IntMap<SquadCommandTable>();
+		squadTables = new IntMap<SquadCommandCard>();
 
 	}
 
 	public void addSquad (Entity squad, int index) {
-		SquadCommandTable squadTable = new SquadCommandTable(squad, index, skin);
+		SquadCommandCard squadTable = new SquadCommandCard(squad, index, skin);
 		squadTables.put(index, squadTable);
 		
 		add(squadTable).pad(2);
 	}
 	
 	public void removeSquad(Entity squad, int index){
-		SquadCommandTable table = squadTables.get(index);
+		SquadCommandCard table = squadTables.get(index);
 		table.remove();
 		
 		squadTables.remove(index);

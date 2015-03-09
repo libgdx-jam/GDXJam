@@ -41,6 +41,7 @@ public class Assets implements Disposable {
 	public static AssetHotkey hotkey;
 	public static AssetFonts fonts;
 	public static AssetSpace space;
+	public static AssetsUI ui;
 	public static AssetSpacecraft spacecraft;
 	public static AssetProjectile projectile;
 	public static AssetParticles particles;
@@ -61,6 +62,8 @@ public class Assets implements Disposable {
 		space = new AssetSpace(atlas);
 		spacecraft = new AssetSpacecraft(atlas);
 		particles = new AssetParticles();
+		ui = new AssetsUI(atlas);
+		
 		music = new MusicManager();
 	}
 
@@ -106,6 +109,14 @@ public class Assets implements Disposable {
 			font = new BitmapFont(Gdx.files.internal("fonts/space.fnt"));
 		}
 
+	}
+	
+	public static class AssetsUI{
+		public final Array<AtlasRegion> formationIcons;
+		
+		public AssetsUI(TextureAtlas atlas){
+			this.formationIcons = atlas.findRegions("formation");
+		}
 	}
 
 	public static class AssetSpace {

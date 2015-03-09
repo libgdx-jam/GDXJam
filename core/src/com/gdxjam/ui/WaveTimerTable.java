@@ -20,9 +20,9 @@ public class WaveTimerTable extends Table {
 		int seconds = (int)((timeRemaining - (minutes * 60)));
 
 		if(seconds < 10)
-			label.setText(minutes + ":0" + seconds);
+			label.setText("Next Raid " + minutes + ":0" + seconds);
 		else
-			label.setText(minutes + ":" + seconds);
+			label.setText("Next Raid " + minutes + ":" + seconds);
 		
 		if(timeRemaining < 10.0f)
 			label.setColor(Color.RED);
