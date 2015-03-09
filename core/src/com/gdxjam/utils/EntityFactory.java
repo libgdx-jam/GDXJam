@@ -36,7 +36,7 @@ import com.gdxjam.components.ProjectileComponent;
 import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.SquadComponent;
-import com.gdxjam.components.SquadMemberComponent;
+import com.gdxjam.components.UnitComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
@@ -126,8 +126,8 @@ public class EntityFactory {
 				.getWithoutAdding();
 
 		PhysicsComponent physicsComp = Components.PHYSICS.get(entity);
-		SquadMemberComponent squadMemberComp = engine.createComponent(
-				SquadMemberComponent.class).init(squad, physicsComp.body);
+		UnitComponent squadMemberComp = engine.createComponent(
+				UnitComponent.class).init(squad, physicsComp.body);
 		entity.add(squadMemberComp);
 		squadComp.addMember(entity);
 

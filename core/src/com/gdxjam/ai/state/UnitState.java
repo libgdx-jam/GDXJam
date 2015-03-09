@@ -13,10 +13,10 @@ import com.badlogic.gdx.ai.steer.behaviors.ReachOrientation;
 import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.ResourceComponent;
-import com.gdxjam.components.SquadMemberComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
@@ -25,6 +25,7 @@ import com.gdxjam.components.WeaponComponent;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Constants.BUILD;
 import com.gdxjam.utils.EntityFactory;
+import com.gdxjam.utils.Location2;
 
 public enum UnitState implements State<Entity> {
 
@@ -36,14 +37,14 @@ public enum UnitState implements State<Entity> {
 			
 			SteeringBehaviorComponent behavior = Components.STEERING_BEHAVIOR.get(entity);
 			SteerableComponent steerable = Components.STEERABLE.get(entity);
-			SquadMemberComponent squadMember = Components.SQUAD_MEMBER.get(entity);
+			Location2 targetLocation = (Location2)Components.UNIT.get(entity).getTargetLocation();
 
-			Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable, squadMember.getTargetLocation())
+			Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable, targetLocation)
 				.setTimeToTarget(0.001f)
 				.setArrivalTolerance(0.01f)
 				.setDecelerationRadius(2f);
 
-			ReachOrientation<Vector2> reachOrientationSB = new ReachOrientation<Vector2>(steerable, squadMember.getTargetLocation()) //
+			ReachOrientation<Vector2> reachOrientationSB = new ReachOrientation<Vector2>(steerable, targetLocation)
 				.setTimeToTarget(0.001f) 
 				.setAlignTolerance(0.001f) 
 				.setDecelerationRadius(MathUtils.PI);
@@ -61,15 +62,13 @@ public enum UnitState implements State<Entity> {
 		public void enter (Entity entity) {
 			super.enter(entity);
 			//Request a target from our squad
-  			Entity squad = Components.SQUAD_MEMBER.get(entity).squad;
+  			Entity squad = Components.UNIT.get(entity).getSquad();
   			//This signals the squad to give us a new target
 			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.requestTarget, entity);
 			
 			//If we were delegated a target from our squad lets harvest.  Otherwise follow the formation.
 			if(Components.TARGET.get(entity).getTarget() != null)
 				Components.FSM.get(entity).changeState(HARVEST);
-			else 
-				Components.FSM.get(entity).changeState(FORMATION);
 		}
 	},
 	
@@ -82,7 +81,7 @@ public enum UnitState implements State<Entity> {
 			Entity target = Components.TARGET.get(entity).getTarget();
 			SteerableComponent steerable = Components.STEERABLE.get(entity);
 			SteerableComponent targetSteerable = Components.STEERABLE.get(target);
-			Entity squad = Components.SQUAD_MEMBER.get(entity).squad;
+			Entity squad = Components.UNIT.get(entity).getSquad();
 			TargetFinderComponent targetFinderComp = Components.TARGET_FINDER.get(squad);
 			
 			//Steering behavior
@@ -97,12 +96,16 @@ public enum UnitState implements State<Entity> {
 				 .setAlignTolerance(0.001f)
 				 .setTimeToTarget(0.001f)
 				 .setDecelerationRadius(2.0f);
-			 
-			RadiusProximity<Vector2> radiusProximity = new RadiusProximity<Vector2>(steerable, targetFinderComp.resourceAgents, 0.1f);
+			
+			Array<SteerableComponent> collisionAgents = new Array<SteerableComponent>();
+			collisionAgents.addAll(targetFinderComp.resourceAgents);
+			collisionAgents.addAll(Components.SQUAD.get(squad).memberAgents);
+			
+			RadiusProximity<Vector2> radiusProximity = new RadiusProximity<Vector2>(steerable, collisionAgents, 0.1f);
 			CollisionAvoidance<Vector2> collisionAvoidanceSB = new CollisionAvoidance<Vector2>(steerable, radiusProximity);
 			 
 			BlendedSteering<Vector2> blendSB = new BlendedSteering<Vector2>(steerable);
-			blendSB.add(arrive, 0.2f);
+			blendSB.add(arrive, 1.0f);
 			blendSB.add(faceSB, 1.0f);
 			blendSB.add(collisionAvoidanceSB, 1000.0f);
 			 
@@ -129,6 +132,7 @@ public enum UnitState implements State<Entity> {
 				ResourceComponent targetResourceComp = Components.RESOURCE.get(target);
 				targetResourceComp.value -= Constants.resourceCollectionSpeed;
 			}
+			
    	 }
 		
 		@Override
@@ -136,7 +140,7 @@ public enum UnitState implements State<Entity> {
 			switch(telegram.message){
 			
 			case Messages.targetDestroyed:
-				Entity squad = Components.SQUAD_MEMBER.get(entity).squad;
+				Entity squad = Components.UNIT.get(entity).getSquad();
 				FSMComponent squadFSM = Components.FSM.get(squad);
 				MessageManager.getInstance().dispatchMessage(null, squadFSM, Messages.targetDestroyed, telegram.extraInfo);
 				
@@ -155,7 +159,7 @@ public enum UnitState implements State<Entity> {
 		public void enter (Entity entity) {
 			super.enter(entity);
 			
-  			Entity squad = Components.SQUAD_MEMBER.get(entity).squad;
+  			Entity squad = Components.UNIT.get(entity).getSquad();
   			//Sends a request to the squad for a new target
 			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.requestTarget, entity);
 			
@@ -179,7 +183,7 @@ public enum UnitState implements State<Entity> {
    		SteerableComponent steerable = Components.STEERABLE.get(entity);
    		TargetComponent targetComp = Components.TARGET.get(entity);
    		SteeringBehaviorComponent behaviorComp = Components.STEERING_BEHAVIOR.get(entity);
-			SquadMemberComponent squadMember = Components.SQUAD_MEMBER.get(entity);
+   		Location2 targetLocation = (Location2)Components.UNIT.get(entity).getTargetLocation();
 			
 			//Steering Behaviors
    		Face<Vector2> faceSB = new Face<Vector2>(steerable)
@@ -188,7 +192,7 @@ public enum UnitState implements State<Entity> {
    			.setDecelerationRadius(2f)
    			.setTimeToTarget(0.00001f);
    		
-			Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable, squadMember.getTargetLocation())
+			Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable, targetLocation)
 				.setTimeToTarget(0.001f)
 				.setArrivalTolerance(0.01f)
 				.setDecelerationRadius(2f);
@@ -240,7 +244,7 @@ public enum UnitState implements State<Entity> {
  			switch(telegram.message){
  			
  			case Messages.targetDestroyed:
- 				Entity squad = Components.SQUAD_MEMBER.get(entity).squad;
+ 				Entity squad = Components.UNIT.get(entity).getSquad();
  				FSMComponent squadFSM = Components.FSM.get(squad);
  				MessageManager.getInstance().dispatchMessage(null, squadFSM, Messages.targetDestroyed, telegram.extraInfo);
  				
@@ -258,7 +262,6 @@ public enum UnitState implements State<Entity> {
     @Override
     public void enter(Entity entity) {
  		if(Constants.build == BUILD.DEV){
- 			FSMComponent fsm = Components.FSM.get(entity);
 			State<Entity> state = Components.FSM.get(entity).getStateMachine().getCurrentState();
 			Gdx.app.debug(TAG, "Entered: " + state.toString());
 		}

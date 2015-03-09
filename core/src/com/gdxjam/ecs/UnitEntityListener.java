@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.PooledEngine;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadComponent;
-import com.gdxjam.components.SquadMemberComponent;
+import com.gdxjam.components.UnitComponent;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.utils.EntityUtils;
 
@@ -21,20 +21,20 @@ public class UnitEntityListener implements EntityListener{
 	
 	@Override
 	public void entityAdded (Entity entity) {
-		SquadMemberComponent squadMemberComp = Components.SQUAD_MEMBER.get(entity);
-		guiSystem.updateSquad(squadMemberComp.squad);
+		UnitComponent unitComp = Components.UNIT.get(entity);
+		guiSystem.updateSquad(unitComp.getSquad());
 	}
 
 	@Override
 	public void entityRemoved (Entity entity) {
-		SquadMemberComponent squadMemberComp = Components.SQUAD_MEMBER.get(entity);
-		SquadComponent squadComp = Components.SQUAD.get(squadMemberComp.squad);
+		UnitComponent unitComp = Components.UNIT.get(entity);
+		SquadComponent squadComp = Components.SQUAD.get(unitComp.getSquad());
 		squadComp.removeMember(entity);
 		
 		EntityUtils.clearTarget(entity);
 		
 		if(squadComp.members.size == 0){
-			engine.removeEntity(squadMemberComp.squad);
+			engine.removeEntity(unitComp.getSquad());
 		}
 		
 	}

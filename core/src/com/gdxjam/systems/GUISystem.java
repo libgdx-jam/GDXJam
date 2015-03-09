@@ -4,9 +4,11 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.IntMap.Entry;
@@ -14,17 +16,18 @@ import com.gdxjam.Assets;
 import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.ui.SquadManagmentTable;
+import com.gdxjam.ui.WaveTimerTable;
 import com.gdxjam.utils.Constants;
 
 public class GUISystem extends EntitySystem implements Disposable {
 
 	private Stage stage;
 	private Skin skin;
-	private Table squadSidebar;
 	
 	private IntMap<Entity> squads = new IntMap<Entity>();
 	
 	private SquadManagmentTable squadManagment;
+	private WaveTimerTable waveTimerTable;
 	private Label resourceLabel;
 
 	public GUISystem() {
@@ -39,8 +42,11 @@ public class GUISystem extends EntitySystem implements Disposable {
 		resourceLabel = new Label("Resources: XXX", skin);
 		Table resourceTable = new Table();
 		resourceTable.add(resourceLabel);
+		resourceTable.center();
 		
 		
+		waveTimerTable = new WaveTimerTable(skin);
+		waveTimerTable.right();
 
 		squadManagment = new SquadManagmentTable(skin);
 		
@@ -50,14 +56,19 @@ public class GUISystem extends EntitySystem implements Disposable {
 		squadManagmentContainer.center().bottom();
 		stage.addActor(squadManagmentContainer);
 		
-		Table topTable = new Table();
-		topTable.setFillParent(true);
-		topTable.top().right();
+		Table rightTable = new Table();
+		rightTable.setFillParent(true);
+		rightTable.add(waveTimerTable).pad(5);
+		rightTable.top().right();
 		
-		topTable.defaults().pad(5);
-		topTable.add(resourceTable);
-
-		stage.addActor(topTable);
+		Table centerTable = new Table();
+		centerTable.setFillParent(true);
+		centerTable.defaults().pad(5);
+		centerTable.add(resourceTable);
+		centerTable.top();
+		
+		stage.addActor(centerTable);
+		stage.addActor(rightTable);
 		
 	}
 
@@ -120,6 +131,10 @@ public class GUISystem extends EntitySystem implements Disposable {
 
 	public void resize(int screenWidth, int screenHeight) {
 		stage.getViewport().update(screenWidth, screenHeight);
+	}
+	
+	public void updateWaveTime(float timeRemaining){
+		waveTimerTable.update(timeRemaining);
 	}
 	
 	public void updateResource(int amount){

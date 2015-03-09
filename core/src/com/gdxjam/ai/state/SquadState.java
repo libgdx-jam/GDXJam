@@ -25,8 +25,18 @@ public enum SquadState implements State<Entity> {
 			for (Entity member : squadComp.members) {
 				Components.FSM.get(member).changeState(UnitState.HARVEST_IDLE);
 			}
-			
 		}
+		
+		@Override
+		public void exit (Entity entity) {
+			super.exit(entity);
+			
+			SquadComponent squadComp = Components.SQUAD.get(entity);
+			for (Entity member : squadComp.members) {
+				Components.FSM.get(member).changeState(UnitState.FORMATION);
+			}
+		}
+		
 
 		@Override
 		public boolean onMessage (Entity entity, Telegram telegram) {
@@ -158,7 +168,7 @@ public enum SquadState implements State<Entity> {
 			case Messages.targetDestroyed:
 				Gdx.app.error(TAG, "Target Destroyed!");
 				Entity enemyUnit = (Entity)telegram.extraInfo;
-				Entity squad = Components.SQUAD_MEMBER.get(enemyUnit).squad;
+				Entity squad = Components.UNIT.get(enemyUnit).getSquad();
 				SquadComponent squadComp = Components.SQUAD.get(squad);
 				
 				if(squadComp.members.size == 0){
