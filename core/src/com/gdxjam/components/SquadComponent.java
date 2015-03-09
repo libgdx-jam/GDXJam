@@ -20,6 +20,7 @@ import com.gdxjam.ai.formation.SquareFormationPattern;
 import com.gdxjam.ai.formation.VFormationPattern;
 import com.gdxjam.ai.formation.WedgeFormationPattern;
 import com.gdxjam.ai.state.SquadState;
+import com.gdxjam.ecs.Components;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Location2;
 
@@ -34,26 +35,27 @@ public class SquadComponent extends Component implements Poolable {
 	public static final SquadState DEFAULT_STATE = SquadState.COMBAT_IDLE;
 
 	// So many arrays
-	public Array<Entity> members;
-	public Array<SteerableComponent> memberAgents;
+	public Array<Entity> members = new Array<Entity>();
+	public Array<SteerableComponent> memberAgents = new Array<SteerableComponent>();
 	public Array<Entity> enemiesInRange;
 	public Array<Entity> resourcesInRange;
 	public Array<Entity> friendliesInRange;
-	// TODO: remove TargetFinder and use these arrays
+	// TODO: remove TargetFinder and use these arrays... mabye
 
 	// Formation
 	public Formation<Vector2> formation;
 	public FormationMotionModerator<Vector2> moderator;
 
-	public Location2 targetLocation;
+	public Location2 targetLocation = new Location2();
 
 	public boolean selected = false;
 
-	public SquadComponent init (Steerable<Vector2> steerable) {
-		members = new Array<Entity>();
-		memberAgents = new Array<SteerableComponent>();
-		targetLocation = new Location2();
+	/** Can only be created by PooledEngine */
+	private SquadComponent () {
+		// private constructor
+	}
 
+	public SquadComponent init (Steerable<Vector2> steerable) {
 		SoftRoleSlotAssignmentStrategy<Vector2> slotAssignmentStrategy = new SoftRoleSlotAssignmentStrategy<Vector2>(
 			new DistanceSlotCostProvider());
 		formation = new Formation<Vector2>(steerable, getFormationPattern(DEFAULT_PATTERN), slotAssignmentStrategy);
@@ -109,6 +111,8 @@ public class SquadComponent extends Component implements Poolable {
 
 	@Override
 	public void reset () {
+		members.clear();
+		memberAgents.clear();
 		selected = false;
 	}
 

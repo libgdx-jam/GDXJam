@@ -5,10 +5,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
-import com.gdxjam.components.Components;
 import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.TargetFinderComponent;
+import com.gdxjam.ecs.Components;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Constants.BUILD;
 
@@ -236,7 +236,7 @@ public enum SquadState implements State<Entity> {
 	@Override
 	public void enter (Entity entity) {
 		if (Constants.build == BUILD.DEV) {
-			if(Components.FACTION.get(entity).faction == Constants.playerFaction){
+			if(Components.FACTION.get(entity).getFaction() == Constants.playerFaction){
 				State<Entity> state = Components.FSM.get(entity).getStateMachine().getCurrentState();
 				Gdx.app.debug(TAG, "Entered: " + state.toString());
 			}

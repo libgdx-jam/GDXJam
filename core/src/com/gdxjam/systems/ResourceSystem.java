@@ -4,8 +4,8 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.gdxjam.components.Components;
 import com.gdxjam.components.ResourceComponent;
+import com.gdxjam.ecs.Components;
 import com.gdxjam.utils.EntityUtils;
 
 public class ResourceSystem extends IteratingSystem{

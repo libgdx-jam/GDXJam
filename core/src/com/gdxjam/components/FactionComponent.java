@@ -2,7 +2,7 @@ package com.gdxjam.components;
 
 import com.badlogic.ashley.core.Component;
 
-public class FactionComponent extends Component {
+public class FactionComponent extends Component{
 
 	public enum Faction {
 		FACTION0("Republic", "This is a test so you know"),
@@ -19,5 +19,21 @@ public class FactionComponent extends Component {
 		}
 	}
 	
-	public Faction faction;
+	private Faction faction;
+	
+	/** Can only be created by PooledEngine */
+	private FactionComponent () { 
+		// private constructor
+	}
+	
+	public FactionComponent init(Faction faction){
+		this.faction = faction;
+		return this;
+	}
+	
+	public Faction getFaction(){
+		return faction;
+	}
+	
+	
 }

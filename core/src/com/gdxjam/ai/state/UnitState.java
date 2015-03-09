@@ -14,7 +14,6 @@ import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.gdxjam.components.Components;
 import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SteerableComponent;
@@ -22,6 +21,7 @@ import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
 import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.components.WeaponComponent;
+import com.gdxjam.ecs.Components;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Constants.BUILD;
 import com.gdxjam.utils.EntityFactory;
@@ -230,7 +230,7 @@ public enum UnitState implements State<Entity> {
 	      		
 	      		Vector2 velocity = new Vector2(45, 0).setAngle(orientation * MathUtils.radDeg);
 	      		
-	      		EntityFactory.createProjectile(position, velocity, Components.FACTION.get(entity).faction, 20);
+	      		EntityFactory.createProjectile(position, velocity, Components.FACTION.get(entity).getFaction(), 20);
 	      		weaponComp.cooldown += weaponComp.attackSpeed;
       		}
    		}

@@ -3,8 +3,8 @@ package com.gdxjam.ai.btree;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
-import com.gdxjam.components.Components;
 import com.gdxjam.components.UnitComponent;
+import com.gdxjam.ecs.Components;
 
 public class FindTargetInSquadTask extends LeafTask<Entity>{
 

@@ -28,6 +28,11 @@ public class SteerableComponent extends Component implements Steerable<Vector2>,
 
 	private Body body;
 
+	/** Can only be created by PooledEngine */
+	private SteerableComponent () {
+		// private constructor
+	}
+
 	public Body getBody () {
 		return body;
 	}

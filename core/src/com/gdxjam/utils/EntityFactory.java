@@ -22,7 +22,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.gdxjam.Assets;
 import com.gdxjam.ai.state.UnitState;
-import com.gdxjam.components.Components;
 import com.gdxjam.components.DecayComponent;
 import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.FactionComponent;
@@ -42,6 +41,7 @@ import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
 import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.components.WeaponComponent;
+import com.gdxjam.ecs.Components;
 import com.gdxjam.ecs.EntityCategory;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.utils.EntityFactory.PhysicsBuilder.FixtureBuilder;
@@ -109,7 +109,7 @@ public class EntityFactory {
 
 	public static Entity createUnit(Vector2 position, Entity squad) {
 		SquadComponent squadComp = Components.SQUAD.get(squad);
-		Faction faction = Components.FACTION.get(squad).faction;
+		Faction faction = Components.FACTION.get(squad).getFaction();
 
 		Entity entity = buildEntity(position)
 				.physicsBody(BodyType.DynamicBody)
@@ -127,7 +127,7 @@ public class EntityFactory {
 
 		PhysicsComponent physicsComp = Components.PHYSICS.get(entity);
 		UnitComponent squadMemberComp = engine.createComponent(
-				UnitComponent.class).init(squad, physicsComp.body);
+				UnitComponent.class).init(squad, physicsComp.getBody());
 		entity.add(squadMemberComp);
 		squadComp.addMember(entity);
 
@@ -155,7 +155,7 @@ public class EntityFactory {
 
 		SteerableComponent steerable = engine.createComponent(
 				SteerableComponent.class).init(
-				Components.PHYSICS.get(entity).body, 30.0f);
+				Components.PHYSICS.get(entity).getBody(), 30.0f);
 		SquadComponent squadComp = engine.createComponent(SquadComponent.class)
 				.init(steerable);
 		squadComp.targetLocation.getPosition().set(position);
@@ -221,9 +221,9 @@ public class EntityFactory {
 				Constants.projectileDecayTime));
 
 		PhysicsComponent physicsComp = Components.PHYSICS.get(entity);
-		physicsComp.body.setBullet(true);
-		physicsComp.body.setLinearVelocity(velocity);
-		physicsComp.body.setTransform(position, velocity.angle());
+		physicsComp.getBody().setBullet(true);
+		physicsComp.getBody().setLinearVelocity(velocity);
+		physicsComp.getBody().setTransform(position, velocity.angle());
 
 		engine.addEntity(entity);
 		return entity;
@@ -239,7 +239,7 @@ public class EntityFactory {
 		def.shape = edge;
 		def.filter.categoryBits = EntityCategory.WALL;
 
-		Components.PHYSICS.get(entity).body.createFixture(edge, 1.0f);
+		Components.PHYSICS.get(entity).getBody().createFixture(edge, 1.0f);
 		engine.addEntity(entity);
 		return entity;
 	}
@@ -321,8 +321,8 @@ public class EntityFactory {
 		public EntityBuilder damping(float angular, float linear) {
 			if (Components.PHYSICS.has(entity)) {
 				PhysicsComponent physics = Components.PHYSICS.get(entity);
-				physics.body.setAngularDamping(angular);
-				physics.body.setLinearDamping(linear);
+				physics.getBody().setAngularDamping(angular);
+				physics.getBody().setLinearDamping(linear);
 			} else {
 				Gdx.app.error(TAG, "entity is missing physics component!");
 			}
@@ -361,7 +361,7 @@ public class EntityFactory {
 			filter.maskBits = (short) maskBits;
 
 			// TODO make EntityBuilder filter beter
-			Components.PHYSICS.get(entity).body.getFixtureList().get(0)
+			Components.PHYSICS.get(entity).getBody().getFixtureList().get(0)
 					.setFilterData(filter);
 			return this;
 		}
@@ -378,11 +378,7 @@ public class EntityFactory {
 		}
 
 		public EntityBuilder faction(Faction faction) {
-			FactionComponent factionComp = engine
-					.createComponent(FactionComponent.class);
-			factionComp.faction = faction;
-
-			entity.add(factionComp);
+			entity.add(engine.createComponent(FactionComponent.class).init(faction));
 			return this;
 		}
 
@@ -393,7 +389,7 @@ public class EntityFactory {
 				return this;
 			}
 			SteerableComponent steerable = engine.createComponent(
-					SteerableComponent.class).init(physics.body, radius);
+					SteerableComponent.class).init(physics.getBody(), radius);
 			entity.add(steerable);
 			return this;
 		}
@@ -406,7 +402,7 @@ public class EntityFactory {
 				physicsBody(DEFAULT_BODY);
 			}
 
-			physics.body.createFixture(shape, density);
+			physics.getBody().createFixture(shape, density);
 			return this;
 		}
 
@@ -423,14 +419,14 @@ public class EntityFactory {
 			fixtureDef.isSensor = true;
 			fixtureDef.shape = shape;
 
-			physics.body.createFixture(fixtureDef);
+			physics.getBody().createFixture(fixtureDef);
 			return this;
 		}
 
 		public EntityBuilder rangeSensor(float range, float arc) {
 			Body body;
 			if (Components.PHYSICS.has(entity)) {
-				body = Components.PHYSICS.get(entity).body;
+				body = Components.PHYSICS.get(entity).getBody();
 			} else {
 				Gdx.app.error(TAG,
 						"can not add range sensor : entity does not have a physics component!");
@@ -483,7 +479,7 @@ public class EntityFactory {
 						"can not add target finder to entity without a body");
 				return this;
 			}
-			Fixture fixture = physics.body.createFixture(def);
+			Fixture fixture = physics.getBody().createFixture(def);
 
 			TargetFinderComponent targetFinder = engine
 					.createComponent(TargetFinderComponent.class);
