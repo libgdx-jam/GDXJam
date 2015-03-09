@@ -20,10 +20,9 @@ import com.gdxjam.ecs.Components;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityFactory;
 
-public class SquadCommandTable extends Table{
+public class SquadCommandCard extends CommandCard{
 	
-	private final static Color selectedColor = new Color(240.0f / 255.0f, 230.0f / 255.0f, 140.0f / 255.0f, 0.85f);
-	private final static Color defaultColor = new Color(0.66f, 0.66f, 0.66f, 0.85f);
+
 	
 	private SelectBox<SquadTatics> tatics;
 	private SelectBox<PatternType> formationPatternSelect;
@@ -32,11 +31,11 @@ public class SquadCommandTable extends Table{
 	private BitmapFontCache squadText;
 	
 
-	public SquadCommandTable(final Entity squad, int index, Skin skin){
+	public SquadCommandCard(final Entity squad, int index, Skin skin){
+		super(skin);
+		
 		this.squad = squad;
 		this.index = index;
-		setBackground(skin.getDrawable("default-window"));
-		setColor(defaultColor);
 
 		squadText = new BitmapFontCache(skin.getFont("default-font"));
 		squadText.setMultiLineText("Squad " + (index + 1), 0, 0);
@@ -63,16 +62,18 @@ public class SquadCommandTable extends Table{
 			}
 		});
 		
-		formationPatternSelect = new SelectBox<PatternType>(skin);
-		formationPatternSelect.setItems(PatternType.values());
-		formationPatternSelect.setSelected(SquadComponent.DEFAULT_PATTERN);
-		formationPatternSelect.addListener(new ChangeListener() {
-			
-			@Override
-			public void changed (ChangeEvent event, Actor actor) {
-				Components.SQUAD.get(squad).setFormationPattern(formationPatternSelect.getSelected());
-			}
-		});
+//		formationPatternSelect = new SelectBox<PatternType>(skin);
+//		formationPatternSelect.setItems(PatternType.values());
+//		formationPatternSelect.setSelected(SquadComponent.DEFAULT_PATTERN);
+//		formationPatternSelect.addListener(new ChangeListener() {
+//			
+//			@Override
+//			public void changed (ChangeEvent event, Actor actor) {
+//				Components.SQUAD.get(squad).setFormationPattern(formationPatternSelect.getSelected());
+//			}
+//		});
+		
+		FormationPatternTable formationTable = new FormationPatternTable(squad, skin);
 		
 		TextButton addMemberButton = new TextButton(" + ", skin);
 		addMemberButton.addListener(new ChangeListener(){
@@ -83,10 +84,9 @@ public class SquadCommandTable extends Table{
 		});
 		
 		add(tatics).pad(5);
-		row();
-		add(formationPatternSelect);
-		row();
 		add(addMemberButton);
+		row();
+		add(formationTable).colspan(2);
 	}
 	
 	public void update(){
