@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.GameManager;
 import com.gdxjam.systems.CameraSystem;
-import com.gdxjam.systems.SquadSpawnerSystem;
+import com.gdxjam.systems.WaveSystem;
 
 public class DeveloperTools {
 	
@@ -15,7 +15,7 @@ public class DeveloperTools {
 		PooledEngine engine = GameManager.getEngine();
 		Vector2 pos = engine.getSystem(CameraSystem.class).screenToWorldCords(Gdx.input.getX(), Gdx.input.getY());
 		
-		SquadSpawnerSystem.spawnSquad(pos, Constants.enemyFaction, 1);
+		WaveSystem.spawnSquad(pos, Constants.enemyFaction, 1);
 	}
 
 }

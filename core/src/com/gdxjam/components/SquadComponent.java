@@ -1,12 +1,13 @@
+
 package com.gdxjam.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fma.Formation;
+import com.badlogic.gdx.ai.fma.FormationMotionModerator;
 import com.badlogic.gdx.ai.fma.FormationPattern;
 import com.badlogic.gdx.ai.fma.SoftRoleSlotAssignmentStrategy;
 import com.badlogic.gdx.ai.fma.patterns.OffensiveCircleFormationPattern;
-import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -19,68 +20,65 @@ import com.gdxjam.ai.formation.SquareFormationPattern;
 import com.gdxjam.ai.formation.VFormationPattern;
 import com.gdxjam.ai.formation.WedgeFormationPattern;
 import com.gdxjam.ai.state.SquadState;
-import com.gdxjam.ai.state.UnitState;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Location2;
 
-public class SquadComponent extends Component implements Poolable{
-	
+public class SquadComponent extends Component implements Poolable {
+
 	public enum PatternType {
-		Line,
-		Column,
-		Square,
-		Ring,
-		V,
-		Wedge;
+		Line, Column, Square, Ring, V, Wedge;
 	}
-	
+
 	public static final float PATTERN_SPACING = Constants.unitRadius * 0.25f;
 	public static final PatternType DEFAULT_PATTERN = PatternType.V;
 	public static final SquadState DEFAULT_STATE = SquadState.COMBAT_IDLE;
-	
+
+	// So many arrays
 	public Array<Entity> members;
+	public Array<SteerableComponent> memberAgents;
+	public Array<Entity> enemiesInRange;
+	public Array<Entity> resourcesInRange;
+	public Array<Entity> friendliesInRange;
+	// TODO: remove TargetFinder and use these arrays
+
+	// Formation
 	public Formation<Vector2> formation;
+	public FormationMotionModerator<Vector2> moderator;
+
 	public Location2 targetLocation;
-	public State<Entity> state = UnitState.FORMATION;
 
 	public boolean selected = false;
-	
-	public SquadComponent(){
+
+	public SquadComponent init (Steerable<Vector2> steerable) {
 		members = new Array<Entity>();
+		memberAgents = new Array<SteerableComponent>();
 		targetLocation = new Location2();
-	}
-	
-	public SquadComponent init(Steerable<Vector2> steerable){
-		SoftRoleSlotAssignmentStrategy<Vector2> slotAssignmentStrategy = new SoftRoleSlotAssignmentStrategy<Vector2>(new DistanceSlotCostProvider());
+
+		SoftRoleSlotAssignmentStrategy<Vector2> slotAssignmentStrategy = new SoftRoleSlotAssignmentStrategy<Vector2>(
+			new DistanceSlotCostProvider());
 		formation = new Formation<Vector2>(steerable, getFormationPattern(DEFAULT_PATTERN), slotAssignmentStrategy);
 		return this;
 	}
-	
-	
-	public void addMember(Entity entity){
+
+	public void addMember (Entity entity) {
 		members.add(entity);
-		formation.addMember(Components.SQUAD_MEMBER.get(entity));
+		memberAgents.add(Components.STEERABLE.get(entity));
+		formation.addMember(Components.UNIT.get(entity));
 	}
-	
-	public void removeMember(Entity entity){
+
+	public void removeMember (Entity entity) {
 		members.removeValue(entity, true);
-		formation.removeMember(Components.SQUAD_MEMBER.get(entity));
+		memberAgents.removeValue(Components.STEERABLE.get(entity), true);
+		formation.removeMember(Components.UNIT.get(entity));
 	}
-	
-	public void setState(State<Entity> state){
-		this.state = state;
-		for(Entity entity : members){
-			Components.FSM.get(entity).changeState(state);
-		}
-	}
-	
-	public void setFormationPattern(PatternType pattern){
+
+	public void setFormationPattern (PatternType pattern) {
 		FormationPattern<Vector2> formationPattern = getFormationPattern(pattern);
 		formation.changePattern(formationPattern);
 	}
-	
-	public FormationPattern<Vector2> getFormationPattern(PatternType pattern){
-		switch(pattern){
+
+	public FormationPattern<Vector2> getFormationPattern (PatternType pattern) {
+		switch (pattern) {
 		case Line:
 			return new LineFormationPattern(Constants.unitRadius + PATTERN_SPACING);
 		case Column:
@@ -96,17 +94,16 @@ public class SquadComponent extends Component implements Poolable{
 			return new WedgeFormationPattern(Constants.unitRadius + PATTERN_SPACING);
 		}
 	}
-	
 
-	public void setTarget(Vector2 target) {
+	public void setTarget (Vector2 target) {
 		targetLocation.getPosition().set(target);
 	}
-	
-	public boolean isSelected() {
+
+	public boolean isSelected () {
 		return selected;
 	}
 
-	public void setSelected(boolean selected) {
+	public void setSelected (boolean selected) {
 		this.selected = selected;
 	}
 
@@ -114,6 +111,5 @@ public class SquadComponent extends Component implements Poolable{
 	public void reset () {
 		selected = false;
 	}
-	
 
 }

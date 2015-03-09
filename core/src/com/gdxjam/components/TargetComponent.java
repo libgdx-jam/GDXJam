@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 
 public class TargetComponent extends Component implements Poolable{
 	
-	public Entity target;
+	private Entity target;
 	
 	public TargetComponent init(Entity target){
 		this.target = target;

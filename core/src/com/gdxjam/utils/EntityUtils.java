@@ -53,8 +53,8 @@ public class EntityUtils {
 		ImmutableArray<Entity> entities = engine.getEntitiesFor(Family.all(TargetComponent.class).get());
 		for(Entity e : entities){
 			TargetComponent targetComp = Components.TARGET.get(e);
-			if(targetComp.target == entity){
-				targetComp.target = null;
+			if(targetComp.getTarget() == entity){
+				targetComp.setTarget(null);
 				
 				if(Components.FSM.has(e)){
 					FSMComponent fsm = Components.FSM.get(e);

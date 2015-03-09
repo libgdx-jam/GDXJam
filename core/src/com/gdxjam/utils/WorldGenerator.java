@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.gdxjam.Assets;
-import com.gdxjam.systems.SquadSpawnerSystem;
+import com.gdxjam.systems.WaveSystem;
 
 /** @author Torin Wiebelt (Twiebs) Generates world bounds Generates the game world by creating an asteroid field using fBm applied
  *         OpenSimplexNoise Populates the world with entities. */
@@ -46,7 +46,7 @@ public class WorldGenerator {
 			createBackground();
 		}
 		populateWorld();
-		generateSpawners();
+		//generateSpawners();
 	}
 
 	public void createWorldBounds () {
@@ -69,12 +69,12 @@ public class WorldGenerator {
 		for (int i = 0; i < param.initalSquads; i++) {
 			Vector2 angleVec = new Vector2(distance, 0.0f).setAngle(initalAngle + seperationAngle * i);
 			Vector2 position = center.cpy().add(angleVec);
-			SquadSpawnerSystem.spawnSquad(position, Constants.playerFaction, param.squadMembers);
+			WaveSystem.spawnSquad(position, Constants.playerFaction, param.squadMembers);
 		}
 	}
 
 	public void generateSpawners () {
-		SquadSpawnerSystem.initalizeSpawns();
+		WaveSystem.initalizeSpawns();
 	}
 
 	public void createBackground () {
@@ -150,7 +150,7 @@ public class WorldGenerator {
 			Vector2 spawnPoint = new Vector2(length, 0);
 			spawnPoint.setAngle(angle);
 			spawnPoint.add(halfWidth, halfHeight);
-			SquadSpawnerSystem.addSpawnPoint(spawnPoint);
+			WaveSystem.addSpawnPoint(spawnPoint);
 
 			worldSpokes.add(polygon);
 		}
@@ -221,9 +221,9 @@ public class WorldGenerator {
 						(col * colSpacing) + (randomSign() * param.asteroidScattering) * colSpacing);
 
 					float radius = param.asteroidRadius.random(rng.nextFloat());
-					if (rng.nextFloat() <= param.asteroidExtraScalingChance) {
-						radius += param.asteroidRadius.max * 2;
-					}
+//					if (rng.nextFloat() <= param.asteroidExtraScalingChance) {
+//						radius += param.asteroidRadius.max * 2;
+//					}
 					EntityFactory.createAsteroid(pos, radius);
 				}
 			}

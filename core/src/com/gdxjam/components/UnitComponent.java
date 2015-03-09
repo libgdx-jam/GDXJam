@@ -1,3 +1,4 @@
+
 package com.gdxjam.components;
 
 import com.badlogic.ashley.core.Component;
@@ -9,31 +10,32 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.gdxjam.utils.Location2;
 
-public class SquadMemberComponent extends Component implements
-		FormationMember<Vector2>, Poolable {
+public class UnitComponent extends Component implements FormationMember<Vector2>, Poolable {
 
-	public Entity squad;
-	public Body body;
-	
-	public Location2 targetLocation = new Location2();
+	private Entity squad;
+	private Body body;
+	private Location2 targetLocation = new Location2();
 
-	public SquadMemberComponent() {
-		targetLocation = new Location2(new Vector2(0, 0));
-	}
-	
-	public SquadMemberComponent init(Entity squad, Body body){
+	public UnitComponent init (Entity squad, Body body) {
 		this.squad = squad;
 		this.body = body;
 		return this;
 	}
 
+	public Entity getSquad () {
+		return squad;
+	}
+
+	public Body getBody () {
+		return body;
+	}
+
 	@Override
-	public Location<Vector2> getTargetLocation() {
+	public Location<Vector2> getTargetLocation () {
 		return targetLocation;
 	}
 
 	@Override
-	public void reset() {
-		targetLocation = new Location2();
+	public void reset () {
 	}
 }

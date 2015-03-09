@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
 import com.gdxjam.components.Components;
-import com.gdxjam.components.SquadMemberComponent;
+import com.gdxjam.components.UnitComponent;
 import com.gdxjam.components.TargetComponent;
 
 public class HasTargetCondition extends LeafTask<Entity> {
@@ -17,14 +17,14 @@ public class HasTargetCondition extends LeafTask<Entity> {
 		boolean validTarget = false;
 		Entity findTarget = entity;
 		if(checkSquad){
-			SquadMemberComponent squadMemberComp = Components.SQUAD_MEMBER.get(entity);
-			findTarget = squadMemberComp.squad;
+//			UnitComponent squadMemberComp = Components.SQUAD_MEMBER.get(entity);
+//			findTarget = squadMemberComp.squad;
 		}
 		
 
 		if (Components.TARGET.has(findTarget)) {
 			TargetComponent targetComp = Components.TARGET.get(findTarget);
-			if (targetComp.target != null) {
+			if (targetComp.getTarget() != null) {
 				validTarget = true;
 			}
 		}

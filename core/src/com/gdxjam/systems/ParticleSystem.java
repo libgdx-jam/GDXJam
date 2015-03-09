@@ -1,6 +1,5 @@
 package com.gdxjam.systems;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -38,6 +37,7 @@ public class ParticleSystem extends IteratingSystem {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		batch.begin();
+		
 		for (Entity e : getEntities()) {
 			ParticleComponent particle = Components.PARTICLE.get(e);
 			particle.draw(batch);
