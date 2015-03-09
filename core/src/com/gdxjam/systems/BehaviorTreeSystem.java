@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IntervalIteratingSystem;
 import com.gdxjam.components.BehaviorTreeComponent;
-import com.gdxjam.components.Components;
+import com.gdxjam.ecs.Components;
 
 public class BehaviorTreeSystem extends IntervalIteratingSystem{
 

@@ -16,6 +16,11 @@ public class UnitComponent extends Component implements FormationMember<Vector2>
 	private Body body;
 	private Location2 targetLocation = new Location2();
 
+	/** Can only be created by PooledEngine */
+	private UnitComponent () {
+		// private constructor
+	}
+
 	public UnitComponent init (Entity squad, Body body) {
 		this.squad = squad;
 		this.body = body;
@@ -37,5 +42,6 @@ public class UnitComponent extends Component implements FormationMember<Vector2>
 
 	@Override
 	public void reset () {
+
 	}
 }

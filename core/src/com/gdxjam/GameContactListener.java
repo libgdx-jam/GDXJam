@@ -11,11 +11,12 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.gdxjam.ai.state.Messages;
-import com.gdxjam.components.Components;
 import com.gdxjam.components.FactionComponent;
+import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.ProjectileComponent;
 import com.gdxjam.components.TargetFinderComponent;
+import com.gdxjam.ecs.Components;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityUtils;
 
@@ -90,9 +91,9 @@ public class GameContactListener implements ContactListener {
 			
 			@Override
 			public int compare (Entity e1, Entity e2) {
-				Vector2 squadPos = Components.PHYSICS.get(squad).body.getPosition();
-				Vector2 pos1 = Components.PHYSICS.get(e1).body.getPosition();
-				Vector2 pos2 = Components.PHYSICS.get(e2).body.getPosition();
+				Vector2 squadPos = Components.PHYSICS.get(squad).getBody().getPosition();
+				Vector2 pos1 = Components.PHYSICS.get(e1).getBody().getPosition();
+				Vector2 pos2 = Components.PHYSICS.get(e2).getBody().getPosition();
 				
 				float dist1 = squadPos.dst2(pos1);
 				float dist2 = squadPos.dst2(pos2);
@@ -107,9 +108,9 @@ public class GameContactListener implements ContactListener {
 	public void processProjectile (Entity projectile, Entity target) {
 		if (Components.HEALTH.has(target)) {
 			if(!Constants.friendlyFire){
-				FactionComponent projectileFactionComp = Components.FACTION.get(projectile);
-				FactionComponent targetFactionComp = Components.FACTION.get(target);
-				if(projectileFactionComp.faction == targetFactionComp.faction)
+				Faction projectileFaction = Components.FACTION.get(projectile).getFaction();
+				Faction targetFaction = Components.FACTION.get(target).getFaction();
+				if(projectileFaction == targetFaction)
 					return;
 			}
 			
@@ -118,7 +119,7 @@ public class GameContactListener implements ContactListener {
 			ProjectileComponent projectileComp = Components.PROJECTILE.get(projectile);
 			HealthComponent healthComp = Components.HEALTH.get(target);
 
-			healthComp.value -= projectileComp.damage;
+			healthComp.value -= projectileComp.getDamage();
 		}
 
 		EntityUtils.removeEntity(projectile);

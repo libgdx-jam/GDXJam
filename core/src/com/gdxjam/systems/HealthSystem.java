@@ -7,8 +7,8 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
 import com.gdxjam.GameManager;
-import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
+import com.gdxjam.ecs.Components;
 import com.gdxjam.screens.GameOverScreen;
 
 public class HealthSystem extends IteratingSystem {

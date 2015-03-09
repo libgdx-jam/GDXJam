@@ -14,9 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.gdxjam.ai.state.SquadState;
 import com.gdxjam.ai.state.SquadTatics;
-import com.gdxjam.components.Components;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadComponent.PatternType;
+import com.gdxjam.ecs.Components;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityFactory;
 

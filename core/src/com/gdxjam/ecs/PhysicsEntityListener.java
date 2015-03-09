@@ -3,7 +3,6 @@ package com.gdxjam.ecs;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.gdxjam.components.Components;
 import com.gdxjam.systems.PhysicsSystem;
 
 public class PhysicsEntityListener implements EntityListener{
@@ -20,7 +19,7 @@ public class PhysicsEntityListener implements EntityListener{
 
 	@Override
 	public void entityRemoved (Entity entity) {
-		Body body = Components.PHYSICS.get(entity).body;
+		Body body = Components.PHYSICS.get(entity).getBody();
 		physicsSystem.destroyBody(body);
 	}
 

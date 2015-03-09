@@ -8,12 +8,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.ai.state.Messages;
-import com.gdxjam.components.Components;
 import com.gdxjam.components.FSMComponent;
-import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.TargetComponent;
+import com.gdxjam.ecs.Components;
 import com.gdxjam.systems.GUISystem;
 
 public class EntityUtils {
@@ -39,16 +38,12 @@ public class EntityUtils {
 			return false;
 		}
 		
-		Faction factionA = Components.FACTION.get(entityA).faction;
-		Faction factionB = Components.FACTION.get(entityB).faction;
+		Faction factionA = Components.FACTION.get(entityA).getFaction();
+		Faction factionB = Components.FACTION.get(entityB).getFaction();
 		
 		return factionA == factionB;
 	}
-	
-	public static void removeEntity(Entity entity){
-		engine.removeEntity(entity);
-	}
-	
+
 	public static void clearTarget(Entity entity){
 		ImmutableArray<Entity> entities = engine.getEntitiesFor(Family.all(TargetComponent.class).get());
 		for(Entity e : entities){
@@ -65,17 +60,7 @@ public class EntityUtils {
 		}
 	}
 	
-	public static Entity findSquadWithoutFaction(Faction faction){
-		ImmutableArray<Entity> squads = engine.getEntitiesFor(Family.all(SquadComponent.class, FactionComponent.class).get());
-		for(Entity entity : squads){
-			FactionComponent factionComp = Components.FACTION.get(entity);
-			if(factionComp.faction != faction){
-				return entity;
-			}
-		}
-		return null;
-	}
-	
+	@Deprecated
 	public static void setSelectedSquadTarget(Vector2 target){
 		ImmutableArray<Entity> squads = engine.getEntitiesFor(Family.all(SquadComponent.class).get());
 		for(Entity entity : squads){
@@ -84,6 +69,10 @@ public class EntityUtils {
 				squadComp.setTarget(target);
 			}
 		}
+	}
+	
+	public static void removeEntity(Entity entity){
+		engine.removeEntity(entity);
 	}
 	
 

@@ -18,12 +18,12 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
-import com.gdxjam.components.Components;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.ParalaxComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SpriteComponent;
+import com.gdxjam.ecs.Components;
 
 public class EntityRenderSystem extends SortedIteratingSystem implements Disposable {
 	private static final String TAG = "[" + EntityRenderSystem.class.getSimpleName() + "]";
@@ -86,7 +86,7 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 
 	@Override
 	protected void processEntity (Entity entity, float deltaTime) {
-		Sprite sprite = Components.SPRITE.get(entity).sprite;
+		Sprite sprite = Components.SPRITE.get(entity).getSprite();
 		OrthographicCamera camera;
 		if(currentLayer >= 0){
 			camera = cameraSystem.getParalaxCamera(currentLayer);
@@ -115,9 +115,9 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 				}
 				if (Components.PHYSICS.has(entity)) {
 					PhysicsComponent physics = Components.PHYSICS.get(entity);
-					Vector2 pos = physics.body.getPosition();
+					Vector2 pos = physics.getBody().getPosition();
 					sprite.setCenter(pos.x, pos.y);
-					sprite.setRotation((MathUtils.radiansToDegrees * physics.body.getAngle()) + spriteRotationOffset);
+					sprite.setRotation((MathUtils.radiansToDegrees * physics.getBody().getAngle()) + spriteRotationOffset);
 			}
 		}
 
