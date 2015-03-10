@@ -139,6 +139,7 @@ public class NewGameScreen extends AbstractScreen {
 			public void clicked (InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
 				showFaction(faction);
+				selected = faction;
 			}
 		});
 		return button;
