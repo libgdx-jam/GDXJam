@@ -4,18 +4,16 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.IntMap.Entry;
 import com.gdxjam.Assets;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.ecs.Components;
-import com.gdxjam.ui.SquadManagmentTable;
+import com.gdxjam.ui.CommandCardContainer;
 import com.gdxjam.ui.WaveTimerTable;
 import com.gdxjam.utils.Constants;
 
@@ -26,7 +24,7 @@ public class GUISystem extends EntitySystem implements Disposable {
 	
 	private IntMap<Entity> squads = new IntMap<Entity>();
 	
-	private SquadManagmentTable squadManagment;
+	private CommandCardContainer squadManagment;
 	private WaveTimerTable waveTimerTable;
 	private Label resourceLabel;
 
@@ -48,7 +46,7 @@ public class GUISystem extends EntitySystem implements Disposable {
 		waveTimerTable = new WaveTimerTable(skin);
 		waveTimerTable.right();
 
-		squadManagment = new SquadManagmentTable(skin);
+		squadManagment = new CommandCardContainer(skin);
 		
 		Table squadManagmentContainer = new Table();
 		squadManagmentContainer.setFillParent(true);
