@@ -23,6 +23,12 @@ public class EmptyCommandCard extends CommandCard{
 		});
 		add(button);
 	}
+
+	@Override
+	public void setSelected (boolean selected) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 	

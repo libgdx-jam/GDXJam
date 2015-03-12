@@ -20,9 +20,7 @@ import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityFactory;
 
 public class SquadCommandCard extends CommandCard{
-	
 
-	
 	private SelectBox<SquadTatics> tatics;
 	private SelectBox<PatternType> formationPatternSelect;
 	private final Entity squad;
@@ -86,6 +84,11 @@ public class SquadCommandCard extends CommandCard{
 		add(addMemberButton);
 		row();
 		add(formationTable).colspan(2);
+	}
+	
+
+	public Entity getSquad(){
+		return squad;
 	}
 	
 	public void update(){

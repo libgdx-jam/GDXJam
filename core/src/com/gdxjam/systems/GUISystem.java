@@ -1,12 +1,15 @@
+
 package com.gdxjam.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.IntMap.Entry;
@@ -21,69 +24,69 @@ public class GUISystem extends EntitySystem implements Disposable {
 
 	private Stage stage;
 	private Skin skin;
-	
+
 	private IntMap<Entity> squads = new IntMap<Entity>();
-	
+	private Array<Entity> selectedSquads = new Array<Entity>();
+
 	private CommandCardContainer squadManagment;
 	private WaveTimerTable waveTimerTable;
 	private Label resourceLabel;
 
-	public GUISystem() {
+	public GUISystem () {
 		this.stage = new Stage();
 		this.skin = Assets.skin;
 
 		initGUI();
 	}
 
-	public void initGUI() {
-		/** Resource Table		 */
+	public void initGUI () {
+		/** Resource Table */
 		resourceLabel = new Label("Resources: XXX", skin);
 		Table resourceTable = new Table();
 		resourceTable.add(resourceLabel);
 		resourceTable.center();
-		
-		
+
 		waveTimerTable = new WaveTimerTable(skin);
 		waveTimerTable.right();
 
-		squadManagment = new CommandCardContainer(skin);
-		
+		squadManagment = new CommandCardContainer(skin, stage);
+
 		Table squadManagmentContainer = new Table();
 		squadManagmentContainer.setFillParent(true);
 		squadManagmentContainer.add(squadManagment).padTop(30);
 		squadManagmentContainer.center().bottom();
 		stage.addActor(squadManagmentContainer);
-		
+
 		Table rightTable = new Table();
 		rightTable.setFillParent(true);
 		rightTable.add(waveTimerTable).pad(5);
 		rightTable.top().right();
-		
+
 		Table centerTable = new Table();
 		centerTable.setFillParent(true);
 		centerTable.defaults().pad(5);
 		centerTable.add(resourceTable);
 		centerTable.top();
-		
+
 		stage.addActor(centerTable);
 		stage.addActor(rightTable);
-		
+
 	}
 
 	@Override
 	public void addedToEngine (Engine engine) {
 		super.addedToEngine(engine);
 	}
-	
-	public void addSquad(Entity squad) {
-		for(int i = 0; i < Constants.maxSquads; i++){
+
+	public void addSquad (Entity squad) {
+		for (int i = 0; i < Constants.maxSquads; i++) {
 			boolean valid = true;
-			if(squads.containsKey(i)){
-				if(squads.get(i) != null){
+			if (squads.containsKey(i)) {
+				if (squads.get(i) != null) {
 					valid = false;
 				}
 			}
-			if(valid){
+			if (valid) {
 				squads.put(i, squad);
 				squadManagment.addSquad(squad, i);
 				break;
@@ -91,72 +94,75 @@ public class GUISystem extends EntitySystem implements Disposable {
 		}
 
 	}
-	
-	public void removeSquad(Entity squad){
-		for(Entry<Entity> entry : squads){
-			if(entry.value == squad){
+
+	public void removeSquad (Entity squad) {
+		for (Entry<Entity> entry : squads) {
+			if (entry.value == squad) {
 				squads.remove(entry.key);
 				squadManagment.removeSquad(squad, entry.key);
 				return;
 			}
 		}
-		
 
 	}
-	
-	public void updateSquad(Entity squad){
-		for(Entry<Entity> entry : squads){
-			if(entry.value == squad){
+
+	public void updateSquad (Entity squad) {
+		for (Entry<Entity> entry : squads) {
+			if (entry.value == squad) {
 				squadManagment.updateSquadTable(entry.key);
 			}
 		}
 	}
 
-	public void setSelected(int index, boolean selected) {
-		if(squads.containsKey(index)){
-			Entity squad = squads.get(index);
-			SquadComponent squadComp = Components.SQUAD.get(squad);
-			squadComp.selected = selected;
-			squadManagment.setSelected(index, squadComp.isSelected());
-		}
+	public void setSelected (int index, boolean selected) {
+		Entity squad = squadManagment.setSelected(index, selected);
+		if(selected)
+			selectedSquads.add(squad);
+		else
+			selectedSquads.removeValue(squad, true);
+
 	}
 	
-	public void setAllSelected(boolean selected){
-		for(Entry<Entity> entry : squads){
+	public void setTarget(Vector2 target){
+		
+	}
+
+	public void setAllSelected (boolean selected) {
+		for (Entry<Entity> entry : squads) {
 			setSelected(entry.key, selected);
 		}
 	}
 
-	public void resize(int screenWidth, int screenHeight) {
+	public void resize (int screenWidth, int screenHeight) {
 		stage.getViewport().update(screenWidth, screenHeight);
 	}
-	
-	public void updateWaveTime(float timeRemaining){
+
+	public void updateWaveTime (float timeRemaining) {
 		waveTimerTable.update(timeRemaining);
 	}
-	
-	public void updateResource(int amount){
+
+	public void updateResource (int amount) {
 		resourceLabel.setText("Resources: " + amount);
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update (float deltaTime) {
 		super.update(deltaTime);
 
 		stage.act();
 		stage.draw();
 	}
 
-	public Stage getStage() {
+	public Stage getStage () {
 		return stage;
 	}
 
-//	public HotkeyTable getHotkeyTable() {
-//		return hotkeyTable;
-//	}
-	
+// public HotkeyTable getHotkeyTable() {
+// return hotkeyTable;
+// }
+
 	@Override
-	public void dispose() {
+	public void dispose () {
 		stage.dispose();
 	}
 

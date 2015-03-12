@@ -60,17 +60,6 @@ public class EntityUtils {
 		}
 	}
 	
-	@Deprecated
-	public static void setSelectedSquadTarget(Vector2 target){
-		ImmutableArray<Entity> squads = engine.getEntitiesFor(Family.all(SquadComponent.class).get());
-		for(Entity entity : squads){
-			SquadComponent squadComp = Components.SQUAD.get(entity);
-			if(squadComp.selected){
-				squadComp.setTarget(target);
-			}
-		}
-	}
-	
 	public static void removeEntity(Entity entity){
 		engine.removeEntity(entity);
 	}

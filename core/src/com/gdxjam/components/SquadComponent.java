@@ -48,7 +48,6 @@ public class SquadComponent extends Component implements Poolable {
 
 	public Location2 targetLocation = new Location2();
 
-	public boolean selected = false;
 
 	/** Can only be created by PooledEngine */
 	private SquadComponent () {
@@ -101,19 +100,10 @@ public class SquadComponent extends Component implements Poolable {
 		targetLocation.getPosition().set(target);
 	}
 
-	public boolean isSelected () {
-		return selected;
-	}
-
-	public void setSelected (boolean selected) {
-		this.selected = selected;
-	}
-
 	@Override
 	public void reset () {
 		members.clear();
 		memberAgents.clear();
-		selected = false;
 	}
 
 }

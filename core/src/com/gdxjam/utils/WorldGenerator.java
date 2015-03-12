@@ -10,8 +10,9 @@ import com.badlogic.gdx.utils.Array;
 import com.gdxjam.Assets;
 import com.gdxjam.systems.WaveSystem;
 
-/** @author Torin Wiebelt (Twiebs) Generates world bounds Generates the game world by creating an asteroid field using fBm applied
- *         OpenSimplexNoise Populates the world with entities. */
+/** Generates world bounds Generates the game world by creating an asteroid field using fBm applied OpenSimplexNoise Populates the
+ * world with entities.
+ * @author Torin Wiebelt (Twiebs) */
 
 public class WorldGenerator {
 
@@ -46,7 +47,7 @@ public class WorldGenerator {
 			createBackground();
 		}
 		populateWorld();
-		//generateSpawners();
+		// generateSpawners();
 	}
 
 	public void createWorldBounds () {
@@ -81,9 +82,9 @@ public class WorldGenerator {
 		EntityFactory.createBackgroundArt(new Vector2(0, 0), Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT,
 			Assets.space.background, 0);
 
-		int planetCount = (int)param.numberOfPlanets.random(rng.nextFloat());
+		int planetCount = (int)param.numberOfPlanets.percent(rng.nextFloat());
 		for (int i = 0; i < planetCount; i++) {
-			float radius = param.planetRadius.random(rng.nextFloat());
+			float radius = param.planetRadius.percent(rng.nextFloat());
 			int index = (int)(Assets.space.planets.size * rng.nextFloat());
 			EntityFactory.createBackgroundArt(new Vector2(Constants.VIEWPORT_WIDTH * rng.nextFloat(), Constants.VIEWPORT_HEIGHT
 				* rng.nextFloat()), radius, radius, Assets.space.planets.get(index), 1);
@@ -196,7 +197,6 @@ public class WorldGenerator {
 		// } else if(distanceToCenter / radius >= 0.9f){
 		// total -= distanceScalar;
 		// }
-
 		total = MathUtils.clamp(total, -1.0f, 1.0f);
 		return total;
 	}
@@ -220,10 +220,10 @@ public class WorldGenerator {
 					Vector2 pos = new Vector2((row * rowSpacing) + (randomSign() * param.asteroidScattering) * rowSpacing,
 						(col * colSpacing) + (randomSign() * param.asteroidScattering) * colSpacing);
 
-					float radius = param.asteroidRadius.random(rng.nextFloat());
-//					if (rng.nextFloat() <= param.asteroidExtraScalingChance) {
-//						radius += param.asteroidRadius.max * 2;
-//					}
+					float radius = param.asteroidRadius.percent(rng.nextFloat());
+// if (rng.nextFloat() <= param.asteroidExtraScalingChance) {
+// radius += param.asteroidRadius.max * 2;
+// }
 					EntityFactory.createAsteroid(pos, radius);
 				}
 			}

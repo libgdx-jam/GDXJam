@@ -7,7 +7,7 @@ import com.gdxjam.utils.Range;
 
 public class ResourceComponent extends Component implements Poolable {
 
-	public Range capactiy = new Range(0, 1500);
+	public Range capactiy;
 	public int value;
 
 	/** Can only be created by PooledEngine */
@@ -16,7 +16,7 @@ public class ResourceComponent extends Component implements Poolable {
 	}
 
 	public ResourceComponent init (int amount) {
-		capactiy.max = amount;
+		capactiy = new Range(0, amount);
 		this.value = amount;
 		return this;
 	}

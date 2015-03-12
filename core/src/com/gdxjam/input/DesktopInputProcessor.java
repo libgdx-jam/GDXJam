@@ -6,12 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.gdxjam.GameManager;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.utils.Constants;
-import com.gdxjam.utils.EntityUtils;
 
 public class DesktopInputProcessor implements InputProcessor {
 
@@ -40,8 +38,7 @@ public class DesktopInputProcessor implements InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (button == Buttons.LEFT) {
-			EntityUtils.setSelectedSquadTarget(cameraSystem.screenToWorldCords(
-					screenX, screenY));
+			guiSystem.setTarget(cameraSystem.screenToWorldCords(screenX, screenY));
 			return true;
 		}
 		return false;
