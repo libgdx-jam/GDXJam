@@ -35,17 +35,16 @@ import com.gdxjam.components.ProjectileComponent;
 import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SpriteComponent;
 import com.gdxjam.components.SquadComponent;
-import com.gdxjam.components.UnitComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
 import com.gdxjam.components.TargetFinderComponent;
+import com.gdxjam.components.UnitComponent;
 import com.gdxjam.components.WeaponComponent;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.ecs.EntityCategory;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.utils.EntityFactory.PhysicsBuilder.FixtureBuilder;
-import com.sun.nio.file.ExtendedWatchEventModifier;
 
 /**
  * 
