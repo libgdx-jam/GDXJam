@@ -41,8 +41,8 @@ public class ResourceSystem extends IteratingSystem{
 	protected void processEntity (Entity entity, float deltaTime) {
 		ResourceComponent resourceComp = Components.RESOURCE.get(entity);
 		
-		if(resourceComp.value < resourceComp.capactiy.min){
-			modifyResource((int)resourceComp.capactiy.max);
+		if(resourceComp.value < resourceComp.capactiy.min()){
+			modifyResource((int)resourceComp.capactiy.max());
 			EntityUtils.removeEntity(entity);
 		}
 		

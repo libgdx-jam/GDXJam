@@ -31,7 +31,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 		initSystems();
 
 		addEntityListener(Family.all(SquadComponent.class).get(),
-				new SquadEntityListener(getSystem(GUISystem.class)));
+				new SquadEntityListener(getSystem(InputSystem.class)));
 		addEntityListener(Family.all(UnitComponent.class).get(),
 				new UnitEntityListener(this));
 		addEntityListener(Family.all(PhysicsComponent.class).get(),
@@ -56,16 +56,14 @@ public class EntityManager extends PooledEngine implements Disposable {
 
 
 		GUISystem guiSystem = new GUISystem();
+		InputSystem inputSystem = new InputSystem(guiSystem);
 
 		addSystem(new ResourceSystem(guiSystem));
-		addSystem(new SquadSystem(guiSystem));
+		addSystem(new SquadSystem(inputSystem));
 		addSystem(new WaveSystem(guiSystem));
 		//addSystem(new DecaySystem());
 
-		InputSystem input = new InputSystem();
-		addSystem(input);
-		Gdx.input.setInputProcessor(input.getMultiplexer());
-
+		addSystem(inputSystem);
 		// Rendering happens last
 		addSystem(new EntityRenderSystem());
 //		addSystem(new ParticleSystem());

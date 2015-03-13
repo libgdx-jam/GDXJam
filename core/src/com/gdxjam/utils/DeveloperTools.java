@@ -17,5 +17,10 @@ public class DeveloperTools {
 		
 		WaveSystem.spawnSquad(pos, Constants.enemyFaction, 1);
 	}
+	
+	public static void startWaveNow(){
+		PooledEngine engine = GameManager.getEngine();
+		engine.getSystem(WaveSystem.class).setTimeToNextWave(0);
+	}
 
 }

@@ -3,31 +3,28 @@ package com.gdxjam.ecs;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.gdxjam.components.FactionComponent;
-import com.gdxjam.systems.GUISystem;
+import com.gdxjam.systems.InputSystem;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityUtils;
 
 public class SquadEntityListener implements EntityListener{
 	
-	private GUISystem guiSystem;
+	private InputSystem inputSystem;
 	
-	public SquadEntityListener (GUISystem guiSystem) {
-		this.guiSystem = guiSystem;
+	public SquadEntityListener (InputSystem inputSystem) {
+		this.inputSystem = inputSystem;
 	}
 
 	@Override
 	public void entityAdded (Entity entity) {
 		FactionComponent factionComp = Components.FACTION.get(entity);
-		if(factionComp.getFaction() == Constants.playerFaction)
-			guiSystem.addSquad(entity);
 	}
 
 	@Override
 	public void entityRemoved (Entity entity) {
 		EntityUtils.clearTarget(entity);
 		if(Components.FACTION.get(entity).getFaction() == Constants.playerFaction)
-			guiSystem.removeSquad(entity);
-		
+			inputSystem.removeSquad(entity);
 	}
 
 }

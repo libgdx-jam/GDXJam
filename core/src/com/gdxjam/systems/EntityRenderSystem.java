@@ -7,14 +7,12 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
@@ -36,6 +34,7 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 	private int currentLayer = -10;
 	
 	//Used for log / debug
+	private static boolean cullFustrum = false;
 	private static int drawnEntities = 0;
 
 	public EntityRenderSystem () {
@@ -96,9 +95,10 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 		}
 		
 		// Only renderer if the sprite is in the fustrum of the camera
-		if (camera.frustum.boundsInFrustum(sprite.getX(), sprite.getY(), 0.0f, sprite.getWidth() * 0.5f,
-			sprite.getHeight() * 0.5f, 0.0f)) {
-			drawnEntities++;
+		if (cullFustrum && !camera.frustum.boundsInFrustum(sprite.getX(), sprite.getY(), 0.0f, sprite.getWidth() * 0.5f,
+			sprite.getHeight() * 0.5f, 0.0f)){
+			return;
+		}
 			
 		if (Components.PARALAX.has(entity)) {
 			ParalaxComponent paralaxComp = Components.PARALAX.get(entity);
@@ -142,8 +142,8 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 		
 		if(Components.RESOURCE.has(entity)){
 			ResourceComponent resourceComp = Components.RESOURCE.get(entity);
-			if(resourceComp.value < resourceComp.capactiy.max){
-				float percent = (float)resourceComp.value / (float)resourceComp.capactiy.max;
+			if(resourceComp.value < resourceComp.capactiy.max()){
+				float percent = (float)resourceComp.value / (float)resourceComp.capactiy.max();
 				shapeRenderer.setColor(Color.ORANGE);
 				shapeRenderer.rect(sprite.getX(), sprite.getY() + sprite.getHeight(), sprite.getWidth(), healthBarHeight);
 				shapeRenderer.setColor(Color.BLUE);
@@ -152,7 +152,7 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 		}
 		
 		
-		}
+		
 	}
 
 	@Override

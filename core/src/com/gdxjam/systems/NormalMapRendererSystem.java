@@ -181,14 +181,14 @@ public class NormalMapRendererSystem extends EntitySystem implements Disposable 
 		// cam = engine.getSystem(CameraSystem.class).getCamera();
 		cam.setToOrtho(false);
 
-		engine.getSystem(InputSystem.class).add(new InputAdapter() {
-			public boolean scrolled(int delta) {
-				// LibGDX mouse wheel is inverted compared to lwjgl-basics
-				LIGHT_POS.z = Math.max(0f, LIGHT_POS.z - (delta * 0.005f));
-				System.out.println("New light Z: " + LIGHT_POS.z);
-				return true;
-			}
-		});
+//		engine.getSystem(InputSystem.class).add(new InputAdapter() {
+//			public boolean scrolled(int delta) {
+//				// LibGDX mouse wheel is inverted compared to lwjgl-basics
+//				LIGHT_POS.z = Math.max(0f, LIGHT_POS.z - (delta * 0.005f));
+//				System.out.println("New light Z: " + LIGHT_POS.z);
+//				return true;
+//			}
+//		});
 
 		resize(100, 100);
 

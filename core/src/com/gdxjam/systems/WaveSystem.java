@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
-import com.gdxjam.components.UnitComponent;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.utils.Constants;
@@ -26,8 +25,6 @@ public class WaveSystem extends EntitySystem{
 		
 		initalizeNextWave();
 	}
-	
-	
 	
 	public static void addSpawnPoint(Vector2 spawnPoint){
 		spawnPoints.add(spawnPoint);
@@ -81,6 +78,10 @@ public class WaveSystem extends EntitySystem{
 		};
 		
 		Timer.schedule(task, 0.0f, wave.spawnInterval, wave.squadCount);
+	}
+	
+	public void setTimeToNextWave(float time){
+		this.nextWaveTime = time;
 	}
 	
 	@Override
