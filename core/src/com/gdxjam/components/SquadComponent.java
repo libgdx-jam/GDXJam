@@ -26,12 +26,12 @@ import com.gdxjam.utils.Location2;
 
 public class SquadComponent extends Component implements Poolable {
 
-	public enum PatternType {
+	public enum FormationPatternType {
 		Line, Column, Square, Ring, V, Wedge;
 	}
 
 	public static final float PATTERN_SPACING = Constants.unitRadius * 0.25f;
-	public static final PatternType DEFAULT_PATTERN = PatternType.V;
+	public static final FormationPatternType DEFAULT_PATTERN = FormationPatternType.V;
 	public static final SquadState DEFAULT_STATE = SquadState.COMBAT_IDLE;
 
 	// So many arrays
@@ -73,12 +73,12 @@ public class SquadComponent extends Component implements Poolable {
 		formation.removeMember(Components.UNIT.get(entity));
 	}
 
-	public void setFormationPattern (PatternType pattern) {
+	public void setFormationPattern (FormationPatternType pattern) {
 		FormationPattern<Vector2> formationPattern = getFormationPattern(pattern);
 		formation.changePattern(formationPattern);
 	}
 
-	public FormationPattern<Vector2> getFormationPattern (PatternType pattern) {
+	public FormationPattern<Vector2> getFormationPattern (FormationPatternType pattern) {
 		switch (pattern) {
 		case Line:
 			return new LineFormationPattern(Constants.unitRadius + PATTERN_SPACING);

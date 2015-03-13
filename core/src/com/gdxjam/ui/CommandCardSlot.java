@@ -13,7 +13,10 @@ public class CommandCardSlot extends Table{
 	private CommandCard card;
 	private boolean selected;
 	
-	public CommandCardSlot(Skin skin){
+	public int index;
+	
+	public CommandCardSlot(int index,Skin skin){
+		this.index = index;
 		Drawable background = skin.getDrawable("default-round");
 		setBackground(background);
 		setTouchable(Touchable.enabled);

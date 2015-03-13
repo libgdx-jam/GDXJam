@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.gdxjam.Assets;
-import com.gdxjam.components.SquadComponent.PatternType;
+import com.gdxjam.components.SquadComponent.FormationPatternType;
 import com.gdxjam.ecs.Components;
 
 public class FormationPatternTable extends Table{
@@ -25,14 +25,14 @@ public class FormationPatternTable extends Table{
 		buttonGroup.setMaxCheckCount(1);
 		buttonGroup.setMinCheckCount(1);
 		
-		for(int i = 0; i < PatternType.values().length; i++){
-			final ImageButton button = createFormationButton(PatternType.values()[i], skin);
+		for(int i = 0; i < FormationPatternType.values().length; i++){
+			final ImageButton button = createFormationButton(FormationPatternType.values()[i], skin);
 			button.addListener(new ChangeListener() {
 			
 				@Override
 				public void changed (ChangeEvent event, Actor actor) {
 					if(button.isChecked()){
-						Components.SQUAD.get(squad).setFormationPattern((PatternType) button.getUserObject());
+						Components.SQUAD.get(squad).setFormationPattern((FormationPatternType) button.getUserObject());
 					}
 					
 				}
@@ -44,7 +44,15 @@ public class FormationPatternTable extends Table{
 		}
 	}
 	
-	private ImageButton createFormationButton(PatternType pattern, Skin skin){
+	public void setSquad(){
+		
+	}
+	
+	public void updateFormationPattern(FormationPatternType pattern){
+		buttonGroup.getButtons().get(pattern.ordinal()).setChecked(true);
+	}
+	
+	private ImageButton createFormationButton(FormationPatternType pattern, Skin skin){
 		ImageButtonStyle style = new ImageButtonStyle(skin.get("default", ButtonStyle.class));
 		
 		Sprite sprite = new Sprite(Assets.ui.formationIcons.get(pattern.ordinal()));

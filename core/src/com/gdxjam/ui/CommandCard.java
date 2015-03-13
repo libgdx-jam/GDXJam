@@ -10,12 +10,17 @@ public class CommandCard extends Table{
 	protected final static Color selectedColor = new Color(240.0f / 255.0f, 230.0f / 255.0f, 140.0f / 255.0f, 0.85f);
 	protected final static Color defaultColor = new Color(0.66f, 0.66f, 0.66f, 0.85f);
 	
+	protected Skin skin;
 	protected boolean selected = false;
+	public int index;
 
-	public CommandCard(Skin skin){
+	public CommandCard(int index, Skin skin){
 		setBackground(skin.getDrawable("default-window"));
 		setColor(defaultColor);
 		setTouchable(Touchable.enabled);
+		
+		this.index = index;
+		this.skin = skin;
 	}
 	
 	public void setSelected(boolean selected){

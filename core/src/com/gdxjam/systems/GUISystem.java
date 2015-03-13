@@ -16,9 +16,9 @@ import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.IntMap.Entry;
 import com.gdxjam.Assets;
 import com.gdxjam.ai.state.Messages;
+import com.gdxjam.components.SquadComponent.FormationPatternType;
 import com.gdxjam.ui.CommandCardContainer;
 import com.gdxjam.ui.WaveTimerTable;
-import com.gdxjam.utils.Constants;
 
 public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 
@@ -27,16 +27,30 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 
 	private IntMap<Entity> squads = new IntMap<Entity>();
 
-	private CommandCardContainer squadManagment;
+	private CommandCardContainer commandCardContainer;
 	private WaveTimerTable waveTimerTable;
 	private Label resourceLabel;
+	
+	private InputSystem inputSystem;
 
 	public GUISystem () {
 		this.stage = new Stage();
 		this.skin = Assets.skin;
-
-		initGUI();
 		MessageManager.getInstance().addListener(this, Messages.SQUAD_SELECTED);
+		initGUI();
+	}
+	
+	@Override
+	public void addedToEngine (Engine engine) {
+		super.addedToEngine(engine);
+		this.inputSystem = engine.getSystem(InputSystem.class);
+		
+		commandCardContainer = new CommandCardContainer(inputSystem, skin, stage);
+		Table squadManagmentContainer = new Table();
+		squadManagmentContainer.setFillParent(true);
+		squadManagmentContainer.add(commandCardContainer).padTop(30);
+		squadManagmentContainer.center().bottom();
+		stage.addActor(squadManagmentContainer);
 	}
 
 	public void initGUI () {
@@ -48,14 +62,6 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 
 		waveTimerTable = new WaveTimerTable(skin);
 		waveTimerTable.right();
-
-		squadManagment = new CommandCardContainer(skin, stage);
-
-		Table squadManagmentContainer = new Table();
-		squadManagmentContainer.setFillParent(true);
-		squadManagmentContainer.add(squadManagment).padTop(30);
-		squadManagmentContainer.center().bottom();
-		stage.addActor(squadManagmentContainer);
 
 		Table rightTable = new Table();
 		rightTable.setFillParent(true);
@@ -73,33 +79,17 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 
 	}
 
-	@Override
-	public void addedToEngine (Engine engine) {
-		super.addedToEngine(engine);
-	}
 
-	public void addSquad (Entity squad) {
-		for (int i = 0; i < Constants.maxSquads; i++) {
-			boolean valid = true;
-			if (squads.containsKey(i)) {
-				if (squads.get(i) != null) {
-					valid = false;
-				}
-			}
-			if (valid) {
-				squads.put(i, squad);
-				squadManagment.addSquad(squad, i);
-				break;
-			}
-		}
 
+	public void addSquad (Entity squad, int index) {
+		commandCardContainer.addSquad(squad, index);
 	}
 
 	public void removeSquad (Entity squad) {
 		for (Entry<Entity> entry : squads) {
 			if (entry.value == squad) {
 				squads.remove(entry.key);
-				squadManagment.removeSquad(squad, entry.key);
+				commandCardContainer.removeSquad(squad, entry.key);
 				return;
 			}
 		}
@@ -109,9 +99,13 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 	public void updateSquad (Entity squad) {
 		for (Entry<Entity> entry : squads) {
 			if (entry.value == squad) {
-				squadManagment.updateSquadTable(entry.key);
+				commandCardContainer.updateSquadTable(entry.key);
 			}
 		}
+	}
+	
+	public void setSelected(int index, boolean selected){
+		commandCardContainer.setSelected(index, selected);
 	}
 
 	public void resize (int screenWidth, int screenHeight) {
@@ -124,6 +118,10 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 
 	public void updateResource (int amount) {
 		resourceLabel.setText("Resources: " + amount);
+	}
+	
+	public void updateFormationPattern(int index, FormationPatternType pattern){
+		commandCardContainer.updateFormationPattern(index, pattern);
 	}
 
 	@Override
@@ -138,10 +136,6 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 		return stage;
 	}
 
-// public HotkeyTable getHotkeyTable() {
-// return hotkeyTable;
-// }
-
 	@Override
 	public void dispose () {
 		stage.dispose();
@@ -151,8 +145,10 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 	public boolean handleMessage(Telegram msg) {
 		switch(msg.message){
 		case Messages.SQUAD_SELECTED:
-			Entity squad = (Entity)msg.extraInfo;
+			int index = (Integer)msg.extraInfo;
+			setSelected(index, true);
 			return true;
+			
 		default:
 			return false;
 		}

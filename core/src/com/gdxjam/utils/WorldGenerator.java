@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.gdxjam.Assets;
+import com.gdxjam.GameManager;
+import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.systems.WaveSystem;
 
 /** Generates world bounds Generates the game world by creating an asteroid field using fBm applied OpenSimplexNoise Populates the
@@ -70,7 +72,8 @@ public class WorldGenerator {
 		for (int i = 0; i < param.initalSquads; i++) {
 			Vector2 angleVec = new Vector2(distance, 0.0f).setAngle(initalAngle + seperationAngle * i);
 			Vector2 position = center.cpy().add(angleVec);
-			WaveSystem.spawnSquad(position, Constants.playerFaction, param.squadMembers);
+//			WaveSystem.spawnSquad(position, Constants.playerFaction, param.squadMembers);
+			GameManager.getEngine().getSystem(SquadSystem.class).createPlayerSquad(position, Constants.playerFaction, param.squadMembers);
 		}
 	}
 

@@ -6,35 +6,52 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.gdxjam.GameManager;
 import com.gdxjam.ai.state.SquadState;
 import com.gdxjam.ai.state.SquadTatics;
 import com.gdxjam.components.SquadComponent;
-import com.gdxjam.components.SquadComponent.PatternType;
+import com.gdxjam.components.SquadComponent.FormationPatternType;
 import com.gdxjam.ecs.Components;
+import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.EntityFactory;
 
 public class SquadCommandCard extends CommandCard{
 
 	private SelectBox<SquadTatics> tatics;
-	private SelectBox<PatternType> formationPatternSelect;
-	private final Entity squad;
+	private Entity squad;
 	private final int index;
 	private BitmapFontCache squadText;
 	
-
+	private FormationPatternTable formationTable;
+	
 	public SquadCommandCard(final Entity squad, int index, Skin skin){
-		super(skin);
+		super(index, skin);
 		
 		this.squad = squad;
 		this.index = index;
 
 		squadText = new BitmapFontCache(skin.getFont("default-font"));
+		formationTable = new FormationPatternTable(squad, skin);
+		
+		setSquad(squad);
+	}
+	
+	public void setSquad(final Entity squad){
+		this.squad = squad;
+		
+		if(squad == null){
+			setEmpty();
+			return;
+		}
+
 		squadText.setMultiLineText("Squad " + (index + 1), 0, 0);
 		squadText.setColor(Color.WHITE);
 
@@ -59,19 +76,6 @@ public class SquadCommandCard extends CommandCard{
 			}
 		});
 		
-//		formationPatternSelect = new SelectBox<PatternType>(skin);
-//		formationPatternSelect.setItems(PatternType.values());
-//		formationPatternSelect.setSelected(SquadComponent.DEFAULT_PATTERN);
-//		formationPatternSelect.addListener(new ChangeListener() {
-//			
-//			@Override
-//			public void changed (ChangeEvent event, Actor actor) {
-//				Components.SQUAD.get(squad).setFormationPattern(formationPatternSelect.getSelected());
-//			}
-//		});
-		
-		FormationPatternTable formationTable = new FormationPatternTable(squad, skin);
-		
 		TextButton addMemberButton = new TextButton(" + ", skin);
 		addMemberButton.addListener(new ChangeListener(){
 			@Override
@@ -84,6 +88,23 @@ public class SquadCommandCard extends CommandCard{
 		add(addMemberButton);
 		row();
 		add(formationTable).colspan(2);
+	}
+	
+	public void setEmpty(){
+		reset();
+		TextButton button = new TextButton("Add new SquadButton!", skin);
+		button.addListener(new ChangeListener() {
+			
+			@Override
+			public void changed (ChangeEvent event, Actor actor) {
+				GameManager.getEngine().getSystem(SquadSystem.class).createPlayerSquad(index, new Vector2(128, 128), Constants.playerFaction, 1);
+			}
+		});
+		add(button);
+	}
+	
+	public void updateFormationPattern(FormationPatternType pattern){
+		formationTable.updateFormationPattern(pattern);
 	}
 	
 

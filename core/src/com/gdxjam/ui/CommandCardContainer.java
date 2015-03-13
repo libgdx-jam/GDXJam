@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
+import com.gdxjam.components.SquadComponent.FormationPatternType;
+import com.gdxjam.systems.InputSystem;
 import com.gdxjam.utils.Constants;
 
 public class CommandCardContainer extends Table {
@@ -24,15 +26,17 @@ public class CommandCardContainer extends Table {
 	private static final int slotHeight = 100;
 
 	private DragAndDrop dragAndDrop;
+	private InputSystem inputSystem;
 
-	public CommandCardContainer (final Skin skin, Stage stage) {
+	public CommandCardContainer (final InputSystem inputSystem, final Skin skin, Stage stage) {
 		this.skin = skin;
-
+		this.inputSystem = inputSystem;
+		
 		slots = new Array<CommandCardSlot>(Constants.maxSquads);
 		dragAndDrop = new DragAndDrop();
 
 		for (int i = 0; i < Constants.maxSquads; i++) {
-			final CommandCardSlot slot = new CommandCardSlot(skin);
+			final CommandCardSlot slot = new CommandCardSlot(i, skin);
 			slots.add(slot);
 			add(slot).size(slotWidth, slotHeight);
 
@@ -48,6 +52,13 @@ public class CommandCardContainer extends Table {
 
 					slotA.setCard(cardA);
 					slotB.setCard(cardB);
+					cardA.index = slotB.index;
+					cardB.index = slotA.index;
+					
+					int indexA = slots.indexOf(slotA, true);
+					int indexB = slots.indexOf(slotB, true);
+					
+					inputSystem.swapSquadSlot(indexA, indexB);
 				}
 
 				@Override
@@ -58,7 +69,7 @@ public class CommandCardContainer extends Table {
 
 			dragAndDrop.addTarget(target);
 
-			final EmptyCommandCard card = new EmptyCommandCard(skin);
+			final SquadCommandCard card = new SquadCommandCard(null, i, skin);
 			slot.setCard(card);
 
 			Source source = new Source(card) {
@@ -104,9 +115,15 @@ public class CommandCardContainer extends Table {
 
 	}
 
-	public void updateSquadTable (int index) {
-
+	public void updateFormationPattern(int index, FormationPatternType pattern){
+		SquadCommandCard card = (SquadCommandCard)slots.get(index).getCard();
+		card.updateFormationPattern(pattern);
 	}
+	
+	public void updateSquadTable (int index) {
+		SquadCommandCard card = (SquadCommandCard)slots.get(index).getCard();
+	}
+	
 
 	public Entity setSelected (int index, boolean selected) {
 		SquadCommandCard card = (SquadCommandCard)slots.get(index).getCard();
