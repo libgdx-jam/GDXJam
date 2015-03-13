@@ -5,14 +5,13 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.GameManager;
 import com.gdxjam.ecs.EntityManager;
 import com.gdxjam.input.DesktopGestureListener;
-import com.gdxjam.input.DesktopInputProcessor;
 import com.gdxjam.input.DeveloperInputProcessor;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.GUISystem;
+import com.gdxjam.systems.InputSystem;
 import com.gdxjam.systems.PauseOverlay;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Constants.BUILD;
@@ -33,10 +32,9 @@ public class GameScreen extends AbstractScreen {
 		engine = GameManager.initEngine();
 		createWorld(256, 256);
 		pauseOverlay = new PauseOverlay();
-
-		multiplexer = new InputMultiplexer();
+		
+		multiplexer = engine.getSystem(InputSystem.class).getMultiplexer();
 		multiplexer.addProcessor(engine.getSystem(GUISystem.class).getStage());
-		multiplexer.addProcessor(new DesktopInputProcessor(engine));
 		multiplexer.addProcessor(new GestureDetector(
 				new DesktopGestureListener(engine)));
 		multiplexer.addProcessor(pauseOverlay.getStage());
@@ -44,8 +42,6 @@ public class GameScreen extends AbstractScreen {
 		if (Constants.build == BUILD.DEV) {
 			multiplexer.addProcessor(new DeveloperInputProcessor());
 		}
-
-		Gdx.input.setInputProcessor(multiplexer);
 
 	}
 

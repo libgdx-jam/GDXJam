@@ -4,29 +4,28 @@ package com.gdxjam.systems;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.IntMap.Entry;
 import com.gdxjam.Assets;
-import com.gdxjam.components.SquadComponent;
-import com.gdxjam.ecs.Components;
+import com.gdxjam.ai.state.Messages;
 import com.gdxjam.ui.CommandCardContainer;
 import com.gdxjam.ui.WaveTimerTable;
 import com.gdxjam.utils.Constants;
 
-public class GUISystem extends EntitySystem implements Disposable {
+public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 
 	private Stage stage;
 	private Skin skin;
 
 	private IntMap<Entity> squads = new IntMap<Entity>();
-	private Array<Entity> selectedSquads = new Array<Entity>();
 
 	private CommandCardContainer squadManagment;
 	private WaveTimerTable waveTimerTable;
@@ -37,6 +36,7 @@ public class GUISystem extends EntitySystem implements Disposable {
 		this.skin = Assets.skin;
 
 		initGUI();
+		MessageManager.getInstance().addListener(this, Messages.SQUAD_SELECTED);
 	}
 
 	public void initGUI () {
@@ -114,25 +114,6 @@ public class GUISystem extends EntitySystem implements Disposable {
 		}
 	}
 
-	public void setSelected (int index, boolean selected) {
-		Entity squad = squadManagment.setSelected(index, selected);
-		if(selected)
-			selectedSquads.add(squad);
-		else
-			selectedSquads.removeValue(squad, true);
-
-	}
-	
-	public void setTarget(Vector2 target){
-		
-	}
-
-	public void setAllSelected (boolean selected) {
-		for (Entry<Entity> entry : squads) {
-			setSelected(entry.key, selected);
-		}
-	}
-
 	public void resize (int screenWidth, int screenHeight) {
 		stage.getViewport().update(screenWidth, screenHeight);
 	}
@@ -164,6 +145,17 @@ public class GUISystem extends EntitySystem implements Disposable {
 	@Override
 	public void dispose () {
 		stage.dispose();
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		switch(msg.message){
+		case Messages.SQUAD_SELECTED:
+			Entity squad = (Entity)msg.extraInfo;
+			return true;
+		default:
+			return false;
+		}
 	}
 
 }

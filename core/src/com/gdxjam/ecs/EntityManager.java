@@ -62,9 +62,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 		addSystem(new WaveSystem(guiSystem));
 		//addSystem(new DecaySystem());
 
-		InputSystem input = new InputSystem();
-		addSystem(input);
-		Gdx.input.setInputProcessor(input.getMultiplexer());
+		addSystem(new InputSystem(guiSystem));
 
 		// Rendering happens last
 		addSystem(new EntityRenderSystem());
