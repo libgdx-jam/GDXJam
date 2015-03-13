@@ -19,12 +19,14 @@ import com.gdxjam.ecs.Components;
 public class FormationPatternTable extends Table{
 	
 	private ButtonGroup<ImageButton> buttonGroup;
+	private Skin skin;
 	
 	public FormationPatternTable (final Entity squad, Skin skin) {
+		this.skin = skin;
 		buttonGroup = new ButtonGroup<ImageButton>();
 		buttonGroup.setMaxCheckCount(1);
 		buttonGroup.setMinCheckCount(1);
-		
+	
 		for(int i = 0; i < FormationPatternType.values().length; i++){
 			final ImageButton button = createFormationButton(FormationPatternType.values()[i], skin);
 			button.addListener(new ChangeListener() {
@@ -38,16 +40,11 @@ public class FormationPatternTable extends Table{
 				}
 			});
 			
-			
 			add(button);
 			buttonGroup.add(button);
 		}
 	}
-	
-	public void setSquad(){
-		
-	}
-	
+
 	public void updateFormationPattern(FormationPatternType pattern){
 		buttonGroup.getButtons().get(pattern.ordinal()).setChecked(true);
 	}

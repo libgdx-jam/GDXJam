@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.gdxjam.GameManager;
 import com.gdxjam.ai.state.SquadState;
 import com.gdxjam.ai.state.SquadTatics;
@@ -27,19 +26,15 @@ public class SquadCommandCard extends CommandCard{
 
 	private SelectBox<SquadTatics> tatics;
 	private Entity squad;
-	private final int index;
 	private BitmapFontCache squadText;
 	
 	private FormationPatternTable formationTable;
 	
 	public SquadCommandCard(final Entity squad, int index, Skin skin){
 		super(index, skin);
-		
 		this.squad = squad;
-		this.index = index;
 
 		squadText = new BitmapFontCache(skin.getFont("default-font"));
-		formationTable = new FormationPatternTable(squad, skin);
 		
 		setSquad(squad);
 	}
@@ -52,6 +47,7 @@ public class SquadCommandCard extends CommandCard{
 			return;
 		}
 
+		int index = (Integer)getUserObject();
 		squadText.setMultiLineText("Squad " + (index + 1), 0, 0);
 		squadText.setColor(Color.WHITE);
 
@@ -76,6 +72,8 @@ public class SquadCommandCard extends CommandCard{
 			}
 		});
 		
+		formationTable = new FormationPatternTable(squad, skin);
+		
 		TextButton addMemberButton = new TextButton(" + ", skin);
 		addMemberButton.addListener(new ChangeListener(){
 			@Override
@@ -97,6 +95,7 @@ public class SquadCommandCard extends CommandCard{
 			
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
+				int index = (Integer)getUserObject();
 				GameManager.getEngine().getSystem(SquadSystem.class).createPlayerSquad(index, new Vector2(128, 128), Constants.playerFaction, 1);
 			}
 		});
@@ -114,6 +113,7 @@ public class SquadCommandCard extends CommandCard{
 	
 	public void update(){
 		SquadComponent squadComp = Components.SQUAD.get(squad);
+		int index = (Integer)getUserObject();
 		squadText.setMultiLineText("Squad " + (index + 1) + "   (" + squadComp.members.size + " / " + Constants.maxSquadMembers + ")", 0, 0);
 	}
 	

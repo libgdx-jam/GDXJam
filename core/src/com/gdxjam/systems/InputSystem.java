@@ -111,15 +111,23 @@ public class InputSystem extends EntitySystem implements InputProcessor {
 
 	public boolean removeSquad (Entity squad) {
 		int index = squadIndices.findKey(squad, true, -1);
+		
 		if (index >= 0) {
 			squadIndices.remove(index);
+			selectedIndices.removeValue(index, true);
+			
+			guiSystem.removeSquad(squad, index);
 			return true;
 		}
 		return false;
 	}
 
 	public void setSelected (int index, boolean selected) {
-		if (!squadIndices.containsKey(index)) return;
+		if (!squadIndices.containsKey(index)){
+			if(selectedIndices.contains(index, true))
+				selectedIndices.removeValue(index, true);
+			return;
+		}
 
 		if (selected)
 			selectedIndices.add(index);

@@ -4,14 +4,13 @@ package com.gdxjam.ui;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
 import com.gdxjam.components.SquadComponent.FormationPatternType;
 import com.gdxjam.systems.InputSystem;
 import com.gdxjam.utils.Constants;
@@ -20,7 +19,7 @@ public class CommandCardContainer extends Table {
 
 	private final Skin skin;
 
-	private Array<CommandCardSlot> slots;
+	private IntMap<CommandCardSlot> cardSlots = new IntMap<CommandCardSlot>();
 
 	private static final int slotWidth = 216;
 	private static final int slotHeight = 100;
@@ -31,13 +30,12 @@ public class CommandCardContainer extends Table {
 	public CommandCardContainer (final InputSystem inputSystem, final Skin skin, Stage stage) {
 		this.skin = skin;
 		this.inputSystem = inputSystem;
-		
-		slots = new Array<CommandCardSlot>(Constants.maxSquads);
+
 		dragAndDrop = new DragAndDrop();
 
 		for (int i = 0; i < Constants.maxSquads; i++) {
 			final CommandCardSlot slot = new CommandCardSlot(i, skin);
-			slots.add(slot);
+			cardSlots.put(i, slot);
 			add(slot).size(slotWidth, slotHeight);
 
 			Target target = new Target(slot) {
@@ -45,20 +43,15 @@ public class CommandCardContainer extends Table {
 				@Override
 				public void drop (Source source, Payload payload, float x, float y, int pointer) {
 					CommandCardSlot slotA = slot;
-					CommandCardSlot slotB = (CommandCardSlot)payload.getObject();
+					CommandCardSlot slotB = cardSlots.get((Integer)source.getActor().getUserObject());
 
 					CommandCard cardA = (CommandCard)source.getActor();
 					CommandCard cardB = (CommandCard)slotA.getUserObject();
 
 					slotA.setCard(cardA);
 					slotB.setCard(cardB);
-					cardA.index = slotB.index;
-					cardB.index = slotA.index;
-					
-					int indexA = slots.indexOf(slotA, true);
-					int indexB = slots.indexOf(slotB, true);
-					
-					inputSystem.swapSquadSlot(indexA, indexB);
+
+					inputSystem.swapSquadSlot(slotA.index, slotB.index);
 				}
 
 				@Override
@@ -69,34 +62,19 @@ public class CommandCardContainer extends Table {
 
 			dragAndDrop.addTarget(target);
 
-			final SquadCommandCard card = new SquadCommandCard(null, i, skin);
-			slot.setCard(card);
-
-			Source source = new Source(card) {
-
-				@Override
-				public Payload dragStart (InputEvent event, float x, float y, int pointer) {
-					Payload payload = new Payload();
-					payload.setObject(card.getUserObject());
-					payload.setDragActor(new Label("Test", skin));
-					return payload;
-				}
-			};
-
-			dragAndDrop.addSource(source);
-
+			addSquad(null, i);
 		}
 
 	}
 
 	public void addSquad (final Entity squad, final int index) {
-		final SquadCommandCard squadTable = new SquadCommandCard(squad, index, skin);
-		Source source = new Source(squadTable) {
+		final SquadCommandCard squadCard = new SquadCommandCard(squad, index, skin);
+		Source source = new Source(squadCard) {
 
 			@Override
 			public Payload dragStart (InputEvent event, float x, float y, int pointer) {
 				Payload payload = new Payload();
-				payload.setObject(squadTable.getUserObject());
+
 // payload.setDragActor(new Label("Test", skin));
 				SquadCommandCard card = new SquadCommandCard(squad, index, skin);
 				payload.setDragActor(card);
@@ -107,26 +85,26 @@ public class CommandCardContainer extends Table {
 
 		dragAndDrop.addSource(source);
 
-		slots.get(index).setCard(squadTable);
-
+		cardSlots.get(index).setCard(squadCard);
 	}
 
 	public void removeSquad (Entity squad, int index) {
-
+		SquadCommandCard card = (SquadCommandCard)cardSlots.get(index).getCard();
+		card.setSquad(null);
+		card.setSelected(false);
 	}
 
-	public void updateFormationPattern(int index, FormationPatternType pattern){
-		SquadCommandCard card = (SquadCommandCard)slots.get(index).getCard();
+	public void updateFormationPattern (int index, FormationPatternType pattern) {
+		SquadCommandCard card = (SquadCommandCard)cardSlots.get(index).getCard();
 		card.updateFormationPattern(pattern);
 	}
-	
+
 	public void updateSquadTable (int index) {
-		SquadCommandCard card = (SquadCommandCard)slots.get(index).getCard();
+		SquadCommandCard card = (SquadCommandCard)cardSlots.get(index).getCard();
 	}
-	
 
 	public Entity setSelected (int index, boolean selected) {
-		SquadCommandCard card = (SquadCommandCard)slots.get(index).getCard();
+		SquadCommandCard card = (SquadCommandCard)cardSlots.get(index).getCard();
 		card.setSelected(selected);
 		return card.getSquad();
 	}

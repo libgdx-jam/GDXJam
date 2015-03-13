@@ -11,5 +11,7 @@ public class Messages {
 	public static final int targetDestroyed = 4;
 	
 	public static final int SQUAD_SELECTED = 5;
+	
+	public static final int GUI_ALERT = 6;
 
 }

@@ -12,14 +12,12 @@ public class CommandCard extends Table{
 	
 	protected Skin skin;
 	protected boolean selected = false;
-	public int index;
-
 	public CommandCard(int index, Skin skin){
 		setBackground(skin.getDrawable("default-window"));
 		setColor(defaultColor);
 		setTouchable(Touchable.enabled);
 		
-		this.index = index;
+		setUserObject(index);
 		this.skin = skin;
 	}
 	

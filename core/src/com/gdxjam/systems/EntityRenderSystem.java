@@ -34,6 +34,7 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 	private int currentLayer = -10;
 	
 	//Used for log / debug
+	private static boolean cullFustrum = false;
 	private static int drawnEntities = 0;
 
 	public EntityRenderSystem () {
@@ -94,9 +95,10 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 		}
 		
 		// Only renderer if the sprite is in the fustrum of the camera
-		if (camera.frustum.boundsInFrustum(sprite.getX(), sprite.getY(), 0.0f, sprite.getWidth() * 0.5f,
-			sprite.getHeight() * 0.5f, 0.0f)) {
-			drawnEntities++;
+		if (cullFustrum && !camera.frustum.boundsInFrustum(sprite.getX(), sprite.getY(), 0.0f, sprite.getWidth() * 0.5f,
+			sprite.getHeight() * 0.5f, 0.0f)){
+			return;
+		}
 			
 		if (Components.PARALAX.has(entity)) {
 			ParalaxComponent paralaxComp = Components.PARALAX.get(entity);
@@ -150,7 +152,7 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 		}
 		
 		
-		}
+		
 	}
 
 	@Override

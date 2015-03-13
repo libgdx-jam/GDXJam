@@ -11,8 +11,6 @@ public class CommandCardSlot extends Table{
 	protected final static Color defaultColor = new Color(0.66f, 0.66f, 0.66f, 0.44f);
 	
 	private CommandCard card;
-	private boolean selected;
-	
 	public int index;
 	
 	public CommandCardSlot(int index,Skin skin){
@@ -30,8 +28,7 @@ public class CommandCardSlot extends Table{
 		add(card);
 		setUserObject(card);
 		
-		card.setSelected(selected);
-		card.setUserObject(this);
+		card.setUserObject(index);
 	}
 	
 	public CommandCard getCard(){
@@ -39,7 +36,6 @@ public class CommandCardSlot extends Table{
 	}
 	
 	public void setSelected(boolean selected){
-		this.selected = selected;
 		card.setSelected(selected);
 	}
 	

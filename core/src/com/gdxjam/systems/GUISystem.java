@@ -12,8 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.IntMap;
-import com.badlogic.gdx.utils.IntMap.Entry;
 import com.gdxjam.Assets;
 import com.gdxjam.ai.state.Messages;
 import com.gdxjam.components.SquadComponent.FormationPatternType;
@@ -24,8 +22,6 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 
 	private Stage stage;
 	private Skin skin;
-
-	private IntMap<Entity> squads = new IntMap<Entity>();
 
 	private CommandCardContainer commandCardContainer;
 	private WaveTimerTable waveTimerTable;
@@ -85,23 +81,12 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 		commandCardContainer.addSquad(squad, index);
 	}
 
-	public void removeSquad (Entity squad) {
-		for (Entry<Entity> entry : squads) {
-			if (entry.value == squad) {
-				squads.remove(entry.key);
-				commandCardContainer.removeSquad(squad, entry.key);
-				return;
-			}
-		}
-
+	public void removeSquad (Entity squad, int index) {
+		commandCardContainer.removeSquad(squad, index);
 	}
 
 	public void updateSquad (Entity squad) {
-		for (Entry<Entity> entry : squads) {
-			if (entry.value == squad) {
-				commandCardContainer.updateSquadTable(entry.key);
-			}
-		}
+
 	}
 	
 	public void setSelected(int index, boolean selected){
