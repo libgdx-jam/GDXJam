@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.gdxjam.GameManager;
 import com.gdxjam.ai.state.SquadState;
 import com.gdxjam.ai.state.SquadTatics;
+import com.gdxjam.ai.state.SquadTatics.Tatics;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadComponent.FormationPatternType;
 import com.gdxjam.ecs.Components;
@@ -24,7 +25,7 @@ import com.gdxjam.utils.EntityFactory;
 
 public class SquadCommandCard extends CommandCard{
 
-	private SelectBox<SquadTatics> tatics;
+	private SelectBox<Tatics> tatics;
 	private Entity squad;
 	private BitmapFontCache squadText;
 	
@@ -51,9 +52,9 @@ public class SquadCommandCard extends CommandCard{
 		squadText.setMultiLineText("Squad " + (index + 1), 0, 0);
 		squadText.setColor(Color.WHITE);
 
-		tatics = new SelectBox<SquadTatics>(skin);
-		tatics.setItems(SquadTatics.values());
-		tatics.setSelected(SquadTatics.COMBAT);
+		tatics = new SelectBox<Tatics>(skin);
+		tatics.setItems(Tatics.values());
+		tatics.setSelected(Tatics.COMBAT);
 		tatics.addListener(new ChangeListener() {
 			
 			@Override
