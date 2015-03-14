@@ -213,7 +213,7 @@ public enum UnitState implements State<Entity> {
 				}
 
 				// If were facing the angle between us and our target
-				if (MathUtils.isEqual(orientation, angle, MathUtils.PI / 2)) {
+				if (true /**MathUtils.isEqual(orientation, angle, (MathUtils.PI / 4)) */) {
 
 					// Set the position of the projectile we will fire
 					float radius = steerable.getBoundingRadius();
@@ -229,7 +229,7 @@ public enum UnitState implements State<Entity> {
 					Faction faction = Components.FACTION.get(entity).getFaction();
 					EntityFactory.createProjectile(position, velocity, weaponComp.projectileRadius, faction, (int)weaponComp.damage);
 
-					weaponComp.cooldown += weaponComp.attackSpeed; // Increase our cooldown
+					weaponComp.cooldown = weaponComp.attackSpeed; // Set the cooldown to the attack speed
 				}
 			}
 

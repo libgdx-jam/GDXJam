@@ -4,8 +4,10 @@ package com.gdxjam.ai.state;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
 import com.badlogic.gdx.ai.steer.behaviors.Evade;
 import com.badlogic.gdx.ai.steer.behaviors.Pursue;
+import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SteerableComponent;
@@ -21,9 +23,20 @@ public enum AICombatState implements State<Entity> {
 			Entity targetSquad = Components.TARGET.get(entity).getTarget();
 			SteerableComponent targetSteerable = Components.STEERABLE.get(targetSquad);
 
-			Pursue<Vector2> pursueSB = new Pursue<Vector2>(steerable, targetSteerable).setMaxPredictionTime(0.1f);
+			Wander<Vector2> wanderSB = new Wander<Vector2>(steerable)
+				.setAlignTolerance(0.1f)
+				.setWanderOffset(2.5f)
+				.setWanderOrientation(0)
+				.setWanderRate(2.5f);
+			
+			Pursue<Vector2> pursueSB = new Pursue<Vector2>(steerable, targetSteerable)
+				.setMaxPredictionTime(0.1f);
+			
+			BlendedSteering<Vector2> blendSB = new BlendedSteering<Vector2>(steerable);
+			blendSB.add(wanderSB, 0.8f);
+			blendSB.add(pursueSB, 1.0f);
 
-			Components.STEERING_BEHAVIOR.get(entity).setBehavior(pursueSB);
+			Components.STEERING_BEHAVIOR.get(entity).setBehavior(blendSB);
 		}
 
 		@Override
@@ -42,7 +55,17 @@ public enum AICombatState implements State<Entity> {
 			SteerableComponent targetSteerable = Components.STEERABLE.get(targetSquad);
 			SteerableComponent steerable = Components.STEERABLE.get(entity);
 
+			Wander<Vector2> wanderSB = new Wander<Vector2>(steerable)
+				.setAlignTolerance(0.1f)
+				.setWanderOffset(2.5f)
+				.setWanderOrientation(0)
+				.setWanderRate(2.5f);
+			
 			Evade<Vector2> evadeSB = new Evade<Vector2>(steerable, targetSteerable, 0.1f);
+			
+			BlendedSteering<Vector2> blendSB = new BlendedSteering<Vector2>(steerable);
+			blendSB.add(wanderSB, 0.8f);
+			blendSB.add(evadeSB, 1.0f);
 
 			Components.STEERING_BEHAVIOR.get(entity).setBehavior(evadeSB);
 		}
