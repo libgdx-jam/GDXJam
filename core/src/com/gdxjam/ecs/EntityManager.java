@@ -11,7 +11,6 @@ import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.UnitComponent;
 import com.gdxjam.systems.BehaviorTreeSystem;
 import com.gdxjam.systems.CameraSystem;
-import com.gdxjam.systems.DecaySystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.HealthSystem;

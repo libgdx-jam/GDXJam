@@ -5,8 +5,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
-import com.badlogic.gdx.ai.steer.behaviors.Pursue;
-import com.badlogic.gdx.math.Vector2;
 import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SteerableComponent;
@@ -31,7 +29,7 @@ public enum SquadState implements State<Entity> {
 		}
 
 		@Override
-		public void exit (Entity entity) {
+		public void exit (Entity entity) {	
 			super.exit(entity);
 
 			SquadComponent squadComp = Components.SQUAD.get(entity);

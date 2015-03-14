@@ -61,7 +61,7 @@ public class WorldGenerator {
 
 	public void populateWorld () {
 		Vector2 center = new Vector2(width * 0.5f, height * 0.5f);
-		EntityFactory.createMothership(center);
+		GameManager.getEngine().getSystem(SquadSystem.class).spawnMothership(center);
 
 		float distance = 16.0f;
 
