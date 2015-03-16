@@ -42,7 +42,7 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 		this.stage = new Stage();
 		this.skin = Assets.skin;
 		
-		MessageManager.getInstance().addListener(this, TelegramMessage.SQUAD_SELECTED.ordinal());
+		MessageManager.getInstance().addListener(this, TelegramMessage.SQUAD_INPUT_SELECTED.ordinal());
 		MessageManager.getInstance().addListener(this, TelegramMessage.GUI_INSUFFICIENT_RESOURCES.ordinal());
 		
 		initGUI();
@@ -159,7 +159,7 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 		TelegramMessage telegramMsg = TelegramMessage.values()[msg.message];
 		switch (telegramMsg) {
 		
-		case SQUAD_SELECTED:
+		case SQUAD_INPUT_SELECTED:
 			int index = (Integer)msg.extraInfo;
 			setSelected(index, true);
 			return true;

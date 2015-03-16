@@ -50,7 +50,7 @@ public class EntityUtils {
 
 				if (Components.FSM.has(e)) {
 					FSMComponent fsm = Components.FSM.get(e);
-					MessageManager.getInstance().dispatchMessage(null, fsm, TelegramMessage.TARGET_DESTROYED.ordinal(), entity);
+					MessageManager.getInstance().dispatchMessage(null, fsm, TelegramMessage.UNIT_TARGET_DESTROYED.ordinal(), entity);
 				}
 			}
 

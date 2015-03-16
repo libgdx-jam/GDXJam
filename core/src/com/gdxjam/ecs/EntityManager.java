@@ -19,7 +19,7 @@ import com.gdxjam.systems.InputSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
-import com.gdxjam.systems.StateSystem;
+import com.gdxjam.systems.FSMSystem;
 import com.gdxjam.systems.SteeringSystem;
 import com.gdxjam.systems.WaveSystem;
 import com.gdxjam.utils.Constants;
@@ -49,7 +49,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 
 		// AI
 		addSystem(new SteeringSystem());
-		addSystem(new StateSystem());
+		addSystem(new FSMSystem());
 		addSystem(new BehaviorTreeSystem());
 
 		addSystem(new HealthSystem());

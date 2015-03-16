@@ -1,7 +1,6 @@
 package com.gdxjam.ui;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -14,9 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.gdxjam.GameManager;
-import com.gdxjam.ai.state.SquadCombatState;
-import com.gdxjam.ai.state.SquadState;
-import com.gdxjam.ai.state.SquadTatics;
 import com.gdxjam.ai.state.SquadTatics.Tatics;
 import com.gdxjam.ai.state.TelegramMessage;
 import com.gdxjam.components.SquadComponent;
@@ -24,7 +20,6 @@ import com.gdxjam.components.SquadComponent.FormationPatternType;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.systems.SquadSystem;
 import com.gdxjam.utils.Constants;
-import com.gdxjam.utils.EntityFactory;
 
 public class SquadCommandCard extends CommandCard{
 
@@ -62,17 +57,7 @@ public class SquadCommandCard extends CommandCard{
 			
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
-				State<Entity> state;
-				switch(tatics.getSelected()){
-				default:
-				case HARVEST:
-					state = SquadState.HARVEST_IDLE;
-					break;
-				case COMBAT:
-					state = SquadCombatState.IDLE;
-					break;
-				}
-				Components.FSM.get(squad).changeState(state);
+				Components.FSM.get(squad).changeState(tatics.getSelected().entryState);
 			}
 		});
 		

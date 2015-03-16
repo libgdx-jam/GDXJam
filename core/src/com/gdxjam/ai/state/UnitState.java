@@ -64,7 +64,8 @@ public enum UnitState implements State<Entity> {
 			// Request a target from our squad
 			Entity squad = Components.UNIT.get(entity).getSquad();
 			// This signals the squad to give us a new target
-			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), TelegramMessage.REQUEST_TARGET.ordinal(), entity);
+			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad),
+				TelegramMessage.UNIT_TARGET_REQUEST.ordinal(), entity);
 
 			// If we were delegated a target from our squad lets harvest. Otherwise follow the formation.
 			if (Components.TARGET.get(entity).getTarget() != null) Components.FSM.get(entity).changeState(HARVEST);
@@ -110,19 +111,22 @@ public enum UnitState implements State<Entity> {
 			super.update(entity);
 
 			// Get relevant components
-			Entity target = Components.TARGET.get(entity).getTarget();
+			Entity targetResource = Components.TARGET.get(entity).getTarget();
 			SteerableComponent steerable = Components.STEERABLE.get(entity);
-			SteerableComponent targetSteerable = Components.STEERABLE.get(target);
-
-			if (target == null) return; // This should never happen
-
-			if (targetSteerable == null) return; // or This
+			SteerableComponent targetSteerable = Components.STEERABLE.get(targetResource);
 
 			// If were in position harvest the resource
-			if (targetSteerable.getPosition().dst2(steerable.getPosition()) <= targetSteerable.getBoundingRadius()
+			if (targetSteerable.getPosition().dst(steerable.getPosition()) <= targetSteerable.getBoundingRadius()
 				+ Constants.unitRadius * 2.0f) {
-				ResourceComponent targetResourceComp = Components.RESOURCE.get(target);
+				ResourceComponent targetResourceComp = Components.RESOURCE.get(targetResource);
 				targetResourceComp.value -= Constants.resourceCollectionSpeed;
+
+				//Check if we have effectively destroyed our target
+				if(targetResourceComp.value <= 0){
+					Entity squad = Components.UNIT.get(entity).getSquad();
+					FSMComponent squadFSM = Components.FSM.get(squad);
+					MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.UNIT_TARGET_DESTROYED.ordinal(), targetResource);
+				}
 			}
 
 		}
@@ -132,10 +136,10 @@ public enum UnitState implements State<Entity> {
 			TelegramMessage telegramMsg = TelegramMessage.values()[telegram.message];
 			switch (telegramMsg) {
 
-			case TARGET_DESTROYED:
+			case UNIT_TARGET_DESTROYED:
 				Entity squad = Components.UNIT.get(entity).getSquad();
 				FSMComponent squadFSM = Components.FSM.get(squad);
-				MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.REQUEST_TARGET.ordinal(), telegram.extraInfo);
+				MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.UNIT_TARGET_REQUEST.ordinal(), entity);
 
 				Components.FSM.get(entity).changeState(HARVEST_IDLE);
 				return true;
@@ -154,7 +158,8 @@ public enum UnitState implements State<Entity> {
 
 			Entity squad = Components.UNIT.get(entity).getSquad();
 			// Sends a request to the squad for a new target
-			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), TelegramMessage.REQUEST_TARGET.ordinal(), entity);
+			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad),
+				TelegramMessage.UNIT_TARGET_REQUEST.ordinal(), entity);
 
 			// If we were delegated a target lets fight. Otherwise follow the formation
 			if (Components.TARGET.get(entity).getTarget() != null)
@@ -215,7 +220,8 @@ public enum UnitState implements State<Entity> {
 				}
 
 				// If were facing the angle between us and our target
-				if (true /**MathUtils.isEqual(orientation, angle, (MathUtils.PI / 4)) */) {
+				if (true /** MathUtils.isEqual(orientation, angle, (MathUtils.PI / 4)) */
+				) {
 
 					// Set the position of the projectile we will fire
 					float radius = steerable.getBoundingRadius();
@@ -243,10 +249,11 @@ public enum UnitState implements State<Entity> {
 			TelegramMessage telegramMsg = TelegramMessage.values()[telegram.message];
 			switch (telegramMsg) {
 
-			case TARGET_DESTROYED:
+			case UNIT_TARGET_DESTROYED:
 				Entity squad = Components.UNIT.get(entity).getSquad();
 				FSMComponent squadFSM = Components.FSM.get(squad);
-				MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.TARGET_DESTROYED.ordinal(), telegram.extraInfo);
+				MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.UNIT_TARGET_DESTROYED.ordinal(),
+					telegram.extraInfo);
 
 				Components.FSM.get(entity).changeState(COMBAT_IDLE);
 				return true;

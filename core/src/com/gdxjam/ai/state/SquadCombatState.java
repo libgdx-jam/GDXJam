@@ -21,6 +21,9 @@ public enum SquadCombatState implements State<Entity> {
 		public void enter (Entity entity) {
 			SquadComponent squadComp = Components.SQUAD.get(entity);
 
+			for (Entity member : squadComp.members) {
+				Components.FSM.get(member).changeState(UnitState.FORMATION);
+			}
 			// If we have targets available we don't need to be idle
 			if (squadComp.enemiesInRange.size > 0) {
 				Components.TARGET.get(entity).setTarget(squadComp.enemiesInRange.random());
@@ -40,7 +43,7 @@ public enum SquadCombatState implements State<Entity> {
 		@Override
 		public boolean onMessage (Entity entity, Telegram telegram) {
 			boolean handled = super.onMessage(entity, telegram);
-			if (telegram.message == TelegramMessage.FOUND_ENEMY_SQUAD.ordinal()) {
+			if (telegram.message == TelegramMessage.SQUAD_DISCOVERED_ENEMY.ordinal()) {
 				if (Components.FACTION.get(entity).getFaction() != Constants.playerFaction)
 					Components.FSM.get(entity).changeState(SquadCombatState.AI_AGRESSIVE);
 				else
@@ -159,7 +162,7 @@ public enum SquadCombatState implements State<Entity> {
 		switch (telegramMsg) {
 
 		/** If we have found a new target we need to assess its threat level to decide if we need to switch targets. */
-		case FOUND_ENEMY_SQUAD:
+		case SQUAD_DISCOVERED_ENEMY:
 			Entity target = Components.TARGET.get(entity).getTarget();
 
 			if (target == null) {
@@ -170,7 +173,7 @@ public enum SquadCombatState implements State<Entity> {
 			// TODO assess threat level of new targets
 			return true;
 
-		case REQUEST_TARGET: {
+		case UNIT_TARGET_REQUEST: {
 			Entity targetSquad = Components.TARGET.get(entity).getTarget();
 			SquadComponent targetSquadComp = Components.SQUAD.get(targetSquad);
 
@@ -184,7 +187,7 @@ public enum SquadCombatState implements State<Entity> {
 			return true;
 		}
 
-		case TARGET_DESTROYED:
+		case UNIT_TARGET_DESTROYED:
 			// Get the unit that was just destroyed, the squad it is in, and that squads component
 			Entity targetUnit = (Entity)telegram.extraInfo;
 			Entity targetSquad = Components.UNIT.get(targetUnit).getSquad();

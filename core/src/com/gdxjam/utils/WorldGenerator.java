@@ -224,9 +224,9 @@ public class WorldGenerator {
 						(col * colSpacing) + (randomSign() * param.asteroidScattering) * colSpacing);
 
 					float radius = param.asteroidRadius.percent(rng.nextFloat());
-// if (rng.nextFloat() <= param.asteroidExtraScalingChance) {
-// radius += param.asteroidRadius.max * 2;
-// }
+					 if (rng.nextFloat() <= param.asteroidExtraScalingChance) {
+						 radius += param.asteroidRadius.max() * 2;
+					 }
 					EntityFactory.createAsteroid(pos, radius);
 				}
 			}

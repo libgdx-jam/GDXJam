@@ -17,18 +17,18 @@ public class ConstructionSystem implements Telegraph {
 
 	public ConstructionSystem (ResourceSystem resourceSystem) {
 		this.resourceSystem = resourceSystem;
-		
-		//Add message listener
+
+		// Add message listener
 		MessageManager.getInstance().addListener(this, TelegramMessage.CONSTRUCT_UNIT_REQUEST.ordinal());
 	}
 
 	public void constructUnit (Entity squad) {
 		if (resourceSystem.resources >= unitCost) {
+			resourceSystem.resources -= unitCost;
 			EntityFactory.createUnit(squad);
 			MessageManager.getInstance().dispatchMessage(this, Components.FSM.get(squad),
 				TelegramMessage.CONSTRUCT_UNIT_CONFRIM.ordinal());
-		}
-		else{
+		} else {
 			MessageManager.getInstance().dispatchMessage(TelegramMessage.GUI_INSUFFICIENT_RESOURCES.ordinal());
 		}
 	}

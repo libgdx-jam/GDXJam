@@ -22,6 +22,7 @@ import com.gdxjam.utils.EntityUtils;
 
 public class GameContactListener implements ContactListener {
 
+	@SuppressWarnings("unused")
 	private static final String TAG = GameContactListener.class.getSimpleName();
 
 	@Override
@@ -67,13 +68,15 @@ public class GameContactListener implements ContactListener {
 			squadComp.modifyTargetsInRange(squadComp.enemiesInRange, target, !contactEnd);
 			// Sends a message to the squad that a new target has been identified.
 			if (!contactEnd) // if this is a beging contact
-				MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), TelegramMessage.FOUND_ENEMY_SQUAD.ordinal());
+				MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad),
+					TelegramMessage.SQUAD_DISCOVERED_ENEMY.ordinal());
 		} else if (Components.RESOURCE.has(target)) {
 			squadComp.modifyTargetsInRange(squadComp.resourcesInRange, target, !contactEnd);
 			sortResources(squad);
 			// Sends a message to the squad that a new resource has been identified.
 			if (!contactEnd) // if this is when the contact begins
-				MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), TelegramMessage.FOUND_RESOURCE.ordinal());
+				MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad),
+					TelegramMessage.SQUAD_DISCOVERED_RESOURCE.ordinal());
 		}
 	}
 
