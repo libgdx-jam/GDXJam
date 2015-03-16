@@ -8,6 +8,7 @@ import com.badlogic.gdx.ai.fma.FormationMotionModerator;
 import com.badlogic.gdx.ai.fma.FormationPattern;
 import com.badlogic.gdx.ai.fma.SoftRoleSlotAssignmentStrategy;
 import com.badlogic.gdx.ai.fma.patterns.OffensiveCircleFormationPattern;
+import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -19,7 +20,7 @@ import com.gdxjam.ai.formation.LineFormationPattern;
 import com.gdxjam.ai.formation.SquareFormationPattern;
 import com.gdxjam.ai.formation.VFormationPattern;
 import com.gdxjam.ai.formation.WedgeFormationPattern;
-import com.gdxjam.ai.state.SquadState;
+import com.gdxjam.ai.state.SquadCombatState;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Location2;
@@ -32,26 +33,38 @@ public class SquadComponent extends Component implements Poolable {
 
 	public static final float PATTERN_SPACING = Constants.unitRadius * 0.25f;
 	public static final FormationPatternType DEFAULT_PATTERN = FormationPatternType.V;
-	public static final SquadState DEFAULT_STATE = SquadState.COMBAT_IDLE;
+	public static final State<Entity> DEFAULT_STATE = SquadCombatState.IDLE;
 
-	// So many arrays
+	// Arrays used for determining available targets
+	public Array<Entity> enemiesInRange = new Array<Entity>();
+	public Array<Entity> resourcesInRange = new Array<Entity>();
+	public Array<Entity> friendliesInRange = new Array<Entity>();
+
+	// Steerable group behavior group steering arrays
+	// Steering behaviors use these for group separation / collision avoidance
+	public Array<Steerable<Vector2>> resourceAgents = new Array<Steerable<Vector2>>();
+	public Array<Steerable<Vector2>> friendlyAgents = new Array<Steerable<Vector2>>();
+	
+	//Array for formation API and ashley entity reference
 	public Array<Entity> members = new Array<Entity>();
-	public Array<SteerableComponent> memberAgents = new Array<SteerableComponent>();
-	public Array<Entity> enemiesInRange;
-	public Array<Entity> resourcesInRange;
-	public Array<Entity> friendliesInRange;
-	// TODO: remove TargetFinder and use these arrays... mabye
+	public Array<Steerable<Vector2>> memberAgents = new Array<Steerable<Vector2>>();
 
 	// Formation
 	public Formation<Vector2> formation;
 	public FormationMotionModerator<Vector2> moderator;
-
 	public Location2 targetLocation = new Location2();
-
 
 	/** Can only be created by PooledEngine */
 	private SquadComponent () {
 		// private constructor
+	}
+
+	public void modifyTargetsInRange (Array<Entity> targetArray, Entity entity, boolean foundTarget) {
+		if (targetArray.contains(entity, true)) {
+			if (!foundTarget) targetArray.removeValue(entity, true);
+		} else if (foundTarget) {
+			targetArray.add(entity);
+		}
 	}
 
 	public SquadComponent init (Steerable<Vector2> steerable) {

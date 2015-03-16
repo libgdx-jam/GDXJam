@@ -11,6 +11,7 @@ import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.UnitComponent;
 import com.gdxjam.systems.BehaviorTreeSystem;
 import com.gdxjam.systems.CameraSystem;
+import com.gdxjam.systems.ConstructionSystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.HealthSystem;
@@ -57,7 +58,10 @@ public class EntityManager extends PooledEngine implements Disposable {
 		GUISystem guiSystem = new GUISystem();
 		InputSystem inputSystem = new InputSystem(guiSystem);
 
-		addSystem(new ResourceSystem(guiSystem));
+		ResourceSystem resourceSystem = new ResourceSystem(guiSystem);
+		addSystem(resourceSystem);
+		
+		ConstructionSystem constructSystem = new ConstructionSystem(resourceSystem);
 		addSystem(new SquadSystem(inputSystem));
 		addSystem(new WaveSystem(guiSystem));
 		//addSystem(new DecaySystem());

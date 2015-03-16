@@ -1,23 +1,16 @@
 
 package com.gdxjam.utils;
 
-import sun.org.mozilla.javascript.internal.Token.CommentType;
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.gdxjam.ai.state.Messages;
+import com.gdxjam.ai.state.TelegramMessage;
 import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.FactionComponent.Faction;
-import com.gdxjam.components.SquadComponent;
-import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.TargetComponent;
-import com.gdxjam.components.WeaponComponent;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.systems.GUISystem;
 
@@ -57,7 +50,7 @@ public class EntityUtils {
 
 				if (Components.FSM.has(e)) {
 					FSMComponent fsm = Components.FSM.get(e);
-					MessageManager.getInstance().dispatchMessage(null, fsm, Messages.targetDestroyed, entity);
+					MessageManager.getInstance().dispatchMessage(null, fsm, TelegramMessage.TARGET_DESTROYED.ordinal(), entity);
 				}
 			}
 

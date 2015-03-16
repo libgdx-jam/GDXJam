@@ -2,6 +2,7 @@ package com.gdxjam.ui;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.State;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
@@ -13,9 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.gdxjam.GameManager;
+import com.gdxjam.ai.state.SquadCombatState;
 import com.gdxjam.ai.state.SquadState;
 import com.gdxjam.ai.state.SquadTatics;
 import com.gdxjam.ai.state.SquadTatics.Tatics;
+import com.gdxjam.ai.state.TelegramMessage;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SquadComponent.FormationPatternType;
 import com.gdxjam.ecs.Components;
@@ -66,7 +69,7 @@ public class SquadCommandCard extends CommandCard{
 					state = SquadState.HARVEST_IDLE;
 					break;
 				case COMBAT:
-					state = SquadState.COMBAT_IDLE;
+					state = SquadCombatState.IDLE;
 					break;
 				}
 				Components.FSM.get(squad).changeState(state);
@@ -79,7 +82,7 @@ public class SquadCommandCard extends CommandCard{
 		addMemberButton.addListener(new ChangeListener(){
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
-				EntityFactory.createUnit(squad);
+				MessageManager.getInstance().dispatchMessage(TelegramMessage.CONSTRUCT_UNIT_REQUEST.ordinal(), squad);
 			}
 		});
 		

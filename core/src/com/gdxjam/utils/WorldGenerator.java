@@ -249,7 +249,7 @@ public class WorldGenerator {
 		public float spokeWidth = 25;
 		public float spokeScattering = 30;
 
-		public float asteroidDensity = 0.4f;
+		public float asteroidDensity = 0.2f;
 		public Range asteroidRadius = new Range(0.25f, 0.65f);
 		public float asteroidScattering = 0.25f;
 		public float asteroidExtraScalingChance = 0.02f;

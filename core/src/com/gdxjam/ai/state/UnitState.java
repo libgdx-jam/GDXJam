@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
 import com.badlogic.gdx.ai.steer.behaviors.CollisionAvoidance;
@@ -18,10 +19,10 @@ import com.badlogic.gdx.utils.Array;
 import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.ResourceComponent;
+import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
-import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.components.WeaponComponent;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.ecs.EntityCategory;
@@ -63,7 +64,7 @@ public enum UnitState implements State<Entity> {
 			// Request a target from our squad
 			Entity squad = Components.UNIT.get(entity).getSquad();
 			// This signals the squad to give us a new target
-			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.requestTarget, entity);
+			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), TelegramMessage.REQUEST_TARGET.ordinal(), entity);
 
 			// If we were delegated a target from our squad lets harvest. Otherwise follow the formation.
 			if (Components.TARGET.get(entity).getTarget() != null) Components.FSM.get(entity).changeState(HARVEST);
@@ -80,7 +81,7 @@ public enum UnitState implements State<Entity> {
 			SteerableComponent steerable = Components.STEERABLE.get(entity);
 			SteerableComponent targetSteerable = Components.STEERABLE.get(target);
 			Entity squad = Components.UNIT.get(entity).getSquad();
-			TargetFinderComponent targetFinderComp = Components.TARGET_FINDER.get(squad);
+			SquadComponent squadComp = Components.SQUAD.get(squad);
 
 			// Steering behavior
 			Arrive<Vector2> arrive = new Arrive<Vector2>(steerable).setTarget(targetSteerable).setTimeToTarget(0.01f)
@@ -89,8 +90,8 @@ public enum UnitState implements State<Entity> {
 			Face<Vector2> faceSB = new Face<Vector2>(steerable).setTarget(targetSteerable).setAlignTolerance(0.001f)
 				.setTimeToTarget(0.001f).setDecelerationRadius(2.0f);
 
-			Array<SteerableComponent> collisionAgents = new Array<SteerableComponent>();
-			collisionAgents.addAll(targetFinderComp.resourceAgents);
+			Array<Steerable<Vector2>> collisionAgents = new Array<Steerable<Vector2>>();
+			collisionAgents.addAll(squadComp.resourceAgents);
 			collisionAgents.addAll(Components.SQUAD.get(squad).memberAgents);
 
 			RadiusProximity<Vector2> radiusProximity = new RadiusProximity<Vector2>(steerable, collisionAgents, 0.1f);
@@ -128,12 +129,13 @@ public enum UnitState implements State<Entity> {
 
 		@Override
 		public boolean onMessage (Entity entity, Telegram telegram) {
-			switch (telegram.message) {
+			TelegramMessage telegramMsg = TelegramMessage.values()[telegram.message];
+			switch (telegramMsg) {
 
-			case Messages.targetDestroyed:
+			case TARGET_DESTROYED:
 				Entity squad = Components.UNIT.get(entity).getSquad();
 				FSMComponent squadFSM = Components.FSM.get(squad);
-				MessageManager.getInstance().dispatchMessage(null, squadFSM, Messages.targetDestroyed, telegram.extraInfo);
+				MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.REQUEST_TARGET.ordinal(), telegram.extraInfo);
 
 				Components.FSM.get(entity).changeState(HARVEST_IDLE);
 				return true;
@@ -152,7 +154,7 @@ public enum UnitState implements State<Entity> {
 
 			Entity squad = Components.UNIT.get(entity).getSquad();
 			// Sends a request to the squad for a new target
-			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), Messages.requestTarget, entity);
+			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(squad), TelegramMessage.REQUEST_TARGET.ordinal(), entity);
 
 			// If we were delegated a target lets fight. Otherwise follow the formation
 			if (Components.TARGET.get(entity).getTarget() != null)
@@ -238,12 +240,13 @@ public enum UnitState implements State<Entity> {
 
 		@Override
 		public boolean onMessage (Entity entity, Telegram telegram) {
-			switch (telegram.message) {
+			TelegramMessage telegramMsg = TelegramMessage.values()[telegram.message];
+			switch (telegramMsg) {
 
-			case Messages.targetDestroyed:
+			case TARGET_DESTROYED:
 				Entity squad = Components.UNIT.get(entity).getSquad();
 				FSMComponent squadFSM = Components.FSM.get(squad);
-				MessageManager.getInstance().dispatchMessage(null, squadFSM, Messages.targetDestroyed, telegram.extraInfo);
+				MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.TARGET_DESTROYED.ordinal(), telegram.extraInfo);
 
 				Components.FSM.get(entity).changeState(COMBAT_IDLE);
 				return true;
@@ -275,14 +278,6 @@ public enum UnitState implements State<Entity> {
 
 	@Override
 	public boolean onMessage (Entity entity, Telegram telegram) {
-
-		switch (telegram.message) {
-		case Messages.order:
-			State<Entity> state = (State<Entity>)telegram.extraInfo;
-			Components.FSM.get(entity).changeState(state);
-			return true;
-		default:
-			return false;
-		}
+		return false;
 	}
 }

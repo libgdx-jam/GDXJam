@@ -39,7 +39,6 @@ import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
-import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.components.UnitComponent;
 import com.gdxjam.components.WeaponComponent;
 import com.gdxjam.ecs.Components;
@@ -158,9 +157,6 @@ public class EntityFactory {
 				.add(lookWhereYouAreGoingSB, 1f);
 			sb = blendedSteering;
 		}
-
-		entity.add(engine.createComponent(TargetFinderComponent.class));
-
 		Components.FSM.get(entity).changeState(SquadComponent.DEFAULT_STATE);
 
 		Components.STEERING_BEHAVIOR.get(entity).setBehavior(sb);
@@ -404,27 +400,6 @@ public class EntityFactory {
 			health.max = value;
 			health.value = value;
 			entity.add(health);
-			return this;
-		}
-
-		public EntityBuilder targetFinder (float range) {
-			CircleShape shape = new CircleShape();
-			shape.setRadius(range);
-			FixtureDef def = new FixtureDef();
-			def.isSensor = true;
-			def.shape = shape;
-
-			PhysicsComponent physics = Components.PHYSICS.get(entity);
-			if (physics == null) {
-				Gdx.app.error(TAG, "can not add target finder to entity without a body");
-				return this;
-			}
-			Fixture fixture = physics.getBody().createFixture(def);
-
-			TargetFinderComponent targetFinder = engine.createComponent(TargetFinderComponent.class);
-			fixture.setUserData(targetFinder);
-
-			entity.add(targetFinder);
 			return this;
 		}
 
