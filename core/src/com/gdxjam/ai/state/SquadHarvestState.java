@@ -61,7 +61,7 @@ public enum SquadHarvestState implements State<Entity>{
 				Components.TARGET.get(unit).setTarget(target);
 				return true;
 
-			case UNIT_TARGET_DESTROYED:
+			case TARGET_REMOVED:
 				Entity resource = (Entity)telegram.extraInfo;
 
 				squadComp.resourcesInRange.removeValue(resource, true);

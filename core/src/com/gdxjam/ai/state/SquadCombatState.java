@@ -9,6 +9,7 @@ import com.badlogic.gdx.ai.steer.behaviors.Evade;
 import com.badlogic.gdx.ai.steer.behaviors.Pursue;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.math.Vector2;
+import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.ecs.Components;
@@ -20,23 +21,18 @@ public enum SquadCombatState implements State<Entity> {
 		@Override
 		public void enter (Entity entity) {
 			SquadComponent squadComp = Components.SQUAD.get(entity);
-
 			for (Entity member : squadComp.members) {
 				Components.FSM.get(member).changeState(UnitState.FORMATION);
 			}
+			
 			// If we have targets available we don't need to be idle
 			if (squadComp.enemiesInRange.size > 0) {
 				Components.TARGET.get(entity).setTarget(squadComp.enemiesInRange.random());
 
-				for (int i = 0; i < squadComp.members.size; i++) {
-					Entity member = squadComp.members.get(i);
-					Components.FSM.get(member).changeState(UnitState.COMBAT_IDLE);
-				}
-
-				// If were not the player lets do some cool stuff
-				if (Components.FACTION.get(entity).getFaction() != Constants.playerFaction) {
-					Components.FSM.get(entity).changeState(SquadCombatState.AI_AGRESSIVE);
-				}
+				// Set the squads state to a combat state depending on if were the player
+				Faction faction = Components.FACTION.get(entity).getFaction();
+				SquadCombatState state = faction == Constants.playerFaction ?  PLAYER : AI_AGRESSIVE;
+				Components.FSM.get(entity).changeState(state);
 			}
 		}
 
@@ -157,7 +153,7 @@ public enum SquadCombatState implements State<Entity> {
 	@Override
 	public boolean onMessage (Entity entity, Telegram telegram) {
 		SquadComponent squadComp = Components.SQUAD.get(entity);
-		
+
 		TelegramMessage telegramMsg = TelegramMessage.values()[telegram.message];
 		switch (telegramMsg) {
 
@@ -176,6 +172,8 @@ public enum SquadCombatState implements State<Entity> {
 		case UNIT_TARGET_REQUEST: {
 			Entity targetSquad = Components.TARGET.get(entity).getTarget();
 			SquadComponent targetSquadComp = Components.SQUAD.get(targetSquad);
+			
+			
 
 			// Get the unit requesting a target and its index in our formation
 			Entity unit = (Entity)telegram.extraInfo;
@@ -187,40 +185,29 @@ public enum SquadCombatState implements State<Entity> {
 			return true;
 		}
 
-		case UNIT_TARGET_DESTROYED:
+		case TARGET_REMOVED:
 			// Get the unit that was just destroyed, the squad it is in, and that squads component
 			Entity targetUnit = (Entity)telegram.extraInfo;
-			Entity targetSquad = Components.UNIT.get(targetUnit).getSquad();
+			Entity targetSquad = Components.TARGET.get(entity).getTarget();
 			SquadComponent targetSquadComp = Components.SQUAD.get(targetSquad);
 
 			// If our target squad no longer has any units
 			if (targetSquadComp.members.size == 0) {
-				// Remove the target squad from our array of avaiable targets
+				// Remove the target squad from our array of available targets
 				squadComp.enemiesInRange.removeValue(targetSquad, true);
-
-				// If we no longer have any targets to consider we are now IDLE
-				if (squadComp.enemiesInRange.size == 0)
-					Components.FSM.get(entity).changeState(IDLE);
-				else
-					// Otherwise we can grab the next target avaiable to
-					Components.TARGET.get(entity).setTarget(squadComp.enemiesInRange.random());
-				// TODO: targets based on distance
-
+				Components.FSM.get(entity).changeState(IDLE);	//We now have nothing more to do
 			}
 			return true;
-		
-		/**
-		 * If the construction system has confirmed that it was able to create a new unit for us
-		 * we need to tell that unit what we are currently doing and tell it to do the same 
-		 */
+
+			/** If the construction system has confirmed that it was able to create a new unit for us we need to tell that unit what
+			 * we are currently doing and tell it to do the same */
 		case CONSTRUCT_UNIT_CONFRIM:
-			//If we are not currently idle we need to tell our new squad member to find a target
-			if(Components.FSM.get(entity).getStateMachine().getCurrentState() != IDLE){
-				Entity unit = (Entity)telegram.extraInfo;	//Get the new unit from the telegram
-				Components.FSM.get(unit).changeState(UnitState.COMBAT_IDLE);	//Tell our new member to be ready to accept targets
+			// If we are not currently idle we need to tell our new squad member to find a target
+			if (Components.FSM.get(entity).getStateMachine().getCurrentState() != IDLE) {
+				Entity unit = (Entity)telegram.extraInfo; // Get the new unit from the telegram
+				Components.FSM.get(unit).changeState(UnitState.COMBAT_IDLE); // Tell our new member to be ready to accept targets
 			}
-			return true;	//This message was handled
-			
+			return true; // This message was handled
 
 			// If we reach the default of the switch statement then the telegram has not been handled by this State
 		default:

@@ -84,6 +84,8 @@ public class SquadComponent extends Component implements Poolable {
 		members.removeValue(entity, true);
 		memberAgents.removeValue(Components.STEERABLE.get(entity), true);
 		formation.removeMember(Components.UNIT.get(entity));
+		
+		
 	}
 
 	public void setFormationPattern (FormationPatternType pattern) {

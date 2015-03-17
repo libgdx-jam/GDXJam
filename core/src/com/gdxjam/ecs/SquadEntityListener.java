@@ -17,7 +17,7 @@ public class SquadEntityListener implements EntityListener{
 
 	@Override
 	public void entityAdded (Entity entity) {
-		FactionComponent factionComp = Components.FACTION.get(entity);
+		
 	}
 
 	@Override

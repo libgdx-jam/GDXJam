@@ -122,13 +122,7 @@ public enum UnitState implements State<Entity> {
 				targetResourceComp.value -= Constants.resourceCollectionSpeed;
 
 				//Check if we have effectively destroyed our target
-				if(targetResourceComp.value <= 0){
-					Entity squad = Components.UNIT.get(entity).getSquad();
-					FSMComponent squadFSM = Components.FSM.get(squad);
-					MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.UNIT_TARGET_DESTROYED.ordinal(), targetResource);
-				}
 			}
-
 		}
 
 		@Override
@@ -136,11 +130,7 @@ public enum UnitState implements State<Entity> {
 			TelegramMessage telegramMsg = TelegramMessage.values()[telegram.message];
 			switch (telegramMsg) {
 
-			case UNIT_TARGET_DESTROYED:
-				Entity squad = Components.UNIT.get(entity).getSquad();
-				FSMComponent squadFSM = Components.FSM.get(squad);
-				MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.UNIT_TARGET_REQUEST.ordinal(), entity);
-
+			case TARGET_REMOVED:
 				Components.FSM.get(entity).changeState(HARVEST_IDLE);
 				return true;
 
@@ -200,6 +190,7 @@ public enum UnitState implements State<Entity> {
 		public void update (Entity entity) {
 			super.update(entity);
 			// Grab our target and our weapon
+			Entity squad = Components.UNIT.get(entity).getSquad();
 			Entity target = Components.TARGET.get(entity).getTarget();
 			WeaponComponent weaponComp = Components.WEAPON.get(entity);
 
@@ -248,13 +239,7 @@ public enum UnitState implements State<Entity> {
 		public boolean onMessage (Entity entity, Telegram telegram) {
 			TelegramMessage telegramMsg = TelegramMessage.values()[telegram.message];
 			switch (telegramMsg) {
-
-			case UNIT_TARGET_DESTROYED:
-				Entity squad = Components.UNIT.get(entity).getSquad();
-				FSMComponent squadFSM = Components.FSM.get(squad);
-				MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.UNIT_TARGET_DESTROYED.ordinal(),
-					telegram.extraInfo);
-
+			case TARGET_REMOVED:
 				Components.FSM.get(entity).changeState(COMBAT_IDLE);
 				return true;
 			default:

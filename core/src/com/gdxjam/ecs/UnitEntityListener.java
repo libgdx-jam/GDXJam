@@ -28,12 +28,14 @@ public class UnitEntityListener implements EntityListener{
 	public void entityRemoved (Entity entity) {
 		UnitComponent unitComp = Components.UNIT.get(entity);
 		SquadComponent squadComp = Components.SQUAD.get(unitComp.getSquad());
-		squadComp.removeMember(entity);
 		
+		squadComp.removeMember(entity);
 		EntityUtils.clearTarget(entity);
 		
 		if(squadComp.members.size == 0){
-			engine.removeEntity(unitComp.getSquad());
+			Entity squad = unitComp.getSquad();
+			engine.removeEntity(squad);
+			EntityUtils.clearTarget(squad);
 		}
 		
 	}

@@ -43,14 +43,15 @@ public class EntityUtils {
 
 	public static void clearTarget (Entity entity) {
 		ImmutableArray<Entity> entities = engine.getEntitiesFor(Family.all(TargetComponent.class).get());
+		
 		for (Entity e : entities) {
-			TargetComponent targetComp = Components.TARGET.get(e);
-			if (targetComp.getTarget() == entity) {
-				targetComp.setTarget(null);
+			Entity target = Components.TARGET.get(entity).getTarget();
+			if (target == entity) {
+				Components.TARGET.get(entity).setTarget(null);
 
 				if (Components.FSM.has(e)) {
 					FSMComponent fsm = Components.FSM.get(e);
-					MessageManager.getInstance().dispatchMessage(null, fsm, TelegramMessage.UNIT_TARGET_DESTROYED.ordinal(), entity);
+					MessageManager.getInstance().dispatchMessage(null, fsm, TelegramMessage.TARGET_REMOVED.ordinal(), entity);
 				}
 			}
 
