@@ -21,11 +21,7 @@ public enum SquadCombatState implements State<Entity> {
 		@Override
 		public void enter (Entity entity) {
 			SquadComponent squadComp = Components.SQUAD.get(entity);
-			for (Entity member : squadComp.members) {
-				Components.FSM.get(member).changeState(UnitState.FORMATION);
-			}
 			
-			// If we have targets available we don't need to be idle
 			if (squadComp.enemiesInRange.size > 0) {
 				Components.TARGET.get(entity).setTarget(squadComp.enemiesInRange.random());
 
@@ -33,20 +29,15 @@ public enum SquadCombatState implements State<Entity> {
 				Faction faction = Components.FACTION.get(entity).getFaction();
 				SquadCombatState state = faction == Constants.playerFaction ?  PLAYER : AI_AGRESSIVE;
 				Components.FSM.get(entity).changeState(state);
+			} else {
+				// If we have targets available we don't need to be idle
+				for (Entity member : squadComp.members) {
+					Components.FSM.get(member).changeState(UnitState.IDLE);
+				}
 			}
+
 		}
 
-		@Override
-		public boolean onMessage (Entity entity, Telegram telegram) {
-			boolean handled = super.onMessage(entity, telegram);
-			if (telegram.message == TelegramMessage.SQUAD_DISCOVERED_ENEMY.ordinal()) {
-				if (Components.FACTION.get(entity).getFaction() != Constants.playerFaction)
-					Components.FSM.get(entity).changeState(SquadCombatState.AI_AGRESSIVE);
-				else
-					Components.FSM.get(entity).changeState(SquadCombatState.PLAYER);
-			}
-			return handled;
-		}
 	},
 
 	AI_AGRESSIVE() {
@@ -133,7 +124,7 @@ public enum SquadCombatState implements State<Entity> {
 		// Our units are now in a combat state and will query us for targets
 		for (int i = 0; i < squadComp.members.size; i++) {
 			Entity member = squadComp.members.get(i);
-			Components.FSM.get(member).changeState(UnitState.COMBAT_IDLE);
+			Components.FSM.get(member).changeState(UnitState.IDLE);
 		}
 
 	}
@@ -164,39 +155,55 @@ public enum SquadCombatState implements State<Entity> {
 			if (target == null) {
 				target = squadComp.enemiesInRange.random();
 				Components.TARGET.get(entity).setTarget(target);
+				
+				if (Components.FACTION.get(entity).getFaction() != Constants.playerFaction)
+					Components.FSM.get(entity).changeState(SquadCombatState.AI_AGRESSIVE);
+				else
+					Components.FSM.get(entity).changeState(SquadCombatState.PLAYER);
+			} else {
+				// TODO assess threat level of new targets
+				
+				
 			}
 
-			// TODO assess threat level of new targets
 			return true;
 
-		case UNIT_TARGET_REQUEST: {
+		case TARGET_REQUEST: {
+			//Check if the squad has targets to give
 			Entity targetSquad = Components.TARGET.get(entity).getTarget();
-			SquadComponent targetSquadComp = Components.SQUAD.get(targetSquad);
+			if(targetSquad == null){
+				Components.FSM.get(entity).changeState(IDLE);
+			} else {
+				SquadComponent targetSquadComp = Components.SQUAD.get(targetSquad);
+				
+				if(targetSquadComp.members.size > 0){
+					Entity targetUnit = targetSquadComp.members.get(index % targetSquadComp.members.size);
+					Components.TARGET.get(unit).setTarget(targetUnit);
+				}
+			}
+				
+			
+
+			Entity unit = (Entity)telegram.extraInfo;
+			int index = squadComp.members.indexOf(unit, true);
+			
+
+
+
 			
 			
 
 			// Get the unit requesting a target and its index in our formation
-			Entity unit = (Entity)telegram.extraInfo;
-			int index = squadComp.members.indexOf(unit, true);
+
 
 			// Set the units target
-			Entity targetUnit = targetSquadComp.members.get(index % targetSquadComp.members.size);
-			Components.TARGET.get(unit).setTarget(targetUnit);
+
 			return true;
 		}
 
 		case TARGET_REMOVED:
-			// Get the unit that was just destroyed, the squad it is in, and that squads component
-			Entity targetUnit = (Entity)telegram.extraInfo;
-			Entity targetSquad = Components.TARGET.get(entity).getTarget();
-			SquadComponent targetSquadComp = Components.SQUAD.get(targetSquad);
-
-			// If our target squad no longer has any units
-			if (targetSquadComp.members.size == 0) {
-				// Remove the target squad from our array of available targets
-				squadComp.enemiesInRange.removeValue(targetSquad, true);
-				Components.FSM.get(entity).changeState(IDLE);	//We now have nothing more to do
-			}
+			//Our target squad was just killed
+			Components.FSM.get(entity).changeState(IDLE);
 			return true;
 
 			/** If the construction system has confirmed that it was able to create a new unit for us we need to tell that unit what
@@ -205,7 +212,7 @@ public enum SquadCombatState implements State<Entity> {
 			// If we are not currently idle we need to tell our new squad member to find a target
 			if (Components.FSM.get(entity).getStateMachine().getCurrentState() != IDLE) {
 				Entity unit = (Entity)telegram.extraInfo; // Get the new unit from the telegram
-				Components.FSM.get(unit).changeState(UnitState.COMBAT_IDLE); // Tell our new member to be ready to accept targets
+				Components.FSM.get(unit).changeState(UnitState.IDLE); // Tell our new member to be ready to accept targets
 			}
 			return true; // This message was handled
 

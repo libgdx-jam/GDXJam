@@ -7,10 +7,10 @@ public enum TelegramMessage {
 	SQUAD_DISCOVERED_RESOURCE,
 	SQUAD_INPUT_SELECTED,
 	
+	TARGET_REQUEST,
 	TARGET_REMOVED,
 	
 	//Unit relevant messages
-	UNIT_TARGET_REQUEST,	//Sent when a unit needs a new target from its squad
 	UNIT_ADDED_TO_SQUAD,
 	
 	//Construction System relevant messages

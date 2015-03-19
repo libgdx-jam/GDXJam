@@ -41,17 +41,18 @@ public class EntityUtils {
 		return factionA == factionB;
 	}
 
-	public static void clearTarget (Entity entity) {
+	public static void clearTarget (Entity target) {
 		ImmutableArray<Entity> entities = engine.getEntitiesFor(Family.all(TargetComponent.class).get());
 		
-		for (Entity e : entities) {
-			Entity target = Components.TARGET.get(entity).getTarget();
-			if (target == entity) {
-				Components.TARGET.get(entity).setTarget(null);
+		for (Entity entity : entities) {
+			TargetComponent targetComp = Components.TARGET.get(entity);
+			if (targetComp.getTarget() == target) {
+				targetComp.setTarget(null);
 
-				if (Components.FSM.has(e)) {
-					FSMComponent fsm = Components.FSM.get(e);
-					MessageManager.getInstance().dispatchMessage(null, fsm, TelegramMessage.TARGET_REMOVED.ordinal(), entity);
+				//Dispatch a message to the entites FSM that there target was removed from the engine
+				if (Components.FSM.has(entity)) {
+					FSMComponent fsm = Components.FSM.get(entity);
+					MessageManager.getInstance().dispatchMessage(null, fsm, TelegramMessage.TARGET_REMOVED.ordinal(), target);
 				}
 			}
 

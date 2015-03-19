@@ -13,7 +13,7 @@ public enum SquadHarvestState implements State<Entity>{
 			SquadComponent squadComp = Components.SQUAD.get(entity);
 			
 			for (Entity member : squadComp.members) {
-				Components.FSM.get(member).changeState(UnitState.FORMATION);
+				Components.FSM.get(member).changeState(UnitState.IDLE);
 			}
 			
 			// If we have targets available we don't need to be idle
@@ -42,7 +42,7 @@ public enum SquadHarvestState implements State<Entity>{
 			
 			SquadComponent squadComp = Components.SQUAD.get(entity);
 			for (Entity member : squadComp.members) {
-				Components.FSM.get(member).changeState(UnitState.HARVEST_IDLE);
+				Components.FSM.get(member).changeState(UnitState.IDLE);
 			}
 		}
 		
@@ -52,24 +52,19 @@ public enum SquadHarvestState implements State<Entity>{
 			TelegramMessage telegramMsg = TelegramMessage.values()[telegram.message];
 			
 			switch (telegramMsg) {
-			case UNIT_TARGET_REQUEST:
-				Entity unit = (Entity)telegram.extraInfo;
-				int index = squadComp.members.indexOf(unit, true);
+			case TARGET_REQUEST:
+				//First we check if we have any target resources to delegate to our members
+				if(squadComp.resourcesInRange.size <= 0){
+					//There were no more targets
+					Components.FSM.get(entity).changeState(SquadHarvestState.IDLE);
+				} else {
+					Entity unit = (Entity)telegram.extraInfo;
+					int index = squadComp.members.indexOf(unit, true);
 
-				// Get a target and set it
-				Entity target = squadComp.resourcesInRange.get(index % squadComp.resourcesInRange.size);
-				Components.TARGET.get(unit).setTarget(target);
-				return true;
-
-			case TARGET_REMOVED:
-				Entity resource = (Entity)telegram.extraInfo;
-
-				squadComp.resourcesInRange.removeValue(resource, true);
-				squadComp.resourceAgents.removeValue(Components.STEERABLE.get(resource), true);
-
-				// We no longer have anything to do
-				if (squadComp.resourcesInRange.size == 0) 
-					Components.FSM.get(entity).changeState(IDLE);
+					// Get a target and set it
+					Entity target = squadComp.resourcesInRange.get(index % squadComp.resourcesInRange.size);
+					Components.TARGET.get(unit).setTarget(target);
+				}
 				return true;
 
 			default:

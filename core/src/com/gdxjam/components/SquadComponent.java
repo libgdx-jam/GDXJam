@@ -22,6 +22,7 @@ import com.gdxjam.ai.formation.VFormationPattern;
 import com.gdxjam.ai.formation.WedgeFormationPattern;
 import com.gdxjam.ai.state.SquadCombatState;
 import com.gdxjam.ecs.Components;
+import com.gdxjam.ecs.EntityCategory;
 import com.gdxjam.utils.Constants;
 import com.gdxjam.utils.Location2;
 
@@ -57,6 +58,15 @@ public class SquadComponent extends Component implements Poolable {
 	/** Can only be created by PooledEngine */
 	private SquadComponent () {
 		// private constructor
+	}
+	
+	public void untrack(Entity entity){
+		if((entity.flags & EntityCategory.RESOURCE) == EntityCategory.RESOURCE){
+			resourcesInRange.removeValue(entity, true);
+			resourceAgents.removeValue(Components.STEERABLE.get(entity), true);
+		} else if ((entity.flags & EntityCategory.SQUAD) == EntityCategory.SQUAD){
+			enemiesInRange.removeValue(entity, true);
+		}
 	}
 
 	public void modifyTargetsInRange (Array<Entity> targetArray, Entity entity, boolean foundTarget) {

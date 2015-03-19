@@ -53,7 +53,7 @@ public class EntityFactory {
 
 	private static PooledEngine engine;
 	private static PhysicsSystem physicsSystem;
-	private static EntityBuilder builder;
+	private static EntityBuilder builder = new EntityBuilder();
 	
 	private static PhysicsBuilder physicsBuilder = new PhysicsBuilder();
 	private static FixtureBuilder fixtureBuilder = new FixtureBuilder();
@@ -124,7 +124,7 @@ public class EntityFactory {
 		Components.STEERABLE.get(entity).setIndependentFacing(true);
 		FSMComponent stateMachineComponent = engine.createComponent(FSMComponent.class).init(entity);
 		entity.add(stateMachineComponent);
-		stateMachineComponent.changeState(UnitState.FORMATION);
+		stateMachineComponent.changeState(UnitState.IDLE);
 
 		engine.addEntity(entity);
 		return entity;
