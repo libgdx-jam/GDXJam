@@ -18,7 +18,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.gdxjam.Assets;
@@ -54,25 +53,22 @@ public class EntityFactory {
 
 	private static PooledEngine engine;
 	private static PhysicsSystem physicsSystem;
-	private static EntityBuilder entityBuilder;
+	private static EntityBuilder builder;
+	
 	private static PhysicsBuilder physicsBuilder = new PhysicsBuilder();
 	private static FixtureBuilder fixtureBuilder = new FixtureBuilder();
 
-	public static EntityBuilder buildEntity (Vector2 position) {
-		if (entityBuilder == null) {
-			entityBuilder = new EntityBuilder();
-		}
-		return entityBuilder.reset(position);
-	}
 
 	public static Entity createMothership(Vector2 position) {
-		Entity entity = buildEntity(position)
+		Entity entity = builder.createEntity(EntityCategory.MOTHERSHIP, position)
 				.physicsBody(BodyType.StaticBody)
 				.circleCollider(Constants.mothershipRadius, 1.0f)
 				.sprite(Assets.spacecraft.motherships.get(Constants.playerFaction
 						.ordinal()), Constants.mothershipRadius * 2,
 						Constants.mothershipRadius * 2)
-				.faction(Constants.playerFaction).mothership().health(10000)
+				.faction(Constants.playerFaction)
+				.mothership()
+				.health(10000)
 				.steerable(Constants.mothershipRadius)
 				.filter(EntityCategory.MOTHERSHIP, 0, EntityCategory.PROJECTILE)
 				.steeringBehavior()
@@ -85,10 +81,12 @@ public class EntityFactory {
 	}
 
 	public static Entity createAsteroid (Vector2 position, float radius) {
-		Entity entity = buildEntity(position).physicsBody(BodyType.StaticBody).circleCollider(radius, 50.0f)
-			.filter(EntityCategory.RESOURCE, 0, EntityCategory.PROJECTILE | EntityCategory.SQUAD | EntityCategory.UNIT)
-			.resource((int)(Constants.baseAsteroidResourceAmt * radius)).steerable(radius).faction(Faction.NONE)
-			.sprite(Assets.space.asteroids.random(), radius * 2, radius * 2).addToEngine();
+		Entity entity = builder.createEntity(EntityCategory.RESOURCE, position)
+				.physicsBody(BodyType.StaticBody)
+				.circleCollider(radius, 50.0f)
+				.filter(EntityCategory.RESOURCE, 0, EntityCategory.PROJECTILE | EntityCategory.SQUAD | EntityCategory.UNIT)
+				.resource((int)(Constants.baseAsteroidResourceAmt * radius)).steerable(radius).faction(Faction.NONE)
+				.sprite(Assets.space.asteroids.random(), radius * 2, radius * 2).addToEngine();
 		return entity;
 	}
 
@@ -105,10 +103,18 @@ public class EntityFactory {
 		SquadComponent squadComp = Components.SQUAD.get(squad);
 		Faction faction = Components.FACTION.get(squad).getFaction();
 
-		Entity entity = buildEntity(position).physicsBody(BodyType.DynamicBody).circleCollider(Constants.unitRadius, 1.0f)
-			.damping(1, 0).steerable(Constants.unitRadius).steeringBehavior().health(100).faction(faction).target().weapon(20, 1.0f, Constants.projectileRadius)
-			.sprite(Assets.spacecraft.ships.get(faction.ordinal()), Constants.unitRadius * 2, Constants.unitRadius * 2)
-			.getWithoutAdding();
+		Entity entity = builder.createEntity(EntityCategory.UNIT, position)
+				.physicsBody(BodyType.DynamicBody)
+				.circleCollider(Constants.unitRadius, 1.0f)
+				.damping(1, 0)
+				.steerable(Constants.unitRadius)
+				.steeringBehavior()
+				.health(100)
+				.faction(faction)
+				.target()
+				.weapon(20, 1.0f, Constants.projectileRadius)
+				.sprite(Assets.spacecraft.ships.get(faction.ordinal()), Constants.unitRadius * 2, Constants.unitRadius * 2)
+				.getWithoutAdding();
 
 		PhysicsComponent physicsComp = Components.PHYSICS.get(entity);
 		UnitComponent squadMemberComp = engine.createComponent(UnitComponent.class).init(squad, physicsComp.getBody());
@@ -125,9 +131,15 @@ public class EntityFactory {
 	}
 
 	public static Entity createSquad (Vector2 position, Faction faction) {
-		Entity entity = buildEntity(position).physicsBody(BodyType.DynamicBody).circleSensor(30.0f).faction(faction).target()
-			.filter(EntityCategory.SQUAD, 0, EntityCategory.SQUAD | EntityCategory.RESOURCE).steeringBehavior().stateMachine()
-			.getWithoutAdding();
+		Entity entity = builder.createEntity(EntityCategory.SQUAD, position)
+				.physicsBody(BodyType.DynamicBody)
+				.circleSensor(30.0f)
+				.faction(faction)
+				.target()
+				.filter(EntityCategory.SQUAD, 0, EntityCategory.SQUAD | EntityCategory.RESOURCE)
+				.steeringBehavior()
+				.stateMachine()
+				.getWithoutAdding();
 
 		SteerableComponent steerable = engine.createComponent(SteerableComponent.class).init(
 			Components.PHYSICS.get(entity).getBody(), 30.0f);
@@ -168,13 +180,14 @@ public class EntityFactory {
 	}
 
 	public static Entity createProjectile (Vector2 position, Vector2 velocity, float radius, Faction faction, int damage) {
-		Entity entity = buildEntity(position)
+		Entity entity = builder.createEntity(EntityCategory.PROJECTILE, position)
 			.physicsBody(BodyType.DynamicBody)
 			.circleSensor(radius)
 			.filter(EntityCategory.PROJECTILE, 0, EntityCategory.UNIT | EntityCategory.RESOURCE | EntityCategory.MOTHERSHIP)
 			.faction(faction)
 			.sprite(Assets.projectile.projectiles.get(faction.ordinal()), radius * 2,
-				radius * 2).getWithoutAdding();
+				radius * 2)
+			.getWithoutAdding();
 
 		ProjectileComponent projectileComp = engine.createComponent(ProjectileComponent.class).init(damage);
 		entity.add(projectileComp);
@@ -191,7 +204,9 @@ public class EntityFactory {
 	}
 
 	public static Entity createBoundry (Vector2 start, Vector2 end) {
-		Entity entity = buildEntity(new Vector2(0, 0)).physicsBody(BodyType.StaticBody).getWithoutAdding();
+		Entity entity = builder.createEntity(EntityCategory.WALL, new Vector2(0, 0))
+				.physicsBody(BodyType.StaticBody)
+				.getWithoutAdding();
 
 		FixtureDef def = new FixtureDef();
 		EdgeShape edge = new EdgeShape();
@@ -205,7 +220,9 @@ public class EntityFactory {
 	}
 
 	public static Entity createBackgroundArt (Vector2 position, float width, float height, TextureRegion region, int layer) {
-		Entity entity = buildEntity(position).sprite(region, width, height).getWithoutAdding();
+		Entity entity = builder.createEntity(EntityCategory.GRAPHICS, position)
+				.sprite(region, width, height)
+				.getWithoutAdding();
 
 		entity.add(engine.createComponent(ParalaxComponent.class).init(position.x, position.y, width, height, layer));
 
@@ -229,9 +246,12 @@ public class EntityFactory {
 		public Vector2 position;
 		public Entity entity;
 
-		public EntityBuilder reset (Vector2 position) {
-			this.position = position;
+		public EntityBuilder createEntity (int categoryBits, Vector2 position) {
 			entity = engine.createEntity();
+			entity.flags = categoryBits;
+			
+			this.position = position;
+			
 			return this;
 		}
 
@@ -293,6 +313,12 @@ public class EntityFactory {
 			ResourceComponent resourceComp = engine.createComponent(ResourceComponent.class).init(amount);
 			entity.add(resourceComp);
 
+			return this;
+		}
+		
+		public EntityBuilder category(int categoryBits){
+			entity.flags = categoryBits;
+			
 			return this;
 		}
 
@@ -438,7 +464,7 @@ public class EntityFactory {
 		}
 
 		public EntityBuilder getBody () {
-			return entityBuilder;
+			return builder;
 		}
 
 		public static class FixtureBuilder {
