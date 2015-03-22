@@ -16,11 +16,13 @@ public class SteerableComponent extends Component implements Steerable<Vector2>,
 	public static final float MAX_LINEAR_ACCELERATION = 10000;
 	public static final float MAX_ANGULAR_SPEED = 15;
 	public static final float MAX_ANGULAR_ACCELERATION = 300;
+	public static final float ZERO_LINEAR_SPEED_THRESHOLD = 0.001f;
 
 	private float maxLinearSpeed = MAX_LINEAR_SPEED;
 	private float maxLinearAcceleration = MAX_LINEAR_ACCELERATION;
 	private float maxAngluarSpeed = MAX_ANGULAR_SPEED;
 	private float maxAngluarAcceleration = MAX_ANGULAR_ACCELERATION;
+	private float zeroLinearSpeedThreshold = ZERO_LINEAR_SPEED_THRESHOLD;
 	private float boundingRadius;
 	private boolean independentFacing = false;
 
@@ -81,6 +83,16 @@ public class SteerableComponent extends Component implements Steerable<Vector2>,
 	@Override
 	public void setMaxAngularAcceleration (float maxAngularAcceleration) {
 		this.maxAngluarAcceleration = maxAngularAcceleration;
+	}
+
+	@Override
+	public float getZeroLinearSpeedThreshold() {
+		return zeroLinearSpeedThreshold;
+	}
+
+	@Override
+	public void setZeroLinearSpeedThreshold(float zeroLinearSpeedThreshold) {
+		this.zeroLinearSpeedThreshold = zeroLinearSpeedThreshold;
 	}
 
 	@Override

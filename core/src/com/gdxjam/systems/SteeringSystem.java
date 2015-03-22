@@ -49,7 +49,7 @@ public class SteeringSystem extends IteratingSystem{
 		else {
 			// If we haven't got any velocity, then we can do nothing.
 			Vector2 linVel = body.getLinearVelocity();
-			if (!linVel.isZero(MathUtils.FLOAT_ROUNDING_ERROR)) {
+			if (!linVel.isZero(steerable.getZeroLinearSpeedThreshold())) {
 				float newOrientation = steerable.vectorToAngle(linVel);
 				body.setAngularVelocity((newOrientation - steerable.getAngularVelocity()) * deltaTime); // this is superfluous if independentFacing is always true
 				body.setTransform(body.getPosition(), newOrientation);
