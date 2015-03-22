@@ -12,7 +12,6 @@ import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.TargetComponent;
 import com.gdxjam.systems.InputSystem;
 import com.gdxjam.utils.Constants;
-import com.gdxjam.utils.EntityUtils;
 
 public class SquadEntityListener implements EntityListener{
 	

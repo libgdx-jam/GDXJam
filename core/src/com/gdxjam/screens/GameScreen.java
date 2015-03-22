@@ -48,8 +48,8 @@ public class GameScreen extends AbstractScreen {
 	public void createWorld(int width, int height) {
 		long seed = new Random().nextLong();
 		WorldGeneratorParameter param = new WorldGeneratorParameter();
-		param.initalSquads = 3;
-		param.squadMembers = 5;
+		param.initalSquads = 5;
+		param.squadMembers = 9;
 		WorldGenerator generator = new WorldGenerator(width, height, seed,
 				param);
 		generator.generate();

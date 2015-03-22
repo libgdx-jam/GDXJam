@@ -94,6 +94,7 @@ public enum UnitState implements State<Entity>{
 
 			// Get relevant components
 			Entity target = Components.TARGET.get(entity).getTarget();
+			
 			SteerableComponent steerable = Components.STEERABLE.get(entity);
 			SteerableComponent targetSteerable = Components.STEERABLE.get(target);
 			Entity squad = Components.UNIT.get(entity).getSquad();
@@ -126,10 +127,14 @@ public enum UnitState implements State<Entity>{
 		public void update(Entity entity) {
 			super.update(entity);
 			
+
+			
 			// Get relevant components
 			Entity targetResource = Components.TARGET.get(entity).getTarget();
+			if(targetResource == null) return;
 			SteerableComponent steerable = Components.STEERABLE.get(entity);
 			SteerableComponent targetSteerable = Components.STEERABLE.get(targetResource);
+			if(targetSteerable == null) return;
 
 			// If were in position harvest the resource
 			if (targetSteerable.getPosition().dst(steerable.getPosition()) <= targetSteerable.getBoundingRadius()
@@ -137,7 +142,6 @@ public enum UnitState implements State<Entity>{
 				ResourceComponent targetResourceComp = Components.RESOURCE.get(targetResource);
 				targetResourceComp.value -= Constants.resourceCollectionSpeed;
 
-				//Check if we have effectively destroyed our target
 			}
 		}
 	},
@@ -175,7 +179,6 @@ public enum UnitState implements State<Entity>{
 			if(target == null) return;	//Double check to make sure we have a target
 			
 			WeaponComponent weaponComp = Components.WEAPON.get(entity);
-			
 
 			if (weaponComp.cooldown <= 0) {
 				// Our weapon is off cooldown and we are ready to fire
