@@ -11,21 +11,24 @@ public enum SquadHarvestState implements State<Entity>{
 		@Override
 		public void enter (Entity entity) {
 			SquadComponent squadComp = Components.SQUAD.get(entity);
-			
-			for (Entity member : squadComp.members) {
-				Components.FSM.get(member).changeState(UnitState.IDLE);
-			}
-			
+		
 			// If we have targets available we don't need to be idle
-			if (squadComp.resourcesInRange.size > 0)
+			if (squadComp.resourcesTracked.size > 0){
 				Components.FSM.get(entity).changeState(HARVEST);
+			} else {
+				for (Entity member : squadComp.members) {
+					if(!Components.FSM.get(member).getStateMachine().isInState(UnitState.IDLE))
+						Components.FSM.get(member).changeState(UnitState.IDLE);
+				}
+				
+			}
 		}
 		
 		@Override
 		public boolean onMessage (Entity entity, Telegram telegram) {
 		TelegramMessage telegramMsg = TelegramMessage.values()[telegram.message];
 		switch(telegramMsg){
-		case SQUAD_DISCOVERED_RESOURCE:
+		case DISCOVERED_RESOURCE:
 			Components.FSM.get(entity).changeState(HARVEST);
 			return true;
 			
@@ -54,7 +57,7 @@ public enum SquadHarvestState implements State<Entity>{
 			switch (telegramMsg) {
 			case TARGET_REQUEST:
 				//First we check if we have any target resources to delegate to our members
-				if(squadComp.resourcesInRange.size <= 0){
+				if(squadComp.resourcesTracked.size <= 0){
 					//There were no more targets
 					Components.FSM.get(entity).changeState(SquadHarvestState.IDLE);
 				} else {
@@ -62,7 +65,7 @@ public enum SquadHarvestState implements State<Entity>{
 					int index = squadComp.members.indexOf(unit, true);
 
 					// Get a target and set it
-					Entity target = squadComp.resourcesInRange.get(index % squadComp.resourcesInRange.size);
+					Entity target = squadComp.resourcesTracked.get(index % squadComp.resourcesTracked.size);
 					Components.TARGET.get(unit).setTarget(target);
 				}
 				return true;

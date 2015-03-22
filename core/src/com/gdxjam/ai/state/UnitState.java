@@ -15,15 +15,14 @@ import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.gdxjam.GameManager;
 import com.gdxjam.components.FSMComponent;
+import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
 import com.gdxjam.components.WeaponComponent;
-import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.ecs.EntityCategory;
 import com.gdxjam.utils.Constants;
@@ -32,8 +31,6 @@ import com.gdxjam.utils.Location2;
 
 public enum UnitState implements State<Entity>{
 	
-
-	
 	IDLE(){
 		@Override
 		public void enter(Entity entity) {
@@ -41,22 +38,10 @@ public enum UnitState implements State<Entity>{
 			//Get our FSM
 			FSMComponent fsmComp = Components.FSM.get(entity);
 			
-			//When we enter the idle state we request a target from our squad to see if there is anything that needs doing.
-			Entity squad = Components.UNIT.get(entity).getSquad();
-			FSMComponent squadFSM = Components.FSM.get(squad);
-			
 			//Dispatch the message to our squad that we need the new target
-			MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.TARGET_REQUEST.ordinal(), entity);
-		
+
 			//After the message had been dispatched we see if the squad has delegated us a target
-			Entity target = Components.TARGET.get(entity).getTarget();
-			if(target != null){
-				//The target request was successful and we now have a target
-				if((target.flags & EntityCategory.RESOURCE) == EntityCategory.RESOURCE)
-					fsmComp.changeState(HARVEST);//The target is a resource so we now enter the HARVEST state
-				else if ((target.flags & EntityCategory.UNIT) == EntityCategory.UNIT)
-					fsmComp.changeState(COMBAT);
-			} else {
+			if(fsmComp.getStateMachine().getPreviousState() != IDLE){
 				//Now we just follow the formation
 				SteerableComponent steerable = Components.STEERABLE.get(entity);
 				Location2 targetLocation = (Location2)Components.UNIT.get(entity).getTargetLocation();
@@ -79,11 +64,33 @@ public enum UnitState implements State<Entity>{
 		}
 	},
 	
+	FIND_TARGET(){
+		@Override
+		public void enter (Entity entity) {
+			super.enter(entity);
+			FSMComponent fsmComp = Components.FSM.get(entity);
+			Entity squad = Components.UNIT.get(entity).getSquad();
+			FSMComponent squadFSM = Components.FSM.get(squad);
+			MessageManager.getInstance().dispatchMessage(null, squadFSM, TelegramMessage.TARGET_REQUEST.ordinal(), entity);
+			
+			//When we enter the idle state we request a target from our squad to see if there is anything that needs doing.
+			Entity target = Components.TARGET.get(entity).getTarget();
+			if(target != null){
+				//The target request was successful and we now have a target
+				if((target.flags & EntityCategory.RESOURCE) == EntityCategory.RESOURCE)
+					fsmComp.changeState(HARVEST);//The target is a resource so we now enter the HARVEST state
+				else if ((target.flags & EntityCategory.UNIT) == EntityCategory.UNIT)
+					fsmComp.changeState(COMBAT);
+			} else {
+				fsmComp.changeState(IDLE);
+			}
+		}
+	},
+	
 	HARVEST(){
 		@Override
 		public void enter(Entity entity) {
 			super.enter(entity);
-			
 
 			// Get relevant components
 			Entity target = Components.TARGET.get(entity).getTarget();
@@ -242,20 +249,12 @@ public enum UnitState implements State<Entity>{
 		/* If our target was removed from the engine
 		 * we go back to idle and request a new target from our squad
 		 */
-		case TARGET_REMOVED:
+		case TARGET_REMOVED:{
 			Gdx.app.error(TAG, "TARGET REMOVED!");
-			
-			//The squad will no longer track this target
-			Entity squad = Components.UNIT.get(entity).getSquad();
-			SquadComponent squadComp = Components.SQUAD.get(squad);
-			Entity target = (Entity) telegram.extraInfo;
-			squadComp.untrack(target);
-			
-			Components.FSM.get(entity).changeState(IDLE);
-			
-			
+			Components.FSM.get(entity).changeState(FIND_TARGET);
 			return true;
-			
+		}
+		
 		//The message was not handled by this state
 		default:
 			return false;

@@ -31,7 +31,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 		initSystems();
 
 		addEntityListener(Family.all(SquadComponent.class).get(),
-				new SquadEntityListener(getSystem(InputSystem.class)));
+				new SquadEntityListener(this, getSystem(InputSystem.class)));
 		addEntityListener(Family.all(UnitComponent.class).get(),
 				new UnitEntityListener(this));
 		addEntityListener(Family.all(PhysicsComponent.class).get(),
