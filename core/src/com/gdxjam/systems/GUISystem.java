@@ -7,13 +7,16 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.gdxjam.Assets;
-import com.gdxjam.ai.state.Messages;
+import com.gdxjam.ai.state.TelegramMessage;
 import com.gdxjam.components.SquadComponent.FormationPatternType;
 import com.gdxjam.ui.CommandCardContainer;
 import com.gdxjam.ui.WaveTimerTable;
@@ -26,21 +29,31 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 	private CommandCardContainer commandCardContainer;
 	private WaveTimerTable waveTimerTable;
 	private Label resourceLabel;
-	
+
 	private InputSystem inputSystem;
+	
+	private boolean isResourceAlertActive = false;
+	private Task resourceAlertTask;
+	
+	private static final Color DEFAULT_COLOR = Color.WHITE;
+	private static final Color ALERT_COLOR = Color.RED;
 
 	public GUISystem () {
 		this.stage = new Stage();
 		this.skin = Assets.skin;
-		MessageManager.getInstance().addListener(this, Messages.SQUAD_SELECTED);
+		
+		MessageManager.getInstance().addListener(this, TelegramMessage.SQUAD_INPUT_SELECTED.ordinal());
+		MessageManager.getInstance().addListener(this, TelegramMessage.GUI_INSUFFICIENT_RESOURCES.ordinal());
+		
 		initGUI();
+		initAlertTasks();
 	}
-	
+
 	@Override
 	public void addedToEngine (Engine engine) {
 		super.addedToEngine(engine);
 		this.inputSystem = engine.getSystem(InputSystem.class);
-		
+
 		commandCardContainer = new CommandCardContainer(inputSystem, skin, stage);
 		Table squadManagmentContainer = new Table();
 		squadManagmentContainer.setFillParent(true);
@@ -49,9 +62,11 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 		stage.addActor(squadManagmentContainer);
 	}
 
-	public void initGUI () {
+	private void initGUI () {
 		/** Resource Table */
 		resourceLabel = new Label("Resources: XXX", skin);
+		resourceLabel.setColor(DEFAULT_COLOR);
+		
 		Table resourceTable = new Table();
 		resourceTable.add(resourceLabel);
 		resourceTable.center();
@@ -74,8 +89,20 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 		stage.addActor(rightTable);
 
 	}
-
-
+	
+	private void initAlertTasks(){
+		resourceAlertTask = new Task() {
+			
+			@Override
+			public void run () {
+				Color color = ALERT_COLOR;
+				if(resourceLabel.getColor().equals(ALERT_COLOR))
+					color = DEFAULT_COLOR;
+				
+				resourceLabel.setColor(color);
+			}
+		};
+	}
 
 	public void addSquad (Entity squad, int index) {
 		commandCardContainer.addSquad(squad, index);
@@ -88,8 +115,8 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 	public void updateSquad (Entity squad) {
 
 	}
-	
-	public void setSelected(int index, boolean selected){
+
+	public void setSelected (int index, boolean selected) {
 		commandCardContainer.setSelected(index, selected);
 	}
 
@@ -104,10 +131,11 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 	public void updateResource (int amount) {
 		resourceLabel.setText("Resources: " + amount);
 	}
-	
-	public void updateFormationPattern(int index, FormationPatternType pattern){
+
+	public void updateFormationPattern (int index, FormationPatternType pattern) {
 		commandCardContainer.updateFormationPattern(index, pattern);
 	}
+
 
 	@Override
 	public void update (float deltaTime) {
@@ -127,13 +155,21 @@ public class GUISystem extends EntitySystem implements Telegraph, Disposable {
 	}
 
 	@Override
-	public boolean handleMessage(Telegram msg) {
-		switch(msg.message){
-		case Messages.SQUAD_SELECTED:
+	public boolean handleMessage (Telegram msg) {
+		TelegramMessage telegramMsg = TelegramMessage.values()[msg.message];
+		switch (telegramMsg) {
+		
+		case SQUAD_INPUT_SELECTED:
 			int index = (Integer)msg.extraInfo;
 			setSelected(index, true);
 			return true;
 			
+		case GUI_INSUFFICIENT_RESOURCES:
+			if(resourceAlertTask.isScheduled())
+				resourceAlertTask.cancel();
+			Timer.schedule(resourceAlertTask, 0.0f, 0.15f, 5);
+			return true;
+
 		default:
 			return false;
 		}

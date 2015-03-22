@@ -28,13 +28,19 @@ public class UnitEntityListener implements EntityListener{
 	public void entityRemoved (Entity entity) {
 		UnitComponent unitComp = Components.UNIT.get(entity);
 		SquadComponent squadComp = Components.SQUAD.get(unitComp.getSquad());
+		
 		squadComp.removeMember(entity);
+
+		//First we check if the units squad has lost all its members
+		//If so we remove it from all squads targets so when the unit trys to find a new target
+		//The squad knows that its previous target is dead
+		if(squadComp.members.size <= 0){
+			Entity squad = unitComp.getSquad();
+			EntityUtils.clearTarget(squad);
+			engine.removeEntity(squad);
+		}
 		
 		EntityUtils.clearTarget(entity);
-		
-		if(squadComp.members.size == 0){
-			engine.removeEntity(unitComp.getSquad());
-		}
 		
 	}
 	

@@ -15,5 +15,6 @@ public class ResourceEntityListener implements EntityListener{
 	@Override
 	public void entityRemoved (Entity entity) {
 		EntityUtils.clearTarget(entity);
+		
 	}
 }
