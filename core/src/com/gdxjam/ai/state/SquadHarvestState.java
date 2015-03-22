@@ -1,6 +1,7 @@
 package com.gdxjam.ai.state;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.gdxjam.components.SquadComponent;
@@ -45,7 +46,7 @@ public enum SquadHarvestState implements State<Entity>{
 			
 			SquadComponent squadComp = Components.SQUAD.get(entity);
 			for (Entity member : squadComp.members) {
-				Components.FSM.get(member).changeState(UnitState.IDLE);
+				Components.FSM.get(member).changeState(UnitState.FIND_TARGET);
 			}
 		}
 		
@@ -80,7 +81,7 @@ public enum SquadHarvestState implements State<Entity>{
 
 	@Override
 	public void enter (Entity entity) {
-		// TODO Auto-generated method stub
+		Gdx.app.log("SquadState: ", Components.FSM.get(entity).getStateMachine().getCurrentState().toString());
 		
 	}
 

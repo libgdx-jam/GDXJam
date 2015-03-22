@@ -20,7 +20,7 @@ public class Constants {
 	public static final int maxSquadMembers = 20;
 
 	public static final boolean friendlyFire = false;
-	public static final float resourceCollectionSpeed = 1;
+	public static final float resourceCollectionSpeed = 0.25f;
 
 	public static final float unitRadius = 0.5f;
 	public static final float mothershipRadius = 4f;
