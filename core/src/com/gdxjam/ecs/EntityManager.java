@@ -11,6 +11,7 @@ import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.UnitComponent;
 import com.gdxjam.systems.BehaviorTreeSystem;
 import com.gdxjam.systems.CameraSystem;
+import com.gdxjam.systems.ConstructionSystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.HealthSystem;
@@ -18,7 +19,7 @@ import com.gdxjam.systems.InputSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
-import com.gdxjam.systems.StateSystem;
+import com.gdxjam.systems.FSMSystem;
 import com.gdxjam.systems.SteeringSystem;
 import com.gdxjam.systems.WaveSystem;
 import com.gdxjam.utils.Constants;
@@ -30,7 +31,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 		initSystems();
 
 		addEntityListener(Family.all(SquadComponent.class).get(),
-				new SquadEntityListener(getSystem(InputSystem.class)));
+				new SquadEntityListener(this, getSystem(InputSystem.class)));
 		addEntityListener(Family.all(UnitComponent.class).get(),
 				new UnitEntityListener(this));
 		addEntityListener(Family.all(PhysicsComponent.class).get(),
@@ -48,7 +49,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 
 		// AI
 		addSystem(new SteeringSystem());
-		addSystem(new StateSystem());
+		addSystem(new FSMSystem());
 		addSystem(new BehaviorTreeSystem());
 
 		addSystem(new HealthSystem());
@@ -57,7 +58,10 @@ public class EntityManager extends PooledEngine implements Disposable {
 		GUISystem guiSystem = new GUISystem();
 		InputSystem inputSystem = new InputSystem(guiSystem);
 
-		addSystem(new ResourceSystem(guiSystem));
+		ResourceSystem resourceSystem = new ResourceSystem(guiSystem);
+		addSystem(resourceSystem);
+		
+		ConstructionSystem constructSystem = new ConstructionSystem(resourceSystem);
 		addSystem(new SquadSystem(inputSystem));
 		addSystem(new WaveSystem(guiSystem));
 		//addSystem(new DecaySystem());

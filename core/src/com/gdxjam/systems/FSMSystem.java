@@ -6,14 +6,16 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.gdxjam.components.FSMComponent;
 import com.gdxjam.ecs.Components;
 
-public class StateSystem extends IteratingSystem {
+public class FSMSystem extends IteratingSystem {
 
-    public StateSystem() {
+    @SuppressWarnings("unchecked")
+	public FSMSystem() {
         super(Family.all(FSMComponent.class).get());
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
+   	 //Updates the entities finite state machine
    	 Components.FSM.get(entity).update();
     }
 }

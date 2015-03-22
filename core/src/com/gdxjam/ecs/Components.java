@@ -18,7 +18,6 @@ import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.components.TargetComponent;
-import com.gdxjam.components.TargetFinderComponent;
 import com.gdxjam.components.UnitComponent;
 import com.gdxjam.components.WeaponComponent;
 
@@ -51,7 +50,6 @@ public class Components {
 
 	public static final ComponentMapper<DecayComponent> DECAY = ComponentMapper.getFor(DecayComponent.class);
 	public static final ComponentMapper<TargetComponent> TARGET = ComponentMapper.getFor(TargetComponent.class);
-	public static final ComponentMapper<TargetFinderComponent> TARGET_FINDER = ComponentMapper.getFor(TargetFinderComponent.class);
 	public static final ComponentMapper<WeaponComponent> WEAPON = ComponentMapper.getFor(WeaponComponent.class);
 	public static final ComponentMapper<HealthComponent> HEALTH = ComponentMapper.getFor(HealthComponent.class);
 
