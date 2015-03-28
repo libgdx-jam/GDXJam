@@ -16,6 +16,7 @@ import com.gdxjam.systems.FSMSystem;
 import com.gdxjam.systems.GUISystem;
 import com.gdxjam.systems.HealthSystem;
 import com.gdxjam.systems.InputSystem;
+import com.gdxjam.systems.ParticleSystem;
 import com.gdxjam.systems.PhysicsSystem;
 import com.gdxjam.systems.ResourceSystem;
 import com.gdxjam.systems.SquadSystem;
@@ -37,6 +38,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 				new PhysicsEntityListener(getSystem(PhysicsSystem.class)));
 		
 		addEntityListener(Family.all(ResourceComponent.class).get(), new ResourceEntityListener(this));
+		addEntityListener(new DebugEntityListener());
 	}
 
 	private EntityManager initSystems() {
@@ -67,7 +69,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 		addSystem(inputSystem);
 		// Rendering happens last
 		addSystem(new EntityRenderSystem());
-//		addSystem(new ParticleSystem());
+		addSystem(new ParticleSystem());
 		addSystem(guiSystem);
 
 		return this;

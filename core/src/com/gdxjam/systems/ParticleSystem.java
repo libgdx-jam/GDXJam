@@ -1,56 +1,93 @@
+
 package com.gdxjam.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.gdxjam.Assets;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.IntMap;
 import com.gdxjam.components.ParticleComponent;
 import com.gdxjam.ecs.Components;
 
 public class ParticleSystem extends IteratingSystem {
 
-	SpriteBatch batch;
-	OrthographicCamera camera;
+	private static final String ROOT_DIR = "particles/";
 
-	public ParticleSystem() {
-		super(Family.all(ParticleComponent.class).get());
-	}
+	public enum ParticleType {
+		EXPLOSION("explosion.p");
 
-	@Override
-	public void addedToEngine(Engine engine) {
-		super.addedToEngine(engine);
-		batch = new SpriteBatch();
+		public String file;
 
-	}
-
-	@Override
-	protected void processEntity(Entity entity, float deltaTime) {
-		ParticleComponent particle = Components.PARTICLE.get(entity);
-		particle.update(deltaTime);
-
-	}
-
-	@Override
-	public void update(float deltaTime) {
-		super.update(deltaTime);
-		batch.begin();
-		
-		for (Entity e : getEntities()) {
-			ParticleComponent particle = Components.PARTICLE.get(e);
-			particle.draw(batch);
-			if (particle.effect.isComplete()) {
-				particle.effect.free();
-				Assets.particles.effects.removeValue(particle.effect, true);
-				if (Components.PARTICLE.has(e)) {
-					e.remove(ParticleComponent.class);
-
-				}
-			}
-
+		private ParticleType (String file) {
+			this.file = file;
 		}
+	}
+
+	private IntMap<ParticleEffect> effectTemplates = new IntMap<ParticleEffect>();
+	private IntMap<ParticleEffectPool> effectPools = new IntMap<ParticleEffectPool>();
+
+	private OrthographicCamera camera;
+	private SpriteBatch batch;
+
+	private PooledEngine engine;
+
+	@SuppressWarnings("unchecked")
+	public ParticleSystem () {
+		super(Family.all(ParticleComponent.class).get());
+		loadTemplates();
+	}
+
+	public void loadTemplates () {
+		for (int i = 0; i < ParticleType.values().length; i++) {
+			ParticleEffect template = new ParticleEffect();
+			template.load(Gdx.files.internal(ROOT_DIR + ParticleType.values()[i].file), Gdx.files.internal(ROOT_DIR));
+			template.scaleEffect(0.02f);
+			effectTemplates.put(i, template);
+
+			ParticleEffectPool pool = new ParticleEffectPool(template, 4, 20);
+			effectPools.put(i, pool);
+		}
+	}
+
+	public PooledEffect createEffect (Vector2 position, ParticleType type) {
+		PooledEffect effect = effectPools.get(type.ordinal()).obtain();
+		effect.setPosition(position.x, position.y);
+		return effect;
+	}
+
+	@Override
+	public void addedToEngine (Engine engine) {
+		super.addedToEngine(engine);
+		this.engine = (PooledEngine)engine;
+		batch = new SpriteBatch();
+		camera = engine.getSystem(CameraSystem.class).getCamera();
+	}
+
+	@Override
+	protected void processEntity (Entity entity, float deltaTime) {
+		ParticleComponent particle = Components.PARTICLE.get(entity);
+		particle.effect.update(deltaTime);
+		particle.effect.draw(batch);
+
+		if (particle.effect.isComplete()) {
+			particle.effect.free();
+			engine.removeEntity(entity);
+		}
+	}
+
+	@Override
+	public void update (float deltaTime) {
+		batch.setProjectionMatrix(camera.combined);
+		batch.begin();
+		super.update(deltaTime);
 		batch.end();
 	}
 

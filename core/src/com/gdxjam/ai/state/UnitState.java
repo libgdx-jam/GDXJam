@@ -231,7 +231,7 @@ public enum UnitState implements State<Entity>{
 	
 	@Override
 	public void enter(Entity entity) {
-		Gdx.app.log("UnitState: ", Components.FSM.get(entity).getStateMachine().getCurrentState().toString());
+//		Gdx.app.log("UnitState: ", Components.FSM.get(entity).getStateMachine().getCurrentState().toString());
 		
 	}
 
@@ -256,7 +256,7 @@ public enum UnitState implements State<Entity>{
 		 * we go back to idle and request a new target from our squad
 		 */
 		case TARGET_REMOVED:{
-			Gdx.app.error(TAG, "TARGET REMOVED!");
+//			Gdx.app.error(TAG, "TARGET REMOVED!");
 			Components.FSM.get(entity).changeState(FIND_TARGET);
 			return true;
 		}
