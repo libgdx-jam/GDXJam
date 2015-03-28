@@ -10,6 +10,8 @@ import com.gdxjam.GameManager;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.screens.GameOverScreen;
+import com.gdxjam.systems.ParticleSystem.ParticleType;
+import com.gdxjam.utils.EntityFactory;
 
 public class HealthSystem extends IteratingSystem {
 
@@ -36,6 +38,7 @@ public class HealthSystem extends IteratingSystem {
 			}
 
 			engine.removeEntity(entity);
+			EntityFactory.createParticle(Components.STEERABLE.get(entity).getPosition(), ParticleType.EXPLOSION);
 			return;
 		}
 

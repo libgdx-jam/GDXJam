@@ -81,7 +81,7 @@ public enum SquadHarvestState implements State<Entity>{
 
 	@Override
 	public void enter (Entity entity) {
-		Gdx.app.log("SquadState: ", Components.FSM.get(entity).getStateMachine().getCurrentState().toString());
+//		Gdx.app.log("SquadState: ", Components.FSM.get(entity).getStateMachine().getCurrentState().toString());
 		
 	}
 
