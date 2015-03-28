@@ -2,12 +2,10 @@
 package com.gdxjam;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.gdxjam.ai.state.TelegramMessage;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.components.ProjectileComponent;

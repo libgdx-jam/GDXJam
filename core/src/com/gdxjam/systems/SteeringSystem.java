@@ -5,9 +5,9 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.gdxjam.GameManager;
 import com.gdxjam.components.SteerableComponent;
 import com.gdxjam.components.SteeringBehaviorComponent;
 import com.gdxjam.ecs.Components;
@@ -71,6 +71,11 @@ public class SteeringSystem extends IteratingSystem{
 				body.setAngularVelocity(maxAngVelocity);
 			}
 		}
+	}
+	
+	@Override
+	public boolean checkProcessing () {
+		return !GameManager.isPaused();
 	}
 
 }

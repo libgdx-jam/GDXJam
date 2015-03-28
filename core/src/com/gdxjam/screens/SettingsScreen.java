@@ -1,7 +1,5 @@
 package com.gdxjam.screens;
 
-import java.text.DecimalFormat;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;

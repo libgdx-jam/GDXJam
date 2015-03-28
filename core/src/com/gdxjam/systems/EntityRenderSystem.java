@@ -7,7 +7,9 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,6 +23,7 @@ import com.gdxjam.components.ParalaxComponent;
 import com.gdxjam.components.PhysicsComponent;
 import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.components.SpriteComponent;
+import com.gdxjam.components.SquadComponent;
 import com.gdxjam.ecs.Components;
 
 public class EntityRenderSystem extends SortedIteratingSystem implements Disposable {
@@ -38,7 +41,7 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 	private static int drawnEntities = 0;
 
 	public EntityRenderSystem () {
-		super(Family.all(SpriteComponent.class).get(), new Comparator<Entity>() {
+		super(Family.one(SpriteComponent.class, SquadComponent.class).get(), new Comparator<Entity>() {
 
 			@Override
 			public int compare (Entity e1, Entity e2) {
@@ -85,6 +88,19 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 
 	@Override
 	protected void processEntity (Entity entity, float deltaTime) {
+		if(Components.SQUAD.has(entity)){
+//			Vector2 position = Components.STEERABLE.get(entity).getPosition();
+//			Gdx.gl20.glEnable(GL20.GL_BLEND);
+//			Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+//			shapeRenderer.setProjectionMatrix(cameraSystem.getCamera().combined);
+////			shapeRenderer.begin(ShapeType.Filled);
+//			shapeRenderer.setColor(new Color(0.0f, 0.0f, 1.0f, 0.25f));
+//			shapeRenderer.circle(position.x, position.y, 0.25f);
+////			shapeRenderer.end();
+//			Gdx.gl20.glDisable(GL20.GL_BLEND);
+			return;
+		}
+		
 		Sprite sprite = Components.SPRITE.get(entity).getSprite();
 		OrthographicCamera camera;
 		if(currentLayer >= 0){
@@ -92,6 +108,7 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 		}
 		else{
 			camera = cameraSystem.getCamera();
+			batch.setProjectionMatrix(camera.combined);
 		}
 		
 		// Only renderer if the sprite is in the fustrum of the camera
@@ -130,10 +147,12 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 			HealthComponent healthComp = Components.HEALTH.get(entity);
 			if (healthComp.value < healthComp.max) {
 				float percent = (float)healthComp.value / (float)healthComp.max;
+//				shapeRenderer.begin(ShapeType.Filled);
 				shapeRenderer.setColor(Color.RED);
 				shapeRenderer.rect(sprite.getX(), sprite.getY() + sprite.getHeight(), sprite.getWidth(), healthBarHeight);
 				shapeRenderer.setColor(Color.GREEN);
 				shapeRenderer.rect(sprite.getX(), sprite.getY() + sprite.getHeight(), sprite.getWidth() * percent, healthBarHeight);
+//				shapeRenderer.end();
 			}
 		}
 		
@@ -144,17 +163,17 @@ public class EntityRenderSystem extends SortedIteratingSystem implements Disposa
 			ResourceComponent resourceComp = Components.RESOURCE.get(entity);
 			if(resourceComp.value < resourceComp.capactiy.max()){
 				float percent = (float)resourceComp.value / (float)resourceComp.capactiy.max();
+//				shapeRenderer.begin(ShapeType.Filled);
 				shapeRenderer.setColor(Color.ORANGE);
 				shapeRenderer.rect(sprite.getX(), sprite.getY() + sprite.getHeight(), sprite.getWidth(), healthBarHeight);
 				shapeRenderer.setColor(Color.BLUE);
 				shapeRenderer.rect(sprite.getX(), sprite.getY() + sprite.getHeight(), sprite.getWidth() * percent, healthBarHeight);
+//				shapeRenderer.end();
 			}
 		}
 		
-		
-		
 	}
-
+	
 	@Override
 	public void dispose () {
 		batch.dispose();

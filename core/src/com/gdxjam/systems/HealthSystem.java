@@ -42,5 +42,10 @@ public class HealthSystem extends IteratingSystem {
 		health.value = MathUtils.clamp(health.value, health.min, health.max);
 
 	}
+	
+	@Override
+	public boolean checkProcessing () {
+		return !GameManager.isPaused();
+	}
 
 }

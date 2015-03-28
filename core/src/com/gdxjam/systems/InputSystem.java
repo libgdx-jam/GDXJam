@@ -13,9 +13,12 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.gdxjam.Assets;
+import com.gdxjam.GameManager;
 import com.gdxjam.components.SquadComponent.FormationPatternType;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.input.Keybinds;
+import com.gdxjam.ui.dialog.PauseDialog;
 import com.gdxjam.utils.Constants;
 
 public class InputSystem extends EntitySystem implements InputProcessor {
@@ -111,11 +114,11 @@ public class InputSystem extends EntitySystem implements InputProcessor {
 
 	public boolean removeSquad (Entity squad) {
 		int index = squadIndices.findKey(squad, true, -1);
-		
+
 		if (index >= 0) {
 			squadIndices.remove(index);
 			selectedIndices.removeValue(index, true);
-			
+
 			guiSystem.removeSquad(squad, index);
 			return true;
 		}
@@ -123,9 +126,8 @@ public class InputSystem extends EntitySystem implements InputProcessor {
 	}
 
 	public void setSelected (int index, boolean selected) {
-		if (!squadIndices.containsKey(index)){
-			if(selectedIndices.contains(index, true))
-				selectedIndices.removeValue(index, true);
+		if (!squadIndices.containsKey(index)) {
+			if (selectedIndices.contains(index, true)) selectedIndices.removeValue(index, true);
 			return;
 		}
 
@@ -172,7 +174,7 @@ public class InputSystem extends EntitySystem implements InputProcessor {
 			setSelected(keybindIndices.get(keycode), appendSelection);
 			return true;
 
-			// Keybindings for selecting formation patterns
+		// Keybindings for selecting formation patterns
 		case Keybinds.FORMATION0:
 		case Keybinds.FORMATION1:
 		case Keybinds.FORMATION2:
@@ -198,13 +200,27 @@ public class InputSystem extends EntitySystem implements InputProcessor {
 			}
 			return true;
 		case Keys.ESCAPE:
-			Constants.isPaused = !Constants.isPaused;
+			GameManager.pause();
+			PauseDialog dialog = new PauseDialog(Assets.skin);
+			dialog.show(guiSystem.getStage());
 			return true;
 
 		}
 
 		return false;
 	}
+	
+	@Override
+	public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+		switch (button) {
+		case Buttons.LEFT:
+			Vector2 position = cameraSystem.screenToWorldCords(screenX, screenY);
+			setTargetForSelected(position);
+			return true;
+		}
+		return false;
+	}
+
 
 	@Override
 	public boolean keyUp (int keycode) {
@@ -218,16 +234,6 @@ public class InputSystem extends EntitySystem implements InputProcessor {
 		return false;
 	}
 
-	@Override
-	public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-		switch (button) {
-		case Buttons.LEFT:
-			Vector2 position = cameraSystem.screenToWorldCords(screenX, screenY);
-			setTargetForSelected(position);
-			return true;
-		}
-		return false;
-	}
 
 	@Override
 	public boolean touchUp (int screenX, int screenY, int pointer, int button) {
@@ -252,5 +258,7 @@ public class InputSystem extends EntitySystem implements InputProcessor {
 		cameraSystem.zoom(amount * CAMERA_ZOOM_SCALAR);
 		return false;
 	}
+	
+	
 
 }

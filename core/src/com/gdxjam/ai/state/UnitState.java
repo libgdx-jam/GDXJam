@@ -176,7 +176,10 @@ public enum UnitState implements State<Entity>{
 			super.update(entity);
 			// Grab our target and our weapon
 			Entity target = Components.TARGET.get(entity).getTarget();
-			if(target == null) return;	//Double check to make sure we have a target
+			if(target == null){ 
+				Gdx.app.debug(TAG, "our target is null in combat!");
+				return;
+			}	//Double check to make sure we have a target
 			
 			WeaponComponent weaponComp = Components.WEAPON.get(entity);
 
