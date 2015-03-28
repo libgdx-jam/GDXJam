@@ -22,7 +22,8 @@ public class ParticleSystem extends IteratingSystem {
 	private static final String ROOT_DIR = "particles/";
 
 	public enum ParticleType {
-		EXPLOSION("explosion.p");
+		EXPLOSION("explosion.p"),
+		HARVSET("harvest.p");
 
 		public String file;
 

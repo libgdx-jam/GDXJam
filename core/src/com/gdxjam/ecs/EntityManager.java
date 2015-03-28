@@ -11,6 +11,7 @@ import com.gdxjam.components.SquadComponent;
 import com.gdxjam.components.UnitComponent;
 import com.gdxjam.systems.CameraSystem;
 import com.gdxjam.systems.ConstructionSystem;
+import com.gdxjam.systems.DecaySystem;
 import com.gdxjam.systems.EntityRenderSystem;
 import com.gdxjam.systems.FSMSystem;
 import com.gdxjam.systems.GUISystem;
@@ -64,7 +65,7 @@ public class EntityManager extends PooledEngine implements Disposable {
 		ConstructionSystem constructSystem = new ConstructionSystem(resourceSystem);
 		addSystem(new SquadSystem(inputSystem));
 		addSystem(new WaveSystem(guiSystem));
-		//addSystem(new DecaySystem());
+		addSystem(new DecaySystem());
 
 		addSystem(inputSystem);
 		// Rendering happens last
