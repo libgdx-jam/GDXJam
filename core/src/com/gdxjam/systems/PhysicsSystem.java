@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.gdxjam.GameContactListener;
+import com.gdxjam.GameManager;
 
 public class PhysicsSystem extends EntitySystem implements Disposable {
 
@@ -64,5 +65,10 @@ public class PhysicsSystem extends EntitySystem implements Disposable {
 	public void dispose() {
 		world.dispose();
 		renderer.dispose();
+	}
+	
+	@Override
+	public boolean checkProcessing () {
+		return !GameManager.isPaused();
 	}
 }

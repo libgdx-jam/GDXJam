@@ -1,20 +1,23 @@
 package com.gdxjam.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.gdxjam.Assets;
 import com.gdxjam.GameManager;
+import com.gdxjam.ui.dialog.OptionsDialog;
 import com.gdxjam.utils.Constants;
 
 public class MainMenuScreen extends AbstractScreen {
@@ -31,10 +34,22 @@ public class MainMenuScreen extends AbstractScreen {
 		addTitle();
 		add("New Game", new NewGameScreen());
 		add("GameScreen", new GameScreen());
-		add("Load Game", new LoadGameScreen());
-		add("Settings", new SettingsScreen());
 		add("Credits", new CreditsScreen());
 		addExit();
+		
+		final Skin skin = Assets.skin;
+		
+		TextButton optionsButton = new TextButton("Options", skin);
+		optionsButton.addListener(new ChangeListener(){
+			@Override
+			public void changed (ChangeEvent event, Actor actor) {
+				OptionsDialog dialog = new OptionsDialog(skin);
+				dialog.show(stage);
+			}
+		});
+		
+		table.add(optionsButton);
+		
 
 		stage.addActor(table);
 
@@ -108,8 +123,8 @@ public class MainMenuScreen extends AbstractScreen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
+		stage.getViewport().update(width, height, true);
+		stage.getCamera().update();
 	}
 
 	@Override

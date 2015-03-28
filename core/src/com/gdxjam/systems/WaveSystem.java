@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+import com.gdxjam.GameManager;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.utils.Constants;
@@ -94,6 +95,11 @@ public class WaveSystem extends EntitySystem{
 			beginWave(nextWave);
 			initalizeNextWave();
 		}
+	}
+	
+	@Override
+	public boolean checkProcessing () {
+		return !GameManager.isPaused();
 	}
 	
 	public class WaveParam{

@@ -4,17 +4,9 @@ import com.gdxjam.components.FactionComponent.Faction;
 
 public class Constants {
 
-	public static enum BUILD {
-		DEV, RELEASE;
-	}
-
 	public static enum WorldSize {
 		SMALL, MEDIUM, LARGE, CUSTOM;
 	}
-
-	public static final BUILD build = BUILD.DEV;
-
-	public static boolean isPaused = false;
 
 	public static final int maxSquads = 5;
 	public static final int maxSquadMembers = 20;

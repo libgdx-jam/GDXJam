@@ -60,7 +60,7 @@ public class EntityFactory {
 
 
 	public static Entity createMothership(Vector2 position) {
-		Entity entity = builder.createEntity(EntityCategory.MOTHERSHIP, position)
+		Entity entity = builder.createEntity(EntityCategory.MOTHERSHIP | EntityCategory.SQUAD, position)
 				.physicsBody(BodyType.StaticBody)
 				.circleCollider(Constants.mothershipRadius, 1.0f)
 				.sprite(Assets.spacecraft.motherships.get(Constants.playerFaction
@@ -117,8 +117,8 @@ public class EntityFactory {
 				.getWithoutAdding();
 
 		PhysicsComponent physicsComp = Components.PHYSICS.get(entity);
-		UnitComponent squadMemberComp = engine.createComponent(UnitComponent.class).init(squad, physicsComp.getBody());
-		entity.add(squadMemberComp);
+		UnitComponent unitComp = engine.createComponent(UnitComponent.class).init(squad, physicsComp.getBody());
+		entity.add(unitComp);
 		squadComp.addMember(entity);
 
 		Components.STEERABLE.get(entity).setIndependentFacing(true);
