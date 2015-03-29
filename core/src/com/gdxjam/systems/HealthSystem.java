@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.gdxjam.GameManager;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.ecs.Components;
+import com.gdxjam.ecs.EntityCategory;
 import com.gdxjam.screens.GameOverScreen;
 import com.gdxjam.systems.ParticleSystem.ParticleType;
 import com.gdxjam.utils.EntityFactory;
@@ -33,10 +34,9 @@ public class HealthSystem extends IteratingSystem {
 
 		if (health.value <= health.min) {
 
-			if (Components.MOTHERSHIP.has(entity)) {
+			if((entity.flags & EntityCategory.MOTHERSHIP) > 0){
 				GameManager.setScreen(new GameOverScreen());
 			}
-
 			engine.removeEntity(entity);
 			EntityFactory.createParticle(Components.STEERABLE.get(entity).getPosition(), ParticleType.EXPLOSION);
 			return;

@@ -11,7 +11,6 @@ import com.gdxjam.components.ResourceComponent;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.systems.ParticleSystem.ParticleType;
 import com.gdxjam.utils.EntityFactory;
-import com.gdxjam.utils.EntityUtils;
 
 public class ResourceSystem extends IteratingSystem{
 	

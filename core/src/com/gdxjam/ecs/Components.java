@@ -7,7 +7,6 @@ import com.gdxjam.components.DecayComponent;
 import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.HealthComponent;
-import com.gdxjam.components.MothershipComponent;
 import com.gdxjam.components.ParalaxComponent;
 import com.gdxjam.components.ParticleComponent;
 import com.gdxjam.components.PhysicsComponent;
@@ -28,8 +27,6 @@ public class Components {
 	public static final ComponentMapper<UnitComponent> UNIT = ComponentMapper.getFor(UnitComponent.class);
 	public static final ComponentMapper<ResourceComponent> RESOURCE = ComponentMapper.getFor(ResourceComponent.class);
 	public static final ComponentMapper<ProjectileComponent> PROJECTILE = ComponentMapper.getFor(ProjectileComponent.class);
-	public static final ComponentMapper<MothershipComponent> MOTHERSHIP = ComponentMapper.getFor(MothershipComponent.class);
-
 
 	public static final ComponentMapper<PhysicsComponent> PHYSICS = ComponentMapper.getFor(PhysicsComponent.class);
 	public static final ComponentMapper<FactionComponent> FACTION = ComponentMapper.getFor(FactionComponent.class);
