@@ -9,7 +9,6 @@ import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
 import com.badlogic.gdx.ai.steer.behaviors.LookWhereYouAreGoing;
 import com.badlogic.gdx.ai.steer.limiters.NullLimiter;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -29,7 +28,6 @@ import com.gdxjam.components.FSMComponent;
 import com.gdxjam.components.FactionComponent;
 import com.gdxjam.components.FactionComponent.Faction;
 import com.gdxjam.components.HealthComponent;
-import com.gdxjam.components.MothershipComponent;
 import com.gdxjam.components.ParalaxComponent;
 import com.gdxjam.components.ParticleComponent;
 import com.gdxjam.components.PhysicsComponent;
@@ -70,7 +68,6 @@ public class EntityFactory {
 			.sprite(Assets.spacecraft.motherships.get(Constants.playerFaction.ordinal()), Constants.mothershipRadius * 2,
 				Constants.mothershipRadius * 2)
 			.faction(Constants.playerFaction)
-			.mothership()
 			.health(10000)
 			.steerable(Constants.mothershipRadius).filter(EntityCategory.MOTHERSHIP, 0, EntityCategory.PROJECTILE)
 			.steeringBehavior().weapon(55, 2.0f, 1).target().stateMachine().addToEngine();
@@ -239,11 +236,6 @@ public class EntityFactory {
 
 			this.position = position;
 
-			return this;
-		}
-
-		public EntityBuilder mothership () {
-			entity.add(engine.createComponent(MothershipComponent.class));
 			return this;
 		}
 

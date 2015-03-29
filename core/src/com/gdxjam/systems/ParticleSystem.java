@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.IntMap;
+import com.badlogic.gdx.utils.Array;
 import com.gdxjam.components.ParticleComponent;
 import com.gdxjam.ecs.Components;
 
@@ -22,8 +22,7 @@ public class ParticleSystem extends IteratingSystem {
 	private static final String ROOT_DIR = "particles/";
 
 	public enum ParticleType {
-		EXPLOSION("explosion.p"),
-		HARVSET("harvest.p");
+		EXPLOSION("explosion.p"), HARVSET("harvest.p");
 
 		public String file;
 
@@ -32,8 +31,8 @@ public class ParticleSystem extends IteratingSystem {
 		}
 	}
 
-	private IntMap<ParticleEffect> effectTemplates = new IntMap<ParticleEffect>();
-	private IntMap<ParticleEffectPool> effectPools = new IntMap<ParticleEffectPool>();
+	private Array<ParticleEffect> effectTemplates = new Array<ParticleEffect>();
+	private Array<ParticleEffectPool> effectPools = new Array<ParticleEffectPool>();
 
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -51,10 +50,10 @@ public class ParticleSystem extends IteratingSystem {
 			ParticleEffect template = new ParticleEffect();
 			template.load(Gdx.files.internal(ROOT_DIR + ParticleType.values()[i].file), Gdx.files.internal(ROOT_DIR));
 			template.scaleEffect(0.02f);
-			effectTemplates.put(i, template);
+			effectTemplates.add(template);
 
 			ParticleEffectPool pool = new ParticleEffectPool(template, 4, 20);
-			effectPools.put(i, pool);
+			effectPools.add(pool);
 		}
 	}
 
