@@ -1,9 +1,11 @@
+
 package com.gdxjam;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -23,7 +25,7 @@ public class Assets implements Disposable {
 
 	public static AssetManager manager;
 
-	public static AssetManager getManager() {
+	public static AssetManager getManager () {
 		if (manager == null) {
 			manager = new AssetManager();
 		}
@@ -33,7 +35,6 @@ public class Assets implements Disposable {
 	public static final String TEXTURE_ATLAS_OBJECTS = "assets.atlas";
 	public static final String SKIN = "skin/uiskin.json";
 
-	public static MusicManager music;
 
 	public static AssetHotkey hotkey;
 	public static AssetFonts fonts;
@@ -41,20 +42,29 @@ public class Assets implements Disposable {
 	public static AssetsUI ui;
 	public static AssetSpacecraft spacecraft;
 	public static AssetProjectile projectile;
+	public static AssetMusic music;
+	public static AssetSound sound;
+	
 	public static Skin skin;
 
-	public static void load() {
+	public static void load () {
 		getManager(); // Insure the manager exists
 		manager.load(TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
 		manager.load(SKIN, Skin.class);
-	}
-	
-	public static void loadParticles(){
-		manager.load("particles/explosion.p", ParticleEffect.class);
+		loadSounds();
 	}
 
-	public static void create() {
+	public static void loadParticles () {
+		manager.load("particles/explosion.p", ParticleEffect.class);
+	}
+	
+	public static void loadSounds(){
+		manager.load("sound/boom.ogg", Sound.class);
+	}
+
+	public static void create () {
 		TextureAtlas atlas = manager.get(TEXTURE_ATLAS_OBJECTS);
+		
 		skin = manager.get(SKIN);
 		projectile = new AssetProjectile(atlas);
 		hotkey = new AssetHotkey(atlas);
@@ -62,12 +72,12 @@ public class Assets implements Disposable {
 		space = new AssetSpace(atlas);
 		spacecraft = new AssetSpacecraft(atlas);
 		ui = new AssetsUI(atlas);
-		
-		music = new MusicManager();
+		music = new AssetMusic();
+		sound = new AssetSound();
 	}
 
 	@Override
-	public void dispose() {
+	public void dispose () {
 		manager.dispose();
 	}
 
@@ -75,27 +85,26 @@ public class Assets implements Disposable {
 		public final Array<AtlasRegion> motherships;
 		public final Array<AtlasRegion> ships;
 
-		public AssetSpacecraft(TextureAtlas atlas) {
+		public AssetSpacecraft (TextureAtlas atlas) {
 			motherships = atlas.findRegions("mothership");
 			ships = atlas.findRegions("ship");
 		}
 	}
-	
 
 	public static class AssetFonts {
 
 		public final BitmapFont font;
 
-		public AssetFonts() {
+		public AssetFonts () {
 			font = new BitmapFont(Gdx.files.internal("fonts/space.fnt"));
 		}
 
 	}
-	
-	public static class AssetsUI{
+
+	public static class AssetsUI {
 		public final Array<AtlasRegion> formationIcons;
-		
-		public AssetsUI(TextureAtlas atlas){
+
+		public AssetsUI (TextureAtlas atlas) {
 			this.formationIcons = atlas.findRegions("formation");
 		}
 	}
@@ -106,7 +115,7 @@ public class Assets implements Disposable {
 		public final Array<AtlasRegion> planets;
 		public final Array<AtlasRegion> asteroids;
 
-		public AssetSpace(TextureAtlas atlas) {
+		public AssetSpace (TextureAtlas atlas) {
 			background = atlas.findRegion("space");
 
 			planets = atlas.findRegions("planet");
@@ -120,7 +129,7 @@ public class Assets implements Disposable {
 		public AtlasRegion middle;
 		public AtlasRegion right;
 
-		public AssetHotkey(TextureAtlas atlas) {
+		public AssetHotkey (TextureAtlas atlas) {
 			left = atlas.findRegion("hotkeyleft");
 			button = atlas.createPatch("hotkey");
 			right = atlas.findRegion("hotkeyright");
@@ -132,66 +141,23 @@ public class Assets implements Disposable {
 	public static class AssetProjectile {
 		public final Array<AtlasRegion> projectiles;
 
-		public AssetProjectile(TextureAtlas atlas) {
+		public AssetProjectile (TextureAtlas atlas) {
 			projectiles = atlas.findRegions("projectile");
 		}
 	}
 
-	public static class MusicManager {
-		private float volume = -1;
-		private Preferences options;
+	public static class AssetMusic {
+		public static final Array<String> menuTracks = new Array<String>();
+		public static final Array<String> gameTracks = new Array<String>();
 
-		public Music music;
-
-		Array<String> songs = new Array<String>(10);
-
-		public MusicManager() {
-			init();
+		public AssetMusic () {
+			menuTracks.addAll("menu.mp3");
+			gameTracks.addAll("stars.mp3");
 		}
-
-		public void init() {
-			options = Gdx.app.getPreferences("Orion-options");
-			songs.addAll("menu.mp3", "stars.mp3");
-			// songs.addAll("shipadded.wav");
-			music = Gdx.audio.newMusic(Gdx.files.internal("music/"
-					+ songs.random()));
-		}
-
-		public float getVolume() {
-			return volume > -1 ? volume : Gdx.app.getPreferences("options")
-					.getFloat("volume", 20);
-		}
-
-		public void setVolume(float volume) {
-			volume = MathUtils.clamp(volume, 0, 1);
-			options.putFloat("volume", volume);
-			options.flush();
-		}
-
-		public void play() {
-			if (!music.isPlaying())
-				music.play();
-		}
-
-		public void update() {
-			if (!music.isPlaying()) {
-				music = Gdx.audio.newMusic(Gdx.files.internal("music/"
-						+ songs.random()));
-				music.play();
-			}
-		}
-
-		public void stop() {
-			music.stop();
-		}
-
-		public void dispose() {
-			music.dispose();
-		}
-
-		public void pause() {
-			music.pause();
-		}
-
 	}
+	
+	public static class AssetSound{
+		public final Sound boom = manager.get("sound/boom.ogg", Sound.class);
+	}
+
 }

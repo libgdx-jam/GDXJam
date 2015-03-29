@@ -6,6 +6,8 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
+import com.gdxjam.Assets;
+import com.gdxjam.AudioManager;
 import com.gdxjam.GameManager;
 import com.gdxjam.components.HealthComponent;
 import com.gdxjam.ecs.Components;
@@ -38,6 +40,7 @@ public class HealthSystem extends IteratingSystem {
 				GameManager.setScreen(new GameOverScreen());
 			}
 			engine.removeEntity(entity);
+			AudioManager.playSound(Assets.sound.boom);
 			EntityFactory.createParticle(Components.STEERABLE.get(entity).getPosition(), ParticleType.EXPLOSION);
 			return;
 		}
