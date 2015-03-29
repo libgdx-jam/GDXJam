@@ -127,8 +127,6 @@ public enum UnitState implements State<Entity>{
 		public void update(Entity entity) {
 			super.update(entity);
 			
-
-			
 			// Get relevant components
 			Entity targetResource = Components.TARGET.get(entity).getTarget();
 			if(targetResource == null) return;
@@ -190,19 +188,27 @@ public enum UnitState implements State<Entity>{
 
 				// Get the angle between our target and us and our current orientation
 				Vector2 position = steerable.getPosition();
-				Vector2 targetPosition = targetSteerable.getPosition();
-				float angle = targetPosition.sub(position).angleRad();
+				Vector2 displacement = targetSteerable.getPosition().cpy().sub(position);
+				float angle = displacement.angleRad();
 				float orientation = steerable.getOrientation();
 
 				if ((entity.flags & EntityCategory.MOTHERSHIP) == EntityCategory.MOTHERSHIP) {
 					// Since we are a mothership we don't care if were facing the right direction
 					orientation = angle; // We will fire our weapon directly at our target
 				}
+				
+				// The player unit will have aimbot
+				if(Components.FACTION.get(entity).getFaction() == Constants.playerFaction){
+					float timeStep = displacement.len() / weaponComp.projectileVelocity;
+					Vector2 deltaPosition = steerable.getLinearVelocity().cpy().scl(timeStep);
+					Vector2 perdictedPosition = targetSteerable.getPosition().cpy().add(deltaPosition);
+					orientation = perdictedPosition.sub(position).angleRad();
+				}
 
 				// If were facing the angle between us and our target
 				if (true /** MathUtils.isEqual(orientation, angle, (MathUtils.PI / 4)) */
 				) {
-
+					
 					// Set the position of the projectile we will fire
 					float radius = steerable.getBoundingRadius();
 					position.add((radius * MathUtils.cos(orientation)), radius * MathUtils.sin(orientation));

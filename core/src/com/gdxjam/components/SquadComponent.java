@@ -28,6 +28,7 @@ import com.gdxjam.ai.state.TelegramMessage;
 import com.gdxjam.ecs.Components;
 import com.gdxjam.ecs.EntityCategory;
 import com.gdxjam.utils.Constants;
+import com.gdxjam.utils.EntityUtils;
 import com.gdxjam.utils.Location2;
 
 public class SquadComponent extends Component implements Poolable {
@@ -49,8 +50,8 @@ public class SquadComponent extends Component implements Poolable {
 	// Steering behaviors use these for group separation / collision avoidance
 	public Array<Steerable<Vector2>> resourceAgents = new Array<Steerable<Vector2>>();
 	public Array<Steerable<Vector2>> friendlyAgents = new Array<Steerable<Vector2>>();
-	
-	//Array for formation API and ashley entity reference
+
+	// Array for formation API and ashley entity reference
 	public Array<Entity> members = new Array<Entity>();
 	public Array<Steerable<Vector2>> memberAgents = new Array<Steerable<Vector2>>();
 
@@ -59,13 +60,28 @@ public class SquadComponent extends Component implements Poolable {
 	public FormationMotionModerator<Vector2> moderator;
 	public Location2 targetLocation = new Location2();
 	
+	private final Comparator<Entity> resourceComparator = new Comparator<Entity>() {
+		@Override
+		public int compare (Entity e1, Entity e2) {
+			Vector2 squadPos = steerable.getPosition();
+			Vector2 pos1 = Components.STEERABLE.get(e1).getPosition();
+			Vector2 pos2 = Components.STEERABLE.get(e2).getPosition();
+
+			float dist1 = squadPos.dst2(pos1);
+			float dist2 = squadPos.dst2(pos2);
+
+			return dist1 > dist2 ? 1 : -1;
+		}
+	};
+
+
 	private Steerable<Vector2> steerable;
 
 	/** Can only be created by PooledEngine */
 	private SquadComponent () {
 		// private constructor
 	}
-	
+
 	public SquadComponent init (Steerable<Vector2> steerable) {
 		this.steerable = steerable;
 		SoftRoleSlotAssignmentStrategy<Vector2> slotAssignmentStrategy = new SoftRoleSlotAssignmentStrategy<Vector2>(
@@ -73,7 +89,7 @@ public class SquadComponent extends Component implements Poolable {
 		formation = new Formation<Vector2>(steerable, getFormationPattern(DEFAULT_PATTERN), slotAssignmentStrategy);
 		return this;
 	}
-	
+
 	public void addMember (Entity entity) {
 		members.add(entity);
 		memberAgents.add(Components.STEERABLE.get(entity));
@@ -85,43 +101,45 @@ public class SquadComponent extends Component implements Poolable {
 		memberAgents.removeValue(Components.STEERABLE.get(entity), true);
 		formation.removeMember(Components.UNIT.get(entity));
 	}
-	
-	public void track (Entity self, Entity target){
-		if((target.flags & EntityCategory.RESOURCE) == EntityCategory.RESOURCE){
+
+	public void track (Entity self, Entity target) {
+		if ((target.flags & EntityCategory.RESOURCE) == EntityCategory.RESOURCE) {
 			resourcesTracked.add(target);
 			resourceAgents.add(Components.STEERABLE.get(target));
 			sortTrackedResources();
-			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(self), TelegramMessage.DISCOVERED_RESOURCE.ordinal());
-		} else if ((target.flags & EntityCategory.SQUAD) == EntityCategory.SQUAD){
-			enemiesTracked.add(target);
-			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(self), TelegramMessage.DISCOVERED_ENEMY.ordinal());
+			MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(self),
+				TelegramMessage.DISCOVERED_RESOURCE.ordinal());
+		} else if ((target.flags & EntityCategory.SQUAD) == EntityCategory.SQUAD) {
+			if (EntityUtils.isSameFaction(self, target)) {
+				friendliesTracked.add(target);
+				friendlyAgents.add(Components.STEERABLE.get(target));
+			} else {
+				enemiesTracked.add(target);
+				MessageManager.getInstance().dispatchMessage(null, Components.FSM.get(self), TelegramMessage.DISCOVERED_ENEMY.ordinal());
+			}
+
 		}
 	}
-	
-	public void untrack(Entity self, Entity target){
-		if((target.flags & EntityCategory.RESOURCE) == EntityCategory.RESOURCE){
+
+	public void untrack (Entity self, Entity target) {
+		if ((target.flags & EntityCategory.RESOURCE) == EntityCategory.RESOURCE) {
 			resourcesTracked.removeValue(target, true);
 			resourceAgents.removeValue(Components.STEERABLE.get(target), true);
-		} else if ((target.flags & EntityCategory.SQUAD) == EntityCategory.SQUAD){
+		} else if ((target.flags & EntityCategory.SQUAD) == EntityCategory.SQUAD) {
+			if (EntityUtils.isSameFaction(self, target)) {
+				friendliesTracked.removeValue(target, true);
+				friendlyAgents.removeValue(Components.STEERABLE.get(target), true);
+			}
 			enemiesTracked.removeValue(target, true);
 		}
 	}
-	
-	private void sortTrackedResources(){
-		resourcesTracked.sort(new Comparator<Entity>() {
-			@Override
-			public int compare (Entity e1, Entity e2) {
-				Vector2 squadPos = steerable.getPosition();
-				Vector2 pos1 = Components.STEERABLE.get(e1).getPosition();
-				Vector2 pos2 = Components.STEERABLE.get(e2).getPosition();
-				
-				float dist1 = squadPos.dst2(pos1);
-				float dist2 = squadPos.dst2(pos2);
 
-				return dist1 > dist2 ? 1 : -1;
-			}
-			
-		});
+	private Vector2 getPosition () {
+		return steerable.getPosition();
+	}
+
+	private void sortTrackedResources () {
+		resourcesTracked.sort(resourceComparator);
 	}
 
 	public void setFormationPattern (FormationPatternType pattern) {

@@ -8,7 +8,9 @@ import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
 import com.badlogic.gdx.ai.steer.behaviors.LookWhereYouAreGoing;
+import com.badlogic.gdx.ai.steer.behaviors.Separation;
 import com.badlogic.gdx.ai.steer.limiters.NullLimiter;
+import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -66,11 +68,9 @@ public class EntityFactory {
 			.physicsBody(BodyType.StaticBody)
 			.circleCollider(Constants.mothershipRadius, 1.0f)
 			.sprite(Assets.spacecraft.motherships.get(Constants.playerFaction.ordinal()), Constants.mothershipRadius * 2,
-				Constants.mothershipRadius * 2)
-			.faction(Constants.playerFaction)
-			.health(10000)
-			.steerable(Constants.mothershipRadius).filter(EntityCategory.MOTHERSHIP, 0, EntityCategory.PROJECTILE)
-			.steeringBehavior().weapon(55, 2.0f, 1).target().stateMachine().addToEngine();
+				Constants.mothershipRadius * 2).faction(Constants.playerFaction).health(10000).steerable(Constants.mothershipRadius)
+			.filter(EntityCategory.MOTHERSHIP, 0, EntityCategory.PROJECTILE).steeringBehavior().weapon(55, 2.0f, 1).target()
+			.stateMachine().addToEngine();
 
 		return entity;
 	}
@@ -138,18 +138,15 @@ public class EntityFactory {
 		Arrive<Vector2> arriveSB = new Arrive<Vector2>(steerable).setTarget(squadComp.targetLocation).setTimeToTarget(0.001f)
 			.setDecelerationRadius(2f).setArrivalTolerance(0.0001f);
 		SteeringBehavior<Vector2> sb = arriveSB;
+		
+		RadiusProximity<Vector2> proximity = new RadiusProximity<Vector2>(steerable, squadComp.friendlyAgents, 3.0f);
+		Separation<Vector2> separationSB = new Separation<Vector2>(steerable, proximity);
 
-		if (steerable.isIndependentFacing()) {
-			LookWhereYouAreGoing<Vector2> lookWhereYouAreGoingSB = new LookWhereYouAreGoing<Vector2>(steerable) //
-				.setTimeToTarget(0.1f) //
-				.setAlignTolerance(0.001f) //
-				.setDecelerationRadius(MathUtils.PI);
-			BlendedSteering<Vector2> blendedSteering = new BlendedSteering<Vector2>(steerable) //
-				.setLimiter(NullLimiter.NEUTRAL_LIMITER) //
-				.add(arriveSB, 1f) //
-				.add(lookWhereYouAreGoingSB, 1f);
-			sb = blendedSteering;
-		}
+		BlendedSteering<Vector2> blendedSteering = new BlendedSteering<Vector2>(steerable) //
+			.setLimiter(NullLimiter.NEUTRAL_LIMITER) //
+			.add(separationSB, 10000f)
+			.add(arriveSB, 0.5f);
+		sb = blendedSteering;
 		Components.FSM.get(entity).changeState(SquadComponent.DEFAULT_STATE);
 
 		Components.STEERING_BEHAVIOR.get(entity).setBehavior(sb);
@@ -161,12 +158,10 @@ public class EntityFactory {
 	}
 
 	public static Entity createProjectile (Vector2 position, Vector2 velocity, float radius, Faction faction, int damage) {
-		Entity entity = builder.createEntity(EntityCategory.PROJECTILE, position)
-			.physicsBody(BodyType.DynamicBody)
+		Entity entity = builder.createEntity(EntityCategory.PROJECTILE, position).physicsBody(BodyType.DynamicBody)
 			.circleSensor(radius)
 			.filter(EntityCategory.PROJECTILE, 0, EntityCategory.UNIT | EntityCategory.RESOURCE | EntityCategory.MOTHERSHIP)
-			.faction(faction)
-			.sprite(Assets.projectile.projectiles.get(faction.ordinal()), radius * 2, radius * 2)
+			.faction(faction).sprite(Assets.projectile.projectiles.get(faction.ordinal()), radius * 2, radius * 2)
 			.getWithoutAdding();
 
 		ProjectileComponent projectileComp = engine.createComponent(ProjectileComponent.class).init(damage);
@@ -184,9 +179,7 @@ public class EntityFactory {
 	}
 
 	public static Entity createParticle (Vector2 position, ParticleType type) {
-		Entity entity = builder.createEntity(EntityCategory.GRAPHICS, position)
-			.particle(type)
-			.addToEngine();
+		Entity entity = builder.createEntity(EntityCategory.GRAPHICS, position).particle(type).addToEngine();
 		return entity;
 	}
 

@@ -41,10 +41,7 @@ public class GameContactListener implements ContactListener {
 	}
 
 	public void processTargetTracker (Entity squad, Entity target, boolean contactEnd) {
-		if (EntityUtils.isSameFaction(squad, target)) return;
-
 		SquadComponent squadComp = Components.SQUAD.get(squad);
-
 		if (contactEnd)
 			squadComp.untrack(squad, target);
 		else
