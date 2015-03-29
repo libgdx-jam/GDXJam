@@ -22,6 +22,7 @@ public class GameManager {
 
 	public static void init (Game game) {
 		GameManager.game = game;
+		AudioManager.refresh();
 		refreshDisplayMode();
 		
 		Gdx.app.setLogLevel(GameConfig.LOG_LEVEL);

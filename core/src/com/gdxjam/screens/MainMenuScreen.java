@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.gdxjam.Assets;
+import com.gdxjam.AudioManager;
 import com.gdxjam.GameManager;
 import com.gdxjam.ui.dialog.OptionsDialog;
 import com.gdxjam.utils.Constants;
@@ -53,7 +54,7 @@ public class MainMenuScreen extends AbstractScreen {
 
 		stage.addActor(table);
 
-		Assets.music.play();
+		AudioManager.loadRandomTrack();
 
 		Gdx.input.setInputProcessor(stage);
 	}
@@ -116,7 +117,6 @@ public class MainMenuScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		Assets.music.update();
 		stage.draw();
 		stage.act();
 	}
