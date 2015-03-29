@@ -29,11 +29,7 @@ public enum SquadCombatState implements State<Entity> {
 				Faction faction = Components.FACTION.get(entity).getFaction();
 				SquadCombatState state = faction == Constants.playerFaction ? PLAYER : AI_AGRESSIVE;
 				Components.FSM.get(entity).changeState(state);
-			} else {
-// for (Entity member : squadComp.members) {
-// Components.FSM.get(member).changeState(UnitState.IDLE);
-// }
-			}
+			} 
 		}
 
 		@Override
@@ -121,7 +117,7 @@ public enum SquadCombatState implements State<Entity> {
 	},
 
 	PLAYER() {
-	// We do nothing... this is all up to the player
+		
 	}
 
 	;
